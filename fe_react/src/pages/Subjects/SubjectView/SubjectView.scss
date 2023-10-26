@@ -1,0 +1,33 @@
+.subject-main-info {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px 30px;
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 15px;
+  margin: 20px 0 40px 0;
+
+  .subject-info-item-title {
+    width: 200px;
+    font-weight: 600;
+
+  }
+}
+
+.subject-view-header {
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--hust-color);
+  padding: 20px;
+}
+
+.subject-column {
+  display: flex;
+  flex-direction: column;
+
+  span {
+    font-size: 16px;
+    font-family: "Poppins", sans-serif;
+    margin-bottom: 15px;
+  }
+}

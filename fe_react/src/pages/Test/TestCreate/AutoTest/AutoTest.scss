@@ -1,0 +1,57 @@
+.test-create-header {
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--hust-color);
+  padding: 20px 0px;
+}
+
+.test-create-view {
+  .ant-modal-content {
+    margin-top: 30vh;
+  }
+
+  .ant-form {
+    margin-top: 20px;
+    background-color: #ffffff;
+    padding: 20px 30px;
+    border-radius: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .ant-form-item {
+      width: 45%;
+    }
+
+    .ant-form-item-row {
+      .ant-form-item-label {
+        width: 32%;
+        justify-content: flex-start;
+        display: flex;
+
+        label {
+          font-size: 16px;
+          font-weight: bold;
+          font-family: "Poppins", sans-serif;
+        }
+      }
+    }
+
+    .ant-picker {
+      width: 100%;
+    }
+
+    .btn-create {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .ant-btn {
+      span {
+        font-size: 20px;
+        color: #ffffff;
+      }
+    }
+  }
+}

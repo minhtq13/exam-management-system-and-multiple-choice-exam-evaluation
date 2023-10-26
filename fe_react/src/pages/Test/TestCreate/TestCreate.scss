@@ -1,0 +1,26 @@
+.test-create {
+  .test-subject-chapters {
+    display: flex;
+    justify-content: space-between;
+    background-color: #ffffff;
+    padding: 20px 30px;
+    border-radius: 15px;
+
+    .test-chapters,
+    .test-subject {
+      display: flex;
+      align-items: center;
+      width: 45%;
+      gap: 10px;
+
+    }
+
+    .ant-select {
+      width: 85%;
+    }
+  }
+
+  .test-content {
+    margin-top: 20px;
+  }
+}
