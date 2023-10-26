@@ -1,0 +1,79 @@
+#Cấu hình server
+server:
+  port: 8088
+  servlet:
+    context-path: /e-learning/api
+
+# Cấu hình spring
+spring:
+  #Cấu hình datasource local
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/elearning_support_db
+    username: elearning_support_admin
+    password: BLXx4wOCP7YJ
+    hikari:
+      schema: elearning_support_dev
+  #Cấu hình Spring Data JPA
+  jpa:
+    hibernate:
+      ddlAuto: none
+    properties:
+      hibernate:
+        show_sql: true
+        use_sql_comment: true
+        format_sql: true
+  #Cấu hình servlet : upload multipart file
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+  #Cấu hình server gửi mail
+  mail:
+    protocol: smtp
+    host: smtp.gmail.com
+    port: 587
+    username: app20222mailsv@gmail.com
+    password: jfdzigexvxbhcwoi
+    account-password: App20222@mail
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+#            Cấu hình nếu sử dụng SSL
+#          socketFactory:
+#            port: 465
+#            class: javax.net.ssl.SSLSocketFactory
+
+# Cấu hình Json Web Token
+jwt:
+  secretKey: ELEARNINGSUPPORTKsu295JdkjKHJJHW2349gfbnaf23cheh34HIMAde24
+  accessTokenExpiredMs: 100000000
+  refreshTokenExpiredMs: 10000000000
+
+# Cấu hình Server Cloudinary
+cloudinary:
+  cloud:
+    name: app20222-cloudinary
+    api-key: 262418987222994
+    api-secret: RpT-xRSXwTpwcR9hCyy8CWTLqLs
+
+# Cấu hình file storage
+app:
+  file-storage:
+    location-path: /resources/upload/files/
+    resource-path: /resources/upload/files/**
+    detail-path: /elearning_support/src/main/resources/upload/files/
+
+# Cấu hình firebase
+firebase:
+  config: elearningsupportsystem-55777-firebase-adminsdk-8oqd8-6bb7d37704.json
+  app-name: e-learning_support_system
+
+
+
+
