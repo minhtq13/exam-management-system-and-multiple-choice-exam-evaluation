@@ -223,7 +223,7 @@ def mergeImages(filename, coord_array, array_img_graft, background_image, imgInf
         y_coord = coord_array[i][1]
         height, width, _ = array_img_graft[i].shape
         background_image[y_coord: y_coord + height, x_coord: x_coord + width] = array_img_graft[i] / 255
-    cv2.imwrite(f"./src/main/resources/images/answer_sheets/handle-{args.input}/handle-{filename_cut}.jpg", background_image * 255)
+    cv2.imwrite(f"./images/answer_sheets/handle-{args.input}/handle-{filename_cut}.jpg", background_image * 255)
 
 
 if __name__ == "__main__":
@@ -238,8 +238,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # ================= Tạo folder ảnh gốc và ảnh đã qua xử lý===============================
-    folder_path = f"./src/main/resources/images/answer_sheets/{args.input}"
-    folder_path_handle = f"./src/main/resources/images/answer_sheets/handle-{args.input}"
+    folder_path = f"./images/answer_sheets/{args.input}"
+    folder_path_handle = f"./images/answer_sheets/handle-{args.input}"
     if not os.path.exists(folder_path):
         try:
             os.makedirs(folder_path)
