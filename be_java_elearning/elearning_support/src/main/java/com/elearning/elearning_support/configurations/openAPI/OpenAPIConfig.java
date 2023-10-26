@@ -1,4 +1,4 @@
-package com.elearning.elearning_support.configs.openAPI;
+package com.elearning.elearning_support.configurations.openAPI;
 
 import java.util.List;
 import org.springframework.context.annotation.Bean;
@@ -10,14 +10,14 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
 
 @Configuration
-@ComponentScan(basePackages = "com.elearning.elearning_support.configs")
+@ComponentScan(basePackages = "com.elearning.elearning_support.configurations")
 public class OpenAPIConfig {
 
-    public static final String LOCAL_HOST_IP = "http://127.0.0.1:8082";
+    public static final String LOCAL_HOST_IP = "http://127.0.0.1:8088";
 
-    public static final String LOCAL_HOST = "localhost:8082";
+    public static final String LOCAL_HOST = "localhost:8088";
 
-    public static final String DEFAULT_PATH = "/map20231/ema/swagger-ui.html";
+    public static final String DEFAULT_PATH = "/e-learning/swagger-ui.html";
 
     private static final List<Server> lstServer =  List.of(new Server().url(LOCAL_HOST_IP).description("Local IP"),
                                                            new Server().url(LOCAL_HOST).description("Local Host"));

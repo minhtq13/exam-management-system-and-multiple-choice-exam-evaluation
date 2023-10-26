@@ -1,4 +1,4 @@
-package com.elearning.elearning_support.configs.resources;
+package com.elearning.elearning_support.configurations.resources;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

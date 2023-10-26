@@ -1,4 +1,4 @@
-package com.elearning.elearning_support.configs.cloudinary;
+package com.elearning.elearning_support.configurations.cloudinary;
 
 import java.util.HashMap;
 import java.util.Map;

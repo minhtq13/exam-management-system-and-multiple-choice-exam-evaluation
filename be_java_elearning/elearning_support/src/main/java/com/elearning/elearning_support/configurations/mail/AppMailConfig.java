@@ -1,4 +1,4 @@
-package com.elearning.elearning_support.configs.mail;
+package com.elearning.elearning_support.configurations.mail;
 
 import java.util.Properties;
 import org.springframework.beans.factory.annotation.Value;

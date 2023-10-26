@@ -1,4 +1,4 @@
-package com.elearning.elearning_support.configs.firebase;
+package com.elearning.elearning_support.configurations.firebase;
 
 import java.io.File;
 import java.io.FileInputStream;

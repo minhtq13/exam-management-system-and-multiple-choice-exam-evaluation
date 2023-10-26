@@ -2,7 +2,7 @@
 server:
   port: 8088
   servlet:
-    context-path: /e-learning/api
+    context-path: /e-learning
 
 # Cấu hình spring
 spring:
