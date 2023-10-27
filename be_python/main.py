@@ -52,14 +52,21 @@ def get_marker(image, model):
         y1 = int(data[1])
         x2 = int(data[2])
         y2 = int(data[3])
-        class_info = int(data[5])
+        class_marker = int(data[5])
         conf = round(float(data[4]), 3)
-        if (class_info == 28):
+        if (conf < threshold_warning - 0.1):
+            continue
+        if (class_marker == 28):
             marker2 = [x1, y1]
         list_marker.append([x1, y1])
         marker_coordinates.append([x1, y1, x2, y2])
+        cv2.rectangle(image, (x1, y1), (x2, y2), green_color if conf > threshold_warning else warning_color,
+            1 if conf > threshold_warning else 2)
+        cv2.putText(image, str(get_class(class_marker)) if conf > threshold_warning else str(f"{get_class(class_marker)}-{conf}"),
+            (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 0.4 if conf > threshold_warning else 0.5,
+            blue_color if conf > threshold_warning else warning_color, 1,cv2.LINE_AA)
     # Handle errors
-    if marker2 == [] or len(list_marker) < 4:
+    if marker2 == [] or len(list_marker) != 4:
         return print("Xem lại ảnh đầu vào, có thể bị thiếu góc")
 
     oriented, marker_coordinates_true = orient_image_by_angle(list_marker, marker_coordinates)
@@ -82,7 +89,6 @@ def get_marker(image, model):
 
 def crop_image(img, numberAnswer):
     ans_blocks = []
-    # arrayX = [0, 350, 680]
     arrayX = [30, 350, 660]
     for i in range(3):
         y = 480
@@ -101,7 +107,6 @@ def crop_image(img, numberAnswer):
     size_array = []
     for i, sorted_ans_block in enumerate(sorted_ans_blocks):
         img2 = sorted_ans_block[0]
-   
         width, height = img2.shape
         size_array.append((350, 896))
         img_resize = cv2.resize(sorted_ans_block, (250, 640), interpolation=cv2.INTER_AREA)
@@ -230,7 +235,7 @@ if __name__ == "__main__":
     # ========================== Đo thời gian ====================================
     # start_time = time.time()
     # ===================== Khai báo và load model ==============================
-    pWeight = "./Model/best2510.pt"
+    pWeight = "./Model/best2710.pt"
     model = YOLO(pWeight)
     # ======================= Khai báo tham số truyền vào cmd  ===============================
     parser = argparse.ArgumentParser(description="Process some integers.")

@@ -9,7 +9,7 @@ warning_color = (78, 173, 240)
 blue_color = (255, 0, 0)
 red_color = (0, 0, 255)
 green_color = (0, 255, 0)
-threshold_warning = 0.7
+threshold_warning = 0.8
 
 # ============================================ FUNCTION =======================================
 
@@ -163,23 +163,23 @@ def get_coordinates(x1, y1, x2, y2, class1):
         point4 = y1
     elif class1 == "A":
         point1 = x1 - 5
-        point2 = y1 - 3
-        point3 = x1 + int((x2 - x1) / 4) - 13
+        point2 = y1 - 2
+        point3 = x1 + int((x2 - x1) / 4) - 15
         point4 = y1 + int((y2 - y1))
     elif class1 == "B":
         point1 = x1 + 37
-        point2 = y1
+        point2 = y1 - 2
         point3 = x1 + int((x2 - x1) / 4) + 25
         point4 = y1 + int((y2 - y1))
     elif class1 == "C":
-        point1 = x1 + 80
-        point2 = y1
+        point1 = x1 + 75
+        point2 = y1 - 2
         point3 = x1 + int((x2 - x1) / 4) + 68
         point4 = y1 + int((y2 - y1))
     elif class1 == "D":
-        point1 = x1 + 123
-        point2 = y1
-        point3 = x1 + int((x2 - x1) / 4) + 113
+        point1 = x1 + 118
+        point2 = y1 - 2
+        point3 = x1 + int((x2 - x1) / 4) + 108
         point4 = y1 + int((y2 - y1))
     return point1, point2, point3, point4
 
