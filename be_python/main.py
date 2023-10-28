@@ -43,6 +43,9 @@ def orient_image_by_angle(pts, marker_coordinates):
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> ea1fc05... update weight
 def get_marker(image, model, filename):
     try:
         results = model.predict(image)
@@ -90,6 +93,7 @@ def get_marker(image, model, filename):
     except Exception as e:
         print(e)
         return None, None
+<<<<<<< HEAD
 =======
 def get_marker(image, model):
     results = model.predict(image)
@@ -136,6 +140,8 @@ def get_marker(image, model):
     output = generate_output(image, corners)
     return output, oritentation
 >>>>>>> 2469d1a... update weight
+=======
+>>>>>>> ea1fc05... update weight
 
 def crop_image(img, numberAnswer):
     ans_blocks = []
@@ -286,10 +292,14 @@ if __name__ == "__main__":
     # start_time = time.time()
     # ===================== Khai báo và load model ==============================
 <<<<<<< HEAD
+<<<<<<< HEAD
     pWeight = "./Model/best2810.pt"
 =======
     pWeight = "./Model/best2710.pt"
 >>>>>>> 2469d1a... update weight
+=======
+    pWeight = "./Model/best2810.pt"
+>>>>>>> ea1fc05... update weight
     model = YOLO(pWeight)
     # ======================= Khai báo tham số truyền vào cmd  ===============================
     parser = argparse.ArgumentParser(description="Process some integers.")
