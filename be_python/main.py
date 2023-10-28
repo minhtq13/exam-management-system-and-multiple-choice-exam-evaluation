@@ -42,50 +42,53 @@ def orient_image_by_angle(pts, marker_coordinates):
 
 
 
-def get_marker(image, model):
-    results = model.predict(image)
-    data = results[0].boxes.data
-    list_marker = []
-    marker_coordinates = []
-    for i, data in enumerate(data):
-        x1 = int(data[0])
-        y1 = int(data[1])
-        x2 = int(data[2])
-        y2 = int(data[3])
-        class_marker = int(data[5])
-        conf = round(float(data[4]), 3)
-        if (conf < threshold_warning - 0.1):
-            continue
-        if (class_marker == 28):
-            marker2 = [x1, y1]
-        list_marker.append([x1, y1])
-        marker_coordinates.append([x1, y1, x2, y2])
-        cv2.rectangle(image, (x1, y1), (x2, y2), green_color if conf > threshold_warning else warning_color,
-            1 if conf > threshold_warning else 2)
-        cv2.putText(image, str(get_class(class_marker)) if conf > threshold_warning else str(f"{get_class(class_marker)}-{conf}"),
-            (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 0.4 if conf > threshold_warning else 0.5,
-            blue_color if conf > threshold_warning else warning_color, 1,cv2.LINE_AA)
-    # Handle errors
-    if marker2 == [] or len(list_marker) != 4:
-        return print("Xem lại ảnh đầu vào, có thể bị thiếu góc")
-
-    oriented, marker_coordinates_true = orient_image_by_angle(list_marker, marker_coordinates)
-    oritentation = ''
-    # Ảnh bị xoay 90 độ về bên phải => marker 2 ở bottom-left
-    if (marker2 == oriented[3]):
-        oritentation = 'bl'
-    # Ảnh không bị xoay => marker 2 ở bottom-right    
-    if (marker2 == oriented[2]):  
-        oritentation = 'br'
-    # Ảnh bị xoay 90 độ về bên trái => marker 2 ở top-right    
-    if (marker2 == oriented[1]):  
-        oritentation = 'tr'
-    # Ảnh bị xoay 180 => marker 2 ở top-left    
-    if (marker2 == oriented[0]):
-        oritentation = 'tl'
-    corners = sorted(np.concatenate(marker_coordinates_true).tolist())
-    output = generate_output(image, corners)
-    return output, oritentation
+def get_marker(image, model, filename):
+    try:
+        results = model.predict(image)
+        data = results[0].boxes.data
+        list_marker = []
+        marker_coordinates = []
+        for i, data in enumerate(data):
+            x1 = int(data[0])
+            y1 = int(data[1])
+            x2 = int(data[2])
+            y2 = int(data[3])
+            class_marker = int(data[5])
+            conf = round(float(data[4]), 3)
+            if (conf < threshold_warning - 0.1):
+                continue
+            if (class_marker == 28):
+                marker2 = [x1, y1]
+            list_marker.append([x1, y1])
+            marker_coordinates.append([x1, y1, x2, y2])
+            cv2.rectangle(image, (x1, y1), (x2, y2), green_color if conf > threshold_warning else warning_color,
+                1 if conf > threshold_warning else 2)
+            cv2.putText(image, str(get_class(class_marker)) if conf > threshold_warning else str(f"{get_class(class_marker)}-{conf}"),
+                (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 0.4 if conf > threshold_warning else 0.5,
+                blue_color if conf > threshold_warning else warning_color, 1,cv2.LINE_AA)
+        # Handle errors
+        if marker2 == [] or len(list_marker) != 4:
+            raise Exception(f"Xem lại ảnh đầu vào {filename} có thể bị thiếu góc")
+        oriented, marker_coordinates_true = orient_image_by_angle(list_marker, marker_coordinates)
+        oritentation = ''
+        # Ảnh bị xoay 90 độ về bên phải => marker 2 ở bottom-left
+        if (marker2 == oriented[3]):
+            oritentation = 'bl'
+        # Ảnh không bị xoay => marker 2 ở bottom-right    
+        if (marker2 == oriented[2]):  
+            oritentation = 'br'
+        # Ảnh bị xoay 90 độ về bên trái => marker 2 ở top-right    
+        if (marker2 == oriented[1]):  
+            oritentation = 'tr'
+        # Ảnh bị xoay 180 => marker 2 ở top-left    
+        if (marker2 == oriented[0]):
+            oritentation = 'tl'
+        corners = sorted(np.concatenate(marker_coordinates_true).tolist())
+        output = generate_output(image, corners)
+        return output, oritentation
+    except Exception as e:
+        print(e)
+        return None, None
 
 def crop_image(img, numberAnswer):
     ans_blocks = []
@@ -235,7 +238,7 @@ if __name__ == "__main__":
     # ========================== Đo thời gian ====================================
     # start_time = time.time()
     # ===================== Khai báo và load model ==============================
-    pWeight = "./Model/best2710.pt"
+    pWeight = "./Model/best2810.pt"
     model = YOLO(pWeight)
     # ======================= Khai báo tham số truyền vào cmd  ===============================
     parser = argparse.ArgumentParser(description="Process some integers.")
@@ -263,7 +266,9 @@ if __name__ == "__main__":
         if filename.lower().endswith((".jpg", ".jpeg", ".png")):
             image_path = os.path.join(folder_path, filename)
             image = cv2.imread(image_path)
-            document, oritentation = get_marker(image, model)
+            document, oritentation = get_marker(image, model, filename)
+            if (document is None):
+                continue
             if oritentation == 'bl':
                 document = cv2.rotate(document, cv2.ROTATE_90_COUNTERCLOCKWISE)
                 document = cv2.resize(document, (1056, 1500), interpolation=cv2.INTER_AREA)
@@ -276,6 +281,7 @@ if __name__ == "__main__":
                 document = cv2.rotate(document, cv2.ROTATE_180)
                 document = cv2.resize(document, (1056, 1500), interpolation=cv2.INTER_AREA)
             document = document / 255
+            # cv2.imwrite(f"document.jpg", document * 255)
             # ========================== Cắt ảnh sbd và mdt ===============================
             img_resize = crop_image_info(document)
             result_info, imgResize, numberClassRecognition, maybe_wrong_info = predictInfo(img=img_resize, model=model, filename=filename)
