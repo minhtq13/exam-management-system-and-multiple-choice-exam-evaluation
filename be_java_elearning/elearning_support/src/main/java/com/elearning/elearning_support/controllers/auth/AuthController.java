@@ -1,4 +1,4 @@
-package com.elearning.elearning_support.auth;
+package com.elearning.elearning_support.controllers.auth;
 
 import java.util.Date;
 import java.util.Objects;
