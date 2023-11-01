@@ -219,7 +219,7 @@ const TestList = () => {
 					onOk={() => setOpenModal(false)}
 					onCancel={() => setOpenModal(false)}
 					maskClosable={true}
-					bodyStyle={{ height: "50vh", overflowY: "scroll" }}
+					style={{ height: "50vh", overflowY: "scroll" }}
 					centered={true}
 				>
 					<List
@@ -283,7 +283,7 @@ const TestList = () => {
 					onCancel={() => setOpenModalPreview(false)}
 					maskClosable={true}
 					centered={true}
-					bodyStyle={{ height: "80vh", overflowY: "scroll" }}
+					style={{ height: "80vh", overflowY: "scroll" }}
 					width={"40vw"}
 					okButtonProps={{ loading: downLoading }}
 				>

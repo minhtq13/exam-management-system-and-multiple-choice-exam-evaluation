@@ -41,7 +41,7 @@ const ModalPopup = ({
         {buttonOpenModal}
       </div>
       <Modal
-        bodyStyle={{ height: "30vh" }}
+        style={{ height: "30vh" }}
         open={open}
         ok={ok}
         title={title}

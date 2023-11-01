@@ -36,6 +36,7 @@ import ExamClassList from "../pages/ExamClass/ExamClassList/ExamClassList";
 const publicRoutes = [
 	{ path: appPath.notFound, component: NotFound },
 	{ path: appPath.default, component: Home },
+	{ path: appPath.home, component: Home },
 	{ path: appPath.studentDashboard, component: StudentDashboard },
 	{ path: appPath.teacherDashboard, component: TeacherDashboard },
 	{ path: appPath.adminDashboard, component: AdminDashboard },
