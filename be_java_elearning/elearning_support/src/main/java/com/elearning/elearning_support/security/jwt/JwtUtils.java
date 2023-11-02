@@ -44,7 +44,7 @@ public class JwtUtils {
             .addClaims(claims)
             .setIssuedAt(DateUtils.getCurrentDateTime())
             .setExpiration(new Date(DateUtils.getCurrentDateTime().getTime() + Long.parseLong(ACCESS_TOKEN_EXPIRED_IN_MS)))
-            .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+            .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
             .compact();
     }
 

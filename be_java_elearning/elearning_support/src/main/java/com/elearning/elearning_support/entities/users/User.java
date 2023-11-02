@@ -69,11 +69,8 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "avatar_path")
-    private String avatarPath;
-
-    @Column(name = "title")
-    private String title;
+    @Column(name = "avatar_id")
+    private String avatarId;
 
     @Column(name = "status")
     private Integer status;

@@ -12,6 +12,6 @@ public class SecurityConstants {
 
     public static final String AUTH_HEADER = "Authorization";
 
-    public static final String[] LIST_PERMIT_ALL_API = {"/auth/login", "/resources/upload/files/**"};
+    public static final String[] WHITE_LIST = {"/api/auth/login", "/resources/upload/files/**"};
 
 }

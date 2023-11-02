@@ -65,13 +65,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .authorizeRequests()
             .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-            .antMatchers(SecurityConstants.LIST_PERMIT_ALL_API).permitAll()
+            .antMatchers(SecurityConstants.WHITE_LIST).permitAll()
             .anyRequest().authenticated()
             .and()
             .exceptionHandling().authenticationEntryPoint(authEntryPoint)
             .and()
-            .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
-            .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);// accept all request for dev/test
+            .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

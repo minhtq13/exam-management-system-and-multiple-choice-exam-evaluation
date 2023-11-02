@@ -67,7 +67,7 @@ app:
   file-storage:
     location-path: classpath:/upload/files/ #classpath: <=> ../resources/
     resource-path: /resources/upload/files/**
-    detail-path: /map20231_ema_backend/src/main/resources/upload/files/
+    detail-path: /elearning_support/src/main/resources/upload/files/
 
 # Cấu hình firebase
 firebase:

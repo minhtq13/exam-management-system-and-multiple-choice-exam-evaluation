@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS elearning_support_dev."users"
     "phone_number"          varchar(11),
     "email"                 varchar(50) unique,
     "username"              varchar(50) unique not null,
-    "password"              varchar(100)       not null,
+    "password"              varchar(255)       not null,
     "status"                int4               not null default 0,
     "user_type"             int2               not null,
     "department_id"         int8               not null,
@@ -61,7 +61,7 @@ COMMENT ON COLUMN "elearning_support_dev"."users"."identification_number" IS 'S�
 COMMENT ON COLUMN "elearning_support_dev"."users"."identity_type" IS 'Loại giấy tờ chứng thực (0: CMTND, 1: CCCD, 2: Hộ chiếu)';
 COMMENT ON COLUMN "elearning_support_dev"."users"."avatar_id" IS 'Id file avatar của người dùng lưu trong bảng file_attach';
 COMMENT ON COLUMN "elearning_support_dev"."users"."code" IS 'Mã người dùng (Nếu là GV: Mã giáo viên, HSSV: Mã số HSSV)';
-COMMENT ON COLUMN "elearning_support_dev"."users"."gender" IS 'Giới tính người dùng';
+COMMENT ON COLUMN "elearning_support_dev"."users"."gender" IS 'Giới tính người dùng (0: Nữ, 1:Name, : Khác)';
 COMMENT ON COLUMN "elearning_support_dev"."users"."first_name" IS 'Tên của người dùng';
 COMMENT ON COLUMN "elearning_support_dev"."users"."last_name" IS 'Họ và tên đệm của người dùng';
 COMMENT ON COLUMN "elearning_support_dev"."users"."birth_date" IS 'Ngày sinh của người dùng';
@@ -81,6 +81,11 @@ COMMENT ON COLUMN "elearning_support_dev"."users"."created_source" IS 'Nguồn t
 COMMENT ON COLUMN "elearning_support_dev"."users"."fcm_token" IS 'Token Firebase để cho việc gửi thông báo';
 COMMENT ON COLUMN "elearning_support_dev"."users"."activation_key" IS 'Mã kích hoạt tài khoản';
 COMMENT ON COLUMN "elearning_support_dev"."users"."user_uuid" IS 'Mã uuid tài khoản để phục vụ việc đồng bộ';
+-- Init admin user --
+-- Init dữ liệu --
+INSERT INTO "elearning_support_dev"."users" ("identification_number", "identity_type", "code", "first_name", "last_name", "username", "password",
+                                             "created_at", "created_by", "status", "gender", "user_type", "department_id", "created_source")
+VALUES ('00293849828', 1, 'ADMIN_SUPER1', 'Admin', 'Super', 'admin', '$2a$12$4FTmJ2x/BfKIN9as9ivNKuo8CJZd4jtk0UDEijm7OYqrusJN251du', now(), 1, 0, 1, -1, -1, 0);
 
 -- Bảng department --
 DROP TABLE IF EXISTS "elearning_support_dev"."department";
@@ -188,7 +193,8 @@ CREATE TABLE IF NOT EXISTS "elearning_support_dev"."file_attach"
     "file_ext"    varchar(10) not null,
     "size"        int4,
     "stored_type" int2        not null,
-    "location"    text        not null,
+    "file_path"    text,
+    "external_link"    text,
     "created_by"  int8        not null,
     "created_at"  timestamp   not null,
     primary key ("id")
@@ -200,7 +206,8 @@ COMMENT ON COLUMN "elearning_support_dev"."file_attach"."type" IS 'Loại file �
 COMMENT ON COLUMN "elearning_support_dev"."file_attach"."file_ext" IS 'Định dạng file';
 COMMENT ON COLUMN "elearning_support_dev"."file_attach"."size" IS 'Kích thước file (byte)';
 COMMENT ON COLUMN "elearning_support_dev"."file_attach"."stored_type" IS 'Loại kho lưu trữ file (0: Lưu tại server, 1: Lưu tại cloud server bên thứ 3)';
-COMMENT ON COLUMN "elearning_support_dev"."file_attach"."location" IS 'Đường dẫn đến địa chỉ lưu trữ file';
+COMMENT ON COLUMN "elearning_support_dev"."file_attach"."file_path" IS 'Đường dẫn đến địa chỉ lưu trữ file (internal server)';
+COMMENT ON COLUMN "elearning_support_dev"."file_attach"."external_link" IS 'Đường dẫn đến địa chỉ lưu trữ file (external server)';
 COMMENT ON COLUMN "elearning_support_dev"."file_attach"."created_by" IS 'Người tải lên file';
 COMMENT ON COLUMN "elearning_support_dev"."file_attach"."created_at" IS 'Thời gian tải lên file';
 

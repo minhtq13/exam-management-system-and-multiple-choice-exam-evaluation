@@ -48,9 +48,12 @@ public class FileAttach {
     private Integer storedType;
 
     @NotNull
-    @Column(name = "location", nullable = false)
+    @Column(name = "file_path")
     @Type(type = "org.hibernate.type.TextType")
-    private String location;
+    private String filePath;
+
+    @Column(name = "external_link")
+    private String externalLink;
 
     @NotNull
     @Column(name = "created_by", nullable = false)

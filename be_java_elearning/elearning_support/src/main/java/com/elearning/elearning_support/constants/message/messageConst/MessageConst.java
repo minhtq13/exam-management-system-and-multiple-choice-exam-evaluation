@@ -3,6 +3,7 @@ package com.elearning.elearning_support.constants.message.messageConst;
 public class MessageConst {
 
     public static class Resources {
+        public static final String QUESTION = "question";
     }
 
     public static final String RESOURCE_NOT_FOUND = "not found";
