@@ -29,6 +29,9 @@ public class Test extends BaseEntity {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "is_enabled")
     private Boolean isEnabled;
 
@@ -52,5 +55,8 @@ public class Test extends BaseEntity {
 
     @Column(name = "semester_id")
     private Long semesterId;
+
+    @Column(name = "gen_test_config")
+    private String genTestConfig;
 
 }

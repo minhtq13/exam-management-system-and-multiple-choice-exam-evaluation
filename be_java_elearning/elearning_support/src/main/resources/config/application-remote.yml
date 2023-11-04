@@ -9,7 +9,7 @@ spring:
   #Cấu hình datasource remote : AWS Neon
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://ep-broad-cloud-455155.ap-southeast-1.aws.neon.tech/elearning_support_db?defaultSchema=elearning_support_dev
+    url: jdbc:postgresql://ep-broad-cloud-455155.ap-southeast-1.aws.neon.tech/elearning_support_db
     username: elearning_support_admin
     password: BLXx4wOCP7YJ
     hikari:

@@ -38,4 +38,9 @@ public class TestQuestion {
     @Column(name = "question_mark", nullable = false)
     private Double questionMark;
 
+    public TestQuestion(Long testId, Long questionId, Double questionMark) {
+        this.testId = testId;
+        this.questionId = questionId;
+        this.questionMark = questionMark;
+    }
 }

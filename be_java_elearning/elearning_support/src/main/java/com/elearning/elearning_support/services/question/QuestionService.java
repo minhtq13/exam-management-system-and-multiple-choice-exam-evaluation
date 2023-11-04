@@ -5,16 +5,16 @@ import org.springframework.stereotype.Service;
 import com.elearning.elearning_support.dtos.question.QuestionListCreateDTO;
 import com.elearning.elearning_support.dtos.question.QuestionListDTO;
 import com.elearning.elearning_support.dtos.question.QuestionUpdateDTO;
+import com.elearning.elearning_support.enums.question.QuestionLevelEnum;
 
 @Service
 public interface QuestionService {
 
     void createListQuestion(QuestionListCreateDTO createDTO);
 
-    void updateQuestion (Long questionId, QuestionUpdateDTO updateDTO);
+    void updateQuestion(Long questionId, QuestionUpdateDTO updateDTO);
 
-    List<QuestionListDTO> getListQuestion(Long subjectId, String subjectCode, Long chapterId, String chapterCode);
-
+    List<QuestionListDTO> getListQuestion(Long subjectId, String subjectCode, Long chapterId, String chapterCode, QuestionLevelEnum level);
 
 
 }

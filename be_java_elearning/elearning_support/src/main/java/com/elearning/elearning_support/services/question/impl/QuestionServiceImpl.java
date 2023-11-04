@@ -15,6 +15,7 @@ import com.elearning.elearning_support.dtos.question.QuestionListDTO;
 import com.elearning.elearning_support.dtos.question.QuestionUpdateDTO;
 import com.elearning.elearning_support.entities.answer.Answer;
 import com.elearning.elearning_support.entities.question.Question;
+import com.elearning.elearning_support.enums.question.QuestionLevelEnum;
 import com.elearning.elearning_support.exceptions.exceptionFactory.ExceptionFactory;
 import com.elearning.elearning_support.repositories.answer.AnswerRepository;
 import com.elearning.elearning_support.repositories.question.QuestionRepository;
@@ -60,7 +61,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public void updateQuestion(Long questionId, QuestionUpdateDTO updateDTO) {
         Question question = questionRepository.findById(questionId).orElseThrow(
-                () -> exceptionFactory.resourceExistedException(ErrorKey.Question.NOT_FOUND, Resources.QUESTION, MessageConst.RESOURCE_NOT_FOUND,
+                () -> exceptionFactory.resourceExistedException(MessageConst.Question.NOT_FOUND, Resources.QUESTION, MessageConst.RESOURCE_NOT_FOUND,
                     ErrorKey.Question.ID, String.valueOf(questionId)));
         // Set thông tin cập nhất question
         question.setContent(updateDTO.getContent());
@@ -76,8 +77,8 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<QuestionListDTO> getListQuestion(Long subjectId, String subjectCode, Long chapterId, String chapterCode) {
-        return questionRepository.getListQuestion(subjectId, subjectCode, chapterId, chapterCode).stream().map(QuestionListDTO::new).collect(
+    public List<QuestionListDTO> getListQuestion(Long subjectId, String subjectCode, Long chapterId, String chapterCode, QuestionLevelEnum level) {
+        return questionRepository.getListQuestion(subjectId, subjectCode, chapterId, chapterCode, level.getLevel()).stream().map(QuestionListDTO::new).collect(
             Collectors.toList());
     }
 

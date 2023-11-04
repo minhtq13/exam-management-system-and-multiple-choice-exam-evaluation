@@ -1,6 +1,7 @@
 package com.elearning.elearning_support.repositories.question;
 
 import java.util.List;
+import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,9 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     Boolean existsByCode(String code);
 
     @Query(nativeQuery = true, value = SQLQuestion.GET_LIST_QUESTION)
-    List<IListQuestionDTO> getListQuestion(Long subjectId, String subjectCode, Long chapterId, String chapterCode);
+    List<IListQuestionDTO> getListQuestion(Long subjectId, String subjectCode, Long chapterId, String chapterCode, Integer questionLevel);
+
+    @Query(nativeQuery = true, value = SQLQuestion.GET_LIST_QUESTION_ID_BY_CHAPTER_ID_IN)
+    Set<Long> getListQuestionIdByChapterIn(Set<Long> lstChapterId);
 
 }

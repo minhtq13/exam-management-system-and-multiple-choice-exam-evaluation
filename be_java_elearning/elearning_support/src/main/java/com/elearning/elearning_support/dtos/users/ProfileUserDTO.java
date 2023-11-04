@@ -1,6 +1,7 @@
 package com.elearning.elearning_support.dtos.users;
 
 import java.util.Date;
+import org.springframework.beans.BeanUtils;
 import com.elearning.elearning_support.utils.DateUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
@@ -43,5 +44,15 @@ public class ProfileUserDTO {
     String department;
 
     Long departmentId;
+
+    @JsonFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_HH_MM_SS, timezone = DateUtils.TIME_ZONE)
+    Date createdAt;
+
+    @JsonFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_HH_MM_SS, timezone = DateUtils.TIME_ZONE)
+    Date modifiedAt;
+
+    public ProfileUserDTO(IGetDetailUser iGetDetailUser) {
+        BeanUtils.copyProperties(iGetDetailUser, this);
+    }
 
 }

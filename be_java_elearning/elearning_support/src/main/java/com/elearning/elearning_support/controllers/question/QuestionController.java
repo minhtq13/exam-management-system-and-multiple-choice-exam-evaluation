@@ -16,19 +16,22 @@ import org.springframework.web.multipart.MultipartFile;
 import com.elearning.elearning_support.dtos.question.QuestionListCreateDTO;
 import com.elearning.elearning_support.dtos.question.QuestionListDTO;
 import com.elearning.elearning_support.dtos.question.QuestionUpdateDTO;
+import com.elearning.elearning_support.enums.question.QuestionLevelEnum;
 import com.elearning.elearning_support.services.question.QuestionService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/question")
+@Tag(name = "Question")
 @RequiredArgsConstructor
 public class QuestionController {
 
     private final QuestionService questionService;
 
     @PostMapping
-    @Operation(description = "Tạo các câu hỏi")
+    @Operation(description = "Tạo bộ câu hỏi")
     public void createQuestion(@RequestBody QuestionListCreateDTO createDTO) {
         questionService.createListQuestion(createDTO);
     }
@@ -45,8 +48,9 @@ public class QuestionController {
         @RequestParam(name = "subjectId", required = false, defaultValue = "-1") Long subjectId,
         @RequestParam(name = "subjectCode", required = false, defaultValue = "ALL") String subjectCode,
         @RequestParam(name = "chapterCode", required = false, defaultValue = "ALL") String chapterCode,
-        @RequestParam(name = "chapterId", required = false, defaultValue = "-1") Long chapterId) {
-        return questionService.getListQuestion(subjectId, subjectCode, chapterId, chapterCode);
+        @RequestParam(name = "chapterId", required = false, defaultValue = "-1") Long chapterId,
+        @RequestParam(name = "level", required = false, defaultValue = "ALL") QuestionLevelEnum level) {
+        return questionService.getListQuestion(subjectId, subjectCode, chapterId, chapterCode, level);
     }
 
     @PutMapping("/{questionId}")

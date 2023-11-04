@@ -7,13 +7,17 @@ import lombok.Getter;
 @Getter
 public enum QuestionLevelEnum {
 
-    EASY(0, "Dễ"),
-    MEDIUM(1, "Trung bình"),
-    HARD(2, "Khó");
+    ALL(-1, "Tât cả"),
+
+    EASY(0,"Dễ"),
+
+    MEDIUM(1,"Trung bình"),
+
+    HARD(2,"Khó");
 
 
     private final Integer level;
 
     private final String levelName;
 
-}
+    }

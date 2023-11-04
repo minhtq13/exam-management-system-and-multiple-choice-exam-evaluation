@@ -4,11 +4,13 @@ import java.util.Date;
 import java.util.Random;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.elearning.elearning_support.dtos.users.ProfileUserDTO;
 import com.elearning.elearning_support.entities.users.User;
 import com.elearning.elearning_support.repositories.users.UserRepository;
 import com.elearning.elearning_support.services.users.UserService;
 import com.elearning.elearning_support.utils.DateUtils;
 import com.elearning.elearning_support.utils.StringUtils;
+import com.elearning.elearning_support.utils.auth.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,6 +22,11 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public ProfileUserDTO getUserProfile() {
+        return new ProfileUserDTO(userRepository.getDetailUser(AuthUtils.getCurrentUserId()));
+    }
 
     /**
      * Genarate  random user's code

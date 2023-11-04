@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.elearning.elearning_support.dtos.users.ProfileUserDTO;
 import com.elearning.elearning_support.services.users.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +21,14 @@ public class UserController {
     public ResponseEntity<?> getListUser(){
         return ResponseEntity.ok("");
     }
+
+
+    @GetMapping("/profile")
+    @Operation(description = "Lấy thông tin profile của user đăng nhập")
+    public ProfileUserDTO getProfileUser(){
+        return userService.getUserProfile();
+    }
+
+
 
 }
