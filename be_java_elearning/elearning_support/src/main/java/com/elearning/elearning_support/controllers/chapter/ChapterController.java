@@ -16,10 +16,12 @@ import com.elearning.elearning_support.enums.commons.StatusEnum;
 import com.elearning.elearning_support.services.chapter.ChapterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/chapter")
+@Tag(name = "APIs Chương (chapter)")
 @RequiredArgsConstructor
 public class ChapterController {
 

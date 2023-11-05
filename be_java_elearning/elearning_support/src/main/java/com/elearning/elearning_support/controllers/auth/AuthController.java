@@ -20,27 +20,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.elearning.elearning_support.dtos.login.LoginRequest;
 import com.elearning.elearning_support.dtos.login.LoginResponse;
+import com.elearning.elearning_support.dtos.users.ProfileUserDTO;
 import com.elearning.elearning_support.entities.role.Role;
 import com.elearning.elearning_support.security.jwt.JwtUtils;
 import com.elearning.elearning_support.security.models.CustomUserDetails;
 import com.elearning.elearning_support.services.auth.AuthInfoService;
+import com.elearning.elearning_support.services.users.UserService;
 import com.elearning.elearning_support.utils.auth.AuthUtils;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/auth")
+@Tag(name = "APIs Xác thực/phân quyền (Authentication/Authorization)")
+@RequiredArgsConstructor
 @Slf4j
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
 
-    @Autowired
-    private AuthInfoService authInfoService;
+    private final AuthInfoService authInfoService;
+
+    private final UserService userService;
 
 
     /**
@@ -75,11 +80,9 @@ public class AuthController {
                 .build());
     }
 
-    @GetMapping("/get-profile")
+    @GetMapping("/profile")
     @Operation(description = "Lấy thông tin user đăng nhập")
-    public ResponseEntity<?> getProfile() {
-        return ResponseEntity.ok("");
+    public ProfileUserDTO getProfile() {
+        return userService.getUserProfile();
     }
-
-
 }

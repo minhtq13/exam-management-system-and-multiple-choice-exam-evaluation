@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/question")
-@Tag(name = "Question")
+@Tag(name = "APIs Câu hỏi (Question)")
 @RequiredArgsConstructor
 public class QuestionController {
 

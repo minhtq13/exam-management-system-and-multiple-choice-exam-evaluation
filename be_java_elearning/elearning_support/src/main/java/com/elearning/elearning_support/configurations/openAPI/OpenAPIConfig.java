@@ -13,9 +13,9 @@ import io.swagger.v3.oas.models.servers.Server;
 @ComponentScan(basePackages = "com.elearning.elearning_support.configurations")
 public class OpenAPIConfig {
 
-    public static final String LOCAL_HOST_IP = "http://127.0.0.1:8088";
+    public static final String LOCAL_HOST_IP = "http://127.0.0.1:8088/e-learning";
 
-    public static final String LOCAL_HOST = "localhost:8088";
+    public static final String LOCAL_HOST = "localhost:8088/e-learning";
 
     public static final String DEFAULT_PATH = "/e-learning/swagger-ui.html";
 
