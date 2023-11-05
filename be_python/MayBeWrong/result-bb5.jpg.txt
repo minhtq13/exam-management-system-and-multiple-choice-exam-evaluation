@@ -1,0 +1,3 @@
+Kiểm tra lại nhãn "A" tại câu 1 ảnh bb5.jpg, có xác suất: 0.732
+Kiểm tra lại nhãn "CD" tại câu 2 ảnh bb5.jpg, có xác suất: 0.703
+Kiểm tra lại nhãn "ABD" tại câu 3 ảnh bb5.jpg, có xác suất: 0.717
