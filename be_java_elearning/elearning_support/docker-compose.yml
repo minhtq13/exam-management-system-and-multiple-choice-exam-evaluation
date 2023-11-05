@@ -8,4 +8,4 @@ services:
       dockerfile: Dockerfile
       context: e_learning_support_backend
     ports:
-      - '8082:8082'
+      - '8088:8088'
