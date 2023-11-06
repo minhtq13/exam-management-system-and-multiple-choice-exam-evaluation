@@ -27,8 +27,8 @@ DROP TABLE IF EXISTS elearning_support_dev."users";
 CREATE TABLE IF NOT EXISTS elearning_support_dev."users"
 (
     "id"                    bigserial unique   not null,
-    "identification_number" varchar(20)        not null,
-    "identity_type"         int2               not null,
+    "identification_number" varchar(20),
+    "identity_type"         int2,
     "gender"                int2               not null,
     "avatar_id"             int8,
     "code"                  varchar(20)        not null,
@@ -191,7 +191,7 @@ CREATE TABLE IF NOT EXISTS "elearning_support_dev"."file_attach"
     "name"        text        not null,
     "type"        int2        not null,
     "file_ext"    varchar(10) not null,
-    "size"        int4,
+    "size"        int8,
     "stored_type" int2        not null,
     "file_path"    text,
     "external_link"    text,

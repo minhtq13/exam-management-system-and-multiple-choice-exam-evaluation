@@ -31,26 +31,26 @@ public class TestController {
     private final TestService testService;
 
     @PostMapping("/create")
-    @Operation(description = "Tạo kỳ thi với bộ câu hỏi random trong một môn học")
+    @Operation(summary = "Tạo kỳ thi với bộ câu hỏi random trong một môn học")
     public void createTest(@RequestBody @Validated TestReqDTO createDTO) {
         testService.createTest(createDTO);
     }
 
     @PostMapping("/create/random")
-    @Operation(description = "Tạo kỳ thi với bộ câu hỏi chọn trước")
+    @Operation(summary = "Tạo kỳ thi với bộ câu hỏi chọn trước")
     public void createRandomTest(@RequestBody @Validated TestReqDTO createDTO) {
         testService.createRandomTest(createDTO);
     }
 
     @PutMapping("/{testId}")
-    @Operation(description = "Cập nhật kỳ thi")
+    @Operation(summary = "Cập nhật kỳ thi")
     public void updateTest(@PathVariable(name = "testId") Long testId,
         @RequestBody @Validated TestReqDTO updateDTO) {
         testService.updateTest(testId, updateDTO);
     }
 
     @GetMapping
-    @Operation(description = "Lấy danh sách các kỳ thi")
+    @Operation(summary = "Lấy danh sách các kỳ thi")
     public List<ITestListDTO> getListTest(
         @RequestParam(name = "subjectId", required = false, defaultValue = "-1") Long subjectId,
         @RequestParam(name = "subjectCode", required = false, defaultValue = "ALL") String subjectCode,
@@ -62,7 +62,7 @@ public class TestController {
     }
 
     @PutMapping("/status/{testId}")
-    @Operation(description = "Đổi trạng thái hiển thị kỳ thi")
+    @Operation(summary = "Đổi trạng thái hiển thị kỳ thi")
     public void switchTestStatus(@PathVariable(name = "testId") Long testId,
         @RequestParam(name = "newStatus") StatusEnum status) {
         testService.switchTestStatus(testId, status);

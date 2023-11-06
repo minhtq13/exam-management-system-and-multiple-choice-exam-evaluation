@@ -10,6 +10,8 @@ public class MessageConst {
         public static final String CHAPTER = "chapter";
 
         public static final String TEST = "test";
+
+        public static final String FILE_ATTACHED = "file_attached";
     }
 
     public static final String RESOURCE_NOT_FOUND = "not found";
@@ -37,6 +39,19 @@ public class MessageConst {
 
     public static class Test {
         public static final String NOT_FOUND = "error.test.not.found";
+    }
+
+
+    public static class FileAttach{
+
+        public static final String UPLOAD_ERROR_CODE = "file_attach.error.upload";
+        public static final String NOT_FOUND_ERROR_CODE = "file_attach.error.not.found";
+
+        public static final String EXISTED_ERROR_CODE = "file_attach.error.existed";
+
+        public static final String DUPLICATED_ERROR_CODE = "file_attach.error.duplicated";
+
+        public static final String PERMISSION_DENIED_ERROR_CODE = "file_attach.error.permission.denied";
     }
 
 

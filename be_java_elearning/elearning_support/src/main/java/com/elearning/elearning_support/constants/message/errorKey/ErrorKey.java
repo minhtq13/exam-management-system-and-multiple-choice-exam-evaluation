@@ -18,4 +18,9 @@ public class ErrorKey {
         public static final String ID = "id";
     }
 
+    public static class FileAttach {
+        // error key
+        public static final String ID = "id";
+    }
+
 }

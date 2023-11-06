@@ -1,6 +1,6 @@
 package com.elearning.elearning_support.entities.file_attach;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,10 +11,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.hibernate.annotations.Type;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,10 +40,10 @@ public class FileAttach {
     @Size(max = 10)
     @NotNull
     @Column(name = "file_ext", nullable = false, length = 10)
-    private String fileExt;
+    private String extension;
 
     @Column(name = "size")
-    private Integer size;
+    private Long size;
 
     @NotNull
     @Column(name = "stored_type", nullable = false)
@@ -61,6 +63,6 @@ public class FileAttach {
 
     @NotNull
     @Column(name = "created_at", nullable = false)
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
 }

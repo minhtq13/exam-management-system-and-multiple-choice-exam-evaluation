@@ -31,7 +31,7 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @PostMapping
-    @Operation(description = "Tạo bộ câu hỏi")
+    @Operation(summary = "Tạo bộ câu hỏi")
     public void createQuestion(@RequestBody QuestionListCreateDTO createDTO) {
         questionService.createListQuestion(createDTO);
     }
@@ -43,7 +43,7 @@ public class QuestionController {
     }
 
     @GetMapping
-    @Operation(description = "Danh sách câu hỏi")
+    @Operation(summary = "Danh sách câu hỏi")
     public List<QuestionListDTO> getListQuestion(
         @RequestParam(name = "subjectId", required = false, defaultValue = "-1") Long subjectId,
         @RequestParam(name = "subjectCode", required = false, defaultValue = "ALL") String subjectCode,
@@ -54,7 +54,7 @@ public class QuestionController {
     }
 
     @PutMapping("/{questionId}")
-    @Operation(description = "Cập nhật câu hỏi")
+    @Operation(summary = "Cập nhật câu hỏi")
     public void updateQuestion(@PathVariable(name = "questionId") Long questionId,
         @RequestBody @Validated QuestionUpdateDTO updateDTO) {
         questionService.updateQuestion(questionId, updateDTO);

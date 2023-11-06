@@ -10,6 +10,14 @@ import com.elearning.elearning_support.utils.DateUtils;
 
 public class FileUtils {
 
+    private final String IMAGES_RESOURCE_DIR = "/resources/upload/files/images/";
+
+    public static final String IMAGES_STORED_LOCATION = "upload/files/images/";
+
+    public static final String DOCUMENTS_RESOURCE_DIR = "/resources/upload/files/docs/";
+
+    public static final String DOCUMENTS_STORED_LOCATION = "upload/files/docs/";
+
     public static File covertMultipartToFile(String tempPath, MultipartFile multipartFile) {
         SimpleDateFormat formatter = new SimpleDateFormat(DateUtils.FORMAT_DATE_YYYY_MMDD_HHMMSS);
         try {
@@ -33,7 +41,7 @@ public class FileUtils {
      */
     public static String getFileExt(File file) {
         if (file.exists() && file.isFile()) {
-            Integer extIndex = file.getName().lastIndexOf('.');
+            int extIndex = file.getName().lastIndexOf('.');
             return file.getName().substring(extIndex + 1);
         }
         return "";

@@ -28,7 +28,7 @@ public class ChapterController {
     private final ChapterService chapterService;
 
     @GetMapping(path = "/{subjectId}")
-    @Operation(description = "Lấy danh sách chương của một môn học")
+    @Operation(summary = "Lấy danh sách chương của một môn học")
     public ResponseEntity<?> getListChapter(@Parameter @PathVariable(name = "subjectId") Long subjectId) {
         return ResponseEntity.ok("");
     }
@@ -39,13 +39,13 @@ public class ChapterController {
     }
 
     @PutMapping("/{chapterId}")
-    @Operation(description = "Cập nhật chương")
+    @Operation(summary = "Cập nhật chương")
     public void updateChapter(@PathVariable(name = "chapterId") Long chapterId,
         @RequestBody ChapterUpdateDTO updateDTO) {
     }
 
     @PutMapping("/switch-status")
-    @Operation(description = "Cập nhật chương")
+    @Operation(summary = "Cập nhật chương")
     public void changeChapterStatus(@RequestParam(name = "id") Long chapterId,
         @RequestParam(name = "status") StatusEnum status) {
 

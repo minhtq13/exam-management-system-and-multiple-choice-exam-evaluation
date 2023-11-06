@@ -51,7 +51,7 @@ spring:
 
 # Cấu hình Json Web Token
 jwt:
-  secretKey: MAP20231Ksu295JdkjKHJJHW2349gfbnaf23cheh34HIMAde24
+  secretKey: ELEARNINGKsu295JdkjKHJJHW2349gfbnaf23cheh34HIMAde24
   accessTokenExpiredMs: 100000000
   refreshTokenExpiredMs: 10000000000
 

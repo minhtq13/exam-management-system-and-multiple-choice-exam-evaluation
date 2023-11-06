@@ -10,7 +10,7 @@ public class ApiConstants {
 
     public static final String API_LOCAL_IP = "127.0.0.1:8082";
 
-    public static final String DEFAULT_API_PATH = "/map20231/ema/api";
+    public static final String DEFAULT_API_PATH = "/e-learning/api/";
 
     public static final String PUBLIC_API = "/public";
 }
