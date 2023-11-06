@@ -1,7 +1,10 @@
 package com.elearning.elearning_support.utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,7 +17,7 @@ public class StringUtils {
     /**
      * Covert string long array '{0,1,2,...}' to Set<Long> in Java
      */
-    public static Set<Long> convertStrLongArrayToSetLong(String longArray) {
+    public static Set<Long> convertStrLongToSet(String longArray) {
         if (longArray == null) {
             return new HashSet<>();
         }
@@ -24,6 +27,16 @@ public class StringUtils {
             .collect(Collectors.toSet());
     }
 
+
+    public static List<Long> convertStrLongToList(String longArray) {
+        if (longArray == null) {
+            return new ArrayList<>();
+        }
+        return Arrays.
+            stream(longArray.replace("{", "").replace("}", "").split(","))
+            .map(Long::valueOf)
+            .collect(Collectors.toList());
+    }
 
     /**
      * Convert string in vietnamese to english : "Chiến Đào" -> "Chien Dao"

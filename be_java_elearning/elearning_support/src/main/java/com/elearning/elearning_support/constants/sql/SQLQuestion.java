@@ -25,4 +25,15 @@ public class SQLQuestion {
     public static final String GET_LIST_QUESTION_ID_BY_CHAPTER_ID_IN =
         "SELECT id FROM {h-schema}question WHERE chapter_id IN (:lstChapterId) AND deleted_flag = 1";
 
+    public static final String GET_LIST_QUESTION_IN_TEST =
+        "SELECT \n" +
+            "   testQuest.question_id AS id, \n" +
+            "   question.level AS level, \n" +
+            "   '{' || string_agg(CAST(answer.id AS TEXT), ',') || '}' AS lstAnswerId \n" +
+            "FROM {h-schema}test_question AS testQuest \n" +
+            "   JOIN {h-schema}question ON testQuest.question_id = question.id \n" +
+            "   LEFT JOIN {h-schema} answer ON testQuest.question_id = answer.question_id \n" +
+            "WHERE testQuest.test_id = :testId AND question.is_enabled = true \n" +
+            "GROUP BY testQuest.question_id, question.level";
+
 }

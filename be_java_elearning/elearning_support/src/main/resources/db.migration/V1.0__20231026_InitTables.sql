@@ -763,7 +763,7 @@ CREATE TABLE IF NOT EXISTS elearning_support_dev."test_set"
 COMMENT ON TABLE "elearning_support_dev"."test_set" IS 'Bảng lưu các đề thi được tạo ra từ bộ test';
 COMMENT ON COLUMN "elearning_support_dev"."test_set"."id" IS 'Id đề';
 COMMENT ON COLUMN "elearning_support_dev"."test_set"."code" IS 'Mã đề';
-COMMENT ON COLUMN "elearning_support_dev"."test_set"."test_no" IS 'Thứ tự của câu hỏi trong đề thi';
+COMMENT ON COLUMN "elearning_support_dev"."test_set"."test_no" IS 'Thứ tự đề trong đề thi';
 COMMENT ON COLUMN "elearning_support_dev"."test_set"."test_id" IS 'Id của kỳ thi';
 COMMENT ON COLUMN "elearning_support_dev"."test_set"."created_at" IS 'Thời gian tạo';
 COMMENT ON COLUMN "elearning_support_dev"."test_set"."created_by" IS 'Id Người thực hiện tạo ';

@@ -10,11 +10,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import com.elearning.elearning_support.entities.BaseEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "test_set", schema = "elearning_support_dev")

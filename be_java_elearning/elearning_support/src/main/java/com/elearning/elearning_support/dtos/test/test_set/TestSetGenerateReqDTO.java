@@ -1,4 +1,4 @@
-package com.elearning.elearning_support.dtos.test;
+package com.elearning.elearning_support.dtos.test.test_set;
 
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -11,19 +11,11 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class GenTestConfigDTO {
+public class TestSetGenerateReqDTO {
 
     @NotNull
-    Integer numTotalQuestion;
+    Long testId;
 
     @NotNull
-    Integer numEasyQuestion;
-
-    @NotNull
-    Integer numMediumQuestion;
-
-    @NotNull
-    Integer numHardQuestion;
-
-
+    Integer numOfTestSet;
 }
