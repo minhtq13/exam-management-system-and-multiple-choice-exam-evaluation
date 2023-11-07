@@ -18,6 +18,16 @@ public class ErrorKey {
         public static final String ID = "id";
     }
 
+    public static class TestSet {
+        public static final String ID = "id";
+
+        public static final String CODE = "code";
+
+        public static final String TEST_ID = "test_id";
+
+        public static final String TEST_ID_AND_CODE = "test_id_and_code";
+    }
+
     public static class FileAttach {
         // error key
         public static final String ID = "id";

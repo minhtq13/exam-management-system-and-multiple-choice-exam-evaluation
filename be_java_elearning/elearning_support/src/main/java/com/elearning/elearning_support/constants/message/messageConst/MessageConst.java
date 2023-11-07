@@ -11,7 +11,10 @@ public class MessageConst {
 
         public static final String TEST = "test";
 
+        public static final String TEST_SET = "test_set";
+
         public static final String FILE_ATTACHED = "file_attached";
+
     }
 
     public static final String RESOURCE_NOT_FOUND = "not found";
@@ -39,6 +42,10 @@ public class MessageConst {
 
     public static class Test {
         public static final String NOT_FOUND = "error.test.not.found";
+    }
+
+    public static class TestSet {
+        public static final String NOT_FOUND = "error.test.set.not.found";
     }
 
 

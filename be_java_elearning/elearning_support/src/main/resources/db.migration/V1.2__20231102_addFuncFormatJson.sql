@@ -42,3 +42,30 @@ END
 $$
     LANGUAGE plpgsql;
 
+
+-- Func get json: test_set_question_answer
+DROP FUNCTION IF EXISTS elearning_support_dev.get_list_test_question_answer_json(i_test_question_answer jsonb);
+CREATE OR REPLACE FUNCTION elearning_support_dev.get_list_test_question_answer_json(i_test_question_answer jsonb)
+    RETURNS TEXT
+AS
+$$
+
+DECLARE
+    result TEXT;
+
+BEGIN
+    with testAnswerJson as (
+        select
+            testAnswer."answerNo" AS "answerNo",
+            testAnswer."answerId" AS "answerId",
+            answer.content AS "content"
+        from jsonb_to_recordset(i_test_question_answer) as testAnswer("answerId" int8, "answerNo" int4)
+                 join elearning_support_dev.answer ON testAnswer."answerId" = answer.id
+        order by testAnswer."answerNo"
+    ) select json_agg(row_to_json(testAnswerJson)) from testAnswerJson
+    INTO result;
+    RETURN result;
+END
+$$
+    LANGUAGE plpgsql;
+

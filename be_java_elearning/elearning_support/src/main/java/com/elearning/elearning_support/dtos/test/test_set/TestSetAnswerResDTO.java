@@ -1,5 +1,6 @@
 package com.elearning.elearning_support.dtos.test.test_set;
 
+import java.io.Serializable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +11,12 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TestSetGenerateResDTO {
+public class TestSetAnswerResDTO implements Serializable {
 
-    ITestSetResDTO testSet;
+    Long answerId;
+
+    Integer answerNo;
+
+    String content;
+
 }

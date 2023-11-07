@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.elearning.elearning_support.constants.message.errorKey.ErrorKey;
@@ -18,9 +19,13 @@ import com.elearning.elearning_support.constants.message.messageConst.MessageCon
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst.Resources;
 import com.elearning.elearning_support.dtos.question.QuestionAnswerDTO;
 import com.elearning.elearning_support.dtos.test.GenTestConfigDTO;
+import com.elearning.elearning_support.dtos.test.test_question.TestQuestionAnswerResDTO;
+import com.elearning.elearning_support.dtos.test.test_set.ITestSetResDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestQuestionAnswer;
+import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetGenerateReqDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetQuestionMapDTO;
+import com.elearning.elearning_support.dtos.test.test_set.TestSetSearchReqDTO;
 import com.elearning.elearning_support.entities.test.Test;
 import com.elearning.elearning_support.entities.test.TestSet;
 import com.elearning.elearning_support.entities.test.TestSetQuestion;
@@ -140,6 +145,26 @@ public class TestSetServiceImpl implements TestSetService {
         testSetQuestionRepository.saveAll(lstTestSetQuestion);
     }
 
+
+    @Override
+    public TestSetDetailDTO getTestSetDetail(TestSetSearchReqDTO searchReqDTO) {
+        // Lấy thông tin đề thi
+        ITestSetResDTO testSetDetail = testSetRepository.getTestSetDetail(searchReqDTO.getTestId(), searchReqDTO.getCode());
+        if (Objects.isNull(testSetDetail.getTestSetId())) {
+            throw exceptionFactory.resourceNotFoundException(MessageConst.TestSet.NOT_FOUND, MessageConst.RESOURCE_NOT_FOUND, Resources.TEST_SET,
+                ErrorKey.TestSet.TEST_ID_AND_CODE, String.valueOf(searchReqDTO.getTestId()), searchReqDTO.getCode());
+        }
+        // Lấy thông tin câu hỏi và đáp án trong đề;
+        List<TestQuestionAnswerResDTO> lstQuestions = testSetRepository.getListTestSetQuestion(testSetDetail.getTestSetId()).stream()
+            .map(TestQuestionAnswerResDTO::new).collect(Collectors.toList());
+        return new TestSetDetailDTO(testSetDetail, lstQuestions);
+    }
+
+    @Override
+    public InputStreamResource exportTestSet(TestSetSearchReqDTO searchReqDTO) {
+        return null;
+    }
+
     /**
      * Sinh tự động mã đề trong kỳ thi
      */
@@ -167,4 +192,5 @@ public class TestSetServiceImpl implements TestSetService {
         }
         return lstTestQuestionAnswer;
     }
+
 }

@@ -22,7 +22,7 @@ public class TestSetResDTO {
 
     String testName;
 
-    String subjectName;
+    String subjectTitle;
 
     String subjectCode;
 

@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetGenerateReqDTO;
+import com.elearning.elearning_support.dtos.test.test_set.TestSetSearchReqDTO;
 import com.elearning.elearning_support.services.test.TestSetService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,14 +32,14 @@ public class TestSetController {
 
     @PostMapping(value = "/export", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Export đề thi ra file word")
-    public ResponseEntity<?> exportTestSetToWord() {
+    public ResponseEntity<?> exportTestSetToWord(@RequestBody TestSetSearchReqDTO searchReqDTO) {
         return ResponseEntity.ok("");
     }
 
-    @GetMapping("/details")
+    @GetMapping("/detail")
     @Operation(summary = "Lấy chi tiết đề thi")
-    public ResponseEntity<?> getTestSetDetail() {
-        return ResponseEntity.ok("");
+    public TestSetDetailDTO getTestSetDetail(@RequestBody TestSetSearchReqDTO searchReqDTO) {
+        return testSetService.getTestSetDetail(searchReqDTO);
     }
 
     @PutMapping
