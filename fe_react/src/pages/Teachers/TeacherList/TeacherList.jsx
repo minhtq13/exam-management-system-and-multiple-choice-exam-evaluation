@@ -294,7 +294,7 @@ const TeacherList = () => {
 	};
 	const handleExport = () => {
 		axios({
-			url: "http://localhost:8000/api/v1/teacher/export", // Replace with your API endpoint
+			url: "http://localhost:8088/e-learning/api/teacher/export", // Replace with your API endpoint
 			method: "GET",
 			responseType: "blob", // Set the response type to 'blob'
 		})

@@ -18,9 +18,9 @@ axios.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${token}`;
   }
 
-  config.headers["Access-Control-Allow-Origin"] = "*";
-  config.headers["Access-Control-Allow-Methods"] = "*";
-  config.headers["Access-Control-Allow-Headers"] = "*";
+  // config.headers["Access-Control-Allow-Origin"] = "*";
+  // config.headers["Access-Control-Allow-Methods"] = "*";
+  // config.headers["Access-Control-Allow-Headers"] = "*";
   // config.headers["Access-Control-Max-Age"] = 1728000;
   // config.headers["Content-Type"] = "application/json";
   return config;

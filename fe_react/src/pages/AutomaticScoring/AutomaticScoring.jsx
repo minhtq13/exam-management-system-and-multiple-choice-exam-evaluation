@@ -40,7 +40,7 @@ const AutomaticScoring = () => {
 		name: "files",
 		listType: "picture",
 		multiple: true,
-		action: "http://localhost:8000/api/v1/student-test/uploads?examClassCode=exam-class1",
+		action: "http://localhost:8088/e-learning/api/student-test/uploads?examClassCode=exam-class1",
 		beforeUpload: (file) => {
 			const isPNG =
 				file.type === "image/png" ||

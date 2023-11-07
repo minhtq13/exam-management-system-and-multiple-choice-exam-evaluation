@@ -16,7 +16,7 @@ const useStudents = () => {
 				setTableLoading(false);
 			},
 			(err) => {
-				setTableLoading(true);
+				setTableLoading(false);
 				if (err.response.status === 401) {
 					notify.warning(
 						err.response.data.message || "Permission denied"

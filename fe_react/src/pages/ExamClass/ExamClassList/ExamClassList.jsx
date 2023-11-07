@@ -33,7 +33,7 @@ const ExamClassList = () => {
 		setImportLoading(true);
 		try {
 			const response = await axios.post(
-				"http://localhost:8000/api/v1/exam-class/import",
+				"http://localhost:8088/e-learning/api/exam-class/import",
 				formData
 			);
 			if (response.status === 200) {
@@ -271,7 +271,7 @@ const ExamClassList = () => {
 	};
 	const handleExport = () => {
 		axios({
-			url: "http://localhost:8000/api/v1/class/export", // Replace with your API endpoint
+			url: "http://localhost:8088/e-learning/api/class/export", // Replace with your API endpoint
 			method: "GET",
 			responseType: "blob", // Set the response type to 'blob'
 		})

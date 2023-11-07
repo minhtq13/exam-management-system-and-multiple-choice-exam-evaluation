@@ -1,50 +1,50 @@
-// export const BASE_URL = "https://61fe8c59a58a4e00173c98cc.mockapi.io";
-export const BASE_URL = "http://localhost:8000";
+export const BASE_URL = "http://localhost:8088/e-learning";
 
 export const apiPath = {
 	// Authentication
-	login: BASE_URL + "/api/v1/auth/signin",
-	register: BASE_URL + "/api/v1/auth/signup",
-	refreshToken: BASE_URL + "/api/v1/auth/refresh-token",
+	login: BASE_URL + "/api/auth/login",
+	register: BASE_URL + "/api/auth/signup",
+	refreshToken: BASE_URL + "/api/auth/refresh-token",
 	// Student
-	allStudents: BASE_URL + "/api/v1/student/list",
-	updateStudent: BASE_URL + "/api/v1/student/update",
-	addStudent: BASE_URL + "/api/v1/student/add",
-	deleteStudent: BASE_URL + "/api/v1/student/disable",
-	exportStudents: BASE_URL + "api/v1/student/export",
+	allStudents: BASE_URL + "/api/student/list",
+	updateStudent: BASE_URL + "/api/student/update",
+	addStudent: BASE_URL + "/api/student/add",
+	deleteStudent: BASE_URL + "/api/student/disable",
+	exportStudents: BASE_URL + "api/student/export",
 	// AI
-	automaticScoring: BASE_URL + "/api/v1/student-test/auto/read",
+	automaticScoring: BASE_URL + "/api/student-test/auto/read",
 	//Teacher:
-	allTeachers: BASE_URL + "/api/v1/teacher/list",
-	updateTeacher: BASE_URL + "/api/v1/teacher/update",
-	addTeacher: BASE_URL + "/api/v1/teacher/add",
-	deleteTeacher: BASE_URL + "/api/v1/teacher/disable",
-	exportStudent: BASE_URL + "/api/v1/teacher/export",
+	allTeachers: BASE_URL + "/api/teacher/list",
+	updateTeacher: BASE_URL + "/api/teacher/update",
+	addTeacher: BASE_URL + "/api/teacher/add",
+	deleteTeacher: BASE_URL + "/api/teacher/disable",
+	exportStudent: BASE_URL + "/api/teacher/export",
 	//Subject:
-	allSubjects: BASE_URL + "/api/v1/subject/chapters",
-	getSubjectByCode: BASE_URL + "/api/v1/subject",
-	updateSubject: BASE_URL + "/api/v1/subject/update",
-	addSubject: BASE_URL + "/api/v1/subject/add",
-	deleteSubject: BASE_URL + "/api/v1/subject/disable",
+	allSubjects: BASE_URL + "/api/subject/chapters",
+	getSubjectByCode: BASE_URL + "/api/subject",
+	updateSubject: BASE_URL + "/api/subject/update",
+	addSubject: BASE_URL + "/api/subject/add",
+	deleteSubject: BASE_URL + "/api/subject/disable",
 	//Chapter:
-	disableChapter: BASE_URL + "/api/v1/chapter/disable",
+	disableChapter: BASE_URL + "/api/chapter/disable",
+	// TODO: CHECK URL
 	addChapters: BASE_URL + "/api/v1",
 	//Question:
-	addQuestion: BASE_URL + "/api/v1/question/adds",
-	getQuestionbyCode: BASE_URL + "/api/v1/question/list",
-	deleteQuestion: BASE_URL + "/api/v1/question/disable",
-	updateQuestion: BASE_URL + "/api/v1/question/update",
+	addQuestion: BASE_URL + "/api/question/adds",
+	getQuestionbyCode: BASE_URL + "/api/question/list",
+	deleteQuestion: BASE_URL + "/api/question/disable",
+	updateQuestion: BASE_URL + "/api/question/update",
 	//Test:
-	testRandomCreate: BASE_URL + "/api/v1/test/create/random",
-	testCreate: BASE_URL + "/api/v1/test/create",
-	allTest: BASE_URL + "/api/v1/test/list",
-	deleteTest: BASE_URL + "/api/v1/test/disable",
+	testRandomCreate: BASE_URL + "/api/test/create/random",
+	testCreate: BASE_URL + "/api/test/create",
+	allTest: BASE_URL + "/api/test/list",
+	deleteTest: BASE_URL + "/api/test/disable",
 	//Test-set:
-	testSetCreate: BASE_URL + "/api/v1/test-set",
-	testSetDetail: BASE_URL + "/api/v1/test-set/detail",
+	testSetCreate: BASE_URL + "/api/test-set",
+	testSetDetail: BASE_URL + "/api/test-set/detail",
 	//Exam-class:
-	examClassCreate: BASE_URL + "/api/v1/class/create",
-	allExamClasses: BASE_URL + "/api/v1/class/list",
-	examClassDetail: BASE_URL + "/api/v1/class/detail",
-	disableExamClass: BASE_URL + "/api/v1/class/disable",
+	examClassCreate: BASE_URL + "/api/class/create",
+	allExamClasses: BASE_URL + "/api/class/list",
+	examClassDetail: BASE_URL + "/api/class/detail",
+	disableExamClass: BASE_URL + "/api/class/disable",
 };

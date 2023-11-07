@@ -148,7 +148,6 @@ const SubjectList = () => {
 		navigate(`${appPath.subjectEdit}/${record.code}`);
 	};
 	const handleView = (record) => {
-		console.log(record);
 		navigate(`${appPath.subjectView}/${record.code}`);
 	};
 	useEffect(() => {

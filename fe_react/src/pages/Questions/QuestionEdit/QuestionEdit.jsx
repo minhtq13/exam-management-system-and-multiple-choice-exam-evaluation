@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Button, Checkbox, Form, Input, Select } from "antd";
 import "./QuestionEdit.scss";
 import { useEffect, useState } from "react";
@@ -92,7 +93,7 @@ const QuestionEdit = () => {
     //   }
     // );
     axios.put(
-      `http://localhost:8000/api/v1/question/update/${questionId}`,
+      `http://localhost:8088/e-learning/api/question/update/${questionId}`,
       {
         jsonRequest: JSON.stringify(param),
       },

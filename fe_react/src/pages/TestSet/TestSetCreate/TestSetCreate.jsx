@@ -47,7 +47,7 @@ const TestSetCreate = () => {
 	const handleExport = (testNo) => {
 		setDownLoading(true);
 		axios({
-			url: `http://localhost:8000/api/v1/test-set/word/export/${testId}/${testNo}`, // Replace with your API endpoint
+			url: `http://localhost:8088/e-learning/api/test-set/word/export/${testId}/${testNo}`, // Replace with your API endpoint
 			method: "GET",
 			responseType: "blob", // Set the response type to 'blob'
 		})

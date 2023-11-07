@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
                 termsOfService = "Term of Services"),
         servers = {
                 @Server(description = "Local Development Environment",
-                        url = "http://localhost:8000"),
+                        url = "http://localhost:8088"),
                 @Server(
                         description = "Remote Development Environment",
                         url = "http://45.251.114.92:8000"),
