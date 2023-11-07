@@ -238,7 +238,11 @@ if __name__ == "__main__":
     # ========================== Đo thời gian ====================================
     # start_time = time.time()
     # ===================== Khai báo và load model ==============================
+<<<<<<< HEAD
     pWeight = "./Model/best2810.pt"
+=======
+    pWeight = "./Model/best2710.pt"
+>>>>>>> 1f96859... update weight
     model = YOLO(pWeight)
     # ======================= Khai báo tham số truyền vào cmd  ===============================
     parser = argparse.ArgumentParser(description="Process some integers.")
