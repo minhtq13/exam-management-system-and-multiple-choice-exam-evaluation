@@ -7,23 +7,32 @@ import { Avatar, Dropdown } from "antd";
 import { useNavigate } from "react-router-dom";
 import { clearInfoLocalStorage } from "../../../../utils/storage";
 import "./Account.scss";
+import useAccount from "../../../../hooks/useAccount";
+import { useEffect } from "react";
 const user = {
 	name: "Nguyen Van A",
 	avatar: "https://static1.dienanh.net/upload/202203/db8fd584-5830-40b0-b5e8-c42885d676b4.jpeg",
 	role: "Administrator",
 };
+
 const Account = () => {
 	const navigate = useNavigate();
-
+	const {getProfileUser, userInfo} = useAccount();
+	useEffect(() => {
+		getProfileUser();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 	const items = [
 		{
 			key: 1,
 			label: (
 				<div className="account-role menu-item">
-					<Avatar size={40} src={user.avatar} />
+					<div>
+						<Avatar size={40} src={user.avatar} />
+					</div>
 					<div className="name-role">
-						<span>{user.name}</span>
-						<span>{user.role}</span>
+						<span>{userInfo.name}</span>
+						<span>{userInfo.email}</span>
 					</div>
 				</div>
 			),

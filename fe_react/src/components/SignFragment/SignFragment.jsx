@@ -3,7 +3,7 @@ import { FaGoogle } from "react-icons/fa";
 import { TfiFacebook } from "react-icons/tfi";
 import studyImage from "../../assets/images/png-jpg/self-learning.jpg";
 import "./SignFragment.scss";
-const SignFragment = ({ header, socialText, endText, signText, children, href }) => {
+const SignFragment = ({ header, socialText, children }) => {
   return (
     <div className="login">
       <div className="img-study">
@@ -25,9 +25,6 @@ const SignFragment = ({ header, socialText, endText, signText, children, href })
           <a href="/google" className="google">
             <FaGoogle size={16} />
           </a>
-        </div>
-        <div className="dont-have">
-          {endText} <a href={href}>{signText}</a>
         </div>
       </div>
     </div>

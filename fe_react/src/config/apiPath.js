@@ -3,7 +3,7 @@ export const BASE_URL = "http://localhost:8088/e-learning";
 export const apiPath = {
 	// Authentication
 	login: BASE_URL + "/api/auth/login",
-	register: BASE_URL + "/api/auth/signup",
+	profile: BASE_URL + "/api/auth/profile",
 	refreshToken: BASE_URL + "/api/auth/refresh-token",
 	// Student
 	allStudents: BASE_URL + "/api/student/list",

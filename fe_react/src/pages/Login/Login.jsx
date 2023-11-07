@@ -11,7 +11,8 @@ import "./Login.scss";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
-  const [authenticResult, setAuthenticResult] = useState("");
+  const [authenticResult, setAuthenticResult] = useState(false);
+
   const notify = useNotify();
   const navigate = useNavigate();
   const onFinish = (values) => {
@@ -19,12 +20,12 @@ const Login = () => {
     loginAuthenticService(
       values,
       (res) => {
-        const { username, email, roles, accessToken, refreshToken, message } = res.data;
+        const { roles, accessToken, refreshToken } = res.data;
         setLoading(false);
-        setAuthenticResult(message);
+        setAuthenticResult(true);
         notify.success(`Đăng nhập thành công!`);
         navigate(appPath.home);
-        saveInfoToLocalStorage(username, email, roles, message, accessToken, refreshToken);
+        saveInfoToLocalStorage(roles, accessToken, refreshToken);
         const timeRecallAPI = 32000000;
         setInterval(() => {
           // loginAuthenticService(
@@ -46,7 +47,7 @@ const Login = () => {
       (error) => {
         console.log(error);
         setLoading(false);
-        setAuthenticResult("error");
+        setAuthenticResult(false);
       }
     );
   };
@@ -111,9 +112,6 @@ const Login = () => {
     <SignFragment
       header={"Login"}
       socialText={"Login with"}
-      endText={"Don't have an account?"}
-      signText={"Register"}
-      href={"/register"}
     >
       {loginForm}
     </SignFragment>

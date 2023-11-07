@@ -11,7 +11,6 @@ import Library from "../pages/Library/Library";
 import Login from "../pages/Login/Login";
 import NotFound from "../pages/NotFound";
 import AddQuestions from "../pages/Questions/AddQuestion/AddQuestions";
-import Register from "../pages/Register/Register";
 import StudentAdd from "../pages/Students/StudentAdd/StudentAdd";
 import StudentEdit from "../pages/Students/StudentEdit/StudentEdit";
 import StudentList from "../pages/Students/StudentList/StudentList";
@@ -79,12 +78,6 @@ const publicRoutes = [
 	{
 		path: appPath.login,
 		component: Login,
-		layout: "SignLayout",
-		// isPrivateRouter: true,
-	},
-	{
-		path: appPath.register,
-		component: Register,
 		layout: "SignLayout",
 		// isPrivateRouter: true,
 	},

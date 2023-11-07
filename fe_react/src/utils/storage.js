@@ -6,17 +6,11 @@ export const checkDataInLocalStorage = (data) => {
 };
 
 export const saveInfoToLocalStorage = (
-  username,
-  email,
-  role,
-  message,
+  roles,
   accessToken,
   refreshToken
 ) => {
-  localStorage.setItem("username", username);
-  localStorage.setItem("email", email);
-  localStorage.setItem("role", role);
-  localStorage.setItem("message", message);
+  localStorage.setItem("role", roles);
   localStorage.setItem("access_token", accessToken);
   localStorage.setItem("refresh_token", refreshToken);
 };

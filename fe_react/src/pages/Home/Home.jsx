@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import "./Home.scss";
-import { getToken } from "../../utils/storage";
 import { useNavigate } from "react-router-dom";
+import { getToken } from "../../utils/storage";
+import "./Home.scss";
 
 const Home = () => {
   const navigate = useNavigate();

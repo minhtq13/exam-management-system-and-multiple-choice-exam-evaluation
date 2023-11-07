@@ -1,10 +1,11 @@
-import { postRequest } from "../api/apiCaller";
+import { getRequest, postRequest } from "../api/apiCaller";
 import { apiPath } from "../config/apiPath";
 export const loginAuthenticService = async (parameters, successCallback, errorCallback) => {
   await postRequest(`${apiPath.login}`, parameters, successCallback, errorCallback);
 };
-export const registerService = async (parameters, successCallback, errorCallback) => {
-  await postRequest(`${apiPath.register}`, parameters, successCallback, errorCallback);
+
+export const getProfileUserService = async (parameters, successCallback, errorCallback) => {
+  await getRequest(`${apiPath.profile}`, parameters, successCallback, errorCallback);
 };
 
 // Refresh token

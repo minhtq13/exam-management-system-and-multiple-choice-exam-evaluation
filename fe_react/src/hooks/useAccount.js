@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { appPath } from "../config/appPath";
-import { loginAuthenticService } from "../services/loginService";
+import { getProfileUserService, loginAuthenticService } from "../services/accountServices";
 import useNotify from "./useNotify";
-import { registerService } from "../services/registerService";
 
-const useLogin = () => {
+const useAccount = () => {
   const [authenticResult, setAuthenticResult] = useState("");
-  const [registerResult, setRegisterResult] = useState(null);
+  const [userInfo, setUserInfo] = useState({})
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const notify = useNotify();
@@ -26,20 +25,18 @@ const useLogin = () => {
       }
     );
   };
-  const registerAction = (payload = {}) => {
-    registerService(
+  const getProfileUser = (payload = {}) => {
+    getProfileUserService(
       payload,
       (res) => {
-        setRegisterResult(res.data.message);
-        notify.success("Đăng ký tài khoản thành công!");
-        navigate(appPath.login);
+        setUserInfo(res.data)
       },
       (error) => {
-        setRegisterResult("error");
+        console.log(error)
       }
     );
   };
-  return { authenticResult, authenticAction, loading, setLoading, registerResult, registerAction };
+  return { authenticResult, authenticAction, loading, setLoading, userInfo, getProfileUser };
 };
 
-export default useLogin;
+export default useAccount;
