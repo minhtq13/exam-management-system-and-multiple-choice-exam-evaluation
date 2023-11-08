@@ -17,4 +17,6 @@ public interface TestSetRepository extends JpaRepository<TestSet, Long> {
 
     @Query(nativeQuery = true, value = SQLTest.GET_LIST_TEST_SET_QUESTION)
     List<ITestQuestionAnswerResDTO> getListTestSetQuestion(Long testSetId);
+
+    Boolean existsByIdAndIsEnabled(Long id, Boolean isEnabled);
 }

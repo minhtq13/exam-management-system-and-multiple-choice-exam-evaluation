@@ -616,19 +616,20 @@ COMMENT ON COLUMN "elearning_support_dev"."exam_class"."created_by" IS 'Id Ngư�
 COMMENT ON COLUMN "elearning_support_dev"."exam_class"."modified_at" IS 'Thời gian cập nhật lần cuối';
 COMMENT ON COLUMN "elearning_support_dev"."exam_class"."modified_by" IS 'Id Người thực hiện cập nhật';
 
--- Bảng student_exam_class --
-DROP TABLE IF EXISTS elearning_support_dev."student_exam_class";
-CREATE TABLE IF NOT EXISTS elearning_support_dev."student_exam_class"
-(
-    "id"            bigserial not null unique,
-    "student_id"    int8      not null,
-    "exam_class_id" int8      not null,
-    PRIMARY KEY ("student_id", "exam_class_id")
-    );
-COMMENT ON TABLE "elearning_support_dev"."student_exam_class" IS 'Bảng lưu thông tin liên kết giữa HSSV và Lớp thi';
-COMMENT ON COLUMN "elearning_support_dev"."student_exam_class"."id" IS 'Id';
-COMMENT ON COLUMN "elearning_support_dev"."student_exam_class"."student_id" IS 'Mã học sinh (users)';
-COMMENT ON COLUMN "elearning_support_dev"."student_exam_class"."exam_class_id" IS 'Id lớp thi';
+-- === Mô tả quan hệ bằng bảng user_exam_class === ---
+-- -- Bảng student_exam_class --
+-- DROP TABLE IF EXISTS elearning_support_dev."student_exam_class";
+-- CREATE TABLE IF NOT EXISTS elearning_support_dev."student_exam_class"
+-- (
+--     "id"            bigserial not null unique,
+--     "student_id"    int8      not null,
+--     "exam_class_id" int8      not null,
+--     PRIMARY KEY ("student_id", "exam_class_id")
+--     );
+-- COMMENT ON TABLE "elearning_support_dev"."student_exam_class" IS 'Bảng lưu thông tin liên kết giữa HSSV và Lớp thi';
+-- COMMENT ON COLUMN "elearning_support_dev"."student_exam_class"."id" IS 'Id';
+-- COMMENT ON COLUMN "elearning_support_dev"."student_exam_class"."student_id" IS 'Mã học sinh (users)';
+-- COMMENT ON COLUMN "elearning_support_dev"."student_exam_class"."exam_class_id" IS 'Id lớp thi';
 
 -- Bảng student_test (Bảng mapping giữa student và test_set (đề thi đã được mix))  --
 DROP TABLE IF EXISTS elearning_support_dev."student_test_set";

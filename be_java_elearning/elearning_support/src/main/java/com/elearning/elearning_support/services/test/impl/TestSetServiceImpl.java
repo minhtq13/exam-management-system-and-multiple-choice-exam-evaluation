@@ -28,6 +28,7 @@ import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetGenerateReqDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetQuestionMapDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetSearchReqDTO;
+import com.elearning.elearning_support.dtos.test.test_set.TestSetUpdateDTO;
 import com.elearning.elearning_support.entities.test.Test;
 import com.elearning.elearning_support.entities.test.TestSet;
 import com.elearning.elearning_support.entities.test.TestSetQuestion;
@@ -170,12 +171,28 @@ public class TestSetServiceImpl implements TestSetService {
             ByteArrayInputStream inputStream = WordUtils.exportTestToWord(testSetDetail);
             if (Objects.nonNull(inputStream)) {
                 return new InputStreamResource(inputStream);
-            } else {
-                return null;
             }
         } catch (IOException e) {
-            return null;
+            log.error("======= EXCEPTION: {0} CAUSE BY {} ========", e.getMessage(), e.getCause());
         }
+        return null;
+    }
+
+    @Transactional
+    @Override
+    public void updateTestSet(TestSetUpdateDTO updateDTO) {
+        if (!testSetRepository.existsByIdAndIsEnabled(updateDTO.getTestSetId(), Boolean.TRUE)) {
+            throw exceptionFactory.resourceNotFoundException(MessageConst.TestSet.NOT_FOUND, MessageConst.RESOURCE_NOT_FOUND, Resources.TEST_SET,
+                ErrorKey.TestSet.ID, String.valueOf(updateDTO.getTestSetId()));
+        }
+        // Xoá các bản ghi testSetQuestion hiện tại và lưu mới
+        testSetQuestionRepository.deleteAllByTestSetId(updateDTO.getTestSetId());
+
+        // Lưu các bản ghi mới
+        List<TestSetQuestion> lstNewTestSetQuestion = updateDTO.getQuestions().stream()
+            .map(question -> new TestSetQuestion(updateDTO.getTestSetId(), question))
+            .collect(Collectors.toList());
+        testSetQuestionRepository.saveAll(lstNewTestSetQuestion);
     }
 
     /**

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetGenerateReqDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetSearchReqDTO;
+import com.elearning.elearning_support.dtos.test.test_set.TestSetUpdateDTO;
 
 @Service
 public interface TestSetService {
@@ -21,5 +22,10 @@ public interface TestSetService {
      * Export file word đề thi
      */
     InputStreamResource exportTestSet(TestSetSearchReqDTO searchReqDTO) throws IOException;
+
+    /**
+     *
+     */
+    void updateTestSet(TestSetUpdateDTO updateDTO);
 
 }

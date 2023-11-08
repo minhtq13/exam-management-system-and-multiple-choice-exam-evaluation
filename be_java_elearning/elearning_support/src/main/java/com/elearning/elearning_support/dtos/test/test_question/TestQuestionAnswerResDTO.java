@@ -6,7 +6,6 @@ import org.springframework.beans.BeanUtils;
 import com.elearning.elearning_support.dtos.fileAttach.FileAttachDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetAnswerResDTO;
 import com.elearning.elearning_support.utils.object.ObjectMapperUtil;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -31,7 +30,6 @@ public class TestQuestionAnswerResDTO {
 
     Integer questionNo;
 
-    @JsonProperty("answers")
     @Schema(description = "Danh sách câu trả lời kèm theo thứ tự")
     List<TestSetAnswerResDTO> answers;
 

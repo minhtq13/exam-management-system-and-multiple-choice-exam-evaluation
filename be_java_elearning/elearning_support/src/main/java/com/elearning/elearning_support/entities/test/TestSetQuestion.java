@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import com.elearning.elearning_support.dtos.test.test_set.TestQuestionAnswer;
+import com.elearning.elearning_support.dtos.test.test_set.TestQuestionAnswerUpdateDTO;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,4 +49,10 @@ public class TestSetQuestion {
     @Type(type = "jsonb")
     List<TestQuestionAnswer> lstAnswer;
 
+    public TestSetQuestion(Long testSetId, TestQuestionAnswerUpdateDTO testSetQuestion) {
+        this.testSetId = testSetId;
+        this.questionId = testSetQuestion.getQuestionId();
+        this.questionNo = testSetQuestion.getQuestionNo();
+        this.lstAnswer = testSetQuestion.getAnswers();
+    }
 }

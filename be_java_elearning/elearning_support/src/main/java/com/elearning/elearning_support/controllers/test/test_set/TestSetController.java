@@ -6,6 +6,7 @@ import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetGenerateReqDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetSearchReqDTO;
+import com.elearning.elearning_support.dtos.test.test_set.TestSetUpdateDTO;
 import com.elearning.elearning_support.services.test.TestSetService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -52,8 +54,8 @@ public class TestSetController {
 
     @PutMapping
     @Operation(summary = "Cập nhật đề thi")
-    public void updateTestSet() {
-
+    public void updateTestSet(@RequestBody @Validated TestSetUpdateDTO updateDTO) {
+        testSetService.updateTestSet(updateDTO);
     }
 
 }

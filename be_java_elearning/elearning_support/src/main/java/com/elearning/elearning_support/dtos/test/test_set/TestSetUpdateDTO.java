@@ -1,7 +1,8 @@
 package com.elearning.elearning_support.dtos.test.test_set;
 
+import java.util.ArrayList;
 import java.util.List;
-import com.elearning.elearning_support.dtos.test.test_question.TestQuestionAnswerResDTO;
+import javax.validation.constraints.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -13,23 +14,13 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TestSetDetailDTO {
+public class TestSetUpdateDTO {
 
-    @Schema(description = "Thông tin đề thi")
-    ITestSetResDTO testSet;
+    @NotNull
+    @Schema(description = "Id đề thi")
+    Long testSetId;
 
-    @Schema(description = "Danh sách câu hỏi trong đề thi")
-    List<TestQuestionAnswerResDTO> lstQuestion;
-
-
-
-
-
-
-
-
-
-
-
+    @Schema(description = "Danh sách câu hỏi và đáp án")
+    List<TestQuestionAnswerUpdateDTO> questions = new ArrayList<>();
 
 }
