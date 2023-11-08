@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import com.elearning.elearning_support.dtos.fileAttach.FileAttachDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetAnswerResDTO;
 import com.elearning.elearning_support.utils.object.ObjectMapperUtil;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -26,17 +27,18 @@ public class TestQuestionAnswerResDTO {
     Integer level;
 
     @Schema(description = "File ảnh của câu hỏi")
-    List<FileAttachDTO> lstImage = new ArrayList<>();
+    List<FileAttachDTO> images = new ArrayList<>();
 
     Integer questionNo;
 
+    @JsonProperty("answers")
     @Schema(description = "Danh sách câu trả lời kèm theo thứ tự")
-    List<TestSetAnswerResDTO> lstAnswer;
+    List<TestSetAnswerResDTO> answers;
 
     public TestQuestionAnswerResDTO(ITestQuestionAnswerResDTO iTestQuestionAnswerResDTO){
         BeanUtils.copyProperties(iTestQuestionAnswerResDTO, this);
-        this.lstAnswer = ObjectMapperUtil.listMapper(iTestQuestionAnswerResDTO.getLstAnswerJson(), TestSetAnswerResDTO.class);
-        this.lstImage = ObjectMapperUtil.listMapper(iTestQuestionAnswerResDTO.getLstImageJson(), FileAttachDTO.class);
+        this.answers = ObjectMapperUtil.listMapper(iTestQuestionAnswerResDTO.getLstAnswerJson(), TestSetAnswerResDTO.class);
+        this.images = ObjectMapperUtil.listMapper(iTestQuestionAnswerResDTO.getLstImageJson(), FileAttachDTO.class);
     }
 
 

@@ -18,6 +18,11 @@ public interface ITestSetResDTO {
 
     Integer getQuestionQuantity();
 
+    Integer getDuration();
+    String getTestSetCode();
+
+    String getSemester();
+
     @JsonFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_HH_MM, timezone = DateUtils.TIME_ZONE)
     Date getCreatedAt();
 

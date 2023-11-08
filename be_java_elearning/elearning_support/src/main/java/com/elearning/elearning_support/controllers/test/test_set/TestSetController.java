@@ -1,5 +1,9 @@
 package com.elearning.elearning_support.controllers.test.test_set;
 
+import java.io.IOException;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,10 +34,14 @@ public class TestSetController {
         testSetService.generateTestSet(generateDTO);
     }
 
-    @PostMapping(value = "/export", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/export", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Operation(summary = "Export đề thi ra file word")
-    public ResponseEntity<?> exportTestSetToWord(@RequestBody TestSetSearchReqDTO searchReqDTO) {
-        return ResponseEntity.ok("");
+    public ResponseEntity<InputStreamResource> exportTestSetToWord(@RequestBody TestSetSearchReqDTO searchReqDTO) throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        String fileName = "TestSetExport.docx";
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDisposition(ContentDisposition.attachment().filename(fileName).build());
+        return ResponseEntity.ok().headers(headers).body(testSetService.exportTestSet(searchReqDTO));
     }
 
     @GetMapping("/detail")

@@ -2,6 +2,7 @@ package com.elearning.elearning_support.dtos.test.test_set;
 
 
 import java.util.Date;
+import org.springframework.beans.BeanUtils;
 import com.elearning.elearning_support.utils.DateUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
@@ -28,10 +29,20 @@ public class TestSetResDTO {
 
     Integer questionQuantity;
 
+    Integer duration;
+
+    String testSetCode;
+
+    String semester;
+
     @JsonFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_HH_MM, timezone = DateUtils.TIME_ZONE)
     Date createdAt;
 
     @JsonFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_HH_MM, timezone = DateUtils.TIME_ZONE)
     Date modifiedAt;
+
+    public TestSetResDTO(ITestSetResDTO iTestSetResDTO) {
+        BeanUtils.copyProperties(iTestSetResDTO, this);
+    }
 
 }

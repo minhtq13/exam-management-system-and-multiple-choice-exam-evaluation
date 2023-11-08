@@ -34,12 +34,17 @@ public class SQLTest {
             "    testSet.test_id AS testId, \n" +
             "    test.name AS testName, \n" +
             "    test.question_quantity AS questionQuantity, \n" +
+            "    testSet.test_no AS testNo, \n" +
+            "    testSet.code AS testSetCode, \n" +
+            "    test.duration AS duration, \n" +
+            "    semester.code AS semester, \n" +
             "    subject.title AS subjectTitle, \n" +
             "    subject.code AS subjectCode, \n" +
             "    testSet.created_at AS createdAt, \n" +
             "    testSet.modified_at AS modifiedAt \n" +
             "FROM {h-schema}test_set AS testSet \n" +
             "    JOIN {h-schema}test ON testSet.test_id = test.id \n" +
+            "    LEFT JOIN {h-schema}semester ON test.semester_id = semester.id \n" +
             "    LEFT JOIN {h-schema}subject ON test.subject_id = subject.id \n" +
             "WHERE \n" +
             "    testSet.is_enabled = true AND \n" +

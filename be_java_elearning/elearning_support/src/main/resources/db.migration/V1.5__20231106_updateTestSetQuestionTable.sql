@@ -7,3 +7,5 @@ ALTER TABLE "elearning_support_dev"."test_set"
     DROP CONSTRAINT IF EXISTS testSetCodeUnqConstraint;
 ALTER TABLE "elearning_support_dev"."test_set"
     ADD CONSTRAINT testSetCodeUnqConstraint UNIQUE ("test_id", "code");
+
+DROP TABLE IF EXISTS "elearning_support_dev"."test_set_question_answer";

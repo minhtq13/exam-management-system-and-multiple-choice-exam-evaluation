@@ -1,5 +1,7 @@
 package com.elearning.elearning_support.services.test.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -38,6 +40,7 @@ import com.elearning.elearning_support.repositories.test.test_set.TestSetReposit
 import com.elearning.elearning_support.services.test.TestSetService;
 import com.elearning.elearning_support.utils.auth.AuthUtils;
 import com.elearning.elearning_support.utils.object.ObjectMapperUtil;
+import com.elearning.elearning_support.utils.word.WordUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -162,7 +165,17 @@ public class TestSetServiceImpl implements TestSetService {
 
     @Override
     public InputStreamResource exportTestSet(TestSetSearchReqDTO searchReqDTO) {
-        return null;
+        TestSetDetailDTO testSetDetail = getTestSetDetail(searchReqDTO);
+        try {
+            ByteArrayInputStream inputStream = WordUtils.exportTestToWord(testSetDetail);
+            if (Objects.nonNull(inputStream)) {
+                return new InputStreamResource(inputStream);
+            } else {
+                return null;
+            }
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     /**
