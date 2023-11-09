@@ -5,6 +5,8 @@ import java.util.Random;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.elearning.elearning_support.dtos.users.ProfileUserDTO;
+import com.elearning.elearning_support.dtos.users.UserCreateDTO;
+import com.elearning.elearning_support.dtos.users.UserUpdateDTO;
 import com.elearning.elearning_support.entities.users.User;
 import com.elearning.elearning_support.repositories.users.UserRepository;
 import com.elearning.elearning_support.services.users.UserService;
@@ -23,9 +25,34 @@ public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final String[] IGNORE_COPY_USER_PROPERTIES = new String[] {
+        "userType"
+    };
+
     @Override
     public ProfileUserDTO getUserProfile() {
         return new ProfileUserDTO(userRepository.getDetailUser(AuthUtils.getCurrentUserId()));
+    }
+
+    @Override
+    public void createUser(UserCreateDTO createDTO) {
+
+    }
+
+    @Override
+    public void updateUser(UserUpdateDTO updateDTO) {
+
+    }
+
+    /**
+     * Hàm check các trùng các thông tin
+     */
+    private void validateCreateUser(UserCreateDTO createDTO) {
+
+    }
+
+    private void validateUpdateUser(UserUpdateDTO updateDTO) {
+
     }
 
     /**

@@ -51,8 +51,8 @@ public class ProfileUserDTO {
     @JsonFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_HH_MM_SS, timezone = DateUtils.TIME_ZONE)
     Date modifiedAt;
 
-    public ProfileUserDTO(IGetDetailUser iGetDetailUser) {
-        BeanUtils.copyProperties(iGetDetailUser, this);
+    public ProfileUserDTO(IGetDetailUserDTO iGetDetailUserDTO) {
+        BeanUtils.copyProperties(iGetDetailUserDTO, this);
     }
 
 }

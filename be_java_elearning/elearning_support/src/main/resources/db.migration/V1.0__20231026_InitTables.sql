@@ -70,7 +70,7 @@ COMMENT ON COLUMN "elearning_support_dev"."users"."phone_number" IS 'Số điệ
 COMMENT ON COLUMN "elearning_support_dev"."users"."email" IS 'Email của người dùng';
 COMMENT ON COLUMN "elearning_support_dev"."users"."username" IS 'Username đăng nhập';
 COMMENT ON COLUMN "elearning_support_dev"."users"."password" IS 'Password đăng nhập';
-COMMENT ON COLUMN "elearning_support_dev"."users"."status" IS 'Trạng thái hoạt động của người dùng (0: Đang hoạt động, 1: Tạm dừng hoạt động, 2: Tắt hoạt động)';
+COMMENT ON COLUMN "elearning_support_dev"."users"."status" IS 'Trạng thái hoạt động của người dùng (0: Tắt hoạt động, 1:Đang hoạt động)';
 COMMENT ON COLUMN "elearning_support_dev"."users"."user_type" IS 'Loại người dùng (-1: Admin, 0: Giảng viên/Giáo viên, 1: Học sinh/Sinh viên)';
 COMMENT ON COLUMN "elearning_support_dev"."users"."department_id" IS 'Id đơn vị trực thuộc (HSSV: Lớp/Khoá, GV: Khoa/Viện)';
 COMMENT ON COLUMN "elearning_support_dev"."users"."created_at" IS 'Thời gian tạo';
@@ -85,7 +85,7 @@ COMMENT ON COLUMN "elearning_support_dev"."users"."user_uuid" IS 'Mã uuid tài 
 -- Init dữ liệu --
 INSERT INTO "elearning_support_dev"."users" ("identification_number", "identity_type", "code", "first_name", "last_name", "username", "password",
                                              "created_at", "created_by", "status", "gender", "user_type", "department_id", "created_source")
-VALUES ('00293849828', 1, 'ADMIN_SUPER1', 'Admin', 'Super', 'admin', '$2a$12$4FTmJ2x/BfKIN9as9ivNKuo8CJZd4jtk0UDEijm7OYqrusJN251du', now(), 1, 0, 1, -1, -1, 0);
+VALUES ('00293849828', 1, 'ADMIN_SUPER1', 'Admin', 'Super', 'admin', '$2a$12$4FTmJ2x/BfKIN9as9ivNKuo8CJZd4jtk0UDEijm7OYqrusJN251du', now(), 1, 1, 1, -1, -1, 0);
 
 -- Bảng department --
 DROP TABLE IF EXISTS "elearning_support_dev"."department";

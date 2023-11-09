@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import com.elearning.elearning_support.entities.users.User;
+import com.elearning.elearning_support.enums.commons.StatusEnum;
 import com.elearning.elearning_support.repositories.users.UserRepository;
 import com.elearning.elearning_support.security.models.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +23,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(@NotNull String username) throws UsernameNotFoundException {
-        try{
-            User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+        try {
+            User user = userRepository.findByUsernameAndStatus(username, StatusEnum.ENABLED.getStatus())
+                .orElseThrow(() -> new UsernameNotFoundException(username));
             return new CustomUserDetails(user);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             throw new RuntimeException("Load user by user name error");
         }

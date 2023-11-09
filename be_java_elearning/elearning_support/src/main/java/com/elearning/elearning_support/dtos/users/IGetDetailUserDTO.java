@@ -4,7 +4,7 @@ import java.util.Date;
 import com.elearning.elearning_support.utils.DateUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public interface IGetDetailUser {
+public interface IGetDetailUserDTO {
 
     Long getId();
 
@@ -28,8 +28,6 @@ public interface IGetDetailUser {
 
     String getUserName();
 
-    String getRole();
-
     String getDepartment();
 
     Long getDepartmentId();
@@ -40,5 +38,7 @@ public interface IGetDetailUser {
     @JsonFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_HH_MM_SS, timezone = DateUtils.TIME_ZONE)
     Date getModifiedAt();
 
+    Integer getUserType();
+    String getRoleJson();
 
 }
