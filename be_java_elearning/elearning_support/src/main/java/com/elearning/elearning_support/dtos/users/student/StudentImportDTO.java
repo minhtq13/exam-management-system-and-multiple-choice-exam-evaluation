@@ -10,7 +10,24 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class StudentCreateDTO {
+public class StudentImportDTO {
 
-    String content;
+    String username;
+
+    String email;
+
+    String passwordRaw;
+
+    String fullNameRaw;
+
+    String birthDateRaw;
+
+    String genderRaw;
+
+    String phone;
+
+    String code;
+
+    String course;
+
 }

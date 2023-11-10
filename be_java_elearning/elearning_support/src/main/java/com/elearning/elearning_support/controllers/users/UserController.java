@@ -39,7 +39,6 @@ public class UserController {
 
     @PostMapping
     @Operation(summary = "Tạo người dùng")
-    @PreAuthorize("hasAnyRole('ROLE_SUPER_ADMIN')")
     public void createUser(@RequestBody @Validated UserCreateDTO createDTO) {
         userService.createUser(createDTO);
     }

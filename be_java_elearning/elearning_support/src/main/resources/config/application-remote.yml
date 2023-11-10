@@ -29,6 +29,7 @@ spring:
       enabled: true
       max-file-size: 100MB
       max-request-size: 100MB
+      file-size-threshold: 2KB
   #Cấu hình server gửi mail
   mail:
     protocol: smtp

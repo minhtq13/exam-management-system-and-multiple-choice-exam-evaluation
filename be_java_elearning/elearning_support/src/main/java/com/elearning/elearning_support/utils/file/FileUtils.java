@@ -6,6 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 import org.springframework.web.multipart.MultipartFile;
+import com.elearning.elearning_support.constants.FileConstants;
+import com.elearning.elearning_support.constants.FileConstants.Extension;
+import com.elearning.elearning_support.constants.FileConstants.Extension.Video;
 import com.elearning.elearning_support.utils.DateUtils;
 
 public class FileUtils {
@@ -17,6 +20,16 @@ public class FileUtils {
     public static final String DOCUMENTS_RESOURCE_DIR = "/resources/upload/files/docs/";
 
     public static final String DOCUMENTS_STORED_LOCATION = "upload/files/docs/";
+
+    public static final Integer MAX_UPDATE_FILE_SIZE = 100 * 1024 *1024; // 100MB
+
+    public static final Integer AVATAR_FILE_TYPE = 0;
+
+    public static final Integer IMAGES_FILE_TYPE = 1;
+
+    public static final Integer DOCUMENT_FILE_TYPE = 2;
+
+    public static final Integer VIDEOS_FILE_TYPE = 3;
 
     public static File covertMultipartToFile(String tempPath, MultipartFile multipartFile) {
         SimpleDateFormat formatter = new SimpleDateFormat(DateUtils.FORMAT_DATE_YYYY_MMDD_HHMMSS);
@@ -53,6 +66,34 @@ public class FileUtils {
             return file.getName().substring(extIndex - 1);
         }
         return "";
+    }
+
+    public static Integer getFileType(String fileExtension) {
+        int type;
+        switch (fileExtension) {
+            case FileConstants.Extension.Image.GIF:
+            case Extension.Image.JPG:
+            case Extension.Image.JPEG:
+            case Extension.Image.PNG:
+            case Extension.Image.WEBP:
+            case Extension.Image.TIFF:
+            case Extension.Image.JFIF:
+                type = IMAGES_FILE_TYPE;
+                break;
+            case Video.MKV:
+            case Video.FLV:
+            case Video.AVI:
+            case Video.MP4:
+            case Video.MOV:
+            case Video.WMV:
+            case Video.VOB:
+                type = VIDEOS_FILE_TYPE;
+                break;
+            default:
+                type = -1;
+                break;
+        }
+        return type;
     }
 
 }

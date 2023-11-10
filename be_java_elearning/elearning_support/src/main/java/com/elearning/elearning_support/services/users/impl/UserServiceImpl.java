@@ -1,11 +1,15 @@
 package com.elearning.elearning_support.services.users.impl;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import com.elearning.elearning_support.dtos.users.IGetUserListDTO;
 import com.elearning.elearning_support.dtos.users.ProfileUserDTO;
 import com.elearning.elearning_support.dtos.users.UserCreateDTO;
@@ -58,7 +62,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Hàm check các trùng các thông tin
+     * Hàm check trùng các thông tin
      */
     private void validateCreateUser(UserCreateDTO createDTO) {
 
@@ -101,5 +105,15 @@ public class UserServiceImpl implements UserService {
 
         String password = user.getUsername() + "@" + DateUtils.asLocalDate(new Date()).getYear();
         user.setPassword(passwordEncoder.encode(password));
+    }
+
+    /**
+     * Parse lastName - firstName when input is fullName
+     */
+    private List<String> parseNameParts(String fullName) {
+        if (ObjectUtils.isEmpty(fullName)) {
+            return Collections.emptyList();
+        }
+        return Arrays.asList(fullName.trim().split(" ", 2));
     }
 }

@@ -1,5 +1,7 @@
 package com.elearning.elearning_support.utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
@@ -10,7 +12,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 import java.util.TimeZone;
+import com.elearning.elearning_support.constants.message.messageConst.MessageConst;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class DateUtils {
 
     public static final String FORMAT_DATE_DD_MM_YYYY_HH_MM = "dd/MM/yyyy HH:mm";
@@ -115,6 +120,20 @@ public class DateUtils {
      */
     public static LocalDateTime asLocalDateTime(Date date) {
         return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.of(TIME_ZONE)).toLocalDateTime();
+    }
+
+    /**
+     * Parse a date string with a specified pattern and default value
+     */
+    public static Date parseWithDefault(String targetDate, String pattern, Date defaultDate){
+        if(Objects.isNull(targetDate) || Objects.isNull(pattern))
+            return defaultDate;
+        try{
+            return new SimpleDateFormat(pattern).parse(targetDate);
+        } catch (ParseException parseException) {
+            log.error(MessageConst.EXCEPTION_LOG_FORMAT, parseException.getMessage(), parseException.getCause());
+        }
+        return null;
     }
 
 }

@@ -28,6 +28,8 @@ public class MessageConst {
 
     public static final String UPLOAD_FAILED = "upload failed";
 
+    public static final String EXCEPTION_LOG_FORMAT = "======= EXCEPTION: {} CAUSE BY {} ========";
+
     public static class Question {
         public static final String NOT_FOUND = "error.question.not.found";
     }

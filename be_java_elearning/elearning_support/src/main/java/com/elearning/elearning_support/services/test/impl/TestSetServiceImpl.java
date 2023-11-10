@@ -173,7 +173,7 @@ public class TestSetServiceImpl implements TestSetService {
                 return new InputStreamResource(inputStream);
             }
         } catch (IOException e) {
-            log.error("======= EXCEPTION: {0} CAUSE BY {} ========", e.getMessage(), e.getCause());
+            log.error(MessageConst.EXCEPTION_LOG_FORMAT, e.getMessage(), e.getCause());
         }
         return null;
     }
