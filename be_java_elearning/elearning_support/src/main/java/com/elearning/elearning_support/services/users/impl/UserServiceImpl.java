@@ -2,8 +2,11 @@ package com.elearning.elearning_support.services.users.impl;
 
 import java.util.Date;
 import java.util.Random;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.elearning.elearning_support.dtos.users.IGetUserListDTO;
 import com.elearning.elearning_support.dtos.users.ProfileUserDTO;
 import com.elearning.elearning_support.dtos.users.UserCreateDTO;
 import com.elearning.elearning_support.dtos.users.UserUpdateDTO;
@@ -42,6 +45,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(UserUpdateDTO updateDTO) {
 
+    }
+
+    @Override
+    public Page<IGetUserListDTO> getPageStudent(String studentName, String studentCode, Pageable pageable) {
+        return userRepository.getListStudent(studentName, studentCode, pageable);
+    }
+
+    @Override
+    public Page<IGetUserListDTO> getPageTeacher(String teacherName, String teacherCode, Pageable pageable) {
+        return userRepository.getListTeacher(teacherName, teacherCode, pageable);
     }
 
     /**

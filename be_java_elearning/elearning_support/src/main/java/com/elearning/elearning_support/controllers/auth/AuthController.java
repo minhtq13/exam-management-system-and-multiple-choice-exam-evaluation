@@ -3,7 +3,6 @@ package com.elearning.elearning_support.controllers.auth;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.elearning.elearning_support.dtos.login.LoginRequest;
 import com.elearning.elearning_support.dtos.login.LoginResponse;
 import com.elearning.elearning_support.dtos.users.ProfileUserDTO;
-import com.elearning.elearning_support.entities.role.Role;
 import com.elearning.elearning_support.security.jwt.JwtUtils;
 import com.elearning.elearning_support.security.models.CustomUserDetails;
 import com.elearning.elearning_support.services.auth.AuthInfoService;
@@ -70,7 +68,7 @@ public class AuthController {
 
         if (Objects.isNull(accessToken) || Objects.isNull(refreshToken))
             throw new BadCredentialsException("Generate tokens error");
-        Set<String> roles = userDetails.getRoles().stream().map(Role::getCode).collect(Collectors.toSet());
+        Set<String> roles = userDetails.getRoles();
         return ResponseEntity.ok(LoginResponse.builder()
                 .issuedAt(new Date())
                 .accessToken(accessToken)

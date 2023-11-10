@@ -31,5 +31,5 @@ public interface IGetUserListDTO {
 
     String getDepartmentName();
 
-    Integer getUserType();
+    String getUserType();
 }

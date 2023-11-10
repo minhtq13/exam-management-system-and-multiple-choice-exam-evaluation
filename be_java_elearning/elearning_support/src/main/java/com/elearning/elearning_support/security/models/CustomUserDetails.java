@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import com.elearning.elearning_support.entities.role.Role;
 import com.elearning.elearning_support.entities.users.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,11 +18,13 @@ public class CustomUserDetails implements UserDetails {
 
     private User user;
 
-    private Set<Role> roles;
+    private Set<String> roles;
+
+    private Collection<? extends GrantedAuthority> authorities;
 
     public CustomUserDetails(User user){
         this.user = user;
-        this.roles = this.user.getRoles();
+        this.authorities = this.user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet());
     }
 
     public void setUser(User user) {
@@ -36,14 +37,8 @@ public class CustomUserDetails implements UserDetails {
 
     public String getUserCode(){return this.user.getCode();}
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Set<String> roles) {
         this.roles = roles;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-            .map(role -> new SimpleGrantedAuthority(role.getCode())).collect(Collectors.toList());
     }
 
     @Override

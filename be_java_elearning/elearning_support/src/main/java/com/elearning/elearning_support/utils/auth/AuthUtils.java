@@ -1,12 +1,10 @@
 package com.elearning.elearning_support.utils.auth;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
-import com.elearning.elearning_support.entities.role.Role;
 import com.elearning.elearning_support.entities.users.User;
 import com.elearning.elearning_support.security.models.CustomUserDetails;
 import lombok.extern.slf4j.Slf4j;
@@ -62,10 +60,10 @@ public class AuthUtils {
     /**
      * Get lst role code of the current user
      */
-    public static List<String> getCurrentUserRoles() {
+    public static Set<String> getCurrentUserRoles() {
         try {
             CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            return userDetails.getRoles().stream().map(Role::getCode).collect(Collectors.toList());
+            return userDetails.getRoles();
         } catch (Exception ex) {
             ex.printStackTrace();
             log.error("Get current user's roles error");
