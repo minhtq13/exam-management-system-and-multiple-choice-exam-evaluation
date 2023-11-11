@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import com.elearning.elearning_support.dtos.fileAttach.importFile.ImportResponseDTO;
 import com.elearning.elearning_support.dtos.users.IGetUserListDTO;
 import com.elearning.elearning_support.dtos.users.UserCreateDTO;
 import com.elearning.elearning_support.dtos.users.UserUpdateDTO;
@@ -74,10 +75,10 @@ public class UserController {
         return ResponseEntity.ok("");
     }
 
-    @PostMapping(value = "/student/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/student/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Import sinh viên")
-    public ResponseEntity<?> importStudent(@RequestParam("file") MultipartFile fileImport) {
-        return ResponseEntity.ok("");
+    public ImportResponseDTO importStudent(@RequestParam("file") MultipartFile fileImport) {
+        return userService.importStudent(fileImport);
     }
 
     /*
@@ -108,10 +109,10 @@ public class UserController {
         return ResponseEntity.ok("");
     }
 
-    @PostMapping(value = "/teacher/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/teacher/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Import giáo viên / giảng viên")
-    public ResponseEntity<?> importTeacher(@RequestParam("file") MultipartFile fileImport) {
-        return ResponseEntity.ok("");
+    public ImportResponseDTO importTeacher(@RequestParam("file") MultipartFile fileImport) {
+        return userService.importTeacher(fileImport);
     }
 
     /*

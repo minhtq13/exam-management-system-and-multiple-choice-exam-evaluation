@@ -1,4 +1,4 @@
-package com.elearning.elearning_support.dtos.users.teacher;
+package com.elearning.elearning_support.dtos.users.importUser;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TeacherImportDTO {
+public class CommonUserImportDTO {
 
     String username;
 
@@ -24,8 +24,10 @@ public class TeacherImportDTO {
 
     String genderRaw;
 
-    String phone;
+    String phoneNumber;
 
     String code;
+
+    Integer userType;
 
 }

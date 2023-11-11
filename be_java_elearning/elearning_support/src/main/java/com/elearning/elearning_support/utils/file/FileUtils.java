@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -106,7 +107,12 @@ public class FileUtils {
     /**
      * Validate fileSize and fileExt
      */
-    private void validateUploadFile(MultipartFile file, String targetExtension) {
+    public static void validateUploadFile(MultipartFile file, List<String> targetExtensions) {
+        // Validate file null
+        if (Objects.isNull(file)) {
+            throw new FileUploadException(FileAttach.UPLOAD_ERROR_CODE, Resources.FILE_ATTACHED, MessageConst.UPLOAD_FAILED);
+        }
+
         // Validate fileSize
         if (file.getSize() > MAX_UPDATE_FILE_SIZE) {
             throw new FileUploadException(FileAttach.FILE_EXCESS_SIZE_ERROR_CODE, Resources.FILE_ATTACHED, MessageConst.UPLOAD_FAILED);
@@ -119,7 +125,7 @@ public class FileUtils {
         }
 
         // Validate fileExt
-        if (!Objects.equals(FilenameUtils.getExtension(file.getOriginalFilename()), targetExtension)) {
+        if (!targetExtensions.contains(FilenameUtils.getExtension(file.getOriginalFilename()))) {
             throw new FileUploadException(FileAttach.FILE_INVALID_EXTENSION_ERROR_CODE, Resources.FILE_ATTACHED, MessageConst.UPLOAD_FAILED);
         }
     }

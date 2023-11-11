@@ -1,6 +1,5 @@
-package com.elearning.elearning_support.enums.importFieldMap;
+package com.elearning.elearning_support.enums.importFile;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -13,10 +12,10 @@ public enum TeacherImportFieldMapping {
     USERNAME("username", "username"),
     EMAIL("email", "email"),
     PASSWORD("password", "passwordRaw"),
-    FULLNAME("fullname", "fullnameRaw"),
+    FULL_NAME("fullName", "fullNameRaw"),
     BIRTHDAY("birthday", "birthDateRaw"),
     GENDER("gender", "genderRaw"),
-    PHONE("phone", "phoneNumber"),
+    PHONE("phoneNumber", "phoneNumber"),
     CODE("code", "code");
 
     private final String excelColumnKey;

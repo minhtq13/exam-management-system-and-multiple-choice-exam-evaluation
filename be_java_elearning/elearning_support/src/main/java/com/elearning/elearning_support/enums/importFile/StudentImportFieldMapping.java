@@ -1,4 +1,4 @@
-package com.elearning.elearning_support.enums.importFieldMap;
+package com.elearning.elearning_support.enums.importFile;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -12,10 +12,10 @@ public enum StudentImportFieldMapping {
     USERNAME("username", "username"),
     EMAIL("email", "email"),
     PASSWORD("password", "passwordRaw"),
-    FULLNAME("fullname", "fullnameRaw"),
+    FULL_NAME("fullName", "fullNameRaw"),
     BIRTHDAY("birthday", "birthDateRaw"),
     GENDER("gender", "genderRaw"),
-    PHONE("phone", "phoneNumber"),
+    PHONE("phoneNumber", "phoneNumber"),
     CODE("code", "code"),
     COURSE("course", "courseRaw");
 
@@ -35,6 +35,6 @@ public enum StudentImportFieldMapping {
      * Lấy object keymap khi import
      */
     public static String getObjectFieldByColumnKey(String columnKey) {
-        return mapFields.get(columnKey).getObjectFieldKey();
+        return mapFields.get(columnKey).objectFieldKey;
     }
 }

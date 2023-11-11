@@ -74,6 +74,17 @@ public class SQLUser {
             "  ('' = :name OR CONCAT_WS(' ', teacher.last_name, teacher.first_name) ILIKE ('%' || :name || '%')) AND \n" +
             "  ('' = :code OR teacher.code ILIKE ('%' || :code || '%')) ";
 
+    public static final String GET_LIST_CURRENT_USERNAME =
+        "SELECT username FROM {h-schema}users";
+
+    public static final String GET_LIST_CURRENT_USER_EMAIL =
+        "SELECT email FROM {h-schema}users";
+
+    public static final String GET_LIST_CURRENT_USER_CODE_BY_USER_TYPE =
+        "SELECT code FROM {h-schema}users WHERE user_type = :userType";
+
+
+
 
 
 }

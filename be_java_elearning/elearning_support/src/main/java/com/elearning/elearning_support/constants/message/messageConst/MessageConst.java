@@ -67,6 +67,15 @@ public class MessageConst {
         public static final String FILE_INVALID_EXTENSION_ERROR_CODE = "file.upload.invalid.extension.error";
 
         public static final String FILE_EXCESS_FILENAME_LENGTH_ERROR_CODE = "file.upload.excess.filename.length.error";
+
+        // excel file
+
+        public static final String FILE_EXCEL_EXCESS_COLUMN_NUMBER_ERROR = "file.excel.excess.column.number";
+
+        public static final String FILE_EXCEL_MISSING_COLUMN_NUMBER_ERROR = "file.excel.missing.column.number";
+
+        public static final String FILE_EXCEL_EMPTY_SHEET_ERROR = "file.excel.empty.sheet.error";
+
     }
 
     public static class User {

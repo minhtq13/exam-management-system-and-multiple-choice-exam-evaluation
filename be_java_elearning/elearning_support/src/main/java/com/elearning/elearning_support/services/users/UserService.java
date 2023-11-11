@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import com.elearning.elearning_support.dtos.fileAttach.importFile.ImportResponseDTO;
 import com.elearning.elearning_support.dtos.users.IGetUserListDTO;
 import com.elearning.elearning_support.dtos.users.ProfileUserDTO;
 import com.elearning.elearning_support.dtos.users.UserCreateDTO;
@@ -42,13 +43,13 @@ public interface UserService {
     /**
      * Import danh sách HSSV
      */
-    InputStreamResource importStudent(MultipartFile fileImport);
+    ImportResponseDTO importStudent(MultipartFile fileImport);
 
 
     /**
      * Import danh sách GV
      */
-    InputStreamResource importTeacher(MultipartFile fileImport);
+    ImportResponseDTO importTeacher(MultipartFile fileImport);
 
 
 

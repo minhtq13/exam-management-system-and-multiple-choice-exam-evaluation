@@ -3,10 +3,12 @@ package com.elearning.elearning_support.utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.util.ObjectUtils;
 
 /**
  * @author : Chien Dao - HUST
@@ -67,6 +69,17 @@ public class StringUtils {
      */
     public static String formatSqlText(String text) {
         return "'" + text + "'";
+    }
+
+
+    /**
+     * Parse lastName - firstName when input is fullName
+     */
+    public static List<String> parseNameParts(String fullName) {
+        if (ObjectUtils.isEmpty(fullName)) {
+            return Collections.emptyList();
+        }
+        return Arrays.asList(fullName.trim().split(" ", 2));
     }
 
 }

@@ -1,27 +1,59 @@
 package com.elearning.elearning_support.services.users.impl;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
-import org.springframework.core.io.InputStreamResource;
+import java.util.stream.Collectors;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
+import com.elearning.elearning_support.constants.FileConstants.Extension.Excel;
+import com.elearning.elearning_support.constants.RoleConstants;
+import com.elearning.elearning_support.constants.message.messageConst.MessageConst;
+import com.elearning.elearning_support.constants.message.messageConst.MessageConst.FileAttach;
+import com.elearning.elearning_support.constants.message.messageConst.MessageConst.Resources;
+import com.elearning.elearning_support.dtos.fileAttach.importFile.ImportResponseDTO;
+import com.elearning.elearning_support.dtos.fileAttach.importFile.RowErrorDTO;
 import com.elearning.elearning_support.dtos.users.IGetUserListDTO;
+import com.elearning.elearning_support.dtos.users.ImportUserValidatorDTO;
 import com.elearning.elearning_support.dtos.users.ProfileUserDTO;
 import com.elearning.elearning_support.dtos.users.UserCreateDTO;
 import com.elearning.elearning_support.dtos.users.UserUpdateDTO;
+import com.elearning.elearning_support.dtos.users.importUser.CommonUserImportDTO;
+import com.elearning.elearning_support.dtos.users.student.StudentImportDTO;
 import com.elearning.elearning_support.entities.users.User;
+import com.elearning.elearning_support.entities.users.UserRole;
+import com.elearning.elearning_support.enums.importFile.ImportResponseEnum;
+import com.elearning.elearning_support.enums.importFile.StudentImportFieldMapping;
+import com.elearning.elearning_support.enums.importFile.TeacherImportFieldMapping;
+import com.elearning.elearning_support.enums.users.GenderEnum;
+import com.elearning.elearning_support.enums.users.UserTypeEnum;
+import com.elearning.elearning_support.exceptions.exceptionFactory.ExceptionFactory;
 import com.elearning.elearning_support.repositories.users.UserRepository;
+import com.elearning.elearning_support.repositories.users.UserRoleRepository;
 import com.elearning.elearning_support.services.users.UserService;
 import com.elearning.elearning_support.utils.DateUtils;
 import com.elearning.elearning_support.utils.StringUtils;
 import com.elearning.elearning_support.utils.auth.AuthUtils;
+import com.elearning.elearning_support.utils.excelFile.ExcelFileUtils;
+import com.elearning.elearning_support.utils.excelFile.ExcelValidationUtils;
+import com.elearning.elearning_support.utils.file.FileUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,9 +64,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    private final UserRoleRepository userRoleRepository;
+
     private final PasswordEncoder passwordEncoder;
 
-    private final String[] IGNORE_COPY_USER_PROPERTIES = new String[] {
+    private final ExceptionFactory exceptionFactory;
+
+    private final String[] IGNORE_COPY_USER_PROPERTIES = new String[]{
         "userType"
     };
 
@@ -64,24 +100,270 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Transactional
     @Override
-    public InputStreamResource importStudent(MultipartFile fileImport) {
+    public ImportResponseDTO importStudent(MultipartFile fileImport) {
+        // Tạo response mặc định
+        ImportResponseDTO response = new ImportResponseDTO();
+        response.setStatus(ImportResponseEnum.SUCCESS.getStatus());
+        response.setMessage(ImportResponseEnum.SUCCESS.getMessage());
+
+        // Đọc file và import dữ liệu
+        try {
+            // Validate file sơ bộ
+            FileUtils.validateUploadFile(fileImport, Arrays.asList(Excel.XLS, Excel.XLSX));
+
+            // Tạo workbook để đọc file import
+            XSSFWorkbook inputWorkbook = new XSSFWorkbook(fileImport.getInputStream());
+            XSSFSheet inputSheet = inputWorkbook.getSheetAt(0);
+            if (Objects.isNull(inputSheet)) {
+                throw exceptionFactory.fileUploadException(FileAttach.FILE_EXCEL_EMPTY_SHEET_ERROR, Resources.FILE_ATTACHED,
+                    MessageConst.UPLOAD_FAILED);
+            }
+
+            // Validators
+            ImportUserValidatorDTO validatorDTO = new ImportUserValidatorDTO(userRepository.getLstCurrentUsername(),
+                userRepository.getListCurrentEmail(), userRepository.getListCurrentCodeByUserType(UserTypeEnum.STUDENT.getType()));
+
+            // Tạo các map field
+            Map<Integer, String> mapIndexColumnKey = new HashMap<>();
+            // students save DB
+            List<User> lstNewStudent = new ArrayList<>();
+
+            // Duyệt file input
+            Iterator<Row> rowIterator = inputSheet.rowIterator();
+            int numberOfColumns = StudentImportFieldMapping.values().length;
+            while (rowIterator.hasNext()) {
+                Row currentRow = rowIterator.next();
+                boolean isEmptyRow = true;
+                if (currentRow.getRowNum() == 0) { // header row
+                    for (Cell cell : currentRow) {
+                        mapIndexColumnKey.put(cell.getColumnIndex(), ExcelFileUtils.getStringCellValue(cell));
+                    }
+                    // Validate thừa thiếu/cột
+                    if (currentRow.getLastCellNum() < numberOfColumns) {
+                        throw exceptionFactory.fileUploadException(FileAttach.FILE_EXCEL_MISSING_COLUMN_NUMBER_ERROR, Resources.FILE_ATTACHED,
+                            MessageConst.UPLOAD_FAILED);
+                    }
+                    if (currentRow.getLastCellNum() > numberOfColumns) {
+                        throw exceptionFactory.fileUploadException(FileAttach.FILE_EXCEL_MISSING_COLUMN_NUMBER_ERROR, Resources.FILE_ATTACHED,
+                            MessageConst.UPLOAD_FAILED);
+                    }
+                    continue;
+                }
+                // Duyệt các cell trong row
+                CommonUserImportDTO importDTO = new StudentImportDTO();
+                importDTO.setUserType(UserTypeEnum.STUDENT.getType());
+                for (Cell cell : currentRow) {
+                    String columnKey = mapIndexColumnKey.get(cell.getColumnIndex());
+                    String objectFieldKey = StudentImportFieldMapping.getObjectFieldByColumnKey(columnKey);
+                    String cellValue = ExcelFileUtils.getStringCellValue(cell);
+                    if (!ObjectUtils.isEmpty(cellValue)) {
+                        isEmptyRow = false;
+                    }
+                    if (!ObjectUtils.isEmpty(objectFieldKey)) {
+                        BeanUtils.setProperty(importDTO, objectFieldKey, cellValue);
+                    }
+                }
+                // Validate và mapping vào entity
+                List<String> causeList = new ArrayList<>();
+                validateImportUser(validatorDTO, importDTO, causeList);
+                if (!isEmptyRow) {
+                    if (ObjectUtils.isEmpty(causeList)) {
+                        User newStudent = new User(importDTO);
+                        newStudent.setPassword(passwordEncoder.encode(importDTO.getPasswordRaw()));
+                        lstNewStudent.add(newStudent);
+                        // add username/email/code to validators
+                        validatorDTO.getLstExistedUsername().add(newStudent.getUsername());
+                        validatorDTO.getLstExistedEmail().add(newStudent.getEmail());
+                        validatorDTO.getLstExistedCode().add(newStudent.getCode());
+                    } else {
+                        response.getErrorRows().add(new RowErrorDTO(currentRow.getRowNum() + 1, importDTO, causeList));
+                        response.setMessage(ImportResponseEnum.EXIST_INVALID_DATA.getMessage());
+                        response.setStatus(ImportResponseEnum.EXIST_INVALID_DATA.getStatus());
+                    }
+                }
+            }
+            lstNewStudent = userRepository.saveAll(lstNewStudent);
+            List<UserRole> lstStudentUserRole = lstNewStudent.stream()
+                .map(student -> new UserRole(student.getId(), RoleConstants.ROLE_STUDENT_ID)).collect(
+                    Collectors.toList());
+            userRoleRepository.saveAll(lstStudentUserRole);
+            inputWorkbook.close();
+
+            // Set status and message response
+            return response;
+        } catch (IOException ioException) {
+            response.setMessage(ImportResponseEnum.IO_ERROR.getMessage());
+            response.setStatus(ImportResponseEnum.IO_ERROR.getStatus());
+        } catch (Exception exception) {
+            response.setMessage(ImportResponseEnum.UNKNOWN_ERROR.getMessage());
+            response.setStatus(ImportResponseEnum.UNKNOWN_ERROR.getStatus());
+            log.error(MessageConst.EXCEPTION_LOG_FORMAT, exception.getMessage(), exception.getCause());
+        }
         return null;
     }
 
+    @Transactional
     @Override
-    public InputStreamResource importTeacher(MultipartFile fileImport) {
+    public ImportResponseDTO importTeacher(MultipartFile fileImport) {
+        // Tạo response mặc định
+        ImportResponseDTO response = new ImportResponseDTO();
+        response.setStatus(ImportResponseEnum.SUCCESS.getStatus());
+        response.setMessage(ImportResponseEnum.SUCCESS.getMessage());
+
+        // Đọc file và import dữ liệu
+        try {
+            // Validate file sơ bộ
+            FileUtils.validateUploadFile(fileImport, Arrays.asList(Excel.XLS, Excel.XLSX));
+
+            // Tạo workbook để đọc file import
+            XSSFWorkbook inputWorkbook = new XSSFWorkbook(fileImport.getInputStream());
+            XSSFSheet inputSheet = inputWorkbook.getSheetAt(0);
+            if (Objects.isNull(inputSheet)) {
+                throw exceptionFactory.fileUploadException(FileAttach.FILE_EXCEL_EMPTY_SHEET_ERROR, Resources.FILE_ATTACHED,
+                    MessageConst.UPLOAD_FAILED);
+            }
+
+            // Validators
+            ImportUserValidatorDTO validatorDTO = new ImportUserValidatorDTO(userRepository.getLstCurrentUsername(),
+                userRepository.getListCurrentEmail(), userRepository.getListCurrentCodeByUserType(UserTypeEnum.TEACHER.getType()));
+
+            // Tạo các map field
+            Map<Integer, String> mapIndexColumnKey = new HashMap<>();
+            // students save DB
+            List<User> lstNewTeacher = new ArrayList<>();
+
+            // Duyệt file input
+            Iterator<Row> rowIterator = inputSheet.rowIterator();
+            int numberOfColumns = TeacherImportFieldMapping.values().length;
+            while (rowIterator.hasNext()) {
+                Row currentRow = rowIterator.next();
+                boolean isEmptyRow = true;
+                if (currentRow.getRowNum() == 0) { // header row
+                    for (Cell cell : currentRow) {
+                        mapIndexColumnKey.put(cell.getColumnIndex(), ExcelFileUtils.getStringCellValue(cell));
+                    }
+                    // Validate thừa thiếu/cột
+                    if (currentRow.getLastCellNum() < numberOfColumns) {
+                        throw exceptionFactory.fileUploadException(FileAttach.FILE_EXCEL_MISSING_COLUMN_NUMBER_ERROR, Resources.FILE_ATTACHED,
+                            MessageConst.UPLOAD_FAILED);
+                    }
+                    if (currentRow.getLastCellNum() > numberOfColumns) {
+                        throw exceptionFactory.fileUploadException(FileAttach.FILE_EXCEL_MISSING_COLUMN_NUMBER_ERROR, Resources.FILE_ATTACHED,
+                            MessageConst.UPLOAD_FAILED);
+                    }
+                    continue;
+                }
+                // Duyệt các cell trong row
+                StudentImportDTO importDTO = new StudentImportDTO();
+                importDTO.setUserType(UserTypeEnum.TEACHER.getType());
+                for (Cell cell : currentRow) {
+                    String columnKey = mapIndexColumnKey.get(cell.getColumnIndex());
+                    String objectFieldKey = StudentImportFieldMapping.getObjectFieldByColumnKey(columnKey);
+                    String cellValue = ExcelFileUtils.getStringCellValue(cell);
+                    if (!ObjectUtils.isEmpty(cellValue)) {
+                        isEmptyRow = false;
+                    }
+                    if (!ObjectUtils.isEmpty(objectFieldKey)) {
+                        BeanUtils.setProperty(importDTO, objectFieldKey, cellValue);
+                    }
+                }
+                // Validate và mapping vào entity
+                List<String> causeList = new ArrayList<>();
+                validateImportUser(validatorDTO, importDTO, causeList);
+                if (!isEmptyRow) {
+                    if (ObjectUtils.isEmpty(causeList)) {
+                        User newTeacher = new User(importDTO);
+                        newTeacher.setPassword(passwordEncoder.encode(importDTO.getPasswordRaw()));
+                        lstNewTeacher.add(newTeacher);
+                        // add username/email/code to validators
+                        validatorDTO.getLstExistedUsername().add(newTeacher.getUsername());
+                        validatorDTO.getLstExistedEmail().add(newTeacher.getEmail());
+                        validatorDTO.getLstExistedCode().add(newTeacher.getCode());
+                    } else {
+                        response.getErrorRows().add(new RowErrorDTO(currentRow.getRowNum() + 1, importDTO, causeList));
+                        response.setMessage(ImportResponseEnum.EXIST_INVALID_DATA.getMessage());
+                        response.setStatus(ImportResponseEnum.EXIST_INVALID_DATA.getStatus());
+                    }
+                }
+            }
+            lstNewTeacher = userRepository.saveAll(lstNewTeacher);
+            List<UserRole> lstTeacherUserRole = lstNewTeacher.stream()
+                .map(student -> new UserRole(student.getId(), RoleConstants.ROLE_TEACHER_ID)).collect(
+                    Collectors.toList());
+            userRoleRepository.saveAll(lstTeacherUserRole);
+            inputWorkbook.close();
+            return response;
+        } catch (IOException ioException) {
+            response.setMessage(ImportResponseEnum.IO_ERROR.getMessage());
+            response.setStatus(ImportResponseEnum.IO_ERROR.getStatus());
+        } catch (Exception exception) {
+            response.setMessage(ImportResponseEnum.UNKNOWN_ERROR.getMessage());
+            response.setStatus(ImportResponseEnum.UNKNOWN_ERROR.getStatus());
+            log.error(MessageConst.EXCEPTION_LOG_FORMAT, exception.getMessage(), exception.getCause());
+        }
         return null;
     }
+
 
     /**
      * Hàm check trùng các thông tin
      */
-    private void validateCreateUser(UserCreateDTO createDTO) {
+    private void validateImportUser(ImportUserValidatorDTO validatorDTO, CommonUserImportDTO importDTO, List<String> causeList) {
+        // Validate field bắt buộc
+        List<String> missingRequiredFields = new ArrayList<>();
+        if (ObjectUtils.isEmpty(importDTO.getFullNameRaw())) {
+            missingRequiredFields.add("fullName");
+        }
+        if (ObjectUtils.isEmpty(importDTO.getGenderRaw())) {
+            missingRequiredFields.add("code");
+        }
+        if (ObjectUtils.isEmpty(importDTO.getGenderRaw())) {
+            missingRequiredFields.add("gender");
+        }
+        if (ObjectUtils.isEmpty(importDTO.getUsername())) {
+            missingRequiredFields.add("username");
+        }
+        if (ObjectUtils.isEmpty(importDTO.getPasswordRaw())) {
+            missingRequiredFields.add("password");
+        }
+        if (ObjectUtils.isEmpty(importDTO.getEmail())) {
+            missingRequiredFields.add("email");
+        }
+        if (!missingRequiredFields.isEmpty()) {
+            causeList.add(String.format("Missing required fields: %s", String.join(",", missingRequiredFields)));
+        }
 
-    }
+        // Validate định dạng dữ liệu
+        List<String> invalidFormatFields = new ArrayList<>();
+        if (!Objects.isNull(ExcelValidationUtils.validatePhoneNumber(importDTO.getPhoneNumber()))) {
+            invalidFormatFields.add("phone");
+        }
+        if (!Objects.isNull(ExcelValidationUtils.validateEmail(importDTO.getEmail()))) {
+            invalidFormatFields.add("email");
+        }
+        if (Objects.isNull(GenderEnum.getGenderByEngName(importDTO.getGenderRaw()))) {
+            invalidFormatFields.add("gender");
+        }
+        if (!invalidFormatFields.isEmpty()) {
+            causeList.add(String.format("Invalid formatted fields: %s", String.join(",", invalidFormatFields)));
+        }
 
-    private void validateUpdateUser(UserUpdateDTO updateDTO) {
+        // Validate trùng dữ liệu
+        List<String> duplicatedFields = new ArrayList<>();
+        if (validatorDTO.getLstExistedUsername().contains(importDTO.getUsername())) {
+            duplicatedFields.add("username");
+        }
+        if (validatorDTO.getLstExistedEmail().contains(importDTO.getEmail())) {
+            duplicatedFields.add("email");
+        }
+        if (validatorDTO.getLstExistedCode().contains(importDTO.getCode())) {
+            duplicatedFields.add("code");
+        }
+        if (!duplicatedFields.isEmpty()) {
+            causeList.add(String.format("Duplicated fields: %s", String.join(",", duplicatedFields)));
+        }
 
     }
 
@@ -120,13 +402,4 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(password));
     }
 
-    /**
-     * Parse lastName - firstName when input is fullName
-     */
-    private List<String> parseNameParts(String fullName) {
-        if (ObjectUtils.isEmpty(fullName)) {
-            return Collections.emptyList();
-        }
-        return Arrays.asList(fullName.trim().split(" ", 2));
-    }
 }

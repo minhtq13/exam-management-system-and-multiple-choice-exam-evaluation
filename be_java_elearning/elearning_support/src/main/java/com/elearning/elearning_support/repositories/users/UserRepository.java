@@ -1,6 +1,7 @@
 package com.elearning.elearning_support.repositories.users;
 
 import java.util.Optional;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,5 +31,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(nativeQuery = true, value = SQLUser.GET_LIST_TEACHER)
     Page<IGetUserListDTO> getListTeacher(String name, String code, Pageable pageable);
+
+    @Query(nativeQuery = true, value = SQLUser.GET_LIST_CURRENT_USERNAME)
+    Set<String> getLstCurrentUsername();
+
+    @Query(nativeQuery = true, value = SQLUser.GET_LIST_CURRENT_USER_EMAIL)
+    Set<String> getListCurrentEmail();
+
+    @Query(nativeQuery = true, value = SQLUser.GET_LIST_CURRENT_USER_CODE_BY_USER_TYPE)
+    Set<String> getListCurrentCodeByUserType(Integer userType);
 
 }

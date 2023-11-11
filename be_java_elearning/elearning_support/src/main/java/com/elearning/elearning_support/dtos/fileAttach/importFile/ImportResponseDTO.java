@@ -1,6 +1,7 @@
-package com.elearning.elearning_support.dtos.users.student;
+package com.elearning.elearning_support.dtos.fileAttach.importFile;
 
-import com.elearning.elearning_support.dtos.users.importUser.CommonUserImportDTO;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +12,12 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class StudentImportDTO extends CommonUserImportDTO {
+public class ImportResponseDTO {
 
-    String course;
+    String message;
+
+    Integer status;
+
+    List<RowErrorDTO> errorRows = new ArrayList<>();
+
 }
