@@ -61,6 +61,16 @@ public class MessageConst {
         public static final String DUPLICATED_ERROR_CODE = "file_attach.error.duplicated";
 
         public static final String PERMISSION_DENIED_ERROR_CODE = "file_attach.error.permission.denied";
+
+        public static final String FILE_EXCESS_SIZE_ERROR_CODE = "file.upload.excess.size.error";
+
+        public static final String FILE_INVALID_EXTENSION_ERROR_CODE = "file.upload.invalid.extension.error";
+
+        public static final String FILE_EXCESS_FILENAME_LENGTH_ERROR_CODE = "file.upload.excess.filename.length.error";
+    }
+
+    public static class User {
+        public static final String USER_WRONG_USERNAME_OR_PASSWORD_ERROR_CODE = "user.wrong.username.password.error";
     }
 
 

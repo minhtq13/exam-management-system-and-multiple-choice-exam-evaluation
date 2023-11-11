@@ -1,11 +1,15 @@
 package com.elearning.elearning_support.security.models;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import com.elearning.elearning_support.entities.permission.Permission;
+import com.elearning.elearning_support.entities.role.Role;
 import com.elearning.elearning_support.entities.users.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,20 +26,24 @@ public class CustomUserDetails implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(User user){
+    public CustomUserDetails(User user) {
         this.user = user;
-        this.authorities = this.user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet());
+        this.roles = user.getRoles().stream().map(Role::getName).collect(Collectors.toSet());
+        List<Permission> lstPermission = new ArrayList<>();
+        for (Role role : user.getRoles()) {
+            lstPermission.addAll(role.getLstPermissions());
+        }
+        this.authorities = lstPermission.stream().map(permission -> new SimpleGrantedAuthority(permission.getCode()))
+            .collect(Collectors.toList());
     }
 
     public void setUser(User user) {
         this.user = user;
     }
 
-    public Long getUserId(){return this.user.getId();}
-
-    public String getUserEmail(){return this.user.getEmail();}
-
-    public String getUserCode(){return this.user.getCode();}
+    public Long getUserId() {
+        return this.user.getId();
+    }
 
     public void setRoles(Set<String> roles) {
         this.roles = roles;

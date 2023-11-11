@@ -18,21 +18,26 @@ public class AuthServiceImpl implements AuthInfoService {
     @Autowired
     private JwtUtils jwtUtils;
 
+    public static final Integer TOKEN_INVALID_STATUS = 0;
+
+    public static final Integer TOKEN_VALID_STATUS = 1;
+
     @Override
-    public AuthInfo saveAuthInfo(Long userId, String token, String ip) {
+    public void saveAuthInfo(Long userId, String token, String ip) {
         AuthInfo currentAuthInfo = authInfoRepository.findFirstByUserIdOrderByCreatedAtDesc(userId).orElse(null);
         boolean tokenIsValid = jwtUtils.validateToken(token);
         if(Objects.isNull(currentAuthInfo) || !tokenIsValid){
             if(Objects.nonNull(currentAuthInfo)){
-                currentAuthInfo.setStatus(tokenIsValid ? 1 : 0); // set status invalid
+                currentAuthInfo.setStatus(TOKEN_INVALID_STATUS); // set status invalid
                 authInfoRepository.save(currentAuthInfo);
             }
             AuthInfo newAuthInfo = AuthInfo.builder().userId(userId).token(token).ipAddress(ip)
-                .status(1).createdAt(LocalDateTime.now()).lastLoginAt(LocalDateTime.now()).build();
-            return authInfoRepository.save(newAuthInfo);
+                .status(TOKEN_VALID_STATUS).createdAt(LocalDateTime.now()).lastLoginAt(LocalDateTime.now()).build();
+            authInfoRepository.save(newAuthInfo);
+            return;
         }
         currentAuthInfo.setLastLoginAt(LocalDateTime.now());
-        return authInfoRepository.save(currentAuthInfo);
+        authInfoRepository.save(currentAuthInfo);
     }
 
     @Override

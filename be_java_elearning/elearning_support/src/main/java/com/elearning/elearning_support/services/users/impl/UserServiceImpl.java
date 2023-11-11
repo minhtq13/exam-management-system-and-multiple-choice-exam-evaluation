@@ -5,11 +5,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
 import com.elearning.elearning_support.dtos.users.IGetUserListDTO;
 import com.elearning.elearning_support.dtos.users.ProfileUserDTO;
 import com.elearning.elearning_support.dtos.users.UserCreateDTO;
@@ -59,6 +61,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public Page<IGetUserListDTO> getPageTeacher(String teacherName, String teacherCode, Pageable pageable) {
         return userRepository.getListTeacher(teacherName, teacherCode, pageable);
+    }
+
+
+    @Override
+    public InputStreamResource importStudent(MultipartFile fileImport) {
+        return null;
+    }
+
+    @Override
+    public InputStreamResource importTeacher(MultipartFile fileImport) {
+        return null;
     }
 
     /**

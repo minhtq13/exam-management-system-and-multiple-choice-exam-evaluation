@@ -33,4 +33,14 @@ public class ErrorKey {
         public static final String ID = "id";
     }
 
+    public static class User {
+        // error key
+        public static final String ID = "id";
+
+        public static final String USERNAME = "username";
+
+        public static final String PASSWORD = "password";
+    }
+
+
 }

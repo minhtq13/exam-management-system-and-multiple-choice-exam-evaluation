@@ -12,15 +12,7 @@ public class ExceptionFactory {
 
     public BadRequestException resourceNotFoundException(String code, String messageConst, String resource, String fieldError, String... values)
         throws BadRequestException {
-        StringBuilder builder = new StringBuilder();
-        builder.append(resource).append(" ").append(messageConst);
-        return new BadRequestException(code, builder.toString(), fieldError, values);
-    }
-
-    public BadRequestException overlappedException(String code, String messageConst, String resource, String fieldError, String... values) throws BadRequestException {
-        StringBuilder builder = new StringBuilder();
-        builder.append(resource).append(" ").append(messageConst);
-        return new BadRequestException(code, builder.toString(), fieldError, values);
+        return new BadRequestException(code, resource + " " + messageConst, fieldError, values);
     }
 
     public PermissionDeniedException permissionDeniedException(String code, String resource, String message) throws PermissionDeniedException {
@@ -28,9 +20,7 @@ public class ExceptionFactory {
     }
 
     public BadRequestException resourceExistedException(String code, String resource, String messageConst, String errorField, String... values) throws ResourceExistedException {
-        StringBuilder builder = new StringBuilder();
-        builder.append(resource).append(" ").append(messageConst);
-        return new BadRequestException(code, builder.toString(), errorField, values);
+        return new BadRequestException(code, resource + " " + messageConst, errorField, values);
     }
 
     public BadRequestException fileUploadException(String code, String resource, String message){

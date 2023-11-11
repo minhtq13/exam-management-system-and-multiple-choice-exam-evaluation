@@ -9,7 +9,7 @@ public interface AuthInfoService {
     /**
      * Lưu thông tin xác thực người dùng
      */
-    AuthInfo saveAuthInfo(Long userId, String token, String ip);
+    void saveAuthInfo(Long userId, String token, String ip);
 
     /**
      * Tìm thông tin xác thực người dùng
