@@ -46,8 +46,8 @@ public class QuestionController {
     @Operation(summary = "Danh sách câu hỏi")
     public List<QuestionListDTO> getListQuestion(
         @RequestParam(name = "subjectId", required = false, defaultValue = "-1") Long subjectId,
-        @RequestParam(name = "subjectCode", required = false, defaultValue = "ALL") String subjectCode,
-        @RequestParam(name = "chapterCode", required = false, defaultValue = "ALL") String chapterCode,
+        @RequestParam(name = "subjectCode", required = false, defaultValue = "") String subjectCode,
+        @RequestParam(name = "chapterCode", required = false, defaultValue = "") String chapterCode,
         @RequestParam(name = "chapterId", required = false, defaultValue = "-1") Long chapterId,
         @RequestParam(name = "level", required = false, defaultValue = "ALL") QuestionLevelEnum level) {
         return questionService.getListQuestion(subjectId, subjectCode, chapterId, chapterCode, level);

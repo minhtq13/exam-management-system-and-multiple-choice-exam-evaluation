@@ -45,6 +45,7 @@ public class QuestionServiceImpl implements QuestionService {
                 .chapterId(createDTO.getChapterId())
                 .content(questionDTO.getContent())
                 .code(generateQuestionCode())
+                .isEnabled(Boolean.TRUE)
                 .build();
             question.setCreatedAt(new Date());
             question.setCreatedBy(AuthUtils.getCurrentUserId());
