@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.elearning.elearning_support.dtos.fileAttach.importFile.ImportResponseDTO;
 import com.elearning.elearning_support.dtos.users.IGetUserListDTO;
 import com.elearning.elearning_support.dtos.users.UserCreateDTO;
-import com.elearning.elearning_support.dtos.users.UserUpdateDTO;
+import com.elearning.elearning_support.dtos.users.UserDetailDTO;
+import com.elearning.elearning_support.dtos.users.UserSaveReqDTO;
 import com.elearning.elearning_support.services.users.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,14 +45,22 @@ public class UserController {
         userService.createUser(createDTO);
     }
 
-    @PutMapping
+    @PutMapping("/{userId}")
     @Operation(summary = "Cập nhật thông tin người dùng")
-    public void updateUser(@RequestBody @Validated UserUpdateDTO updateDTO) {
-        userService.updateUser(updateDTO);
+    public void updateUser(
+        @PathVariable(name = "userId") Long userId,
+        @RequestBody @Validated UserSaveReqDTO updateDTO) {
+        userService.updateUser(userId, updateDTO);
+    }
+
+    @GetMapping("/{userId}")
+    @Operation(summary = "Chi tiết người dùng")
+    public UserDetailDTO getUserDetail(@PathVariable(name = "userId") Long userId){
+        return userService.getUserDetail(userId);
     }
 
     /*
-     *  ================== API dành cho user END =================
+     *  ================== API dành cho user END =======================
      */
 
 

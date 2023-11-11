@@ -25,20 +25,24 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 import com.elearning.elearning_support.constants.FileConstants.Extension.Excel;
 import com.elearning.elearning_support.constants.RoleConstants;
+import com.elearning.elearning_support.constants.message.errorKey.ErrorKey;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst.FileAttach;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst.Resources;
 import com.elearning.elearning_support.dtos.fileAttach.importFile.ImportResponseDTO;
 import com.elearning.elearning_support.dtos.fileAttach.importFile.RowErrorDTO;
+import com.elearning.elearning_support.dtos.users.IGetDetailUserDTO;
 import com.elearning.elearning_support.dtos.users.IGetUserListDTO;
 import com.elearning.elearning_support.dtos.users.ImportUserValidatorDTO;
 import com.elearning.elearning_support.dtos.users.ProfileUserDTO;
 import com.elearning.elearning_support.dtos.users.UserCreateDTO;
-import com.elearning.elearning_support.dtos.users.UserUpdateDTO;
+import com.elearning.elearning_support.dtos.users.UserDetailDTO;
+import com.elearning.elearning_support.dtos.users.UserSaveReqDTO;
 import com.elearning.elearning_support.dtos.users.importUser.CommonUserImportDTO;
 import com.elearning.elearning_support.dtos.users.student.StudentImportDTO;
 import com.elearning.elearning_support.entities.users.User;
 import com.elearning.elearning_support.entities.users.UserRole;
+import com.elearning.elearning_support.enums.commons.DeletedFlag;
 import com.elearning.elearning_support.enums.importFile.ImportResponseEnum;
 import com.elearning.elearning_support.enums.importFile.StudentImportFieldMapping;
 import com.elearning.elearning_support.enums.importFile.TeacherImportFieldMapping;
@@ -70,6 +74,7 @@ public class UserServiceImpl implements UserService {
 
     private final ExceptionFactory exceptionFactory;
 
+
     private final String[] IGNORE_COPY_USER_PROPERTIES = new String[]{
         "userType"
     };
@@ -79,14 +84,64 @@ public class UserServiceImpl implements UserService {
         return new ProfileUserDTO(userRepository.getDetailUser(AuthUtils.getCurrentUserId()));
     }
 
+    @Transactional
     @Override
     public void createUser(UserCreateDTO createDTO) {
+        // Validate username
+        if (userRepository.existsByUsername(createDTO.getUsername())) {
+            throw exceptionFactory.resourceExistedException(MessageConst.User.USER_USERNAME_EXISTED_ERROR, Resources.USER,
+                MessageConst.RESOURCE_EXISTED, ErrorKey.User.USERNAME, createDTO.getUsername());
+        }
+        // validate updated fields
+        validateCreateUser(createDTO);
 
+        // Tạo user mới
+        User newUser = new User();
+        org.springframework.beans.BeanUtils.copyProperties(createDTO, newUser);
+        newUser.setCreatedAt(new Date());
+        newUser.setCreatedBy(AuthUtils.getCurrentUserId());
+        newUser.setPassword(passwordEncoder.encode(createDTO.getPassword()));
+        newUser.setGender(createDTO.getGenderType().getType());
+        newUser = userRepository.save(newUser);
+
+        // Add to user_role
+        Long newUserId = newUser.getId();
+        List<UserRole> lstUserRole = createDTO.getLstRoleId().stream().map(roleId -> new UserRole(newUserId, roleId))
+            .collect(Collectors.toList());
+        userRoleRepository.saveAll(lstUserRole);
+    }
+
+    @Transactional
+    @Override
+    public void updateUser(Long userId, UserSaveReqDTO updateDTO) {
+        // Kiểm tra user tồn tại
+        User user = findUserById(userId);
+
+        // Validate updated fields
+        validateUpdateUser(userId, updateDTO);
+
+        // Update fields
+        org.springframework.beans.BeanUtils.copyProperties(updateDTO, user);
+        user.setGender(updateDTO.getGenderType().getType());
+        user.setModifiedAt(new Date());
+        user.setModifiedBy(AuthUtils.getCurrentUserId());
+        userRepository.save(user);
+
+        // Update user_role (delete all -> save new)
+        userRoleRepository.deleteAllByUserId(user.getId());
+        List<UserRole> lstUserRole = updateDTO.getLstRoleId().stream().map(roleId -> new UserRole(user.getId(), roleId))
+            .collect(Collectors.toList());
+        userRoleRepository.saveAll(lstUserRole);
     }
 
     @Override
-    public void updateUser(UserUpdateDTO updateDTO) {
-
+    public UserDetailDTO getUserDetail(Long userId) {
+        IGetDetailUserDTO iUserDetails = userRepository.getDetailUser(userId);
+        if (Objects.isNull(iUserDetails)) {
+            throw exceptionFactory.resourceNotFoundException(MessageConst.User.USER_NOT_FOUND_ERROR_CODE, Resources.USER,
+                MessageConst.RESOURCE_NOT_FOUND, ErrorKey.User.ID, String.valueOf(userId));
+        }
+        return new UserDetailDTO(iUserDetails);
     }
 
     @Override
@@ -365,6 +420,51 @@ public class UserServiceImpl implements UserService {
             causeList.add(String.format("Duplicated fields: %s", String.join(",", duplicatedFields)));
         }
 
+    }
+
+    /**
+     * Validate user when create or update
+     */
+    private void validateCreateUser(UserSaveReqDTO saveReqDTO){
+        // Validate existed email;
+        if (userRepository.existsByEmail(saveReqDTO.getEmail())) {
+            throw exceptionFactory.resourceExistedException(MessageConst.User.USER_EMAIL_EXISTED_ERROR, Resources.USER,
+                MessageConst.RESOURCE_EXISTED, ErrorKey.User.EMAIL, saveReqDTO.getEmail());
+        }
+
+        // Validate existed code with the same userType
+        if (userRepository.existsByCodeAndUserType(saveReqDTO.getCode(), saveReqDTO.getUserType())) {
+            throw exceptionFactory.resourceExistedException(MessageConst.User.USER_CODE_AND_USER_TYPE_EXISTED_ERROR, Resources.USER,
+                MessageConst.RESOURCE_EXISTED, ErrorKey.User.CODE, saveReqDTO.getCode());
+        }
+
+    }
+
+    /**
+     * Validate user when create or update
+     */
+    private void validateUpdateUser(Long userId, UserSaveReqDTO saveReqDTO) {
+        // Validate existed email;
+        if (userRepository.existsByEmailAndIdNot(saveReqDTO.getEmail(), userId)) {
+            throw exceptionFactory.resourceExistedException(MessageConst.User.USER_EMAIL_EXISTED_ERROR, Resources.USER,
+                MessageConst.RESOURCE_EXISTED, ErrorKey.User.EMAIL, saveReqDTO.getEmail());
+        }
+
+        // Validate existed code with the same userType
+        if (userRepository.existsByCodeAndUserTypeAndIdNot(saveReqDTO.getCode(), saveReqDTO.getUserType(), userId)) {
+            throw exceptionFactory.resourceExistedException(MessageConst.User.USER_CODE_AND_USER_TYPE_EXISTED_ERROR, Resources.USER,
+                MessageConst.RESOURCE_EXISTED, ErrorKey.User.CODE, saveReqDTO.getCode());
+        }
+
+    }
+
+    /**
+     * Find user by id and deleted_flag
+     */
+    private User findUserById(Long id) {
+        return userRepository.findByIdAndDeletedFlag(id, DeletedFlag.NOT_YET_DELETED.getValue())
+            .orElseThrow(() -> exceptionFactory.resourceNotFoundException(MessageConst.User.USER_NOT_FOUND_ERROR_CODE, Resources.USER,
+                MessageConst.RESOURCE_NOT_FOUND, ErrorKey.User.ID, String.valueOf(id)));
     }
 
     /**

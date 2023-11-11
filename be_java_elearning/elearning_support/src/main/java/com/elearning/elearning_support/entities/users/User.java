@@ -83,7 +83,7 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "avatar_id")
     private Long avatarId;
 
-    @Column(name = "status")
+    @Column(name = "status", insertable = false)
     private Integer status;
 
     @Column(name = "user_type", nullable = false)
@@ -98,11 +98,14 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "activation_key")
     String activationKey;
 
-    @Column(name = "created_source")
+    @Column(name = "created_source", insertable = false)
     private Integer createdSource;
 
     @Column(name = "user_uuid", insertable = false, updatable = false)
     private UUID userUUID;
+
+    @Column(name = "deleted_flag", insertable = false)
+    private Integer deletedFlag;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",

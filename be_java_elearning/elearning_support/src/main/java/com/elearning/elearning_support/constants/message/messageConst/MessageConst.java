@@ -15,6 +15,8 @@ public class MessageConst {
 
         public static final String FILE_ATTACHED = "file_attached";
 
+        public static final String USER = "user";
+
     }
 
     public static final String RESOURCE_NOT_FOUND = "not found";
@@ -62,9 +64,9 @@ public class MessageConst {
 
         public static final String PERMISSION_DENIED_ERROR_CODE = "file_attach.error.permission.denied";
 
-        public static final String FILE_EXCESS_SIZE_ERROR_CODE = "file.upload.excess.size.error";
+        public static final String FILE_EXCESS_SIZE_ERROR_CODE = "file.error.upload.excess.size";
 
-        public static final String FILE_INVALID_EXTENSION_ERROR_CODE = "file.upload.invalid.extension.error";
+        public static final String FILE_INVALID_EXTENSION_ERROR_CODE = "file.error.upload.invalid.extension";
 
         public static final String FILE_EXCESS_FILENAME_LENGTH_ERROR_CODE = "file.upload.excess.filename.length.error";
 
@@ -74,12 +76,22 @@ public class MessageConst {
 
         public static final String FILE_EXCEL_MISSING_COLUMN_NUMBER_ERROR = "file.excel.missing.column.number";
 
-        public static final String FILE_EXCEL_EMPTY_SHEET_ERROR = "file.excel.empty.sheet.error";
+        public static final String FILE_EXCEL_EMPTY_SHEET_ERROR = "file.error.excel.empty.sheet";
 
     }
 
     public static class User {
-        public static final String USER_WRONG_USERNAME_OR_PASSWORD_ERROR_CODE = "user.wrong.username.password.error";
+        public static final String USER_NOT_FOUND_ERROR_CODE = "user.error.not.found";
+
+        public static final String USER_USERNAME_EXISTED_ERROR = "user.error.username.existed";
+
+        public static final String USER_EMAIL_EXISTED_ERROR = "user.email.existed.error";
+
+        public static final String USER_CODE_EXISTED_ERROR = "user.error.code.existed";
+
+        public static final String USER_CODE_AND_USER_TYPE_EXISTED_ERROR = "user.error.code.user_type.existed";
+
+        public static final String USER_WRONG_USERNAME_OR_PASSWORD_ERROR_CODE = "user.error.wrong.username.password";
     }
 
 

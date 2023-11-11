@@ -2,7 +2,6 @@ package com.elearning.elearning_support.enums.importFile;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @Getter

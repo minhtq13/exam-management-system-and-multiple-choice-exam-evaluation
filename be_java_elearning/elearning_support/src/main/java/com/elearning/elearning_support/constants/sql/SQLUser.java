@@ -2,7 +2,7 @@ package com.elearning.elearning_support.constants.sql;
 
 public class SQLUser {
 
-    public static final String GET_DETAIL_USER =
+    public static final String GET_USER_DETAIL =
         "SELECT \n" +
             "    users.id AS id,\n" +
             "    users.code AS code, \n" +
@@ -21,12 +21,12 @@ public class SQLUser {
             "     users.created_at AS createdAt, \n" +
             "     users.modified_at AS modifiedAt, \n" +
             "     department.name AS department, \n" +
-            "     department.id AS departmentId \n" +
+            "     department.id AS departmentId, \n" +
+            "     {h-schema}get_user_role_json(users.id) AS roleJson \n" +
             "FROM {h-schema}users \n" +
             "     LEFT JOIN {h-schema}department ON users.department_id = department.id \n" +
             "WHERE \n" +
-            "     users.id = :userId ";
-
+            "     users.id = :userId AND users.deleted_flag = 1 ";
 
     public static final String GET_LIST_STUDENT =
         "SELECT \n" +
@@ -83,6 +83,9 @@ public class SQLUser {
     public static final String GET_LIST_CURRENT_USER_CODE_BY_USER_TYPE =
         "SELECT code FROM {h-schema}users WHERE user_type = :userType";
 
+
+    public static final String DELETE_USER_ROLE_BY_USER_ID =
+        "DELETE FROM {h-schema}users_roles WHERE user_id = :userId";
 
 
 

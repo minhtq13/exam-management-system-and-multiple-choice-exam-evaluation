@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS elearning_support_dev."users"
     "email"                 varchar(50) unique,
     "username"              varchar(50) unique not null,
     "password"              varchar(255)       not null,
-    "status"                int4               not null default 0,
+    "status"                int4               not null default 1,
     "user_type"             int2               not null,
     "department_id"         int8               not null,
     "created_at"            timestamp          not null,

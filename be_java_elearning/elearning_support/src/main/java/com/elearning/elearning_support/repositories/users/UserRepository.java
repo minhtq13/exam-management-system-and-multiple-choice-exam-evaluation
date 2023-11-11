@@ -17,13 +17,24 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUsernameAndStatus(String username, Integer status);
 
+    Optional<User> findByIdAndDeletedFlag(Long id, Integer deletedFlag);
+
     Integer countByUsername(String username);
 
     Boolean existsByCode(String code);
 
-    @Query(nativeQuery = true, value = SQLUser.GET_DETAIL_USER)
-    IGetDetailUserDTO getDetailUser(Long userId);
+    Boolean existsByUsername(String username);
 
+    Boolean existsByEmail(String email);
+
+    Boolean existsByEmailAndIdNot(String email, Long id);
+
+    Boolean existsByCodeAndUserType(String code, Integer userType);
+
+    Boolean existsByCodeAndUserTypeAndIdNot(String code, Integer userType, Long userId);
+
+    @Query(nativeQuery = true, value = SQLUser.GET_USER_DETAIL)
+    IGetDetailUserDTO getDetailUser(Long userId);
 
     @Query(nativeQuery = true, value = SQLUser.GET_LIST_STUDENT)
     Page<IGetUserListDTO> getListStudent(String name, String code, Pageable pageable);

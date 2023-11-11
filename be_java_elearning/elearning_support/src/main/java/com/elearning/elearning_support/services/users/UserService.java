@@ -1,6 +1,5 @@
 package com.elearning.elearning_support.services.users;
 
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -9,7 +8,8 @@ import com.elearning.elearning_support.dtos.fileAttach.importFile.ImportResponse
 import com.elearning.elearning_support.dtos.users.IGetUserListDTO;
 import com.elearning.elearning_support.dtos.users.ProfileUserDTO;
 import com.elearning.elearning_support.dtos.users.UserCreateDTO;
-import com.elearning.elearning_support.dtos.users.UserUpdateDTO;
+import com.elearning.elearning_support.dtos.users.UserDetailDTO;
+import com.elearning.elearning_support.dtos.users.UserSaveReqDTO;
 
 @Service
 public interface UserService {
@@ -24,10 +24,16 @@ public interface UserService {
      */
     void createUser(UserCreateDTO createDTO);
 
+
     /**
      * Cập nhật thông tin user hệ thống
      */
-    void updateUser(UserUpdateDTO updateDTO);
+    void updateUser(Long userId, UserSaveReqDTO updateDTO);
+
+    /**
+     * Chi tiết thông tin user
+     */
+    UserDetailDTO getUserDetail(Long userId);
 
     /**
      * Lấy danh sách HSSV

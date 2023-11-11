@@ -3,10 +3,14 @@ package com.elearning.elearning_support.dtos.users;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import com.elearning.elearning_support.constants.ValidationConstants;
+import com.elearning.elearning_support.enums.users.GenderEnum;
 import com.elearning.elearning_support.enums.users.IdentityTypeEnum;
-import com.elearning.elearning_support.enums.users.UserTypeEnum;
 import com.elearning.elearning_support.utils.DateUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,14 +20,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import net.bytebuddy.build.HashCodeAndEqualsPlugin.Sorted;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserUpdateDTO {
+public class UserSaveReqDTO {
 
     @Schema(description = "Loại giấy tờ chứng thực cá nhân")
     IdentityTypeEnum identityType;
@@ -37,6 +40,11 @@ public class UserUpdateDTO {
     @Schema(description = "Id ảnh đại diện đã tải lên")
     Long avatarId;
 
+    @NotBlank
+    @NotNull
+    @Max(value = 20)
+    String code;
+
     @NotNull
     @NotBlank
     @Schema(description = "Họ và tên đệm")
@@ -47,8 +55,11 @@ public class UserUpdateDTO {
     @Schema(description = "Tên")
     String lastName;
 
-    @JsonFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_SLASH, timezone = DateUtils.TIME_ZONE)
+    @Schema(description = "Giới tính")
     @NotNull
+    GenderEnum genderType;
+
+    @JsonFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_SLASH, timezone = DateUtils.TIME_ZONE)
     @Schema(description = "Ngày sinh")
     Date birthDate;
 
@@ -56,10 +67,12 @@ public class UserUpdateDTO {
     String address;
 
     @Schema(description = "Số điện thoại")
-    @NotNull
+    @Pattern(regexp = ValidationConstants.REGEX_PHONE)
     String phoneNumber;
 
+    @NotBlank
     @Schema(description = "Email")
+    @Email(regexp = ValidationConstants.REGEX_EMAIL)
     String email;
 
     @Schema(description = "Danh sách quyền")
@@ -70,6 +83,6 @@ public class UserUpdateDTO {
     Long departmentId;
 
     @NotNull
-    UserTypeEnum userType;
+    Integer userType;
 
 }

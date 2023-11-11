@@ -2,12 +2,12 @@ package com.elearning.elearning_support.dtos.users;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.validation.constraints.NotNull;
+import org.springframework.beans.BeanUtils;
 import com.elearning.elearning_support.enums.users.IdentityTypeEnum;
 import com.elearning.elearning_support.utils.DateUtils;
+import com.elearning.elearning_support.utils.object.ObjectMapperUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
@@ -74,5 +74,10 @@ public class UserDetailDTO {
 
     @Schema(description = "Danh sách vai trò của user")
     List<RoleDTO> roles = new ArrayList<>();
+
+    public UserDetailDTO(IGetDetailUserDTO iGetDetailUserDTO){
+        BeanUtils.copyProperties(iGetDetailUserDTO, this);
+        this.roles = ObjectMapperUtil.listMapper(iGetDetailUserDTO.getRoleJson(), RoleDTO.class);
+    }
 
 }
