@@ -5,7 +5,7 @@ import {
 } from "@ant-design/icons";
 import { Avatar, Dropdown } from "antd";
 import { useNavigate } from "react-router-dom";
-import { clearInfoLocalStorage } from "../../../../utils/storage";
+import { clearInfoLocalStorage, getToken } from "../../../../utils/storage";
 import "./Account.scss";
 import useAccount from "../../../../hooks/useAccount";
 import { useEffect } from "react";
@@ -17,11 +17,12 @@ const user = {
 
 const Account = () => {
 	const navigate = useNavigate();
+	const token = getToken()
 	const {getProfileUser, userInfo} = useAccount();
 	useEffect(() => {
 		getProfileUser();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [token]);
 	const items = [
 		{
 			key: 1,

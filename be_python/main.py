@@ -67,8 +67,14 @@ def get_marker(image, model, filename):
                 (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 0.4 if conf > threshold_warning else 0.5,
                 blue_color if conf > threshold_warning else warning_color, 1,cv2.LINE_AA)
         # Handle errors
+        maybe_wrong_marker = []
         if marker2 == [] or len(list_marker) != 4:
-            raise Exception(f"Xem lại ảnh đầu vào {filename} có thể bị thiếu góc")
+            error_message = f"Xem lại ảnh đầu vào {filename} có thể bị thiếu góc"
+            maybe_wrong_marker.append(error_message)
+            with open(f"./MayBeWrong/error_{filename.split('.')[0]}.txt", "w", encoding="utf-8") as f:
+                for string in maybe_wrong_marker:
+                    f.write(string + "\n")
+            raise Exception(error_message)
         oriented, marker_coordinates_true = orient_image_by_angle(list_marker, marker_coordinates)
         oritentation = ''
         # Ảnh bị xoay 90 độ về bên phải => marker 2 ở bottom-left
@@ -85,10 +91,10 @@ def get_marker(image, model, filename):
             oritentation = 'tl'
         corners = sorted(np.concatenate(marker_coordinates_true).tolist())
         output = generate_output(image, corners)
-        return output, oritentation
+        return output, oritentation, maybe_wrong_marker
     except Exception as e:
         print(e)
-        return None, None
+        return None, None, None
 
 def crop_image(img, numberAnswer):
     ans_blocks = []
@@ -231,14 +237,14 @@ def mergeImages(filename, coord_array, array_img_graft, background_image, imgInf
         y_coord = coord_array[i][1]
         height, width, _ = array_img_graft[i].shape
         background_image[y_coord: y_coord + height, x_coord: x_coord + width] = array_img_graft[i] / 255
-    cv2.imwrite(f"./images/answer_sheets/handle-{args.input}/handle-{filename_cut}.jpg", background_image * 255)
+    cv2.imwrite(f"./images/answer_sheets/handle-{args.input}/handle_{filename_cut}.jpg", background_image * 255)
 
 
 if __name__ == "__main__":
     # ========================== Đo thời gian ====================================
     # start_time = time.time()
     # ===================== Khai báo và load model ==============================
-    pWeight = "./Model/best2810.pt"
+    pWeight = "./Model/best10112.pt"
     model = YOLO(pWeight)
     # ======================= Khai báo tham số truyền vào cmd  ===============================
     parser = argparse.ArgumentParser(description="Process some integers.")
@@ -266,7 +272,7 @@ if __name__ == "__main__":
         if filename.lower().endswith((".jpg", ".jpeg", ".png")):
             image_path = os.path.join(folder_path, filename)
             image = cv2.imread(image_path)
-            document, oritentation = get_marker(image, model, filename)
+            document, oritentation, maybe_wrong_marker = get_marker(image, model, filename)
             if (document is None):
                 continue
             if oritentation == 'bl':
@@ -321,10 +327,9 @@ if __name__ == "__main__":
             # # Ghi dữ liệu từ điển vào tệp tin JSON
             # with open(file_path, "w") as file:
             #     json.dump(result, file)
-
             # =============================== Ghi file cảnh báo có thể sai ==========================
             if len(maybe_wrong_info) > 0 or len(maybe_wrong_answer_array) > 0:
-                with open(f"./MayBeWrong/result-{filename}.txt", "w", encoding="utf-8") as f:
+                with open(f"./MayBeWrong/warning_{filename.split('.')[0]}.txt", "w", encoding="utf-8") as f:
                     if len(maybe_wrong_info) > 0:
                         for string in maybe_wrong_info:
                             f.write(string + "\n")

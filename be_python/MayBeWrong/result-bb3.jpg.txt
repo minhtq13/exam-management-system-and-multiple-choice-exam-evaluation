@@ -1,9 +1,0 @@
-Kiểm tra lại nhãn "D" tại câu 2 ảnh bb3.jpg, có xác suất: 0.608
-Kiểm tra lại nhãn "C" tại câu 3 ảnh bb3.jpg, có xác suất: 0.602
-Kiểm tra lại nhãn "B" tại câu 4 ảnh bb3.jpg, có xác suất: 0.626
-Kiểm tra lại nhãn "A" tại câu 5 ảnh bb3.jpg, có xác suất: 0.528
-Kiểm tra lại nhãn "BD" tại câu 5 ảnh bb3.jpg, có xác suất: 0.665
-Kiểm tra lại nhãn "AC" tại câu 7 ảnh bb3.jpg, có xác suất: 0.693
-Kiểm tra lại nhãn "AD" tại câu 8 ảnh bb3.jpg, có xác suất: 0.31
-Kiểm tra lại nhãn "BCD" tại câu 9 ảnh bb3.jpg, có xác suất: 0.727
-Kiểm tra lại nhãn "ABC" tại câu 10 ảnh bb3.jpg, có xác suất: 0.71
