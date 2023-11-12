@@ -1,5 +1,6 @@
 package com.elearning.elearning_support.repositories.users;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.springframework.data.domain.Page;
@@ -37,11 +38,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
     IGetDetailUserDTO getDetailUser(Long userId);
 
     @Query(nativeQuery = true, value = SQLUser.GET_LIST_STUDENT)
-    Page<IGetUserListDTO> getListStudent(String name, String code, Pageable pageable);
+    Page<IGetUserListDTO> getPageStudent(String name, String code, Pageable pageable);
 
+    @Query(nativeQuery = true, value = SQLUser.GET_LIST_STUDENT)
+    List<IGetUserListDTO> getListStudent(String name, String code);
 
     @Query(nativeQuery = true, value = SQLUser.GET_LIST_TEACHER)
-    Page<IGetUserListDTO> getListTeacher(String name, String code, Pageable pageable);
+    Page<IGetUserListDTO> getPageTeacher(String name, String code, Pageable pageable);
+
+    @Query(nativeQuery = true, value = SQLUser.GET_LIST_TEACHER)
+    List<IGetUserListDTO> getListTeacher(String name, String code);
 
     @Query(nativeQuery = true, value = SQLUser.GET_LIST_CURRENT_USERNAME)
     Set<String> getLstCurrentUsername();

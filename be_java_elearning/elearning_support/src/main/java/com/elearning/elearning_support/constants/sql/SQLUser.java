@@ -18,6 +18,14 @@ public class SQLUser {
             "     users.phone_number AS phoneNumber, \n" +
             "     users.address AS address, \n" +
             "     users.email AS email, \n" +
+            "     CASE \n" +
+            "          WHEN users.gender = 0 THEN 'FEMALE' \n" +
+            "          WHEN users.gender = 1 THEN 'MALE' \n" +
+            "          ELSE 'OTHER' \n" +
+            "     END AS gender, \n" +
+            "     CASE \n" +
+            "         WHEN users.user_type = 1 THEN users.meta_data->>'courseNum' \n" +
+            "     END AS courseNum, \n" +
             "     users.created_at AS createdAt, \n" +
             "     users.modified_at AS modifiedAt, \n" +
             "     department.name AS department, \n" +
@@ -37,7 +45,13 @@ public class SQLUser {
             "     student.last_name AS lastName, \n" +
             "     student.birth_date AS birthDate, \n" +
             "     student.phone_number AS phoneNumber, \n" +
+            "     CASE \n" +
+            "          WHEN student.gender = 0 THEN 'FEMALE' \n" +
+            "          WHEN student.gender = 1 THEN 'MALE' \n" +
+            "          ELSE 'OTHER' \n" +
+            "     END AS gender, \n" +
             "     student.email AS email, \n" +
+            "     student.meta_data->>'courseNum' AS courseNum, \n" +
             "     'Học Sinh / Sinh Viên' AS userType, \n" +
             "     COALESCE(student.modified_at, student.created_at) AS lastModifiedAt \n" +
             "FROM {h-schema}users AS student \n" +
@@ -58,6 +72,11 @@ public class SQLUser {
             "   teacher.first_name AS firstName, \n" +
             "   teacher.last_name AS lastName, \n" +
             "   teacher.birth_date AS birthDate, \n" +
+            "   CASE \n" +
+            "       WHEN teacher.gender = 0 THEN 'FEMALE' \n" +
+            "       WHEN teacher.gender = 1 THEN 'MALE' \n" +
+            "       ELSE 'OTHER' \n" +
+            "   END AS gender, \n" +
             "   teacher.phone_number AS phoneNumber, \n" +
             "   teacher.email AS email, \n" +
             "   'Giáo Viên / Giảng Viên' AS userType, \n" +

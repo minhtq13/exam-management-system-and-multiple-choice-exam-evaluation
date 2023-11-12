@@ -1,8 +1,8 @@
 package com.elearning.elearning_support.controllers.test.test_set;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -40,9 +40,9 @@ public class TestSetController {
     @Operation(summary = "Export đề thi ra file word")
     public ResponseEntity<InputStreamResource> exportTestSetToWord(@RequestBody TestSetSearchReqDTO searchReqDTO) throws IOException {
         HttpHeaders headers = new HttpHeaders();
-        String fileName = "TestSetExport.docx";
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        headers.setContentDisposition(ContentDisposition.attachment().filename(fileName).build());
+        String fileName = String.format("TestSetExport_%s_.docx", LocalDateTime.now());
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
         return ResponseEntity.ok().headers(headers).body(testSetService.exportTestSet(searchReqDTO));
     }
 

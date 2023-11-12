@@ -9,6 +9,8 @@ public interface IGetUserListDTO {
 
     Integer getIdentityType();
 
+    String getGender();
+
     String getIdentificationNumber();
 
     String getAvatarPath();
@@ -32,4 +34,6 @@ public interface IGetUserListDTO {
     String getDepartmentName();
 
     String getUserType();
+
+    Integer getCourseNum();
 }

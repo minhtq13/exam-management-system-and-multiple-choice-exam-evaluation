@@ -146,14 +146,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<IGetUserListDTO> getPageStudent(String studentName, String studentCode, Pageable pageable) {
-        return userRepository.getListStudent(studentName, studentCode, pageable);
+        return userRepository.getPageStudent(studentName, studentCode, pageable);
+    }
+
+    @Override
+    public List<IGetUserListDTO> getListStudent(String studentName, String studentCode) {
+        return userRepository.getListStudent(studentName, studentCode);
     }
 
     @Override
     public Page<IGetUserListDTO> getPageTeacher(String teacherName, String teacherCode, Pageable pageable) {
-        return userRepository.getListTeacher(teacherName, teacherCode, pageable);
+        return userRepository.getPageTeacher(teacherName, teacherCode, pageable);
     }
 
+    @Override
+    public List<IGetUserListDTO> getListTeacher(String teacherName, String teacherCode) {
+        return userRepository.getListTeacher(teacherName, teacherCode);
+    }
 
     @Transactional
     @Override

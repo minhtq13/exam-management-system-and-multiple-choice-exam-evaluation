@@ -18,6 +18,7 @@ public interface IGetDetailUserDTO {
 
     String getAddress();
 
+    String getGender();
 
     @JsonFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_SLASH, timezone = DateUtils.TIME_ZONE)
     Date getBirthDate();
@@ -40,5 +41,7 @@ public interface IGetDetailUserDTO {
 
     Integer getUserType();
     String getRoleJson();
+
+    Integer getCourseNum();
 
 }

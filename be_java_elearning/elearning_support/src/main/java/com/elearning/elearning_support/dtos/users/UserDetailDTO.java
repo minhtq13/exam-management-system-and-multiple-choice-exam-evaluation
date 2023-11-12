@@ -72,6 +72,9 @@ public class UserDetailDTO {
     @Schema(description = "Loại tài khoản")
     Integer userType;
 
+    @Schema(description = "Khóa HS/SV nếu loại người dùng là HSSV")
+    Integer courseNum;
+
     @Schema(description = "Danh sách vai trò của user")
     List<RoleDTO> roles = new ArrayList<>();
 

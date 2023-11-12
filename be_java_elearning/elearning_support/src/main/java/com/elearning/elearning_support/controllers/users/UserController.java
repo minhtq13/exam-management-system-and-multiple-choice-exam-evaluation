@@ -1,11 +1,11 @@
 package com.elearning.elearning_support.controllers.users;
 
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -81,8 +81,11 @@ public class UserController {
 
     @GetMapping("/student/list")
     @Operation(summary = "Danh sách học sinh / sinh viên danh sách toàn bộ")
-    public ResponseEntity<?> getListStudent() {
-        return ResponseEntity.ok("");
+    public List<IGetUserListDTO> getListStudent(
+        @RequestParam(name = "name", required = false, defaultValue = "") String studentName,
+        @RequestParam(name = "code", required = false, defaultValue = "") String studentCode
+    ) {
+        return userService.getListStudent(studentName, studentCode);
     }
 
     @PostMapping(value = "/student/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -115,8 +118,11 @@ public class UserController {
 
     @GetMapping("/teacher/list")
     @Operation(summary = "Danh sách giáo viên / giảng viên danh sách toàn bộ")
-    public ResponseEntity<?> getListTeacher() {
-        return ResponseEntity.ok("");
+    public List<IGetUserListDTO> getListTeacher(
+        @RequestParam(name = "name", required = false, defaultValue = "") String teacherName,
+        @RequestParam(name = "code", required = false, defaultValue = "") String teacherCode
+    ) {
+        return userService.getListTeacher(teacherName, teacherCode);
     }
 
     @PostMapping(value = "/teacher/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

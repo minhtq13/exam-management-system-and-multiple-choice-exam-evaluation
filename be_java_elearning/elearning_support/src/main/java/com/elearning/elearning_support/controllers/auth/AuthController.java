@@ -78,7 +78,7 @@ public class AuthController {
     }
 
     @GetMapping("/profile")
-    @Operation(description = "Lấy thông tin user đăng nhập")
+    @Operation(summary = "Lấy thông tin user đăng nhập")
     public ProfileUserDTO getProfile() {
         return userService.getUserProfile();
     }

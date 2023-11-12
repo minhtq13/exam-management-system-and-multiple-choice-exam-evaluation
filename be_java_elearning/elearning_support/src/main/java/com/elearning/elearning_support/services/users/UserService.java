@@ -1,5 +1,6 @@
 package com.elearning.elearning_support.services.users;
 
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -36,15 +37,25 @@ public interface UserService {
     UserDetailDTO getUserDetail(Long userId);
 
     /**
-     * Lấy danh sách HSSV
+     * Lấy danh sách HSSV dạng page
      */
     Page<IGetUserListDTO> getPageStudent(String studentName, String studentCode, Pageable pageable);
 
+    /**
+     * Lấy danh sách HSSV dạng list
+     */
+    List<IGetUserListDTO> getListStudent(String studentName, String studentCode);
+
 
     /**
-     * Lấy danh sách GV
+     * Lấy danh sách GV dạng page
      */
     Page<IGetUserListDTO> getPageTeacher(String teacherName, String teacherCode, Pageable pageable);
+
+    /**
+     * Lấy danh sách GV dạng list
+     */
+    List<IGetUserListDTO> getListTeacher(String teacherName, String teacherCode);
 
     /**
      * Import danh sách HSSV
