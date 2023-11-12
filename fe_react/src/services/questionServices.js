@@ -3,14 +3,28 @@ import { apiPath } from "../config/apiPath";
 export const addQuestionService = async (params, successCallback, errorCallback) => {
   await postRequest(`${apiPath.addQuestion}`, params, successCallback, errorCallback);
 };
-export const getQuestionByCodeService = async (code, params, successCallback, errorCallback) => {
-  await getRequest(
-    `${apiPath.getQuestionbyCode}?code=${code}`,
-    params,
-    successCallback,
-    errorCallback
-  );
+export const getQuestionService = async (subjectId, subjectCode, chapterCode, chapterId, level, successCallback, errorCallback) => {
+  const params = {
+    level
+  };
+
+  if (subjectId) {
+    params.subjectId = subjectId;
+  }
+
+  if (chapterId) {
+    params.chapterId = chapterId;
+  }
+
+  const queryString = Object.entries(params)
+    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+    .join("&");
+
+  const apiUrl = `${apiPath.getQuestionbyCode}?${queryString}`;
+
+  await getRequest(apiUrl, null, successCallback, errorCallback);
 };
+
 export const deleteQuesionsService = async (questionId, params, successCallback, errorCallback) => {
   await deleteRequest(
     `${apiPath.deleteQuestion}/${questionId}`,

@@ -1,21 +1,27 @@
 import { useState } from "react";
-import { getAllStudentsService } from "../services/studentsService";
+import { getPagingStudentsService } from "../services/studentsService";
 import useNotify from "./useNotify";
 
 const useStudents = () => {
 	const notify = useNotify();
 	const [allStudents, setAllStudents] = useState([]);
 	const [tableLoading, setTableLoading] = useState(true);
+	const [pagination, setPagination] = useState({});
 
-	const getAllStudents = (payload = {}) => {
+	const getAllStudents = (params) => {
 		setTableLoading(true);
-		getAllStudentsService(
-			payload,
+		getPagingStudentsService(
+			params.name,
+			params.code,
+			params.page,
+			params.size,
+			params.sort,
 			(res) => {
-				setAllStudents(res.data);
+				setAllStudents(res.data.content);
+				setPagination({current: res.data.pageable.pageNumber + 1, pageSize: res.data.pageable.pageSize, total: res.data.totalElements})
 				setTableLoading(false);
 			},
-			(err) => {
+			(err)=> {
 				setTableLoading(false);
 				if (err.response.status === 401) {
 					notify.warning(
@@ -36,6 +42,7 @@ const useStudents = () => {
 		allStudents,
 		getAllStudents,
 		tableLoading,
+		pagination
 	};
 };
 

@@ -31,6 +31,7 @@ import { appPath } from "./appPath";
 import QuestionList from "../pages/Questions/QuestionList/QuestionList";
 import QuestionEdit from "../pages/Questions/QuestionEdit/QuestionEdit";
 import ExamClassList from "../pages/ExamClass/ExamClassList/ExamClassList";
+import TestEdit from "../pages/Test/TestEdit/TestEdit";
 
 const publicRoutes = [
 	{ path: appPath.notFound, component: NotFound },
@@ -40,7 +41,7 @@ const publicRoutes = [
 	{ path: appPath.teacherDashboard, component: TeacherDashboard },
 	{ path: appPath.adminDashboard, component: AdminDashboard },
 	//student
-	{ path: appPath.studentAdd, component: StudentAdd },
+	{ path: appPath.studentAdd, component: TestEdit },
 	{ path: appPath.studentEdit, component: StudentEdit },
 	{ path: appPath.studentEdit + "/:code", component: StudentEdit },
 	{ path: appPath.studentList, component: StudentList },
