@@ -1,8 +1,5 @@
 package com.elearning.elearning_support.dtos.chapter;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.validation.constraints.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -14,12 +11,18 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SubjectChapterCreateDTO {
+public class ChapterBaseResDTO {
 
-    @NotNull
-    @Schema(description = "Id Môn học")
-    Long subjectId;
+    @Schema(description = "Id chương")
+    Long id;
 
-    List<ChapterSaveReqDTO> lstChapter = new ArrayList<>();
+    @Schema(description = "Tiêu đều chương")
+    String title;
+
+    @Schema(description = "Mã chương")
+    String code;
+
+    @Schema(description = "Thứ tự chương trong môn học")
+    Integer orders;
 
 }

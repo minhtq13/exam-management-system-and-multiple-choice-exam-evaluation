@@ -38,10 +38,15 @@ public class MessageConst {
 
     public static class Subject {
         public static final String NOT_FOUND = "error.subject.not.found";
-    }
+
+        public static final String EXISTED_CODE = "error.subject.existed.code";
+     }
 
     public static class Chapter {
         public static final String NOT_FOUND = "error.chapter.not.found";
+        public static final String EXISTED_CODE = "error.chapter.existed.code";
+
+        public static final String EXISTED_ORDERS = "error.chapter.existed.orders";
     }
 
     public static class Test {

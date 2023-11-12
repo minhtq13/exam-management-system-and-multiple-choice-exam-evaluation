@@ -342,7 +342,7 @@ COMMENT ON COLUMN "elearning_support_dev"."subject"."id" IS 'Id môn học';
 COMMENT ON COLUMN "elearning_support_dev"."subject"."code" IS 'Mã môn học';
 COMMENT ON COLUMN "elearning_support_dev"."subject"."is_enabled" IS 'Trạng thái hiển thị môn học (Ẩn/Hiện)';
 COMMENT ON COLUMN "elearning_support_dev"."subject"."title" IS 'Tiêu đề môn học';
-COMMENT ON COLUMN "elearning_support_dev"."subject"."credit" IS '';
+COMMENT ON COLUMN "elearning_support_dev"."subject"."credit" IS 'Số tín chỉ của môn học';
 COMMENT ON COLUMN "elearning_support_dev"."subject"."description" IS 'Mô tả môn học';
 COMMENT ON COLUMN "elearning_support_dev"."subject"."created_at" IS 'Thời gian tạo';
 COMMENT ON COLUMN "elearning_support_dev"."subject"."created_by" IS 'Id Người thực hiện tạo ';
@@ -360,7 +360,7 @@ CREATE TABLE IF NOT EXISTS "elearning_support_dev"."chapter"
     "is_enabled"  boolean default true,
     "modified_at" timestamp,
     "modified_by" int8,
-    "orders"      int4,
+    "orders"      int4 not null ,
     "title"       varchar(255),
     "subject_id"  int8        not null,
     PRIMARY KEY ("id")

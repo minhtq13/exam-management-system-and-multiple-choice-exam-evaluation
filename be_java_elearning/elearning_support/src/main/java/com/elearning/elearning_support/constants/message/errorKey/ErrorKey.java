@@ -8,10 +8,16 @@ public class ErrorKey {
 
     public static class Subject {
         public static final String ID = "id";
+
+        public static final String CODE = "code";
     }
 
     public static class Chapter {
         public static final String ID = "id";
+
+        public static final String CODE = "code";
+
+        public static final String ORDER = "orders";
     }
 
     public static class Test {

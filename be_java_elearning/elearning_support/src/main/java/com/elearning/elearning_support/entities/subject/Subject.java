@@ -32,7 +32,7 @@ public class Subject extends BaseEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "is_enabled")
+    @Column(name = "is_enabled", insertable = false)
     private Boolean isEnabled;
 
     @Size(max = 10)
@@ -51,6 +51,7 @@ public class Subject extends BaseEntity {
     @NotNull
     @Column(name = "title", nullable = false)
     private String title;
+
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "subject_id", referencedColumnName = "id")
