@@ -126,8 +126,8 @@ def remove_elements_info(arr):
         result.append(item)
         j = i + 1
         while j < len(arr) and abs(item[0] - arr[j][0]) <= 5:
-            if arr[j][5] > item[5]:
-                result.pop()  # Loại bỏ phần tử đã thêm trước đó
+            if arr[j][4] >= item[4]:
+                result.pop()
                 break
             j += 1
         i = j
@@ -142,8 +142,23 @@ def remove_elements_answer(arr):
         result.append(item)
         j = i + 1
         while j < len(arr) and abs(item[1] - arr[j][1]) <= 5:
-            if arr[j][5] > item[5]:
-                result.pop()  # Loại bỏ phần tử đã thêm trước đó
+            if arr[j][4] >= item[4]:
+                result.pop()
+                break
+            j += 1
+        i = j
+    return result
+
+def remove_elements_marker(arr):
+    result = []
+    i = 0
+    while i < len(arr):
+        item = arr[i]
+        result.append(item)
+        j = i + 1
+        while j < len(arr) and abs(item[0] - arr[j][0]) <= 5 and abs(item[1] - arr[j][1]) <= 5:
+            if arr[j][4] >= item[4]:
+                result.pop()
                 break
             j += 1
         i = j
@@ -258,51 +273,31 @@ def get_remainder(numberAnswer):
     return remainder
 
 
+def calculate_new_coordinates(marker_coordinates, rect, param1, param2):
+    matching_indices = np.where((marker_coordinates[:, :2] == rect).all(axis=1))
+    c = marker_coordinates[matching_indices]
+    c = c.flatten()
+    new_array = np.array([(c[0] + c[2]) / 2 + param1, (c[1] + c[3]) / 2 + param2])
+    return new_array
 
-# Hàm xoay ảnh trong trường hợp không ghép 3 marker thành 1 ảnh và vẽ các hình chữ nhật lên ảnh marker 
 
-# def imageOrientation(img, imgOriented, model):
-#     imgOriented = cv2.convertScaleAbs(imgOriented * 255)
-#     height, width = imgOriented.shape[:2]
-#     top_left = imgOriented[0:100, 0:100]
-#     top_right = imgOriented[0:100, width-100:width]
-#     bottom_left = imgOriented[height-100:height, 0:100]
-#     bottom_right = imgOriented[height-100:height, width-100:width]
-#     list_img = [top_left, top_right, bottom_left, bottom_right]
-    
-#     notMarker = -1
-#     list_img_marker = []
-#     for i, item in enumerate(list_img):
-#         result = model.predict(item)
-#         data = result[0].boxes.data
-#         if (len(data) == 0):
-#             notMarker = i + 1
-#         else: 
-#             data = result[0].boxes.data.tolist()[0]
-#             toado = result[0].boxes.xyxy[0].tolist()
-#             x1 = round(toado[0])
-#             y1 = round(toado[1])
-#             x2 = round(toado[2])
-#             y2 = round(toado[3])
-#             class_answer = int(data[5])
-#             conf = round(float(data[4]), 3)
-#             cv2.rectangle(item,(x1, y1), (x2, y2),
-#                     green_color if conf > threshold_warning else warning_color, 1 if conf > threshold_warning else 2)
-#             cv2.putText(item,
-#                     str(tool.getClass(class_answer)) if conf > threshold_warning else str(f"{tool.getClass(class_answer)}-{conf}"), (x1, y1),
-#                     cv2.FONT_HERSHEY_SIMPLEX, 0.4 if conf > threshold_warning else 0.5,
-#                     blue_color if conf > threshold_warning else warning_color, 1, cv2.LINE_AA)
-#             list_img_marker.append(item)
-#     # Ảnh không bị xoay
-#     if (notMarker == 4):
-#         imgRotated = img
-#     elif (notMarker == 3): # Ảnh bị xoay 90 độ về bên phải
-#         imgRotated = cv2.rotate(img, cv2.ROTATE_90_COUNTERCLOCKWISE)
-#         imgRotated = cv2.resize(imgRotated, (1056, 1500))
-#     elif (notMarker == 2): # Ảnh bị xoay 90 độ về bên trái
-#         imgRotated = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
-#         imgRotated = cv2.resize(imgRotated, (1056, 1500))
-#     elif (notMarker == 1):  # Ảnh bị xoay 180 độ
-#         imgRotated = cv2.rotate(img, cv2.ROTATE_180)
-    
-#     return imgRotated, list_img_marker
+
+def orient_image_by_angle(pts, marker_coordinates):
+    rect = np.zeros((4, 2), dtype="float32")
+    marker_coordinates_true = []
+    param = 40
+    pts = np.array(pts)
+    marker_coordinates = np.array(marker_coordinates)
+    s = pts.sum(axis=1)
+    rect[0] = pts[np.argmin(s)] # top-left
+    marker_coordinates_true.append(calculate_new_coordinates(marker_coordinates, rect[0], -param, -param))
+    rect[2] = pts[np.argmax(s)] # bottom-right
+    marker_coordinates_true.append(calculate_new_coordinates(marker_coordinates, rect[2], param, param))
+    diff = np.diff(pts, axis=1)
+    rect[1] = pts[np.argmin(diff)] # top-right
+    marker_coordinates_true.append(calculate_new_coordinates(marker_coordinates, rect[1], param, -param))
+    rect[3] = pts[np.argmax(diff)] # bottom-left
+    marker_coordinates_true.append(calculate_new_coordinates(marker_coordinates, rect[3], -param, param))
+    marker_coordinates_true = np.array([marker_coordinates_true]).reshape(-1, 1, 2)
+    return rect.astype("int").tolist(), marker_coordinates_true
+

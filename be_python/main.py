@@ -5,40 +5,13 @@ from ultralytics import YOLO
 import argparse
 import json
 import time
-from tool import generate_output, get_parameter_number_anwser, remove_elements_answer
-from tool import get_class, get_coordinates, get_coordinates_info, remove_elements_info, get_remainder
+from tool import generate_output, get_parameter_number_anwser, remove_elements_info, remove_elements_answer, remove_elements_marker
+from tool import get_class, get_coordinates, get_coordinates_info, get_remainder, orient_image_by_angle
 from tool import warning_color, green_color, blue_color, threshold_warning
 
 
 
-# ============================================ GET ANWSER =======================================
-def calculate_new_coordinates(marker_coordinates, rect, param1, param2):
-    matching_indices = np.where((marker_coordinates[:, :2] == rect).all(axis=1))
-    c = marker_coordinates[matching_indices]
-    c = c.flatten()
-    new_array = np.array([(c[0] + c[2]) / 2 + param1, (c[1] + c[3]) / 2 + param2])
-    return new_array
-
-
-
-def orient_image_by_angle(pts, marker_coordinates):
-    rect = np.zeros((4, 2), dtype="float32")
-    marker_coordinates_true = []
-    param = 40
-    pts = np.array(pts)
-    marker_coordinates = np.array(marker_coordinates)
-    s = pts.sum(axis=1)
-    rect[0] = pts[np.argmin(s)] # top-left
-    marker_coordinates_true.append(calculate_new_coordinates(marker_coordinates, rect[0], -param, -param))
-    rect[2] = pts[np.argmax(s)] # bottom-right
-    marker_coordinates_true.append(calculate_new_coordinates(marker_coordinates, rect[2], param, param))
-    diff = np.diff(pts, axis=1)
-    rect[1] = pts[np.argmin(diff)] # top-right
-    marker_coordinates_true.append(calculate_new_coordinates(marker_coordinates, rect[1], param, -param))
-    rect[3] = pts[np.argmax(diff)] # bottom-left
-    marker_coordinates_true.append(calculate_new_coordinates(marker_coordinates, rect[3], -param, param))
-    marker_coordinates_true = np.array([marker_coordinates_true]).reshape(-1, 1, 2)
-    return rect.astype("int").tolist(), marker_coordinates_true
+# ============================================ MAIN PROGRAM =======================================
 
 
 
@@ -48,17 +21,24 @@ def get_marker(image, model, filename):
         data = results[0].boxes.data
         list_marker = []
         marker_coordinates = []
+        validate_marker = []
+        count_marker2 = 0
+        count_maker1 = 0
         for i, data in enumerate(data):
-            x1 = int(data[0])
-            y1 = int(data[1])
-            x2 = int(data[2])
-            y2 = int(data[3])
-            class_marker = int(data[5])
+            validate_marker.append(data)
+        validate_marker = remove_elements_marker(validate_marker)
+        for i, marker in enumerate(validate_marker):
+            x1 = int(marker[0])
+            y1 = int(marker[1])
+            x2 = int(marker[2])
+            y2 = int(marker[3])
             conf = round(float(data[4]), 3)
-            if (conf < threshold_warning - 0.1):
-                continue
+            class_marker = int(marker[5])
             if (class_marker == 28):
+                count_marker2 += 1
                 marker2 = [x1, y1]
+            if (class_marker == 27):
+                count_maker1 += 1
             list_marker.append([x1, y1])
             marker_coordinates.append([x1, y1, x2, y2])
             cv2.rectangle(image, (x1, y1), (x2, y2), green_color if conf > threshold_warning else warning_color,
@@ -68,7 +48,7 @@ def get_marker(image, model, filename):
                 blue_color if conf > threshold_warning else warning_color, 1,cv2.LINE_AA)
         # Handle errors
         maybe_wrong_marker = []
-        if marker2 == [] or len(list_marker) != 4:
+        if count_marker2 != 1 or count_maker1 != 3:
             error_message = f"Xem lại ảnh đầu vào {filename} có thể bị thiếu góc"
             maybe_wrong_marker.append(error_message)
             with open(f"./MayBeWrong/error_{filename.split('.')[0]}.txt", "w", encoding="utf-8") as f:
@@ -127,18 +107,12 @@ def crop_image(img, numberAnswer):
     return sorted_ans_blocks_resize, size_array, coord_array
 
 
-def predictAns(img, model, index, numberAnswer):
+def predictAnswer(img, model, index, numberAnswer):
     results = model.predict(img)
     data = results[0].boxes.data
     list_label = []
     for i, data in enumerate(data):
-        x1 = int(data[0])
-        y1 = int(data[1])
-        x2 = int(data[2])
-        y2 = int(data[3])
-        class_answer = int(data[5])
-        conf = round(float(data[4]), 3)
-        list_label.append((x1, y1, x2, y2, class_answer, conf))
+        list_label.append(data)
     list_label = sorted(list_label, key=lambda x: x[1])
     list_label = remove_elements_answer(list_label)
     array_answer = []
@@ -146,14 +120,14 @@ def predictAns(img, model, index, numberAnswer):
     for i, answer in enumerate(list_label):
         if index == get_parameter_number_anwser(numberAnswer) and i == get_remainder(numberAnswer):
             break
-        class_answer = get_class(answer[4])
+        class_answer = get_class(int(answer[5]))
         array_answer.append(class_answer)
-        x1 = answer[0]
-        y1 = answer[1]
-        x2 = answer[2]
-        y2 = answer[3]
-        class_answer = answer[4]
-        conf = answer[5]
+        x1 = int(answer[0])
+        y1 = int(answer[1])
+        x2 = int(answer[2])
+        y2 = int(answer[3])
+        conf =  round(float(answer[4]), 3)
+        class_answer = int(answer[5])
         if conf < threshold_warning:
             maybe_wrong_answer.append(f'Kiểm tra lại nhãn "{get_class(class_answer)}" tại câu {i+1} ảnh {filename}, có xác suất: {conf}')
         for char in str(get_class(class_answer)):
@@ -186,26 +160,20 @@ def predictInfo(img, model, filename):
     numberClassRecognition = len(data)
     list_label = []
     for i, data in enumerate(data):
-        x1 = int(data[0])
-        y1 = int(data[1])
-        x2 = int(data[2])
-        y2 = int(data[3])
-        class_info = int(data[5])
-        conf = round(float(data[4]), 3)
-        list_label.append((x1, y1, x2, y2, class_info, conf))
+        list_label.append(data)
     list_label = sorted(list_label, key=lambda x: x[0])
     list_label = remove_elements_info(list_label)
     dict_info = {}
     maybe_wrong_info = []
     for i, info in enumerate(list_label):
-        class_info = get_class(info[4])
+        class_info = get_class(int(info[5]))
         dict_info[f"{i+1}"] = class_info
-        x1 = info[0]
-        y1 = info[1]
-        x2 = info[2]
-        y2 = info[3]
-        class_info = info[4]
-        conf = info[5]
+        x1 = int(info[0])
+        y1 = int(info[1])
+        x2 = int(info[2])
+        y2 = int(info[3])
+        conf = round(float(info[4]), 3)
+        class_info = int(info[5])
         if conf < threshold_warning:
             maybe_wrong_info.append(f'Kiểm tra lại nhãn thứ {i} từ trái sang phải: "{get_class(class_info)}", có xác suất: {conf}, tại ảnh {filename}')
 
@@ -287,7 +255,6 @@ if __name__ == "__main__":
                 document = cv2.rotate(document, cv2.ROTATE_180)
                 document = cv2.resize(document, (1056, 1500), interpolation=cv2.INTER_AREA)
             document = document / 255
-            # cv2.imwrite(f"document.jpg", document * 255)
             # ========================== Cắt ảnh sbd và mdt ===============================
             img_resize = crop_image_info(document)
             result_info, imgResize, numberClassRecognition, maybe_wrong_info = predictInfo(img=img_resize, model=model, filename=filename)
@@ -298,7 +265,7 @@ if __name__ == "__main__":
             array_img_graft = []
             maybe_wrong_answer_array = []
             for i, answer in enumerate(result_answer):
-                selected_answer, img_graft, maybe_wrong_answer = predictAns(img=answer, model=model, index=i, numberAnswer=numberAnswer)
+                selected_answer, img_graft, maybe_wrong_answer = predictAnswer(img=answer, model=model, index=i, numberAnswer=numberAnswer)
                 list_answer = list_answer + selected_answer
                 array_img_graft.append(img_graft)
                 maybe_wrong_answer_array += maybe_wrong_answer
@@ -319,14 +286,14 @@ if __name__ == "__main__":
                 }
             # =============================== Ghi file json ==========================
 
-            # file_path = f"json/{filename}/data.json"
-            # dir_path = os.path.dirname(file_path)
+            file_path = f"json/{filename}/data.json"
+            dir_path = os.path.dirname(file_path)
 
-            # if not os.path.exists(dir_path):
-            #     os.makedirs(dir_path)
-            # # Ghi dữ liệu từ điển vào tệp tin JSON
-            # with open(file_path, "w") as file:
-            #     json.dump(result, file)
+            if not os.path.exists(dir_path):
+                os.makedirs(dir_path)
+            # Ghi dữ liệu từ điển vào tệp tin JSON
+            with open(file_path, "w") as file:
+                json.dump(result, file)
             # =============================== Ghi file cảnh báo có thể sai ==========================
             if len(maybe_wrong_info) > 0 or len(maybe_wrong_answer_array) > 0:
                 with open(f"./MayBeWrong/warning_{filename.split('.')[0]}.txt", "w", encoding="utf-8") as f:
