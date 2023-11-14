@@ -45,11 +45,11 @@ public class FileUtils {
             if (Objects.isNull(multipartFile) || Objects.isNull(multipartFile.getOriginalFilename())) {
                 return null;
             }
-            File covertedFile = new File(tempPath + formatter.format(new Date()) + "_" + multipartFile.getOriginalFilename().replace(" ", "_"));
-            FileOutputStream fos = new FileOutputStream(covertedFile);
+            File convertedFile = new File(tempPath + formatter.format(new Date()) + "_" + multipartFile.getOriginalFilename().replace(" ", "_"));
+            FileOutputStream fos = new FileOutputStream(convertedFile);
             fos.write(multipartFile.getBytes());
             fos.close();
-            return covertedFile;
+            return convertedFile;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

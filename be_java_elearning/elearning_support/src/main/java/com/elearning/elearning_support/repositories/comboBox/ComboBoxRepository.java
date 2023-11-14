@@ -20,5 +20,8 @@ public interface ComboBoxRepository extends JpaRepository<User, Long> {
     @Query(nativeQuery = true, value = SQLComboBox.GET_LIST_USER_WITH_TYPE_COMBO_BOX)
     List<ICommonIdCodeName> getListUserWithUserType(String name, String code, Integer userType);
 
+    @Query(nativeQuery = true, value = SQLComboBox.GET_LIST_ROLE_WITHOUT_SUPER_ADMIN)
+    List<ICommonIdCodeName> getListRole(String search);
+
 
 }

@@ -65,4 +65,11 @@ public class ComboBoxController {
         return comboBoxService.getListTeacher(teacherName, teacherCode);
     }
 
+    @GetMapping("/role")
+    @Operation(summary = "Danh sách vai trò")
+    public List<ICommonIdCodeName> getListRole(
+        @RequestParam(name = "search", required = false, defaultValue = "") String search) {
+        return comboBoxService.getListRole(search);
+    }
+
 }

@@ -31,6 +31,11 @@ public interface ComboBoxService {
      */
     List<ICommonIdCodeName> getListTeacher(String teacherName, String teacherCode);
 
+    /**
+     * Danh sách vai trò
+     */
+    List<ICommonIdCodeName> getListRole(String search);
+
 
 
 

@@ -38,5 +38,15 @@ public class SQLComboBox {
             "    (:name = '' OR CONCAT_WS(' ', last_name, first_name) ILIKE ('%' || :name || '%')) AND \n" +
             "    (:code = '' OR code ILIKE ('%' || :code || '%'))";
 
+    public static final String GET_LIST_ROLE_WITHOUT_SUPER_ADMIN =
+        "SELECT \n" +
+            "   id AS id, \n" +
+            "   code AS code, \n" +
+            "   displayed_name AS name \n" +
+            "FROM {h-schema}role \n" +
+            "WHERE \n" +
+            "   ('' = :search OR displayed_name ILIKE ('%' || :search || '%') OR code ILIKE ('%' || :search || '%')) AND \n" +
+            "   code <> 'ROLE_SUPER_ADMIN'";
+
 
 }

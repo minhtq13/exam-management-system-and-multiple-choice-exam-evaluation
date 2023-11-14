@@ -35,4 +35,9 @@ public class ComboBoxServiceImpl implements ComboBoxService {
     public List<ICommonIdCodeName> getListTeacher(String teacherName, String teacherCode) {
         return comboBoxRepository.getListUserWithUserType(teacherName, teacherCode, UserTypeEnum.TEACHER.getType());
     }
+
+    @Override
+    public List<ICommonIdCodeName> getListRole(String search) {
+        return comboBoxRepository.getListRole(search);
+    }
 }
