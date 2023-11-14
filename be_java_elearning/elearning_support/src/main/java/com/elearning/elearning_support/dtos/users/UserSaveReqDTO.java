@@ -82,7 +82,10 @@ public class UserSaveReqDTO {
     @NotNull
     Long departmentId;
 
+    @Schema(description = "Loại người dùng (-1: SUPER_ADMIN, 0: TEACHER, 1: STUDENT)")
     @NotNull
     Integer userType;
 
+    @Schema(description = "Thông tin bổ sung của user")
+    Object metadata;
 }

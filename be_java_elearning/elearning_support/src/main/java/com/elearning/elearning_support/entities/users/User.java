@@ -17,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 import org.springframework.beans.BeanUtils;
 import com.elearning.elearning_support.dtos.users.importUser.CommonUserImportDTO;
 import com.elearning.elearning_support.entities.BaseEntity;
@@ -26,6 +28,7 @@ import com.elearning.elearning_support.enums.users.GenderEnum;
 import com.elearning.elearning_support.utils.DateUtils;
 import com.elearning.elearning_support.utils.StringUtils;
 import com.elearning.elearning_support.utils.auth.AuthUtils;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,6 +38,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class User extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -1L;
@@ -112,6 +116,10 @@ public class User extends BaseEntity implements Serializable {
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id"))
     Set<Role> roles = new HashSet<>();
+
+    @Column(name = "meta_data", columnDefinition = "jsonb")
+    @Type(type = "jsonb")
+    Object metadata;
 
 
     /**

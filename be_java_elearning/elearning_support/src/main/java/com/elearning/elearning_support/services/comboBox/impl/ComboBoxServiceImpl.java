@@ -40,4 +40,14 @@ public class ComboBoxServiceImpl implements ComboBoxService {
     public List<ICommonIdCodeName> getListRole(String search, UserTypeEnum userType) {
         return comboBoxRepository.getListRole(search, userType.getType());
     }
+
+    @Override
+    public List<ICommonIdCodeName> getListSemester(String search) {
+        return comboBoxRepository.getListSemester(search);
+    }
+
+    @Override
+    public List<ICommonIdCodeName> getListTest(String search) {
+        return comboBoxRepository.getListTest(search);
+    }
 }

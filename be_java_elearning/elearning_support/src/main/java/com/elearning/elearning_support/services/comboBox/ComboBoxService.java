@@ -37,5 +37,16 @@ public interface ComboBoxService {
      */
     List<ICommonIdCodeName> getListRole(String search, UserTypeEnum userType);
 
+    /**
+     * Danh sách kỳ học
+     */
+    List<ICommonIdCodeName> getListSemester(String search);
+
+    /**
+     * Danh sách kỳ học
+     */
+    List<ICommonIdCodeName> getListTest(String search);
+
+
 
 }

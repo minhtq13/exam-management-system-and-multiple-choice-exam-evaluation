@@ -3,16 +3,19 @@ package com.elearning.elearning_support.constants.message.errorKey;
 public class ErrorKey {
 
     public static class Question {
+
         public static final String ID = "id";
     }
 
     public static class Subject {
+
         public static final String ID = "id";
 
         public static final String CODE = "code";
     }
 
     public static class Chapter {
+
         public static final String ID = "id";
 
         public static final String CODE = "code";
@@ -21,10 +24,12 @@ public class ErrorKey {
     }
 
     public static class Test {
+
         public static final String ID = "id";
     }
 
     public static class TestSet {
+
         public static final String ID = "id";
 
         public static final String CODE = "code";
@@ -35,11 +40,13 @@ public class ErrorKey {
     }
 
     public static class FileAttach {
+
         // error key
         public static final String ID = "id";
     }
 
     public static class User {
+
         // error key
         public static final String ID = "id";
 
@@ -48,6 +55,12 @@ public class ErrorKey {
         public static final String PASSWORD = "password";
 
         public static final String EMAIL = "email";
+
+        public static final String CODE = "code";
+    }
+
+    public static class ExamClass {
+        public static final String ID = "id";
 
         public static final String CODE = "code";
     }

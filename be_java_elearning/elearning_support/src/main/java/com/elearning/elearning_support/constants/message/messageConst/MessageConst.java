@@ -17,6 +17,8 @@ public class MessageConst {
 
         public static final String USER = "user";
 
+        public static final String EXAM_CLASS = "exam_class";
+
     }
 
     public static final String RESOURCE_NOT_FOUND = "not found";
@@ -97,6 +99,12 @@ public class MessageConst {
         public static final String USER_CODE_AND_USER_TYPE_EXISTED_ERROR = "user.error.code.user_type.existed";
 
         public static final String USER_WRONG_USERNAME_OR_PASSWORD_ERROR_CODE = "user.error.wrong.username.password";
+    }
+
+    public static class ExamClass {
+        public static final String NOT_FOUND = "error.exam.class.not.found";
+
+        public static final String EXISTED_BY_CODE = "error.exam.class.existed.code";
     }
 
 

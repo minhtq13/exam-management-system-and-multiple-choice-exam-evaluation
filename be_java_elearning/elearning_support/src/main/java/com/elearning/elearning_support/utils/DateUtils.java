@@ -19,6 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 public class DateUtils {
 
     public static final String FORMAT_DATE_DD_MM_YYYY_HH_MM = "dd/MM/yyyy HH:mm";
+
+    public static final String FORMAT_DATE_HH_MM_YYYY_HH_MM = "HH:mm dd/MM/yyyy";
     public static final String FORMAT_DATE_DD_MM_YY_HH_MM_SS = "dd/MM/yy HH:mm:ss";
     public static final String FORMAT_DATE_DD_MM_YYYY_HH_MM_SS = "dd/MM/yyyy HH:mm:ss";
     public static final String FORMAT_DATE_YYYY_MMDD_HHMM = "yyyyMMddHHmm";

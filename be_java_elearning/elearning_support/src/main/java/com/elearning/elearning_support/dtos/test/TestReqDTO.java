@@ -50,6 +50,9 @@ public class TestReqDTO {
     @JsonFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_HH_MM, timezone = DateUtils.TIME_ZONE)
     Date endTime;
 
+    @Schema(description = "Id học kỳ")
+    Long semesterId;
+
     @Schema(description = "Điểm tối đa của bài thi")
     @Min(value = 1)
     @Max(value = 100)

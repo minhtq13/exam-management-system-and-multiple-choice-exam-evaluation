@@ -7,14 +7,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "student_class", schema = "elearning_support_dev")
-public class StudentExamClass {
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "user_exam_class", schema = "elearning_support_dev")
+public class UserExamClass {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +26,18 @@ public class StudentExamClass {
     private Long id;
 
     @NotNull
-    @Column(name = "student_id", nullable = false)
+    @Column(name = "user_id", nullable = false)
     private Long studentId;
 
-    @Column(name = "exam_class_id")
+    @Column(name = "exam_class_id", nullable = false)
     private Long examClassId;
 
+    @Column(name = "role_type", nullable = false)
+    private Integer roleType;
+
+    public UserExamClass(Long studentId, Long examClassId, Integer roleType) {
+        this.studentId = studentId;
+        this.examClassId = examClassId;
+        this.roleType = roleType;
+    }
 }

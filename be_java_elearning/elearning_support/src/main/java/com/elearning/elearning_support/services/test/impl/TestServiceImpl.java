@@ -150,6 +150,22 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
+    public Test findTestById(Long testId) {
+        return testRepository.findByIdAndIsEnabled(testId, Boolean.TRUE)
+            .orElseThrow(() -> exceptionFactory.resourceNotFoundException(MessageConst.Test.NOT_FOUND, Resources.TEST, MessageConst.RESOURCE_NOT_FOUND,
+                    ErrorKey.Test.ID, String.valueOf(testId)));
+    }
+
+    @Override
+    public Boolean checkExistedById(Long testId) {
+        if (!testRepository.existsByIdAndIsEnabled(testId, Boolean.TRUE)) {
+            throw exceptionFactory.resourceNotFoundException(MessageConst.Test.NOT_FOUND, Resources.TEST, MessageConst.RESOURCE_NOT_FOUND,
+                ErrorKey.Test.ID, String.valueOf(testId));
+        }
+        return Boolean.TRUE;
+    }
+
+    @Override
     public void switchTestStatus(Long testId, StatusEnum statusEnum) {
         Boolean newStatus = Objects.equals(statusEnum, StatusEnum.ENABLED) ? Boolean.TRUE : Boolean.FALSE;
         testRepository.switchTestStatus(testId, newStatus);

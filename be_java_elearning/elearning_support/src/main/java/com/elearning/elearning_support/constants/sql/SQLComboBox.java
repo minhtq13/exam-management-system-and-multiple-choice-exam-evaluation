@@ -49,5 +49,12 @@ public class SQLComboBox {
             "   ('' = :search OR displayed_name ILIKE ('%' || :search || '%') OR code ILIKE ('%' || :search || '%')) AND \n" +
             "   code <> 'ROLE_SUPER_ADMIN'";
 
+    public static final String GET_LIST_SEMESTER =
+        "SELECT * FROM {h-schema}semester WHERE ('' = :search OR code ILIKE ('%' || :search || '%')) ";
+
+
+    public static final String GET_LIST_TEST =
+        "SELECT id, name FROM {h-schema}test WHERE ('' = :search OR name ILIKE ('%' || :search || '%')) ";
+
 
 }

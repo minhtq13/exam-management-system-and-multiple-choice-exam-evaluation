@@ -17,6 +17,8 @@ public interface TestRepository extends JpaRepository<Test, Long> {
 
     Optional<Test> findByIdAndIsEnabled(Long id, Boolean isEnabled);
 
+    Boolean existsByIdAndIsEnabled(Long id, Boolean isEnabled);
+
 
     @Query(nativeQuery = true, value = SQLTest.GET_LIST_TEST)
     List<ITestListDTO> getListTest(Long subjectId, String subjectCode, Date startTime, Date endTime);

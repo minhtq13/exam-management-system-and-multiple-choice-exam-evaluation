@@ -74,4 +74,16 @@ public class ComboBoxController {
         return comboBoxService.getListRole(search, userType);
     }
 
+    @GetMapping("/semester")
+    @Operation(summary = "Danh sách học kỳ")
+    public List<ICommonIdCodeName> getListSemester(@RequestParam(name = "search", required = false, defaultValue = "") String search){
+        return comboBoxService.getListSemester(search);
+    }
+
+    @GetMapping("/test")
+    @Operation(summary = "Danh sách kỳ thi")
+    public List<ICommonIdCodeName> getListTest(@RequestParam(name = "search", required = false, defaultValue = "") String search){
+        return comboBoxService.getListTest(search);
+    }
+
 }
