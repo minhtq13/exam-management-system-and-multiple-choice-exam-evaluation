@@ -32,6 +32,7 @@ import QuestionList from "../pages/Questions/QuestionList/QuestionList";
 import QuestionEdit from "../pages/Questions/QuestionEdit/QuestionEdit";
 import ExamClassList from "../pages/ExamClass/ExamClassList/ExamClassList";
 import TestEdit from "../pages/Test/TestEdit/TestEdit";
+import CreateUser from "../pages/User/CreateUser/CreateUser";
 
 const publicRoutes = [
 	{ path: appPath.notFound, component: NotFound },
@@ -82,8 +83,10 @@ const publicRoutes = [
 		layout: "SignLayout",
 		// isPrivateRouter: true,
 	},
-	//exam class
+	// exam class
 	{ path: appPath.examClassList, component: ExamClassList },
+	// user
+	{ path: appPath.createUser, component: CreateUser },
 	// private routes
 
 	// { path: appPath.movieChair, component: MovieChair },

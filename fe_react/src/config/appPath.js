@@ -42,4 +42,6 @@ export const appPath = {
 	//exam class
 	examClassCreate: "/exam-class-create",
 	examClassList: "/exam-class-list",
+	// user
+	createUser: "/create-user",
 };

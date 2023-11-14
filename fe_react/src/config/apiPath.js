@@ -51,5 +51,7 @@ export const apiPath = {
   disableExamClass: BASE_URL + "/api/class/disable",
   //combo box
   comboQuestion: BASE_URL + "/api/combobox/subject",
-  comboChapter: BASE_URL + "/api/combobox/subject/chapter"
+  comboChapter: BASE_URL + "/api/combobox/subject/chapter",
+  // user
+  createUser: BASE_URL + "/api/user",
 };

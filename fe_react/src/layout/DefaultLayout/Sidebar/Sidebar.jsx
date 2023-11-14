@@ -27,10 +27,10 @@ const Sidebar = () => {
 						isCollapse ? "title-present-collapse" : "title-present"
 					}
 				>
-					Main Menu
+					Quản lý
 				</div>
 			),
-			key: "mainmenu",
+			key: "quanly",
 			type: "group",
 			children: [
 				{
@@ -80,15 +80,7 @@ const Sidebar = () => {
 						{ label: "Thêm học phần", key: "subject-add" },
 					],
 				},
-				{
-					label: "Câu hỏi",
-					key: "questions",
-					icon: <BsQuestionCircleFill style={{ color: "#ffff" }} />,
-					children: [
-						{ label: "Danh sách câu hỏi", key: "question-list" },
-						{ label: "Thêm câu hỏi", key: "question-add" },
-					],
-				},
+			
 			],
 		},
 		{
@@ -98,12 +90,21 @@ const Sidebar = () => {
 						isCollapse ? "title-present-collapse" : "title-present"
 					}
 				>
-					Management
+					Kỳ thi
 				</div>
 			),
-			key: "management",
+			key: "kythi",
 			type: "group",
 			children: [
+				{
+					label: "Câu hỏi",
+					key: "questions",
+					icon: <BsQuestionCircleFill style={{ color: "#ffff" }} />,
+					children: [
+						{ label: "Danh sách câu hỏi", key: "question-list" },
+						{ label: "Thêm câu hỏi", key: "question-add" },
+					],
+				},
 				{
 					label: "Đề thi",
 					key: "tests",
@@ -112,11 +113,6 @@ const Sidebar = () => {
 						{ label: "Danh sách đề thi", key: "test-list" },
 						{ label: "Thêm đề thi", key: "test-create" },
 					],
-				},
-				{
-					label: "Chấm điểm tự động",
-					key: "automatic-scoring",
-					icon: <SearchOutlined style={{ color: "#ffff" }} />,
 				},
 				{
 					label: "Lớp thi",
@@ -132,6 +128,11 @@ const Sidebar = () => {
 							key: "exam-class-create",
 						},
 					],
+				},
+				{
+					label: "Chấm điểm tự động",
+					key: "automatic-scoring",
+					icon: <SearchOutlined style={{ color: "#ffff" }} />,
 				},
 				{
 					label: "Thời khóa biểu",
@@ -151,6 +152,32 @@ const Sidebar = () => {
 						{ label: "All Blogs", key: "all-blogs" },
 						{ label: "Add Blog", key: "add-blog" },
 						{ label: "Edit Blog", key: "edit-blog" },
+					],
+				},
+			],
+		},
+		{
+			label: (
+				<div
+					className={
+						isCollapse ? "title-present-collapse" : "title-present"
+					}
+				>
+					Quản trị
+				</div>
+			),
+			key: "admin",
+			type: "group",
+			children: [
+				{
+					label: "Người dùng",
+					key: "user",
+					icon: <FaBookOpen style={{ color: "#ffff" }} />,
+					children: [
+						{
+							label: "Tạo người dùng",
+							key: "create-user",
+						},
 					],
 				},
 			],
