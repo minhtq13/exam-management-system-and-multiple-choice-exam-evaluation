@@ -35,11 +35,13 @@ const QuestionList = () => {
   }, [param]);
 	useEffect(() => {
 		getAllSubjects({subjectCode: null, subjectTitle: null});
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 	useEffect(() => {
 		if(subjectId) {
 			getAllChapters({subjectId: subjectId, chapterCode: null, chapterId: null});
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [subjectId])
   const subjectOptions = allSubjects.map((item) => {
     return { value: item.id, label: item.name };

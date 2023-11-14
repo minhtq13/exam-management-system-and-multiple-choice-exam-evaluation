@@ -10,7 +10,7 @@ const CreateUser = () => {
 	const onFinish = (value) => {
 		setLoading(true);
 		createUser(
-			{ ...value, birthday: formatDate(value.birthday) },
+			{ ...value, birthday: formatDate(value.birthday), lstRoleId: [value.role === 0 ? 3 : 2] },
 			(res) => {
 				setLoading(false);
 				notify.success("Thêm mới người dùng thành công!");

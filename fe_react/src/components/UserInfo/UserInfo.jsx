@@ -46,25 +46,20 @@ const UserInfo = ({
 				<div className="info-user-header">Thông tin người dùng</div>
 				<Form.Item
 					name="firstName"
-					label="First name"
+					label="Họ và tên đệm"
 					colon={true}
 					rules={[
-						// {
-						// 	pattern: /^[\p{L}\s]*$/u,
-						// 	message:
-						// 		"Vui lòng điền đúng định dạng. Ví dụ: Nguyễn Văn A",
-						// },
 						{
 							required: true,
 							message: messageRequired,
 						},
 					]}
 				>
-					<Input placeholder="First name" />
+					<Input placeholder="Họ và tên đệm" />
 				</Form.Item>
 				<Form.Item
 					name="lastName"
-					label="Last name"
+					label="Tên"
 					colon={true}
 					rules={[
 						{
@@ -73,7 +68,7 @@ const UserInfo = ({
 						},
 					]}
 				>
-					<Input placeholder="Last name" />
+					<Input placeholder="Tên" />
 				</Form.Item>
 				<Form.Item
 					name="userType"
@@ -82,7 +77,7 @@ const UserInfo = ({
 					rules={[
 						{
 							required: true,
-							message: "Chưa chọn vai trò",
+							message: messageRequired,
 						},
 					]}
 				>
@@ -174,6 +169,7 @@ const UserInfo = ({
 					<DatePicker
 						onChange={datePickerOnchange}
 						format={dateFormat}
+						placeholder="Chọn ngày sinh"
 					></DatePicker>
 				</Form.Item>
 				{isPasswordDisplay && (

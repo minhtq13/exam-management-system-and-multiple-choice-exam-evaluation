@@ -11,9 +11,7 @@ from tool import warning_color, green_color, blue_color, threshold_warning
 
 
 
-# ============================================ MAIN PROGRAM =======================================
-
-
+# ============================================ HANDLE MARKER =======================================
 
 def get_marker(image, model, filename):
     try:
@@ -75,8 +73,9 @@ def get_marker(image, model, filename):
     except Exception as e:
         print(e)
         return None, None, None
+# ============================================ CUT IMAGE COLUMN ANSWER =======================================
 
-def crop_image(img, numberAnswer):
+def crop_image_answer(img, numberAnswer):
     ans_blocks = []
     arrayX = [30, 350, 660]
     for i in range(3):
@@ -106,6 +105,7 @@ def crop_image(img, numberAnswer):
 
     return sorted_ans_blocks_resize, size_array, coord_array
 
+# ============================================ PREDICT IMAGE COLUMN ANSWER =======================================
 
 def predictAnswer(img, model, index, numberAnswer):
     results = model.predict(img)
@@ -142,7 +142,7 @@ def predictAnswer(img, model, index, numberAnswer):
     return array_answer, img_graft, maybe_wrong_answer
 
 
-# ============================================ GET INFO =======================================
+# ============================================ CUT IMAGE INFO =======================================
 
 def crop_image_info(img):
     left = 550
@@ -195,6 +195,7 @@ def predictInfo(img, model, filename):
 
     return result_info, imgResize, numberClassRecognition, maybe_wrong_info
 
+# ============================================ MERGE IMAGES =======================================
 def mergeImages(filename, coord_array, array_img_graft, background_image, imgInfo):
     filename_cut = filename.split(".")[0]
     height, width, _ = imgInfo.shape
@@ -260,7 +261,7 @@ if __name__ == "__main__":
             result_info, imgResize, numberClassRecognition, maybe_wrong_info = predictInfo(img=img_resize, model=model, filename=filename)
             numberAnswer = 60
             # =================================== Lấy đáp án ==============================
-            result_answer, size_array, coord_array = crop_image(cv2.convertScaleAbs(document * 255), numberAnswer)
+            result_answer, size_array, coord_array = crop_image_answer(cv2.convertScaleAbs(document * 255), numberAnswer)
             list_answer = []
             array_img_graft = []
             maybe_wrong_answer_array = []
