@@ -33,7 +33,7 @@ const UserInfo = ({
 		},
 	];
 	const dateFormat = "DD/MM/YYYY";
-	const errorMessange = "Chưa điền đầy đủ thông tin";
+	const messageRequired = "Trường này là bắt buộc!"
 	return (
 		<div className="user-info">
 			<p className="info-header">{infoHeader}</p>
@@ -56,7 +56,7 @@ const UserInfo = ({
 						// },
 						{
 							required: true,
-							message: errorMessange,
+							message: messageRequired,
 						},
 					]}
 				>
@@ -69,7 +69,7 @@ const UserInfo = ({
 					rules={[
 						{
 							required: true,
-							message: errorMessange,
+							message: messageRequired,
 						},
 					]}
 				>
@@ -89,7 +89,6 @@ const UserInfo = ({
 					<Select
 						placeholder="Chọn vai trò"
 						options={roleOption}
-						// onChange={genderOnchange}
 						style={{ height: 45 }}
 					></Select>
 				</Form.Item>
@@ -100,7 +99,7 @@ const UserInfo = ({
 					rules={[
 						{
 							required: true,
-							message: errorMessange,
+							message: messageRequired,
 						},
 					]}
 				>
@@ -114,7 +113,7 @@ const UserInfo = ({
 						rules={[
 							{
 								required: true,
-								message: errorMessange,
+								message: messageRequired,
 							},
 							{
 								min: 6,
@@ -132,7 +131,7 @@ const UserInfo = ({
 					rules={[
 						{
 							required: true,
-							message: "Chưa chọn giới tính",
+							message: messageRequired,
 						},
 					]}
 				>
@@ -153,7 +152,7 @@ const UserInfo = ({
 						},
 						{
 							required: true,
-							message: errorMessange,
+							message: messageRequired,
 						},
 					]}
 					label="Email"
@@ -168,7 +167,7 @@ const UserInfo = ({
 					rules={[
 						{
 							required: true,
-							message: "Chưa chọn ngày sinh",
+							message: messageRequired,
 						},
 					]}
 				>
@@ -183,7 +182,7 @@ const UserInfo = ({
 						rules={[
 							{
 								required: true,
-								message: errorMessange,
+								message: messageRequired,
 							},
 						]}
 						label="Mật khẩu"
@@ -204,7 +203,7 @@ const UserInfo = ({
 						},
 						{
 							required: true,
-							message: errorMessange,
+							message: messageRequired,
 						},
 					]}
 				>
