@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.elearning.elearning_support.dtos.common.ICommonIdCodeName;
+import com.elearning.elearning_support.enums.users.UserTypeEnum;
 import com.elearning.elearning_support.services.comboBox.ComboBoxService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -66,10 +67,11 @@ public class ComboBoxController {
     }
 
     @GetMapping("/role")
-    @Operation(summary = "Danh sách vai trò")
+    @Operation(summary = "Danh sách vai trò (không bao gồm SUPER_ADMIN)")
     public List<ICommonIdCodeName> getListRole(
-        @RequestParam(name = "search", required = false, defaultValue = "") String search) {
-        return comboBoxService.getListRole(search);
+        @RequestParam(name = "search", required = false, defaultValue = "") String search,
+        @RequestParam(name = "userType", required = false, defaultValue = "ALL") UserTypeEnum userType) {
+        return comboBoxService.getListRole(search, userType);
     }
 
 }

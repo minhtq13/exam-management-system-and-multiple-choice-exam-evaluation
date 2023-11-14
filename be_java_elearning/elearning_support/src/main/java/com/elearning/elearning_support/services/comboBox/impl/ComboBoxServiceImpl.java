@@ -37,7 +37,7 @@ public class ComboBoxServiceImpl implements ComboBoxService {
     }
 
     @Override
-    public List<ICommonIdCodeName> getListRole(String search) {
-        return comboBoxRepository.getListRole(search);
+    public List<ICommonIdCodeName> getListRole(String search, UserTypeEnum userType) {
+        return comboBoxRepository.getListRole(search, userType.getType());
     }
 }

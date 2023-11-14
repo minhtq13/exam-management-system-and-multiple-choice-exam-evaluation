@@ -45,6 +45,7 @@ public class SQLComboBox {
             "   displayed_name AS name \n" +
             "FROM {h-schema}role \n" +
             "WHERE \n" +
+            "   (:userType IN (-2, -1) OR (:userType = 0 AND code ILIKE '%TEACHER%') OR (:userType = 1 AND code ILIKE '%STUDENT%')) AND \n" +
             "   ('' = :search OR displayed_name ILIKE ('%' || :search || '%') OR code ILIKE ('%' || :search || '%')) AND \n" +
             "   code <> 'ROLE_SUPER_ADMIN'";
 

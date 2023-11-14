@@ -3,6 +3,7 @@ package com.elearning.elearning_support.services.comboBox;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import com.elearning.elearning_support.dtos.common.ICommonIdCodeName;
+import com.elearning.elearning_support.enums.users.UserTypeEnum;
 
 @Service
 public interface ComboBoxService {
@@ -34,10 +35,7 @@ public interface ComboBoxService {
     /**
      * Danh sách vai trò
      */
-    List<ICommonIdCodeName> getListRole(String search);
-
-
-
+    List<ICommonIdCodeName> getListRole(String search, UserTypeEnum userType);
 
 
 }
