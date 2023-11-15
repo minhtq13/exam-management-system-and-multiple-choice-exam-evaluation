@@ -287,14 +287,14 @@ if __name__ == "__main__":
                 }
             # =============================== Ghi file json ==========================
 
-            file_path = f"json/{filename}/data.json"
-            dir_path = os.path.dirname(file_path)
+            # file_path = f"json/{filename}/data.json"
+            # dir_path = os.path.dirname(file_path)
 
-            if not os.path.exists(dir_path):
-                os.makedirs(dir_path)
-            # Ghi dữ liệu từ điển vào tệp tin JSON
-            with open(file_path, "w") as file:
-                json.dump(result, file)
+            # if not os.path.exists(dir_path):
+            #     os.makedirs(dir_path)
+            # # Ghi dữ liệu từ điển vào tệp tin JSON
+            # with open(file_path, "w") as file:
+            #     json.dump(result, file)
             # =============================== Ghi file cảnh báo có thể sai ==========================
             if len(maybe_wrong_info) > 0 or len(maybe_wrong_answer_array) > 0:
                 with open(f"./MayBeWrong/warning_{filename.split('.')[0]}.txt", "w", encoding="utf-8") as f:
