@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useRef, useState } from "react";
 import "./StudentList.scss";
-import { Button, Input, Select, Space, Table, Tag } from "antd";
+import { Button, Input, Space, Table, Tag } from "antd";
 import useStudents from "../../../hooks/useStudents";
 import exportIcon from "../../../assets/images/svg/export-icon.svg";
 import deleteIcon from "../../../assets/images/svg/delete-icon.svg";
@@ -38,19 +38,19 @@ const StudentList = () => {
     setImportLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:8088/e-learning/api/student/import",
+        "http://localhost:8088/e-learning/api/user/student/import",
         formData
       );
       if (response.status === 200) {
         notify.success("File uploaded successfully");
-        getAllStudents();
+        getAllStudents(param);
         setImportLoading(false);
       }
     } catch (error) {
       setImportLoading(false);
+      console.log(error);
       notify.error("Error uploading file");
     }
-    console.log(fileList);
   };
   const handleChange = (e) => {
     setFileList(e.target.files[0]);
@@ -270,9 +270,6 @@ const StudentList = () => {
       }
     );
   };
-  const handleSelect = (value) => {
-    setParam({ ...param, sort: value });
-  };
   const handleExport = () => {
     axios({
       url: "http://localhost:8088/e-learning/api/student/export", // Replace with your API endpoint
@@ -332,17 +329,6 @@ const StudentList = () => {
         </div>
       </div>
       <div className="student-list-wrapper">
-        <div className="filter-time">
-          <span className="sort-title">Sắp xếp:</span>
-          <Select
-            defaultValue={"lastModifiedAt"}
-            onChange={handleSelect}
-            options={[
-              { value: "lastModifiedAt", label: " Mới nhất" },
-              { value: "createdModifiedAt", label: "Cũ nhất" },
-            ]}
-          />
-        </div>
         <Table
           className="student-list-table"
           columns={columns}

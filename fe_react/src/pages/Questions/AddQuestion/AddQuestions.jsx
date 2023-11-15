@@ -9,37 +9,57 @@ import useCombo from "../../../hooks/useCombo";
 const AddQuestions = () => {
   const [checked, setChecked] = useState(false);
   const [loading, setLoading] = useState(false);
-	const {chapterLoading, subLoading, allChapters, allSubjects, getAllChapters, getAllSubjects} = useCombo();
-	const [subjectId, setSubjectId] = useState(null);
-	const [chapterId, setChapterId] = useState(null);
+  const [formKey, setFormKey] = useState(0);
+  const [isReset, setIsReset] = useState(false);
+  const [preChapter, setPreChapter] = useState(null);
+  const [initialValue, setInitialValue] = useState({});
+  const {
+    chapterLoading,
+    subLoading,
+    allChapters,
+    allSubjects,
+    getAllChapters,
+    getAllSubjects,
+  } = useCombo();
+  const [subjectId, setSubjectId] = useState(null);
+  const [chapterId, setChapterId] = useState(null);
 
   useEffect(() => {
-    getAllSubjects({subjectCode: null, subjectTitle: null});
+    getAllSubjects({ subjectCode: null, subjectTitle: null });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
-		if(subjectId) {
-			getAllChapters({subjectId: subjectId, chapterCode: null, chapterId: null});
-		}
-	}, [subjectId])
+    if (subjectId) {
+      getAllChapters({
+        subjectId: subjectId,
+        chapterCode: null,
+        chapterId: null,
+      });
+    }
+  }, [subjectId]);
   const subjectOptions = allSubjects.map((item) => {
     return { value: item.id, label: item.name };
   });
-	const chapterOptions = allChapters.map((item) => {
-		return { value: item.id, label: item.name};
-	})
+  const chapterOptions = allChapters.map((item) => {
+    return { value: item.id, label: item.name };
+  });
   const subjectOnChange = (value) => {
     setSubjectId(value);
-		setChapterId(null);
+    setChapterId(null);
   };
   const chapterOnchange = (values) => {
-		setChapterId(values);
+    if (preChapter !== values) {
+      setPreChapter(values);
+      setFormKey((prevKey) => prevKey + 1);
+    }
+    setChapterId(values);
   };
   const notify = useNotify();
   const onFinish = (values) => {
     setLoading(true);
-    //console.log(values)
-    values.lstQuestion && values.lstQuestion.length > 0 &&
+    console.log(values);
+    values.lstQuestion &&
+      values.lstQuestion.length > 0 &&
       addQuestionService(
         {
           chapterId: chapterId,
@@ -61,6 +81,7 @@ const AddQuestions = () => {
         (res) => {
           setLoading(false);
           notify.success("Thêm câu hỏi thành công!");
+          setFormKey((prevKey) => prevKey + 1);
         },
         (error) => {
           setLoading(false);
@@ -92,7 +113,7 @@ const AddQuestions = () => {
         <div className="question-subject">
           <span>Học phần: </span>
           <Select
-          allowClear
+            allowClear
             showSearch
             placeholder="Chọn môn học"
             optionFilterProp="children"
@@ -122,7 +143,12 @@ const AddQuestions = () => {
           />
         </div>
       </div>
-      <Form onFinish={onFinish} name="question-form">
+      <Form
+        onFinish={onFinish}
+        name="question-form"
+        initialValues={initialValue}
+        key={formKey}
+      >
         <Form.List name="lstQuestion">
           {(parentFields, parentListOperations) => (
             <>
@@ -163,7 +189,7 @@ const AddQuestions = () => {
                       <Select
                         defaultValue={"EASY"}
                         options={levelOption}
-                        style={{width: 120}}
+                        style={{ width: 120 }}
                       ></Select>
                     </Form.Item>
                     <div className="btn-remove">
@@ -233,14 +259,16 @@ const AddQuestions = () => {
                             </div>
                           </div>
                         ))}
-                        <Form.Item className="add-answer-btn">
-                          <Button
-                            onClick={() => childListOperations.add()}
-                            icon={<PlusOutlined />}
-                          >
-                            Thêm tùy chọn
-                          </Button>
-                        </Form.Item>
+                        {childFields.length < 4 && (
+                          <Form.Item className="add-answer-btn">
+                            <Button
+                              onClick={() => childListOperations.add()}
+                              icon={<PlusOutlined />}
+                            >
+                              Thêm tùy chọn
+                            </Button>
+                          </Form.Item>
+                        )}
                       </div>
                     )}
                   </Form.List>

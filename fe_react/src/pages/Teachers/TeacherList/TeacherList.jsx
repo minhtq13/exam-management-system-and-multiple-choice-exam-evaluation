@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Button, Input, Space, Table, Tag, Select } from "antd";
+import { Button, Input, Space, Table, Tag } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -231,9 +231,6 @@ const TeacherList = () => {
   const handleClickAddStudent = () => {
     navigate("/teacher-add");
   };
-	const handleSelect = (value) => {
-    setParam({ ...param, sort: value });
-  };
   const handleDelete = () => {
     deleteTeachersService(
       deleteKey,
@@ -299,17 +296,6 @@ const TeacherList = () => {
         </div>
       </div>
       <div className="teacher-list-wrapper">
-			<div className="filter-time">
-          <span className="sort-title">Sắp xếp:</span>
-          <Select
-            defaultValue={"lastModifiedAt"}
-            onChange={handleSelect}
-            options={[
-              { value: "lastModifiedAt", label: " Mới nhất" },
-              { value: "createdModifiedAt", label: "Cũ nhất" },
-            ]}
-          />
-        </div>
         <Table
           className="teacher-list-table"
           columns={columns}
