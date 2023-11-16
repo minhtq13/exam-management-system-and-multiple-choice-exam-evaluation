@@ -2,7 +2,6 @@ package com.elearning.elearning_support.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -26,6 +25,16 @@ public class StringUtils {
         return Arrays.
             stream(longArray.replace("{", "").replace("}", "").split(","))
             .map(Long::valueOf)
+            .collect(Collectors.toSet());
+    }
+
+    public static Set<Integer> convertStrIntegerToSet(String intArray) {
+        if (intArray == null) {
+            return new HashSet<>();
+        }
+        return Arrays.
+            stream(intArray.replace("{", "").replace("}", "").split(","))
+            .map(Integer::valueOf)
             .collect(Collectors.toSet());
     }
 

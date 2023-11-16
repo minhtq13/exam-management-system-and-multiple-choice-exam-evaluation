@@ -1,7 +1,7 @@
 package com.elearning.elearning_support.dtos.test.test_set;
 
 import java.util.List;
-import com.elearning.elearning_support.dtos.test.test_question.TestQuestionAnswerResDTO;
+import com.elearning.elearning_support.dtos.studentTestSet.StudentHandledTestDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -13,12 +13,13 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TestSetDetailDTO {
+public class ScoringTestSetReqDTO {
 
-    @Schema(description = "Thông tin đề thi")
-    ITestSetResDTO testSet;
 
-    @Schema(description = "Danh sách câu hỏi trong đề thi")
-    List<TestQuestionAnswerResDTO> lstQuestion;
+    @Schema(description = "Mã lớp thi")
+    String classCode;
+
+    @Schema(description = "Dữ liệu xử lý chấm thi")
+    List<StudentHandledTestDTO> handledTestSets;
 
 }

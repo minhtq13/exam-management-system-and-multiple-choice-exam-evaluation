@@ -102,9 +102,11 @@ public class SQLUser {
     public static final String GET_LIST_CURRENT_USER_CODE_BY_USER_TYPE =
         "SELECT code FROM {h-schema}users WHERE user_type = :userType";
 
-
     public static final String DELETE_USER_ROLE_BY_USER_ID =
         "DELETE FROM {h-schema}users_roles WHERE user_id = :userId";
+
+    public static final String GET_LIST_USER_ID_CODE_BY_CODE_AND_USER_TYPE =
+        "SELECT id, code FROM {h-schema}users WHERE code IN (:lstCode) AND user_type = :userType AND deleted_flag = 1";
 
 
 

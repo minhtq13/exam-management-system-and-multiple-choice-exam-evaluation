@@ -43,4 +43,7 @@ public class TestSet extends BaseEntity {
     @Column(name = "test_id", nullable = false)
     private Long testId;
 
+    @Column(name = "question_mark")
+    private Double questionMark;
+
 }

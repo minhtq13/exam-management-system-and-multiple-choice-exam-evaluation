@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import com.elearning.elearning_support.constants.sql.SQLUser;
+import com.elearning.elearning_support.dtos.common.ICommonIdCode;
 import com.elearning.elearning_support.dtos.users.IGetDetailUserDTO;
 import com.elearning.elearning_support.dtos.users.IGetUserListDTO;
 import com.elearning.elearning_support.entities.users.User;
@@ -57,5 +58,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(nativeQuery = true, value = SQLUser.GET_LIST_CURRENT_USER_CODE_BY_USER_TYPE)
     Set<String> getListCurrentCodeByUserType(Integer userType);
+
+    @Query(nativeQuery = true, value = SQLUser.GET_LIST_USER_ID_CODE_BY_CODE_AND_USER_TYPE)
+    List<ICommonIdCode> getListIdCodeByCodeAndUserType(Set<String> lstCode, Integer userType);
 
 }

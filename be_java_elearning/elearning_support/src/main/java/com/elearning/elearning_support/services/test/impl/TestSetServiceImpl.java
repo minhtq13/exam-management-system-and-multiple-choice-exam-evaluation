@@ -2,26 +2,43 @@ package com.elearning.elearning_support.services.test.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.math3.util.Pair;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.elearning.elearning_support.dtos.common.ICommonIdCode;
+import com.elearning.elearning_support.dtos.test.test_set.ITestSetScoringDTO;
+import com.elearning.elearning_support.entities.studentTest.StudentTestSet;
+import com.elearning.elearning_support.entities.studentTest.StudentTestSetDetail;
+import com.elearning.elearning_support.enums.users.UserTypeEnum;
+import com.elearning.elearning_support.repositories.test.test_set.StudentTestSetRepository;
+import com.elearning.elearning_support.repositories.users.UserRepository;
+import com.elearning.elearning_support.utils.StringUtils;
+import com.elearning.elearning_support.utils.tests.TestUtils;
 import com.elearning.elearning_support.constants.message.errorKey.ErrorKey;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst.Resources;
 import com.elearning.elearning_support.dtos.question.QuestionAnswerDTO;
+import com.elearning.elearning_support.dtos.studentTestSet.HandledAnswerDTO;
+import com.elearning.elearning_support.dtos.studentTestSet.StudentHandledTestDTO;
 import com.elearning.elearning_support.dtos.test.GenTestConfigDTO;
 import com.elearning.elearning_support.dtos.test.test_question.TestQuestionAnswerResDTO;
+import com.elearning.elearning_support.dtos.test.test_set.ITestQuestionCorrectAnsDTO;
 import com.elearning.elearning_support.dtos.test.test_set.ITestSetResDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestQuestionAnswer;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
@@ -50,6 +67,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class TestSetServiceImpl implements TestSetService {
 
+    private final UserRepository userRepository;
+
     private static final int MAX_NUM_ANSWERS_PER_QUESTION = 6;
 
     private final TestSetRepository testSetRepository;
@@ -61,6 +80,8 @@ public class TestSetServiceImpl implements TestSetService {
     private final QuestionRepository questionRepository;
 
     private final TestSetQuestionRepository testSetQuestionRepository;
+
+    private final StudentTestSetRepository studentTestSetRepository;
 
     @Transactional
     @Override
@@ -96,6 +117,7 @@ public class TestSetServiceImpl implements TestSetService {
                 .testId(test.getId())
                 .testNo(String.valueOf(i + 1))
                 .code(lstTestCode.get(i))
+                .questionMark(calculateQuestionMark(test.getTotalPoint(), test.getQuestionQuantity()))
                 .isEnabled(Boolean.TRUE).build();
             newTestSet.setCreatedBy(currentUserId);
             newTestSet.setCreatedAt(new Date());
@@ -223,4 +245,98 @@ public class TestSetServiceImpl implements TestSetService {
         return lstTestQuestionAnswer;
     }
 
+    private Double calculateQuestionMark(Integer totalPoint, Integer questionQuantity) {
+        try {
+            Double questionMark = (double) totalPoint / questionQuantity;
+            return Double.parseDouble(new DecimalFormat("#.000000").format(questionMark));
+        } catch (Exception e) {
+            log.error("==== ERROR {0} ====", e.getCause());
+            return null;
+        }
+    }
+
+
+    /**
+     *  ======================== TEST SET SCORING SERVICES ====================
+     */
+    @Transactional
+    @Override
+    public void scoreStudentTestSet(List<StudentHandledTestDTO> handledTestSets) {
+        Long currentUserId = AuthUtils.getCurrentUserId();
+        // find -> student, test-set
+        // Map exam_class + testCode -> testSetId
+        Map<Pair<String, String>, ITestSetScoringDTO> mapGeneralHandledData = new HashMap<>();
+        Set<String> examClassCodes = handledTestSets.stream().map(StudentHandledTestDTO::getExamClassCode).collect(Collectors.toSet());
+        Set<String> testCodes = handledTestSets.stream().map(StudentHandledTestDTO::getTestCode).collect(Collectors.toSet());
+        List<ITestSetScoringDTO> generalScoringData = testSetRepository.getTestSetGeneralScoringData(examClassCodes, testCodes);
+        generalScoringData.forEach(item -> mapGeneralHandledData.put(Pair.create(item.getExamClassCode(), item.getTestCode()), item));
+
+        // map studentCode -> studentId
+        Set<String> lstStudentCode = handledTestSets.stream().map(StudentHandledTestDTO::getStudentCode).collect(Collectors.toSet());
+        Map<String, Long> mapUserCodeId = userRepository.getListIdCodeByCodeAndUserType(lstStudentCode, UserTypeEnum.STUDENT.getType()).stream()
+            .collect(Collectors.toMap(ICommonIdCode::getCode, ICommonIdCode::getId));
+
+        // list student - test set
+        List<StudentTestSet> lstStudentTestSet = new ArrayList<>();
+
+        // map testSetId -> query test_set_question
+        Map<Long, Set<ITestQuestionCorrectAnsDTO>> mapQueriedTestSetQuestions = new HashMap<>();
+        for (StudentHandledTestDTO handledItem : handledTestSets) {
+            // init map
+            ITestSetScoringDTO handledData = mapGeneralHandledData.get(Pair.create(handledItem.getExamClassCode(), handledItem.getTestCode()));
+            Long testSetId = handledData.getTestSetId();
+            Long studentId = mapUserCodeId.get(handledItem.getStudentCode());
+
+            // create a studentTestSet row
+            StudentTestSet studentTestSet = new StudentTestSet(studentId, testSetId);
+            studentTestSet.setCreatedAt(new Date());
+            studentTestSet.setCreatedBy(currentUserId);
+            studentTestSet.setIsEnabled(Boolean.TRUE);
+            List<StudentTestSetDetail> lstDetails = new ArrayList<>();
+
+            Map<Integer, ITestQuestionCorrectAnsDTO> mapQuestionCorrectAns = new HashMap<>();
+            Set<ITestQuestionCorrectAnsDTO> correctAnswers = mapQueriedTestSetQuestions.get(testSetId);
+            // Check if test set has queried
+            if(Objects.isNull(correctAnswers)){
+                correctAnswers = testSetRepository.getListTestQuestionCorrectAns(testSetId);
+                mapQueriedTestSetQuestions.put(testSetId, correctAnswers);
+            }
+            correctAnswers.forEach(item -> mapQuestionCorrectAns.put(item.getQuestionNo(), item));
+            // scoring
+//            int numCorrectAns = 0;
+            int numNotMarkedQuestions = 0;
+            for (HandledAnswerDTO handledAnswer : handledItem.getAnswers()) {
+                // Get selected answers and check if not marked
+                Set<Integer> selectedAnsNo = TestUtils.getSelectedAnswer(handledAnswer.getSelectedAnswers());
+                if(ObjectUtils.isEmpty(selectedAnsNo)){
+                    numNotMarkedQuestions ++;
+                }
+                // Get correct answer of question in this test set
+                ITestQuestionCorrectAnsDTO correctAnswerDTO = mapQuestionCorrectAns.get(handledAnswer.getQuestionNo());
+                if(Objects.isNull(correctAnswerDTO)){
+                    continue;
+                }
+                Set<Integer> correctAnswerNo = StringUtils.convertStrIntegerToSet(correctAnswerDTO.getCorrectAnswerNo());
+                // Create new studentTestSetDetails
+                StudentTestSetDetail studentAnswerDetail = new StudentTestSetDetail();
+                studentAnswerDetail.setTestSetQuestionId(correctAnswerDTO.getId());
+                studentAnswerDetail.setSelectedAnswer(selectedAnsNo.toArray(Integer[]::new));
+                studentAnswerDetail.setIsEnabled(Boolean.TRUE);
+                studentAnswerDetail.setCreatedAt(new Date());
+                studentAnswerDetail.setCreatedBy(currentUserId);
+                if (!ObjectUtils.isEmpty(correctAnswerNo) && CollectionUtils.containsAll(correctAnswerNo, selectedAnsNo)) {
+                    studentAnswerDetail.setIsCorrected(Boolean.TRUE);
+//                    numCorrectAns ++;
+                } else  {
+                    studentAnswerDetail.setIsCorrected(Boolean.FALSE);
+                }
+                lstDetails.add(studentAnswerDetail);
+            }
+            studentTestSet.setMarked(handledItem.getAnswers().size() - numNotMarkedQuestions);
+            studentTestSet.setMarkerRate(((double)(studentTestSet.getMarked())/(handledItem.getAnswers().size())) * 100.0);
+            studentTestSet.setLstStudentTestSetDetail(lstDetails);
+            lstStudentTestSet.add(studentTestSet);
+        }
+        studentTestSetRepository.saveAll(lstStudentTestSet);
+    }
 }

@@ -668,31 +668,31 @@ COMMENT ON COLUMN "elearning_support_dev"."student_test_set"."modified_at" IS 'T
 COMMENT ON COLUMN "elearning_support_dev"."student_test_set"."modified_by" IS 'Id Người thực hiện cập nhật';
 
 -- Bảng student_test_detail lưu các câu trả lời của student trong 1 đề thi --
-DROP TABLE IF EXISTS elearning_support_dev."student_test_detail";
-CREATE TABLE IF NOT EXISTS elearning_support_dev."student_test_detail"
+DROP TABLE IF EXISTS elearning_support_dev."student_test_set_detail";
+CREATE TABLE IF NOT EXISTS elearning_support_dev."student_test_set_detail"
 (
     "id"                   bigserial NOT NULL unique,
     "created_at"           timestamp not null,
     "created_by"           int8      not null,
-    "is_enabled"           boolean,
+    "is_enabled"           boolean default true,
     "modified_at"          timestamp,
     "modified_by"          int8,
     "is_corrected"         boolean,
-    "selected_answer"      int8[] default '{}',
-    "student_test_id"      int8      not null,
+    "selected_answer"      int2[] default '{}',
+    "student_test_set_id"  int8,
     "test_set_question_id" int8      not null,
     PRIMARY KEY ("id")
     );
-COMMENT ON TABLE "elearning_support_dev"."student_test_detail" IS 'Bảng lưu chi tiết các câu trả lời của HSSV';
-COMMENT ON COLUMN "elearning_support_dev"."student_test_detail"."id" IS 'Id';
-COMMENT ON COLUMN "elearning_support_dev"."student_test_detail"."is_corrected" IS 'Cờ kiếm tra câu trả lời đúng hay không';
-COMMENT ON COLUMN "elearning_support_dev"."student_test_detail"."selected_answer" IS 'Các câu trả lời đã chọn (Có thể chọn nhiều đáp án cho 1 câu hỏi)';
-COMMENT ON COLUMN "elearning_support_dev"."student_test_detail"."student_test_id" IS 'Id bảng student_test';
-COMMENT ON COLUMN "elearning_support_dev"."student_test_detail"."test_set_question_id" IS 'Id câu hỏi trong đề thi';
-COMMENT ON COLUMN "elearning_support_dev"."student_test_detail"."created_at" IS 'Thời gian tạo';
-COMMENT ON COLUMN "elearning_support_dev"."student_test_detail"."created_by" IS 'Id Người thực hiện tạo ';
-COMMENT ON COLUMN "elearning_support_dev"."student_test_detail"."modified_at" IS 'Thời gian cập nhật lần cuối';
-COMMENT ON COLUMN "elearning_support_dev"."student_test_detail"."modified_by" IS 'Id Người thực hiện cập nhật';
+COMMENT ON TABLE "elearning_support_dev"."student_test_set_detail" IS 'Bảng lưu chi tiết các câu trả lời của HSSV';
+COMMENT ON COLUMN "elearning_support_dev"."student_test_set_detail"."id" IS 'Id';
+COMMENT ON COLUMN "elearning_support_dev"."student_test_set_detail"."is_corrected" IS 'Cờ kiếm tra câu trả lời đúng hay không';
+COMMENT ON COLUMN "elearning_support_dev"."student_test_set_detail"."selected_answer" IS 'Các câu trả lời đã chọn (Có thể chọn nhiều đáp án cho 1 câu hỏi)';
+COMMENT ON COLUMN "elearning_support_dev"."student_test_set_detail"."student_test_set_id" IS 'Id bảng student_test_set';
+COMMENT ON COLUMN "elearning_support_dev"."student_test_set_detail"."test_set_question_id" IS 'Id câu hỏi trong đề thi';
+COMMENT ON COLUMN "elearning_support_dev"."student_test_set_detail"."created_at" IS 'Thời gian tạo';
+COMMENT ON COLUMN "elearning_support_dev"."student_test_set_detail"."created_by" IS 'Id Người thực hiện tạo ';
+COMMENT ON COLUMN "elearning_support_dev"."student_test_set_detail"."modified_at" IS 'Thời gian cập nhật lần cuối';
+COMMENT ON COLUMN "elearning_support_dev"."student_test_set_detail"."modified_by" IS 'Id Người thực hiện cập nhật';
 
 --- === TEST === ---
 -- Bảng test: Lưu thông tin kỳ thi --

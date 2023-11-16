@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.elearning.elearning_support.dtos.test.test_set.ScoringTestSetReqDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetGenerateReqDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetSearchReqDTO;
@@ -57,5 +58,16 @@ public class TestSetController {
     public void updateTestSet(@RequestBody @Validated TestSetUpdateDTO updateDTO) {
         testSetService.updateTestSet(updateDTO);
     }
+
+
+    /*
+    ==================================== TEST SET SCORING CONTROLLER =================================
+     */
+    @PostMapping("/scoring")
+    @Operation(summary = "Chấm điểm bài thi chắc nghiệm")
+    public void scoringStudentTestSet(@RequestBody @Validated ScoringTestSetReqDTO scoringReqDTO){
+        testSetService.scoreStudentTestSet(scoringReqDTO.getHandledTestSets());
+    }
+
 
 }

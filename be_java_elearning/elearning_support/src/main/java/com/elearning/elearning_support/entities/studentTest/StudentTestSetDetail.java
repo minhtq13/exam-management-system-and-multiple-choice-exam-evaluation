@@ -8,7 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 import com.elearning.elearning_support.entities.BaseEntity;
+import com.vladmihalcea.hibernate.type.array.IntArrayType;
+import com.vladmihalcea.hibernate.type.array.LongArrayType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,8 +20,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "student_test_detail", schema = "elearning_support_dev")
-public class StudentTestDetail extends BaseEntity {
+@Table(name = "student_test_set_detail", schema = "elearning_support_dev")
+@TypeDef(name = "int-array", typeClass = IntArrayType.class)
+public class StudentTestSetDetail extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,21 +30,19 @@ public class StudentTestDetail extends BaseEntity {
     private Long id;
 
     @Column(name = "is_enabled")
-    private Boolean isEnabled;
+    private Boolean isEnabled = Boolean.TRUE;
 
     @Column(name = "is_corrected")
     private Boolean isCorrected;
 
-    @Column(name = "selected_answer")
-    @Type(type = "com.vladmihalcea.hibernate.type.array.LongArrayType")
-    private Long[] selectedAnswer;
+    @Column(name = "selected_answer", columnDefinition = "Integer[]")
+    @Type(type = "int-array")
+    private Integer[] selectedAnswer;
 
-    @NotNull
-    @Column(name = "student_test_id", nullable = false)
-    private Long studentTestId;
+    @Column(name = "student_test_set_id")
+    private Long studentTestSetId;
 
-    @NotNull
-    @Column(name = "test_set_question_id", nullable = false)
+    @Column(name = "test_set_question_id")
     private Long testSetQuestionId;
 
 }

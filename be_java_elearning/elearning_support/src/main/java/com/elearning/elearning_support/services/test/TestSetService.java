@@ -1,8 +1,11 @@
 package com.elearning.elearning_support.services.test;
 
 import java.io.IOException;
+import java.util.List;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
+import com.elearning.elearning_support.dtos.studentTestSet.ScoredStudentTestResDTO;
+import com.elearning.elearning_support.dtos.studentTestSet.StudentHandledTestDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetGenerateReqDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetSearchReqDTO;
@@ -27,5 +30,10 @@ public interface TestSetService {
      *
      */
     void updateTestSet(TestSetUpdateDTO updateDTO);
+
+    /**
+     *  ======================== TEST SET SCORING SERVICES ====================
+     */
+    void scoreStudentTestSet(List<StudentHandledTestDTO> handledTestSets);
 
 }

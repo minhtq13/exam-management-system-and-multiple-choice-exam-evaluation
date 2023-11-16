@@ -1,11 +1,16 @@
 package com.elearning.elearning_support.entities.studentTest;
 
 import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -34,7 +39,7 @@ public class StudentTestSet extends BaseEntity {
     private Long testSetId;
 
     @Column(name = "is_enabled")
-    private Boolean isEnabled;
+    private Boolean isEnabled = Boolean.TRUE;
 
     @Column(name = "marker_rate")
     private Double markerRate;
@@ -55,4 +60,12 @@ public class StudentTestSet extends BaseEntity {
     @Column(name = "handed_test_file")
     private Long handedTestFile;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "student_test_set_id", referencedColumnName = "id")
+    List<StudentTestSetDetail> lstStudentTestSetDetail;
+
+    public StudentTestSet(Long studentId, Long testSetId) {
+        this.studentId = studentId;
+        this.testSetId = testSetId;
+    }
 }
