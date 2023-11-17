@@ -19,6 +19,8 @@ public class MessageConst {
 
         public static final String EXAM_CLASS = "exam_class";
 
+        public static final String AUTH_INFORMATION = "auth_information";
+
     }
 
     public static final String RESOURCE_NOT_FOUND = "not found";
@@ -31,6 +33,9 @@ public class MessageConst {
     public static final String PERMISSIONS_DENIED = "permission denied";
 
     public static final String UPLOAD_FAILED = "upload failed";
+
+    public static final String UNAUTHORIZED = "unauthorized";
+
 
     public static final String EXCEPTION_LOG_FORMAT = "======= EXCEPTION: {} CAUSE BY {} ========";
 
@@ -105,6 +110,16 @@ public class MessageConst {
         public static final String NOT_FOUND = "error.exam.class.not.found";
 
         public static final String EXISTED_BY_CODE = "error.exam.class.existed.code";
+    }
+
+    public static class AuthInfo {
+        public static final String NOT_FOUND = "error.auth.info_not_found";
+
+        public static final String WRONG_USERNAME_PASSWORD = "error.auth.wrong.username.password";
+
+        public static final String ACCESS_TOKEN_INVALID = "error.auth.access.token.invalid";
+
+        public static final String REFRESH_TOKEN_EXPIRED = "error.auth.refresh.token.expired";
     }
 
 

@@ -1,4 +1,4 @@
-package com.elearning.elearning_support.dtos.login;
+package com.elearning.elearning_support.dtos.auth.login;
 
 
 import javax.validation.constraints.NotNull;

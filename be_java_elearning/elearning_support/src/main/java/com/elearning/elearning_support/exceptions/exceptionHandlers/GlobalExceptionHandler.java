@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.elearning.elearning_support.constants.message.errorKey.ErrorKey;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst;
 import com.elearning.elearning_support.exceptions.BadRequestException;
+import com.elearning.elearning_support.exceptions.CustomBadCredentialsException;
 import com.elearning.elearning_support.exceptions.ExceptionResponse;
 import com.elearning.elearning_support.exceptions.FileUploadException;
 import com.elearning.elearning_support.exceptions.PermissionDeniedException;
@@ -48,6 +49,13 @@ public class GlobalExceptionHandler {
     public ExceptionResponse handlerBadCredentialsException(BadCredentialsException exception) {
         return new ExceptionResponse(MessageConst.User.USER_WRONG_USERNAME_OR_PASSWORD_ERROR_CODE, HttpStatus.UNAUTHORIZED.value(),
             exception.getMessage(), String.format("%s/%s", ErrorKey.User.USERNAME, ErrorKey.User.PASSWORD));
+    }
+
+    @ExceptionHandler({CustomBadCredentialsException.class})
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    public ExceptionResponse handlerBadCredentialsException(CustomBadCredentialsException exception) {
+        return new ExceptionResponse(exception.getCode(), HttpStatus.UNAUTHORIZED.value(),
+            exception.getMessage(), exception.getFieldError());
     }
 
 }

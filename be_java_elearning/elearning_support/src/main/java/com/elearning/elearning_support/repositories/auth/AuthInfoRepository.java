@@ -10,4 +10,6 @@ public interface AuthInfoRepository extends JpaRepository<AuthInfo, Long> {
 
     Optional<AuthInfo> findFirstByUserIdOrderByCreatedAtDesc(Long userId);
 
+    Optional<AuthInfo> findByRefreshToken(String refreshToken);
+
 }

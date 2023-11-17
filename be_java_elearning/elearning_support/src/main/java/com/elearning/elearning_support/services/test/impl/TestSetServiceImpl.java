@@ -297,7 +297,7 @@ public class TestSetServiceImpl implements TestSetService {
             Map<Integer, ITestQuestionCorrectAnsDTO> mapQuestionCorrectAns = new HashMap<>();
             Set<ITestQuestionCorrectAnsDTO> correctAnswers = mapQueriedTestSetQuestions.get(testSetId);
             // Check if test set has queried
-            if(Objects.isNull(correctAnswers)){
+            if (Objects.isNull(correctAnswers)) {
                 correctAnswers = testSetRepository.getListTestQuestionCorrectAns(testSetId);
                 mapQueriedTestSetQuestions.put(testSetId, correctAnswers);
             }
@@ -308,12 +308,12 @@ public class TestSetServiceImpl implements TestSetService {
             for (HandledAnswerDTO handledAnswer : handledItem.getAnswers()) {
                 // Get selected answers and check if not marked
                 Set<Integer> selectedAnsNo = TestUtils.getSelectedAnswer(handledAnswer.getSelectedAnswers());
-                if(ObjectUtils.isEmpty(selectedAnsNo)){
-                    numNotMarkedQuestions ++;
+                if (ObjectUtils.isEmpty(selectedAnsNo)) {
+                    numNotMarkedQuestions++;
                 }
                 // Get correct answer of question in this test set
                 ITestQuestionCorrectAnsDTO correctAnswerDTO = mapQuestionCorrectAns.get(handledAnswer.getQuestionNo());
-                if(Objects.isNull(correctAnswerDTO)){
+                if (Objects.isNull(correctAnswerDTO)) {
                     continue;
                 }
                 Set<Integer> correctAnswerNo = StringUtils.convertStrIntegerToSet(correctAnswerDTO.getCorrectAnswerNo());
@@ -327,13 +327,13 @@ public class TestSetServiceImpl implements TestSetService {
                 if (!ObjectUtils.isEmpty(correctAnswerNo) && CollectionUtils.containsAll(correctAnswerNo, selectedAnsNo)) {
                     studentAnswerDetail.setIsCorrected(Boolean.TRUE);
 //                    numCorrectAns ++;
-                } else  {
+                } else {
                     studentAnswerDetail.setIsCorrected(Boolean.FALSE);
                 }
                 lstDetails.add(studentAnswerDetail);
             }
             studentTestSet.setMarked(handledItem.getAnswers().size() - numNotMarkedQuestions);
-            studentTestSet.setMarkerRate(((double)(studentTestSet.getMarked())/(handledItem.getAnswers().size())) * 100.0);
+            studentTestSet.setMarkerRate(((double) (studentTestSet.getMarked()) / (handledItem.getAnswers().size())) * 100.0);
             studentTestSet.setLstStudentTestSetDetail(lstDetails);
             lstStudentTestSet.add(studentTestSet);
         }

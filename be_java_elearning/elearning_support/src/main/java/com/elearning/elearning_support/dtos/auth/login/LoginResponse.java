@@ -1,4 +1,4 @@
-package com.elearning.elearning_support.dtos.login;
+package com.elearning.elearning_support.dtos.auth.login;
 
 import java.util.Date;
 import java.util.Set;
