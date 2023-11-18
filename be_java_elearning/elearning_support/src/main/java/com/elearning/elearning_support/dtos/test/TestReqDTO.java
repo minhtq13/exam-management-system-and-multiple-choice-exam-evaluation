@@ -40,7 +40,7 @@ public class TestReqDTO {
     @NotNull
     @Min(value = 1)
     @Max(value = 120)
-    Integer questionQuantity;
+    Integer questionQuantity = 1;
 
     @Schema(description = "Thời gian bắt đầu kỳ thi")
     @JsonFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_HH_MM, timezone = DateUtils.TIME_ZONE)
@@ -63,8 +63,7 @@ public class TestReqDTO {
     Integer duration;
 
     @Schema(description = "Cấu hình tạo đề thi (tổng số câu hỏi và số câu hỏi theo các mức độ)")
-    @NotNull
-    GenTestConfigDTO generateConfig;
+    GenTestConfigDTO generateConfig = new GenTestConfigDTO();
 
     @Schema(description = "Mô tả kỳ thi")
     String description;

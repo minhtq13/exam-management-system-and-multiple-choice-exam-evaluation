@@ -14,16 +14,16 @@ import lombok.experimental.FieldDefaults;
 public class GenTestConfigDTO {
 
     @NotNull
-    Integer numTotalQuestion;
+    Integer numTotalQuestion = 0;
 
     @NotNull
-    Integer numEasyQuestion;
+    Integer numEasyQuestion = 0;
 
     @NotNull
-    Integer numMediumQuestion;
+    Integer numMediumQuestion = 0;
 
     @NotNull
-    Integer numHardQuestion;
+    Integer numHardQuestion = 0;
 
 
 }
