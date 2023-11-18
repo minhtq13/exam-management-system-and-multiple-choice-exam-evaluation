@@ -33,7 +33,7 @@ DECLARE
 BEGIN
     SELECT '[' ||
            string_agg(format('{"id": %s, "content": %s, "isCorrect": %s}',
-                             to_json(answer.id), to_json(answer.content), to_json(answer.is_correct)), ',') || ']' AS lst_answer_json
+                             to_json(answer.id), to_json(answer.content), to_json(COALESCE(is_correct, false))), ',') || ']' AS lst_answer_json
     INTO result
     FROM elearning_support_dev.answer
     WHERE answer.question_id = i_question_id;

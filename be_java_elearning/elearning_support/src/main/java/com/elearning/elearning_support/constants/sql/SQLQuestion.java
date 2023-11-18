@@ -19,7 +19,7 @@ public class SQLQuestion {
             "    (-1 = :questionLevel OR question.level = :questionLevel) AND \n" +
             "    (-1 = :subjectId OR subject.id = :subjectId) AND \n" +
             "    ('' = :subjectCode OR subject.code = :subjectCode) AND \n" +
-            "    (-1 = :chapterId OR chapter.id = :chapterId) AND \n" +
+            "    (-1 IN (:chapterIds) OR chapter.id IN (:chapterIds)) AND \n" +
             "    ('' = :chapterCode OR chapter.code = :chapterCode) ";
 
     public static final String GET_LIST_QUESTION_ID_BY_CHAPTER_ID_IN =

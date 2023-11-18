@@ -1,6 +1,7 @@
 package com.elearning.elearning_support.controllers.question;
 
 import java.util.List;
+import java.util.Set;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,9 +49,9 @@ public class QuestionController {
         @RequestParam(name = "subjectId", required = false, defaultValue = "-1") Long subjectId,
         @RequestParam(name = "subjectCode", required = false, defaultValue = "") String subjectCode,
         @RequestParam(name = "chapterCode", required = false, defaultValue = "") String chapterCode,
-        @RequestParam(name = "chapterId", required = false, defaultValue = "-1") Long chapterId,
+        @RequestParam(name = "chapterIds", required = false, defaultValue = "-1") Set<Long> chapterIds,
         @RequestParam(name = "level", required = false, defaultValue = "ALL") QuestionLevelEnum level) {
-        return questionService.getListQuestion(subjectId, subjectCode, chapterId, chapterCode, level);
+        return questionService.getListQuestion(subjectId, subjectCode, chapterIds, chapterCode, level);
     }
 
     @PutMapping("/{questionId}")

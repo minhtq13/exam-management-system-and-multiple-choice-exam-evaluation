@@ -1,6 +1,7 @@
 package com.elearning.elearning_support.services.question;
 
 import java.util.List;
+import java.util.Set;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.elearning.elearning_support.dtos.fileAttach.importFile.ImportResponseDTO;
@@ -16,7 +17,7 @@ public interface QuestionService {
 
     void updateQuestion(Long questionId, QuestionUpdateDTO updateDTO);
 
-    List<QuestionListDTO> getListQuestion(Long subjectId, String subjectCode, Long chapterId, String chapterCode, QuestionLevelEnum level);
+    List<QuestionListDTO> getListQuestion(Long subjectId, String subjectCode, Set<Long> chapterId, String chapterCode, QuestionLevelEnum level);
 
     /**
      * Import questions
