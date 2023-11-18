@@ -42,7 +42,7 @@ public class Question extends BaseEntity {
     private String code;
 
     @Column(name = "is_enabled")
-    private Boolean isEnabled;
+    private Boolean isEnabled = Boolean.TRUE;
 
     @Column(name = "level")
     private Integer level;

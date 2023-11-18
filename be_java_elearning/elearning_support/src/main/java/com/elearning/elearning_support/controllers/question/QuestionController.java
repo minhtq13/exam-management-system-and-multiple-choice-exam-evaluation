@@ -2,7 +2,6 @@ package com.elearning.elearning_support.controllers.question;
 
 import java.util.List;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import com.elearning.elearning_support.dtos.fileAttach.importFile.ImportResponseDTO;
 import com.elearning.elearning_support.dtos.question.QuestionListCreateDTO;
 import com.elearning.elearning_support.dtos.question.QuestionListDTO;
 import com.elearning.elearning_support.dtos.question.QuestionUpdateDTO;
@@ -38,8 +38,8 @@ public class QuestionController {
 
     @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(description = "Import câu hỏi")
-    public ResponseEntity<?> importQuestion(@RequestParam(name = "file") MultipartFile file) {
-        return ResponseEntity.ok("");
+    public ImportResponseDTO importQuestion(@RequestParam(name = "file") MultipartFile file) {
+        return questionService.importQuestion(file);
     }
 
     @GetMapping

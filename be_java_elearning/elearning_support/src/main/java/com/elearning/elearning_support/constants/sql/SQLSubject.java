@@ -34,4 +34,7 @@ public class SQLSubject {
             "    LEFT JOIN {h-schema}department ON subject.department_id = department.id \n" +
             "WHERE subject.is_enabled = true AND subject.deleted_flag = 1 AND subject.id = :subjectId";
 
+    public static final String GET_ALL_SUBJECT_ID_CODE =
+        "SELECT id, code FROM {h-schema}subject WHERE deleted_flag = 1";
+
 }

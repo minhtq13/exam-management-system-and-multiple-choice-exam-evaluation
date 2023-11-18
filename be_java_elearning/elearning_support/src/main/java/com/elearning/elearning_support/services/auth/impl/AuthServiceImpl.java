@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import com.elearning.elearning_support.constants.message.errorKey.ErrorKey;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst;
@@ -45,11 +44,7 @@ public class AuthServiceImpl implements AuthInfoService {
         String accessToken = jwtUtils.generateJwt(user);
         String refreshToken = jwtUtils.generateRefreshToken(user);
         boolean tokenIsValid = jwtUtils.validateToken(accessToken);
-        if (Objects.isNull(currentAuthInfo) || !tokenIsValid) {
-            if (Objects.nonNull(currentAuthInfo)) {
-                currentAuthInfo.setStatus(TOKEN_INVALID_STATUS); // set status invalid
-                authInfoRepository.save(currentAuthInfo);
-            }
+        if (Objects.isNull(currentAuthInfo)) {
             AuthInfo newAuthInfo = AuthInfo.builder()
                 .userId(user.getId())
                 .token(accessToken)
@@ -62,9 +57,15 @@ public class AuthServiceImpl implements AuthInfoService {
                 .build();
             authInfoRepository.save(newAuthInfo);
             return newAuthInfo;
+        } else {
+            currentAuthInfo.setToken(tokenIsValid ? accessToken : currentAuthInfo.getToken()); // set status valid
+            currentAuthInfo.setRefreshToken(refreshToken);
+            currentAuthInfo.setRfTokenExpiredAt(new Date(DateUtils.getCurrentDateTime().getTime() + refreshTokenExpiredMs));
+            currentAuthInfo.setStatus(TOKEN_VALID_STATUS);
+            currentAuthInfo.setLastLoginAt(LocalDateTime.now());
         }
-        currentAuthInfo.setLastLoginAt(LocalDateTime.now());
-        return authInfoRepository.save(currentAuthInfo);
+        currentAuthInfo = authInfoRepository.save(currentAuthInfo);
+        return currentAuthInfo;
     }
 
     @Override
