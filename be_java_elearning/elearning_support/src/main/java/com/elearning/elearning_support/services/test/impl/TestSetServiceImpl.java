@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.elearning.elearning_support.dtos.common.ICommonIdCode;
 import com.elearning.elearning_support.dtos.test.test_set.ITestSetScoringDTO;
+import com.elearning.elearning_support.dtos.test.test_set.TestSetPreviewDTO;
 import com.elearning.elearning_support.entities.studentTest.StudentTestSet;
 import com.elearning.elearning_support.entities.studentTest.StudentTestSetDetail;
 import com.elearning.elearning_support.enums.users.UserTypeEnum;
@@ -85,7 +86,7 @@ public class TestSetServiceImpl implements TestSetService {
 
     @Transactional
     @Override
-    public void generateTestSet(TestSetGenerateReqDTO generateReqDTO) {
+    public List<TestSetPreviewDTO> generateTestSet(TestSetGenerateReqDTO generateReqDTO) {
         Long currentUserId = AuthUtils.getCurrentUserId();
         Test test = testRepository.findByIdAndIsEnabled(generateReqDTO.getTestId(), Boolean.TRUE).orElseThrow(
             () -> exceptionFactory.resourceNotFoundException(MessageConst.Test.NOT_FOUND, MessageConst.RESOURCE_NOT_FOUND, Resources.TEST,
@@ -95,7 +96,7 @@ public class TestSetServiceImpl implements TestSetService {
         // Lấy cấu hình tạo đề thi
         GenTestConfigDTO genTestConfig = ObjectMapperUtil.objectMapper(test.getGenTestConfig(), GenTestConfigDTO.class);
         if (Objects.isNull(genTestConfig)) {
-            return;
+            return null;
         }
 
         // Lấy các câu hỏi trong bộ câu hỏi của đề thi
@@ -111,7 +112,7 @@ public class TestSetServiceImpl implements TestSetService {
 
         // Tạo đề thi
         List<TestSet> lstTestSet = new ArrayList<>();
-        List<String> lstTestCode = new ArrayList<>(randomTestSetCode(generateReqDTO.getNumOfTestSet()));
+        List<String> lstTestCode = new ArrayList<>(randomTestSetCode(generateReqDTO.getTestId(), generateReqDTO.getNumOfTestSet()));
         for (int i = 0; i < generateReqDTO.getNumOfTestSet(); i++) {
             TestSet newTestSet = TestSet.builder()
                 .testId(test.getId())
@@ -169,6 +170,8 @@ public class TestSetServiceImpl implements TestSetService {
             }
         }
         testSetQuestionRepository.saveAll(lstTestSetQuestion);
+        return lstTestSet.stream().map(testSet -> new TestSetPreviewDTO(testSet.getId(), testSet.getCode(), testSet.getTestNo(), testSet.getTestId())).collect(
+                Collectors.toList());
     }
 
 
@@ -220,10 +223,13 @@ public class TestSetServiceImpl implements TestSetService {
     /**
      * Sinh tự động mã đề trong kỳ thi
      */
-    private Set<String> randomTestSetCode(Integer length) {
+    private Set<String> randomTestSetCode(Long testId, Integer length) {
         Set<String> lstRandomCode = new HashSet<>();
         do {
-            lstRandomCode.add(RandomStringUtils.randomNumeric(3));
+            String newCode = RandomStringUtils.randomNumeric(3);
+            if(!testSetRepository.existsByTestIdAndCode(testId, newCode)){
+                lstRandomCode.add(newCode);
+            }
         } while (lstRandomCode.size() < length);
         return lstRandomCode;
     }

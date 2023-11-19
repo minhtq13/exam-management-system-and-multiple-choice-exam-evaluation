@@ -8,13 +8,14 @@ import com.elearning.elearning_support.dtos.studentTestSet.ScoredStudentTestResD
 import com.elearning.elearning_support.dtos.studentTestSet.StudentHandledTestDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetGenerateReqDTO;
+import com.elearning.elearning_support.dtos.test.test_set.TestSetPreviewDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetSearchReqDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetUpdateDTO;
 
 @Service
 public interface TestSetService {
 
-    void generateTestSet(TestSetGenerateReqDTO generateReqDTO);
+    List<TestSetPreviewDTO> generateTestSet(TestSetGenerateReqDTO generateReqDTO);
 
     /**
      * Chi tiết đề thi

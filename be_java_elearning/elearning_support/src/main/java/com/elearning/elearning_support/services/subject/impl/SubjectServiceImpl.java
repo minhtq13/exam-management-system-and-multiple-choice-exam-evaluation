@@ -61,7 +61,7 @@ public class SubjectServiceImpl implements SubjectService {
         }
 
         // update subject
-        BeanUtils.copyProperties(updateDTO, this);
+        BeanUtils.copyProperties(updateDTO, subject);
         subject.setModifiedBy(AuthUtils.getCurrentUserId());
         subject.setModifiedAt(new Date());
         subjectRepository.save(subject);

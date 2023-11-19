@@ -2,6 +2,7 @@ package com.elearning.elearning_support.controllers.test.test_set;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.elearning.elearning_support.dtos.test.test_set.ScoringTestSetReqDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetGenerateReqDTO;
+import com.elearning.elearning_support.dtos.test.test_set.TestSetPreviewDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetSearchReqDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetUpdateDTO;
 import com.elearning.elearning_support.services.test.TestSetService;
@@ -33,8 +35,8 @@ public class TestSetController {
 
     @PostMapping("/generate")
     @Operation(summary = "Gen đề thi trong kỳ thi")
-    public void genTestSetFromTest(@RequestBody TestSetGenerateReqDTO generateDTO) {
-        testSetService.generateTestSet(generateDTO);
+    public List<TestSetPreviewDTO> genTestSetFromTest(@RequestBody TestSetGenerateReqDTO generateDTO) {
+        return testSetService.generateTestSet(generateDTO);
     }
 
     @PostMapping(value = "/export", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)

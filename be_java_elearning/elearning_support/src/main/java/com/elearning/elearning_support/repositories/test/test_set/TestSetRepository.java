@@ -24,6 +24,8 @@ public interface TestSetRepository extends JpaRepository<TestSet, Long> {
 
     Boolean existsByIdAndIsEnabled(Long id, Boolean isEnabled);
 
+    Boolean existsByTestIdAndCode(Long testId, String code);
+
     @Query(nativeQuery = true, value = SQLTestSet.GET_LIST_TEST_QUESTION_CORRECT_ANSWER)
     Set<ITestQuestionCorrectAnsDTO> getListTestQuestionCorrectAns(Long testSetId);
 
