@@ -10,6 +10,18 @@ export const formatDate = (str) => {
   return formatDate;
 };
 
+export const formatDateParam = (str) => {
+  const date = new Date(str);
+  let day, month, year;
+  day = date.getDate();
+  month = date.getMonth() + 1;
+  year = date.getFullYear();
+  month = month < 10 ? "0" + month : month;
+  day = day < 10 ? "0" + day : day;
+  let formatDate = `${day}/${month}/${year}`;
+  return formatDate;
+};
+
 export function generateRandomSixDigitNumber() {
   const randomNumber = Math.floor(Math.random() * 1000000);
   const sixDigitNumber = randomNumber.toString().padStart(6, "0");

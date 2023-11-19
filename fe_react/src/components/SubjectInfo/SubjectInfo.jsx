@@ -16,7 +16,7 @@ const SubjectInfo = ({
 	skeletonLoading,
 	chaptersVisible,
 	editItems,
-	code,
+	id,
 }) => {
 	const { getSubjectByCode } = useSubjects();
 	const notify = useNotify();
@@ -95,7 +95,7 @@ const SubjectInfo = ({
 							<div className="subject-chapter-header">
 								Nội dung
 							</div>
-							<Form.List name="chapters" initialValue={editItems}>
+							<Form.List name="lstChapter" initialValue={editItems}>
 								{(fields, { add, remove }) => {
 									return (
 										<>
@@ -177,7 +177,7 @@ const SubjectInfo = ({
 																	);
 																	getSubjectByCode(
 																		{},
-																		code
+																		id
 																	);
 																},
 																(error) => {

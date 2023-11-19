@@ -10,9 +10,7 @@ const AddQuestions = () => {
   const [checked, setChecked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formKey, setFormKey] = useState(0);
-  const [isReset, setIsReset] = useState(false);
   const [preChapter, setPreChapter] = useState(null);
-  const [initialValue, setInitialValue] = useState({});
   const {
     chapterLoading,
     subLoading,
@@ -146,7 +144,6 @@ const AddQuestions = () => {
       <Form
         onFinish={onFinish}
         name="question-form"
-        initialValues={initialValue}
         key={formKey}
       >
         <Form.List name="lstQuestion">

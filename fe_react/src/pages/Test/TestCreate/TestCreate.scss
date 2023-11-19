@@ -10,14 +10,29 @@
     .test-subject {
       display: flex;
       align-items: center;
-      width: 45%;
       gap: 10px;
+      width: 35%;
 
+      .ant-select {
+        width: 85%;
+      }
     }
 
-    .ant-select {
-      width: 85%;
+    .test-level {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 20%;
+
+      span {
+        width: 40%;
+      }
+
+      .ant-select {
+        width: 50%;
+      }
     }
+
   }
 
   .test-content {

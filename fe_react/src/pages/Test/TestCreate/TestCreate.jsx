@@ -1,81 +1,108 @@
 import { useEffect, useState } from "react";
-import useSubjects from "../../../hooks/useSubjects";
 import { Select, Tabs } from "antd";
 import "./TestCreate.scss";
 import AutoTest from "./AutoTest/AutoTest";
 import useQuestions from "../../../hooks/useQuestion";
 import ManualTest from "./ManualTest/ManualTest";
+import useCombo from "../../../hooks/useCombo";
 
 const TestCreate = () => {
-  const { getAllSubjects, allSubjects, tableLoading } = useSubjects();
-  const { allQuestions, loading, getAllQuestions } = useQuestions();
+  const initialParam = {
+    subjectId: null,
+    subjectCode: null,
+    chapterCode: null,
+    chapterId: null,
+    level: "ALL",
+  };
+  const [param, setParam] = useState(initialParam);
+  const {
+    chapterLoading,
+    subLoading,
+    allChapters,
+    allSubjects,
+    getAllChapters,
+    getAllSubjects,
+  } = useCombo();
+  const [subjectId, setSubjectId] = useState(null);
+  const [chapterIds, setChapterIds] = useState([]);
+  const { allQuestions, getAllQuestions } = useQuestions();
   const [tabKey, setTabKey] = useState("auto");
-  const [chapterOptions, setChapterOptions] = useState([]);
-  const [subjectCode, setSubjectCode] = useState(null);
-  const [chapterOrders, setChapterOrders] = useState([]);
-  const [preSub, setPreSub] = useState(null);
+  const [formKey, setFormKey] = useState(0);
+  const levelOptions = [
+    {
+      value: "ALL",
+      label: "Tất cả",
+    },
+    {
+      value: "EASY",
+      label: "Dễ",
+    },
+    {
+      value: "MEDIUM",
+      label: "Trung bình",
+    },
+    {
+      value: "HARD",
+      label: "Khó",
+    },
+  ];
   useEffect(() => {
-    getAllSubjects();
+    getAllSubjects({ subjectCode: null, subjectTitle: null });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const getOptions = (array) => {
-    let options = array
-      ? array.map((item) => {
-          return { value: item.order, label: item.title };
-        })
-      : [];
-    return options ? options : [];
-  };
+  useEffect(() => {
+    if (subjectId) {
+      getAllChapters({
+        subjectId: subjectId,
+        chapterCode: null,
+        chapterId: null,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [subjectId]);
+  useEffect(() => {
+    if (tabKey === "manual") {
+      getAllQuestions(param);
+    }
+  }, [param, tabKey]);
   const subjectOptions = allSubjects.map((item) => {
-    let obj = {};
-    obj["value"] = item.code;
-    obj["label"] = item.description;
-    return obj;
+    return { value: item.id, label: item.name };
+  });
+  const chapterOptions = allChapters.map((item) => {
+    return { value: item.id, label: item.name };
   });
   const subjectOnChange = (value) => {
-    if (tabKey === "manual" && value !== preSub) {
-      getAllQuestions({}, value);
-    }
-    if (value !== preSub) {
-      setChapterOrders([]);
-      setPreSub(value);
-    }
-    setChapterOptions(
-      getOptions(allSubjects.find((item) => item.code === value)?.chapters)
-    );
-    setSubjectCode(value);
+    setSubjectId(value);
+    setParam({ ...param, subjectId: value, chapterId: null });
+    setChapterIds([]);
+    setFormKey((prev) => prev +1);
+
   };
   const chapterOnchange = (values) => {
-    setChapterOrders(values);
+    setParam({ ...param, chapterId: values });
+    setChapterIds(values);
   };
   const tabOnchange = (value) => {
     setTabKey(value);
-    if (value === "manual") {
-      getAllQuestions({}, subjectCode);
-    }
   };
+  const levelOnchange = (value) => {
+		setParam({...param, level: value})
+	}
   const items = [
     {
       key: "auto",
       label: "Auto Test",
-      children: (
-        <AutoTest subjectCode={subjectCode} chapterOrders={chapterOrders} />
-      ),
+      children: <AutoTest chapterIds={chapterIds} formKey={formKey} subjectId={subjectId}/>,
     },
     {
       key: "manual",
       label: "Manual Test",
       children: (
         <ManualTest
-          subjectCode={subjectCode}
-          loading={loading}
-          questionList={
-            chapterOrders.length > 0
-              ? allQuestions.filter((item) =>
-                  chapterOrders.includes(item.chapter.order)
-                )
-              : allQuestions
-          }
+          //loading={loading}
+          chapterIds={chapterIds}
+          questionList={allQuestions}
+          subjectId={subjectId}
         />
       ),
     },
@@ -96,7 +123,7 @@ const TestCreate = () => {
             optionLabelProp="label"
             options={subjectOptions}
             onChange={subjectOnChange}
-            loading={tableLoading}
+            loading={subLoading}
           />
         </div>
         <div className="test-chapters">
@@ -112,8 +139,17 @@ const TestCreate = () => {
             optionLabelProp="label"
             options={chapterOptions}
             onChange={chapterOnchange}
-            value={chapterOrders}
-            loading={tableLoading}
+            value={chapterIds}
+            loading={chapterLoading}
+          />
+        </div>
+        <div className="test-level">
+          <span className="select-label">Mức độ:</span>
+          <Select
+            defaultValue={"ALL"}
+            optionLabelProp="label"
+            options={levelOptions}
+            onChange={levelOnchange}
           />
         </div>
       </div>

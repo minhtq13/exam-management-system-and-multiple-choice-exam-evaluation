@@ -11,6 +11,7 @@ const UserInfo = ({
 	loading,
 	isPasswordDisplay,
 	isUserNameDisplay,
+	formKey
 }) => {
 	const genderOption = [
 		{
@@ -42,6 +43,7 @@ const UserInfo = ({
 				className="info-user-form"
 				initialValues={initialValues}
 				onFinish={onFinish}
+				key= {formKey}
 			>
 				<div className="info-user-header">Thông tin người dùng</div>
 				<Form.Item

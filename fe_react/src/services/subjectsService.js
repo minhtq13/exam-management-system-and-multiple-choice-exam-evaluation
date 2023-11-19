@@ -1,14 +1,35 @@
 import { getRequest, postRequest, putRequest, deleteRequest } from "../api/apiCaller";
 import { apiPath } from "../config/apiPath";
-export const getAllSubjectsService = async (params, successCallback, errorCallback) => {
-  await getRequest(`${apiPath.allSubjects}`, params, successCallback, errorCallback);
+export const getPagingSubjectsService = async (title, code, page, size, sort, successCallback, errorCallback) => {
+  const params = {
+    page,
+    size,
+    sort,
+  };
+
+  if (title) {
+    params.title = title;
+  }
+
+  if (code) {
+    params.code = code;
+  }
+
+  const queryString = Object.entries(params)
+    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+    .join("&");
+
+  const apiUrl = `${apiPath.allSubjects}?${queryString}`;
+
+  await getRequest(apiUrl, null, successCallback, errorCallback);
 };
+
 export const getSubjectByCodeService = async (code, params, successCallback, errorCallback) => {
   await getRequest(`${apiPath.getSubjectByCode}/${code}`, params, successCallback, errorCallback);
 };
 export const updateSubjectsService = async (subjectId, params, successCallback, errorCallback) => {
   await putRequest(
-    `${apiPath.updateSubject}/${subjectId}/chapters`,
+    `${apiPath.updateSubject}/${subjectId}`,
     params,
     successCallback,
     errorCallback

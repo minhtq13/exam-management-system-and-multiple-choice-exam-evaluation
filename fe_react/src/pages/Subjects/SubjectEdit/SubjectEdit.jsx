@@ -9,23 +9,20 @@ const SubjectEdit = () => {
   const { getSubjectByCode, subjectInfo, infoLoading } = useSubjects();
   const notify = useNotify();
   const location = useLocation();
-  const code = location.pathname.split("/")[2];
+  const id = location.pathname.split("/")[2];
   useEffect(() => {
-    getSubjectByCode({}, code);
+    getSubjectByCode({}, id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const onFinish = (value) => {
     setLoading(true);
     updateSubjectsService(
-      location.pathname.split("/")[2],
+      id,
       {
         code: value.code,
         credit: value.credit,
         description: value.description,
-        title: value.title,
-        chapters: value.chapters.map((item) => {
-          return { order: item.order, title: item.title };
-        }),
+        title: value.title
       },
       (res) => {
         setLoading(false);
@@ -43,12 +40,12 @@ const SubjectEdit = () => {
     <SubjectInfo
       infoHeader="Sửa thông tin học phần"
       editItems={
-        subjectInfo.chapters
-          ? subjectInfo.chapters.sort((a, b) => a.order - b.order)
+        subjectInfo.lstChapter
+          ? subjectInfo.lstChapter.sort((a, b) => a.orders - b.orders)
           : []
       }
       btnText="Cập nhật"
-      chaptersVisible={true}
+      chaptersVisible={false}
       skeletonLoading={infoLoading}
       initialValues={{
         remember: false,
@@ -59,7 +56,7 @@ const SubjectEdit = () => {
       }}
       loading={loading}
       onFinish={onFinish}
-      code={code}
+      id={id}
     />
   );
 };

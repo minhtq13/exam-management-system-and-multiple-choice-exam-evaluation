@@ -22,10 +22,10 @@ export const apiPath = {
   deleteTeacher: BASE_URL + "/api/teacher/disable",
   exportStudent: BASE_URL + "/api/teacher/export",
   //Subject:
-  allSubjects: BASE_URL + "/api/subject/chapters",
-  getSubjectByCode: BASE_URL + "/api/subject",
-  updateSubject: BASE_URL + "/api/subject/update",
-  addSubject: BASE_URL + "/api/subject/add",
+  allSubjects: BASE_URL + "/api/subject/list",
+  getSubjectByCode: BASE_URL + "/api/subject/detail",
+  updateSubject: BASE_URL + "/api/subject/",
+  addSubject: BASE_URL + "/api/subject",
   deleteSubject: BASE_URL + "/api/subject/disable",
   //Chapter:
   disableChapter: BASE_URL + "/api/chapter/disable",

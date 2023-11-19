@@ -3,16 +3,17 @@ import "./TestView.scss";
 import { Checkbox, Button, Modal, Tag } from "antd";
 import { useNavigate } from "react-router-dom";
 import { testService } from "../../../../../services/testServices";
-import { formatDate } from "../../../../../utils/tools";
 import dayjs from "dayjs";
 import useNotify from "../../../../../hooks/useNotify";
 import { appPath } from "../../../../../config/appPath";
 const TestView = ({
   questionList,
-  testDay,
-  testTime,
+  startTime,
+  endTime,
   duration,
-  totalPoint
+  totalPoint,
+  name,
+  subjectId
 }) => {
   const [quesIds, setQesIds] = useState([]);
   const [openModal, setOpenModal] = useState(false);
@@ -30,8 +31,11 @@ const TestView = ({
     setLoading(true);
     testService(
       {
-        testDay: formatDate(testDay),
-        testTime: dayjs(testTime, "HH:mm").format("HH:mm"),
+        subjectId: subjectId,
+        questionQuantity: numberQues,
+        name: name,
+        startTime: dayjs(startTime).format("DD/MM/YYYY HH:mm"),
+        endTime: dayjs(endTime).format("DD/MM/YYYY HH:mm"),
         duration: Number(duration),
         totalPoint: Number(totalPoint),
         questionIds: quesIds,
@@ -48,29 +52,38 @@ const TestView = ({
     );
   };
   const tagRender = (value, color) => {
-    if (value === "EASY") {
+    if (value === 0) {
       color = "green";
-    } else if (value === "MEDIUM") {
-      color = "geekblue";
+    } else if (value === 1) {
+      color = "geekblue"; 
     } else color = "volcano";
     return color;
   };
+  const renderTag = (item) => {
+		if(item.level === 0){
+			return "DỄ";
+		}else if (item.level === 1) {
+			return "TRUNG BÌNH";
+		}else {
+			return "KHÓ";
+		}
+	}
   const options = questionList.map((item, index) => {
     return {
       label: (
         <div className="question-items" key={index}>
           <div className="topic-level">
             <div className="question-topic">{`Câu ${index + 1}: ${
-              item.topicText
+              item.content
             }`}</div>
-            <Tag color={tagRender(item.level)}>{item.level}</Tag>
+            <Tag color={tagRender(item.level)}>{renderTag(item)}</Tag>
           </div>
-          {item.answers &&
-            item.answers.map((ans, ansNo) => {
+          {item.lstAnswer && item.lstAnswer.length > 0 &&
+            item.lstAnswer.map((ans, ansNo) => {
               return (
                 <div
                   className={
-                    ans.isCorrected === "true"
+                    ans.isCorrect
                       ? "answer-items corrected"
                       : "answer-items"
                   }

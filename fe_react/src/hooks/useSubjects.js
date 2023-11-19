@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
-  getAllSubjectsService,
   getChaptersService,
+  getPagingSubjectsService,
   getSubjectByCodeService
 } from "../services/subjectsService";
 import useNotify from "./useNotify";
@@ -10,17 +10,23 @@ const useSubjects = () => {
   const notify = useNotify();
   const [allSubjects, setAllSubjects] = useState([]);
   const [tableLoading, setTableLoading] = useState(true);
+  const [pagination, setPagination] = useState({})
   const [subjectInfo, setSubjectInfo] = useState({});
   const [infoLoading, setInfoLoading] = useState(true);
   const [allChapters, setAllChapters] = useState([]);
   const [chapterLoading, setChapterLoading] = useState(false);
 
-  const getAllSubjects = (payload = {}) => {
+  const getAllSubjects = (payload) => {
     setTableLoading(true);
-    getAllSubjectsService(
-      payload,
+    getPagingSubjectsService(
+      payload.title,
+      payload.code,
+      payload.page,
+      payload.size,
+      payload.sort,
       (res) => {
-        setAllSubjects(res.data);
+        setAllSubjects(res.data.content);
+				setPagination({current: res.data.pageable.pageNumber + 1, pageSize: res.data.pageable.pageSize, total: res.data.totalElements})
         setTableLoading(false);
       },
       (err) => {
@@ -81,7 +87,8 @@ const useSubjects = () => {
     infoLoading,
     allChapters,
     chapterLoading,
-    getAllChapters
+    getAllChapters,
+    pagination
   };
 };
 
