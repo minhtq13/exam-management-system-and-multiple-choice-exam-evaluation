@@ -29,6 +29,7 @@ export const apiPath = {
   deleteSubject: BASE_URL + "/api/subject/disable",
   //Chapter:
   disableChapter: BASE_URL + "/api/chapter/disable",
+  updateChapter: BASE_URL + "/api/chapter",
   // TODO: CHECK URL
   addChapters: BASE_URL + "/api/v1",
   //Question:

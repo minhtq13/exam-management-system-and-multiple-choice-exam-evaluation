@@ -1,5 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Button, Input, Space, Table } from "antd";
+import {
+  Button,
+  Input,
+  Modal,
+  Space,
+  Table,
+  Form,
+  Popconfirm,
+  InputNumber,
+} from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +24,7 @@ import "./SubjectList.scss";
 
 import ModalPopup from "../../../components/ModalPopup/ModalPopup";
 import { deleteSubjectsService } from "../../../services/subjectsService";
+import { updateChapterService } from "../../../services/chapterServices";
 
 const SubjectList = () => {
   const initialParam = {
@@ -24,11 +34,24 @@ const SubjectList = () => {
     size: 3,
     sort: "code",
   };
+  const [form] = Form.useForm();
   const [deleteDisable, setDeleteDisable] = useState(true);
-  const { allSubjects, getAllSubjects, tableLoading, pagination } =
-    useSubjects();
+  const [editingKey, setEditingKey] = useState("");
+  const isEditing = (record) => record.id === editingKey;
+  const {
+    allSubjects,
+    getAllSubjects,
+    tableLoading,
+    pagination,
+    subjectInfo,
+    getSubjectByCode,
+    infoLoading,
+  } = useSubjects();
   const [deleteKey, setDeleteKey] = useState(null);
   const [param, setParam] = useState(initialParam);
+  const [openModal, setOpenModal] = useState(false);
+  const [data, setData] = useState(subjectInfo.lstChapter);
+  const [subjectId, setSubjectId] = useState(null);
   const searchInput = useRef(null);
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -105,11 +128,47 @@ const SubjectList = () => {
       }
     },
   });
+  const EditableCell = ({
+    editing,
+    dataIndex,
+    title,
+    inputType,
+    record,
+    index,
+    children,
+    ...restProps
+  }) => {
+    const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
+    return (
+      <td {...restProps}>
+        {editing ? (
+          <Form.Item
+            name={dataIndex}
+            style={{
+              margin: 0,
+            }}
+            rules={[
+              {
+                required: true,
+                message: `Please Input ${title}!`,
+              },
+            ]}
+          >
+            {inputNode}
+          </Form.Item>
+        ) : (
+          children
+        )}
+      </td>
+    );
+  };
   const handleEdit = (record) => {
     navigate(`${appPath.subjectEdit}/${record.id}`);
   };
   const handleView = (record) => {
-    navigate(`${appPath.subjectView}/${record.code}`);
+    setOpenModal(true);
+    getSubjectByCode({}, record.id);
+    setSubjectId(record.id);
   };
   useEffect(() => {
     getAllSubjects(param);
@@ -146,16 +205,6 @@ const SubjectList = () => {
       key: "credit",
     },
     {
-      title: "Số câu hỏi",
-      dataIndex: "questionQuantity",
-      key: "questionQuantity",
-    },
-    {
-      title: "Số chương",
-      dataIndex: "chapterQuantity",
-      key: "chapterQuantity",
-    },
-    {
       title: "Action",
       key: "action",
       render: (_, record) => (
@@ -163,17 +212,99 @@ const SubjectList = () => {
           <Button danger onClick={() => handleEdit(record)}>
             Sửa
           </Button>
-          <Button onClick={() => handleView(record)}>View</Button>
+          <Button onClick={() => handleView(record)}>Nội dung</Button>
         </Space>
       ),
     },
   ];
+  const edit = (record) => {
+    form.setFieldsValue({
+      orders: "",
+      title: "",
+      ...record,
+    });
+    setEditingKey(record.id);
+    console.log(record);
+  };
+  const cancel = () => {
+    setEditingKey("");
+  };
+  const save = async (record) => {
+    const row = await form.validateFields();
+    updateChapterService(
+      record.id,
+      {
+        orders: row.orders,
+        title: row.title,
+      },
+      (res) => {
+        getSubjectByCode({}, subjectId);
+        setEditingKey("");
+      },
+      (error) => {
+        notify("error");
+      }
+    );
+  };
+  const chapterColumn = [
+    {
+      title: "Chương",
+      dataIndex: "orders",
+      width: "10%",
+      editable: true,
+    },
+    {
+      title: "Nội dung",
+      dataIndex: "title",
+      width: "60%",
+      editable: true,
+    },
+    {
+      title: "Thao tác",
+      dataIndex: "action",
+      render: (_, record) => {
+        const editable = isEditing(record);
+        return editable ? (
+          <span>
+            <Button
+              onClick={() => save(record)}
+              style={{
+                marginRight: 8,
+              }}
+            >
+              Lưu
+            </Button>
+            <Popconfirm title="Bạn chắc chắn muốn thoát?" onConfirm={cancel}>
+              <Button type="submit">Đóng</Button>
+            </Popconfirm>
+          </span>
+        ) : (
+          <Button disabled={editingKey !== ""} onClick={() => edit(record)}>
+            Edit
+          </Button>
+        );
+      },
+    },
+  ];
+  const mergedColumns = chapterColumn.map((col) => {
+    if (!col.editable) {
+      return col;
+    }
+    return {
+      ...col,
+      onCell: (record) => ({
+        record,
+        inputType: col.dataIndex === "orders" ? "number" : "text",
+        dataIndex: col.dataIndex,
+        title: col.title,
+        editing: isEditing(record),
+      }),
+    };
+  });
   const dataFetch = allSubjects.map((obj, index) => ({
     key: (index + 1).toString(),
     title: obj.title,
     credit: obj.credit,
-    chapterQuantity: obj.chapterQuantity,
-    questionQuantity: obj.questionQuantity,
     description: obj.description,
     code: obj.code,
     id: obj.id,
@@ -267,6 +398,32 @@ const SubjectList = () => {
             },
           }}
         />
+        <Modal
+          open={openModal}
+          title="Nội dung"
+          onOk={() => setData([...(subjectInfo.lstChapter ?? []), []])}
+          cancelText="Đóng"
+          okText="Thêm"
+          onCancel={() => setOpenModal(false)}
+          maskClosable={true}
+          centered={true}
+          style={{ height: "50vh", width: "80vw", overflowY: "scroll" }}
+        >
+          <Form form={form} component={false}>
+            <Table
+              loading={infoLoading}
+              components={{
+                body: {
+                  cell: EditableCell,
+                },
+              }}
+              bordered
+              dataSource={data ? data : (subjectInfo.lstChapter ? subjectInfo.lstChapter.sort((a,b) => a.orders-b.orders) : [])}
+              columns={mergedColumns}
+              pagination={false}
+            />
+          </Form>
+        </Modal>
       </div>
     </div>
   );
