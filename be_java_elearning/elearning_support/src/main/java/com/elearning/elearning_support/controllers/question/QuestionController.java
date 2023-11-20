@@ -38,7 +38,7 @@ public class QuestionController {
     }
 
     @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(description = "Import câu hỏi")
+    @Operation(summary = "Import câu hỏi")
     public ImportResponseDTO importQuestion(@RequestParam(name = "file") MultipartFile file) {
         return questionService.importQuestion(file);
     }

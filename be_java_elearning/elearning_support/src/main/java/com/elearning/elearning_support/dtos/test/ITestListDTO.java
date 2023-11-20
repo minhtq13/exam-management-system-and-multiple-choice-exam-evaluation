@@ -30,5 +30,7 @@ public interface ITestListDTO {
     @JsonFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_HH_MM, timezone = DateUtils.TIME_ZONE)
     Date getEndTime();
 
+    String getLstTestSetCode();
+
 
 }

@@ -3,6 +3,13 @@ package com.elearning.elearning_support.constants.sql;
 public class SQLTest {
 
     public static final String GET_LIST_TEST =
+        "WITH testSetCTE AS (" +
+            "   SELECT " +
+            "           test_id, \n" +
+            "           string_agg(code, ',') AS lst_test_set_code \n" +
+            "       FROM {h-schema}test_set \n" +
+            "       GROUP BY test_id " +
+            ") \n" +
         "SELECT \n" +
             "    test.id AS id, \n" +
             "    test.name AS name, \n" +
@@ -13,16 +20,18 @@ public class SQLTest {
             "    test.start_time AS startTime, \n" +
             "    test.end_time AS endTime, \n" +
             "    subject.title AS subjectName, \n" +
-            "    subject.code AS subjectCode \n" +
+            "    subject.code AS subjectCode, \n" +
+            "    testSetCTE.lst_test_set_code AS lstTestSetCode \n" +
             "FROM {h-schema}test \n" +
             "    LEFT JOIN {h-schema}subject ON test.subject_id = subject.id \n" +
+            "    LEFT JOIN testSetCTE ON testSetCTE.test_id = test.id \n" +
             "WHERE \n" +
             "    test.is_enabled = true AND \n" +
             "    test.deleted_flag = 1 AND \n" +
             "    (-1 = :subjectId OR subject.id = :subjectId) AND \n" +
             "    ('ALL' = :subjectCode OR subject.code = :subjectCode) AND \n" +
             "    (:startTime = DATE('1970-01-01') OR test.start_time >= :startTime) AND \n" +
-            "    (:endTime = DATE('1970-01-01') OR test.end_time <= :endTime) ";
+            "    (:endTime = DATE('1970-01-01') OR test.end_time <= :endTime) \n";
 
     public static final String SWITCH_TEST_STATUS =
         "UPDATE {h-schema}test SET is_enabled = :isEnabled WHERE id = :testId";
