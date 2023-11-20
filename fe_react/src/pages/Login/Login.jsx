@@ -1,11 +1,10 @@
 import { Button, Form, Input } from "antd";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { logOut } from "../../api/apiCaller";
 import SignFragment from "../../components/SignFragment/SignFragment";
 import { appPath } from "../../config/appPath";
 import useNotify from "../../hooks/useNotify";
-import { loginAuthenticService } from "../../services/accountServices";
+import { loginAuthenticService, refreshTokenService } from "../../services/accountServices";
 import { saveInfoToLocalStorage } from "../../utils/storage";
 import "./Login.scss";
 
@@ -15,6 +14,7 @@ const Login = () => {
 
   const notify = useNotify();
   const navigate = useNavigate();
+  const expiredTime = 1000000;
   const onFinish = (values) => {
     setLoading(true);
     loginAuthenticService(
@@ -25,24 +25,10 @@ const Login = () => {
         setAuthenticResult(true);
         notify.success(`Đăng nhập thành công!`);
         navigate(appPath.home);
-        saveInfoToLocalStorage(roles, accessToken, refreshToken);
-        const timeRecallAPI = 32000000;
+        saveInfoToLocalStorage(accessToken, refreshToken, roles, );
         setInterval(() => {
-          // loginAuthenticService(
-          //   values,
-          //   (res) => {
-          //     const { username, email, roles, accessToken, refreshToken, message } = res.data;
-          //     setAuthenticResult(message);
-          //     navigate(appPath.home);
-          //     saveInfoToLocalStorage(username, email, roles, message, accessToken, refreshToken);
-          //   },
-          //   (error) => {
-          //     console.log(error);
-          //     setAuthenticResult("error");
-          //   }
-          // );
-          logOut();
-        }, timeRecallAPI);
+          refreshTokenService(refreshToken);
+        }, expiredTime);
       },
       (error) => {
         console.log(error);

@@ -4,11 +4,11 @@ import {
 	UserOutlined,
 } from "@ant-design/icons";
 import { Avatar, Dropdown } from "antd";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import useAccount from "../../../../hooks/useAccount";
 import { clearInfoLocalStorage, getToken } from "../../../../utils/storage";
 import "./Account.scss";
-import useAccount from "../../../../hooks/useAccount";
-import { useEffect } from "react";
 const user = {
 	name: "Nguyen Van A",
 	avatar: "https://static1.dienanh.net/upload/202203/db8fd584-5830-40b0-b5e8-c42885d676b4.jpeg",
@@ -20,9 +20,9 @@ const Account = () => {
 	const token = getToken()
 	const {getProfileUser, userInfo} = useAccount();
 	useEffect(() => {
-		getProfileUser();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [token]);
+    getProfileUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 	const items = [
 		{
 			key: 1,

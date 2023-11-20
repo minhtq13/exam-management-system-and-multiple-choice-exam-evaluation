@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { appPath } from "../config/appPath";
 import { getProfileUserService, loginAuthenticService } from "../services/accountServices";
 import useNotify from "./useNotify";
+import { logOut } from "../api/apiCaller";
 
 const useAccount = () => {
   const [authenticResult, setAuthenticResult] = useState("");
@@ -32,6 +33,7 @@ const useAccount = () => {
         setUserInfo(res.data)
       },
       (error) => {
+        logOut();
         console.log(error)
       }
     );

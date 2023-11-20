@@ -4,7 +4,7 @@ export const apiPath = {
   // Authentication
   login: BASE_URL + "/api/auth/login",
   profile: BASE_URL + "/api/auth/profile",
-  refreshToken: BASE_URL + "/api/auth/refresh-token",
+  refreshToken: BASE_URL + "/api/auth/token/refresh",
   // Student
   allStudents: BASE_URL + "/api/user/student/list",
   pageStudent: BASE_URL + "/api/user/student/page",
