@@ -40,10 +40,10 @@ export const apiPath = {
   //Test:
   testRandomCreate: BASE_URL + "/api/test/create/random",
   testCreate: BASE_URL + "/api/test/create",
-  allTest: BASE_URL + "/api/test/list",
+  allTest: BASE_URL + "/api/test",
   deleteTest: BASE_URL + "/api/test/disable",
   //Test-set:
-  testSetCreate: BASE_URL + "/api/test-set",
+  testSetCreate: BASE_URL + "/api/test-set/generate",
   testSetDetail: BASE_URL + "/api/test-set/detail",
   //Exam-class:
   examClassCreate: BASE_URL + "/api/class/create",

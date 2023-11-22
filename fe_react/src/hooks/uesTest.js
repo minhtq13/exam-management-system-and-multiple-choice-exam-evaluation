@@ -7,12 +7,13 @@ const useTest = () => {
   const [allTest, setAllTest] = useState([]);
 	const [tableLoading, setTableLoading] = useState(true);
   
-  const getAllTests = (payload = {}) => {
+  const getAllTests = (param) => {
     setTableLoading(true);
     getTestsService(
-      payload,
+      param.subjectId,
       (res) => {
 				setAllTest(res.data);
+				//setPagination({current: res.data.pageable.pageNumber + 1, pageSize: res.data.pageable.pageSize, total: res.data.totalElements})
 				setTableLoading(false);
 			},
 			(err) => {

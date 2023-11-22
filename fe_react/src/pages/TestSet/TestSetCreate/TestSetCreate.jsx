@@ -26,11 +26,10 @@ const TestSetCreate = () => {
 	const [testNo, setTestNo] = useState(null);
 	const [buttonDisable, setButtonDisable] = useState(true);
 	const [downLoading, setDownLoading] = useState(false);
-	const onView = (testNo) => {
+	const onView = (test) => {
 		setViewLoading(true);
 		testSetDetailService(
-			[testId, testNo],
-			{},
+			{testId: testId, code: test.testSetCode},
 			(res) => {
 				setQuestions(res.data.questions);
 				setTestDetail(res.data.testSet);
@@ -79,8 +78,7 @@ const TestSetCreate = () => {
 			setBtnLoading(true);
 			setListLoading(true);
 			testSetCreateService(
-				[testId, testSetNum],
-				{},
+				{testId: testId, numOfTestSet: testSetNum},
 				(res) => {
 					notify.success("Tạo bộ đề thi thành công!");
 					setTestNos(res.data);
@@ -154,7 +152,7 @@ const TestSetCreate = () => {
 							]}
 						>
 							<List.Item.Meta
-								title={`Mã đề thi: ${item}`}
+								title={`Mã đề thi: ${item.testSetCode}`}
 							></List.Item.Meta>
 						</List.Item>
 					)}
