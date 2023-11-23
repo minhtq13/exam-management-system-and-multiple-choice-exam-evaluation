@@ -32,14 +32,14 @@ public class TestController {
 
     @PostMapping("/create")
     @Operation(summary = "Tạo kỳ thi với bộ câu hỏi random trong một môn học")
-    public void createTest(@RequestBody @Validated TestReqDTO createDTO) {
-        testService.createTest(createDTO);
+    public Long createTest(@RequestBody @Validated TestReqDTO createDTO) {
+        return testService.createTest(createDTO);
     }
 
     @PostMapping("/create/random")
     @Operation(summary = "Tạo kỳ thi với bộ câu hỏi chọn trước")
-    public void createRandomTest(@RequestBody @Validated TestReqDTO createDTO) {
-        testService.createRandomTest(createDTO);
+    public Long createRandomTest(@RequestBody @Validated TestReqDTO createDTO) {
+        return testService.createRandomTest(createDTO);
     }
 
     @PutMapping("/{testId}")

@@ -14,13 +14,13 @@ public interface TestService {
     /**
      * Tạo test từ môn học/chương
      */
-    void createRandomTest(TestReqDTO createDTO);
+    Long createRandomTest(TestReqDTO createDTO);
 
 
     /**
      * Tạo test từ bộ câu hỏi chọn sẵn
      */
-    void createTest(TestReqDTO createDTO);
+    Long createTest(TestReqDTO createDTO);
 
 
     /**

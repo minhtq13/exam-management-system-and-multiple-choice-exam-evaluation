@@ -49,7 +49,7 @@ public class TestSetController {
         return ResponseEntity.ok().headers(headers).body(testSetService.exportTestSet(searchReqDTO));
     }
 
-    @GetMapping("/detail")
+    @PostMapping("/detail")
     @Operation(summary = "Lấy chi tiết đề thi")
     public TestSetDetailDTO getTestSetDetail(@RequestBody TestSetSearchReqDTO searchReqDTO) {
         return testSetService.getTestSetDetail(searchReqDTO);

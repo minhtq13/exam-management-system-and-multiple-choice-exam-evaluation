@@ -47,7 +47,7 @@ public class TestServiceImpl implements TestService {
 
     @Transactional
     @Override
-    public void createRandomTest(TestReqDTO createDTO) {
+    public Long createRandomTest(TestReqDTO createDTO) {
         // Check môn học và chương
         Subject subject = subjectService.findById(createDTO.getSubjectId());
 
@@ -76,11 +76,13 @@ public class TestServiceImpl implements TestService {
         List<TestQuestion> lstNewTestQuestion = lstQuestionIdInChapters.stream().map(item -> new TestQuestion(testId, item, mark)).collect(
             Collectors.toList());
         testQuestionRepository.saveAll(lstNewTestQuestion);
+
+        return testId;
     }
 
     @Transactional
     @Override
-    public void createTest(TestReqDTO createDTO) {
+    public Long createTest(TestReqDTO createDTO) {
         Subject subject = subjectService.findById(createDTO.getSubjectId());
 
         Set<Long> lstChapterInSubject = subject.getLstChapter().stream().map(Chapter::getId).collect(Collectors.toSet());
@@ -109,6 +111,8 @@ public class TestServiceImpl implements TestService {
         List<TestQuestion> lstNewTestQuestion = lstQuestionInSubject.stream().map(item -> new TestQuestion(testId, item, mark)).collect(
             Collectors.toList());
         testQuestionRepository.saveAll(lstNewTestQuestion);
+
+        return testId;
     }
 
     @Transactional
