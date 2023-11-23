@@ -18,14 +18,14 @@ const QuestionList = () => {
     subjectId: null,
     subjectCode: null,
     chapterCode: null,
-    chapterId: null, 
+    chapterIds: [], 
     level: "ALL",
   };
   const { allQuestions, getAllQuestions } = useQuestions();
 	const {chapterLoading, subLoading, allChapters, allSubjects, getAllChapters, getAllSubjects} = useCombo();
   const [param, setParam] = useState(initialParam);
 	const [subjectId, setSubjectId] = useState(null);
-	const [chapterId, setChapterId] = useState(null);
+	const [chapterId, setChapterId] = useState([]);
   const notify = useNotify();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -77,11 +77,11 @@ const QuestionList = () => {
   };
   const subjectOnChange = (value) => {
     setSubjectId(value);
-		setParam({...param,subjectId: value, chapterId: null});
-		setChapterId(null);
+		setParam({...param,subjectId: value, chapterIds: []});
+		setChapterId([]);
   };
   const chapterOnchange = (values) => {
-    setParam({...param, chapterId: values});
+    setParam({...param, chapterIds: values});
 		setChapterId(values);
   };
   const onRemove = (id) => {
@@ -135,6 +135,7 @@ const QuestionList = () => {
         <div className="test-chapters">
           <span className="select-label">Chương:</span>
           <Select
+            mode="multiple"
             showSearch
             allowClear
             placeholder="Chọn chương để hiển thị ngân hàng câu hỏi"

@@ -44,6 +44,7 @@ const AddQuestions = () => {
   const subjectOnChange = (value) => {
     setSubjectId(value);
     setChapterId(null);
+    setFormKey((prevKey) => prevKey + 1);
   };
   const chapterOnchange = (values) => {
     if (preChapter !== values) {

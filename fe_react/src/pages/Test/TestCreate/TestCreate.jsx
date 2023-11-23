@@ -11,7 +11,7 @@ const TestCreate = () => {
     subjectId: null,
     subjectCode: null,
     chapterCode: null,
-    chapterId: null,
+    chapterIds: [],
     level: "ALL",
   };
   const [param, setParam] = useState(initialParam);
@@ -73,13 +73,13 @@ const TestCreate = () => {
   });
   const subjectOnChange = (value) => {
     setSubjectId(value);
-    setParam({ ...param, subjectId: value, chapterId: null });
+    setParam({ ...param, subjectId: value, chapterIds: [] });
     setChapterIds([]);
     setFormKey((prev) => prev +1);
 
   };
   const chapterOnchange = (values) => {
-    setParam({ ...param, chapterId: values });
+    setParam({ ...param, chapterIds: values });
     setChapterIds(values);
   };
   const tabOnchange = (value) => {

@@ -358,7 +358,7 @@ const TestEdit = ({ questions, testDetail, testNo }) => {
                       {...provided.draggableProps}
                       ref={provided.innerRef}
                     >
-                      <StoreList {...store} />
+                      <StoreList {...store} index={index} />
                     </div>
                   )}
                 </Draggable>
@@ -395,13 +395,13 @@ const TestEdit = ({ questions, testDetail, testNo }) => {
     </div>
   );
 };
-function StoreList({ name, items, id }) {
+function StoreList({ name, items, id, index }) {
   return (
     <Droppable droppableId={id}>
       {(provided) => (
         <div {...provided.droppableProps} ref={provided.innerRef}>
           <div className="store-container">
-            <h3>{name}</h3>
+            <h3>{`Câu ${index + 1}: ${name}`}</h3>
           </div>
           <div className="items-container">
             {items.map((item, index) => (
@@ -413,7 +413,7 @@ function StoreList({ name, items, id }) {
                     {...provided.draggableProps}
                     ref={provided.innerRef}
                   >
-                    <h4>{item.name}</h4>
+                    <h3>{`${String.fromCharCode(65 + index)}. ${item.name}`}</h3>
                   </div>
                 )}
               </Draggable>

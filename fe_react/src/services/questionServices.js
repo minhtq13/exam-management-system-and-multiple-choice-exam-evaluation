@@ -3,7 +3,7 @@ import { apiPath } from "../config/apiPath";
 export const addQuestionService = async (params, successCallback, errorCallback) => {
   await postRequest(`${apiPath.addQuestion}`, params, successCallback, errorCallback);
 };
-export const getQuestionService = async (subjectId, subjectCode, chapterCode, chapterId, level, successCallback, errorCallback) => {
+export const getQuestionService = async (subjectId, subjectCode, chapterCode, chapterIds, level, successCallback, errorCallback) => {
   const params = {
     level
   };
@@ -12,8 +12,8 @@ export const getQuestionService = async (subjectId, subjectCode, chapterCode, ch
     params.subjectId = subjectId;
   }
 
-  if (chapterId) {
-    params.chapterId = chapterId;
+  if (chapterIds) {
+    params.chapterIds = chapterIds;
   }
 
   const queryString = Object.entries(params)

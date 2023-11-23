@@ -125,7 +125,8 @@ const TestList = () => {
               danger
               onClick={() => {
                 setTestItem(record);
-                setTestSetNos(record.testSetNos);
+                console.log(record);
+                setTestSetNos(record.lstTestSetCode.split(","));
                 setOpenModal(true);
               }}
             >
@@ -146,6 +147,7 @@ const TestList = () => {
     duration: obj.duration,
     id: obj.id,
     testSetNos: obj.testSetNos,
+    lstTestSetCode: obj.lstTestSetCode
   }));
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const onSelectChange = (newSelectedRowKeys) => {
@@ -166,6 +168,9 @@ const TestList = () => {
   };
   const handleClickAddTest = () => {
     navigate("/test-create");
+  };
+  const handleEdit = (record) => {
+    navigate(`${appPath.subjectView}/${record.code}`);
   };
   const handleDelete = () => {
     deleteTestService(
@@ -258,8 +263,7 @@ const TestList = () => {
                       setOpenModalPreview(true);
                       setViewLoading(true);
                       testSetDetailService(
-                        [testItem.id ? testItem.id : null, item],
-                        {},
+                        {testId: testItem.id ?? null, code: item},
                         (res) => {
                           setViewLoading(false);
                           setQuestions(res.data.questions);

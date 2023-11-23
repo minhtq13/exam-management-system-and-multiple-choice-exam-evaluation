@@ -20,7 +20,7 @@ const SubjectView = () => {
       key: "1",
       label: `Chapter`,
       children: (
-        <SubjectContent editItems={subjectInfo.chapters ? subjectInfo.chapters.sort((a, b) => a.order - b.order) : []} contentLoading={infoLoading} code={code}/>
+        <SubjectContent editItems={subjectInfo.lstChapter ? subjectInfo.lstChapter.sort((a, b) => a.order - b.order) : []} contentLoading={infoLoading} code={code}/>
       ),
     },
     {

@@ -12,12 +12,13 @@ const SubjectContent = ({ contentLoading, editItems, code }) => {
 	const [btnLoading, setBtnLoading] = useState(false);
 	const { getSubjectByCode } = useSubjects();
 	const onFinish = (values) => {
+		console.log(values);
 		if (values.chaptersAdd.length > 0) {
 			setBtnLoading(true);
 			addChapterService(
 				code,
 				values.chaptersAdd.map((item) => {
-					return { order: item.orderAdd, title: item.titleAdd };
+					return { orders: item.orderAdd, title: item.titleAdd };
 				}),
 				(res) => {
 					getSubjectByCode({}, code);
@@ -49,19 +50,19 @@ const SubjectContent = ({ contentLoading, editItems, code }) => {
 											className="form-space"
 											key={`editChapter${index}`}
 										>
-											<div className="chapter-view-order">
+											<div className="chapter-view-orders">
 												<span>Order:</span>
 												<Form.Item
 													{...field}
-													name={[field.name, `order`]}
-													key={`order${index}`}
+													name={[field.name, `orders`]}
+													key={`orders${index}`}
 													style={{ width: "20%" }}
 													noStyle
 													label="Order"
 												>
 													<Input
 														aria-label="Order"
-														placeholder="Enter the order"
+														placeholder="Enter the orders"
 														style={{
 															width: "100%",
 														}}
@@ -104,7 +105,7 @@ const SubjectContent = ({ contentLoading, editItems, code }) => {
 										key={`addchapter${index}`}
 									>
 										<div className="form-space">
-											<div className="chapter-view-order">
+											<div className="chapter-view-orders">
 												<span>Order: </span>
 												<Form.Item
 													{...field}
@@ -114,7 +115,7 @@ const SubjectContent = ({ contentLoading, editItems, code }) => {
 													]}
 													style={{ width: "20%" }}
 													noStyle
-													key={`order-add${index}`}
+													key={`orders-add${index}`}
 													rules={[
 														{
 															required: true,

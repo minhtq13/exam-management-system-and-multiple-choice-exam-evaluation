@@ -30,6 +30,7 @@ export const apiPath = {
   //Chapter:
   disableChapter: BASE_URL + "/api/chapter/disable",
   updateChapter: BASE_URL + "/api/chapter",
+  addChapter: BASE_URL + "/api/chapter",
   // TODO: CHECK URL
   addChapters: BASE_URL + "/api/v1",
   //Question:

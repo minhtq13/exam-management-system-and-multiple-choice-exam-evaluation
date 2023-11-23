@@ -138,16 +138,16 @@ const StudentList = () => {
       },
     };
   };
-  const handleEdit = (record) => {
-    navigate(`${appPath.studentEdit}/${record.code}`);
-  };
+
   useEffect(() => {
     getAllStudents(param);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param]);
   const notify = useNotify();
   const navigate = useNavigate();
-
+  const handleEdit = (record) => {
+    navigate(`${appPath.studentEdit}/${record.code}`);
+  };
   const columns = [
     {
       title: "MSSV",

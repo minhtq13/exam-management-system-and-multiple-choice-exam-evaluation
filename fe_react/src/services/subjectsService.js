@@ -49,9 +49,9 @@ export const deleteSubjectsService = async (subjectId, params, successCallback, 
 export const deleteChaptersService = async (code, params, successCallback, errorCallback) => {
   await deleteRequest(`${apiPath.disableChapter}/${code}`, params, successCallback, errorCallback);
 };
-export const addChapterService = async (code, param, successCallback, errorCallback) => {
+export const addChapterService = async (param, successCallback, errorCallback) => {
   await postRequest(
-    `${apiPath.addChapters}/${code}/chapters/add`,
+    `${apiPath.addChapter}`,
     param,
     successCallback,
     errorCallback

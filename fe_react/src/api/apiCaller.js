@@ -46,7 +46,34 @@ axios.interceptors.response.use(
     });
   }
 );
-
+export const getRequestWithBody = (url = "", data, successCallback, errorCallback, timeout) => {
+  return axios
+    .request({
+      url,
+      method: 'get',
+      params: data, // Dữ liệu sẽ được chuyển vào URL
+      data, // Dữ liệu sẽ được chuyển vào body
+      timeout,
+    })
+    .then((response) => {
+      if (successCallback) {
+        try {
+          successCallback(response);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    })
+    .catch((error) => {
+      if (errorCallback) {
+        try {
+          errorCallback(error);
+        } finally {
+          console.log(error);
+        }
+      }
+    });
+};
 export const getRequest = (url = "", params, successCallback, errorCallback, timeout) => {
   return axios
     .get(url, {
@@ -80,7 +107,6 @@ export const getRequest = (url = "", params, successCallback, errorCallback, tim
         }
     });
 };
-
 export const postRequest = async (url = "", params, successCallback, errorCallback, timeout) => {
   return await axios
     .post(url, params)

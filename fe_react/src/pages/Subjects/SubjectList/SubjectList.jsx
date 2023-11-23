@@ -401,7 +401,7 @@ const SubjectList = () => {
         <Modal
           open={openModal}
           title="Nội dung"
-          onOk={() => setData([...(subjectInfo.lstChapter ?? []), []])}
+          onOk={() => navigate(`${appPath.subjectView}/${subjectId}`)}
           cancelText="Đóng"
           okText="Thêm"
           onCancel={() => setOpenModal(false)}
@@ -418,7 +418,13 @@ const SubjectList = () => {
                 },
               }}
               bordered
-              dataSource={data ? data : (subjectInfo.lstChapter ? subjectInfo.lstChapter.sort((a,b) => a.orders-b.orders) : [])}
+              dataSource={
+                data
+                  ? data
+                  : subjectInfo.lstChapter
+                  ? subjectInfo.lstChapter.sort((a, b) => a.orders - b.orders)
+                  : []
+              }
               columns={mergedColumns}
               pagination={false}
             />

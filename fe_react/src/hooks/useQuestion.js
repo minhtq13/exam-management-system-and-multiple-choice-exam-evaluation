@@ -6,12 +6,11 @@ const useQuestions = () => {
   const [allQuestions, setAllQuestions] = useState([]);
   const notify = useNotify();
   const getAllQuestions = (payload) => {
-    const chapterIdParam = payload.chapterId && payload.chapterId.length > 0 ? payload.chapterId.join(',') : null;
     getQuestionService(
       payload.subjectId,
       payload.subjectCode,
       payload.chapterCode,
-      encodeURIComponent(chapterIdParam),
+      payload.chapterIds && payload.chapterIds.length > 0 ? payload.chapterIds.join(",") : null,
       payload.level,
       (res) => {
         setAllQuestions(res.data);

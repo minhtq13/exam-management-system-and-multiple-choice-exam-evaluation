@@ -1,4 +1,6 @@
 .test-preview {
+  background-color: #ffffff;
+  padding: 0px 25px;
 
   div,
   p {
@@ -81,18 +83,21 @@
       }
     }
   }
+
   .store-container {
-    text-align: center;
-    padding: 5px;
-    background-color: gray;
+    padding: 5px 5px 5px 20px;
+
+    h3{
+      font-weight: bold;
+    }
   }
-  
+
   .items-container {
-    text-align: center;
+    padding-left: 20px;
   }
-  
+
   .item-container {
     padding: 5px;
-    border-bottom: 1px solid grey
+    margin-left: 20px;
   }
 }

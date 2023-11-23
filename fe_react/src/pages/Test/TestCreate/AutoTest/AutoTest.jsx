@@ -46,6 +46,7 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
         }
       },
       (res) => {
+        console.log(res.data)
         setLoading(false);
         setOpenModal(true);
         setTestId(res.data);
