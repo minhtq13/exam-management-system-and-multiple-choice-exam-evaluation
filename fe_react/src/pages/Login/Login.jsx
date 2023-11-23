@@ -14,7 +14,7 @@ const Login = () => {
 
   const notify = useNotify();
   const navigate = useNavigate();
-  const expiredTime = 1000000;
+  const expiredTime = 1000000 - 10000;
   const onFinish = (values) => {
     setLoading(true);
     loginAuthenticService(
@@ -25,7 +25,7 @@ const Login = () => {
         setAuthenticResult(true);
         notify.success(`Đăng nhập thành công!`);
         navigate(appPath.home);
-        saveInfoToLocalStorage(accessToken, refreshToken, roles, );
+        saveInfoToLocalStorage(accessToken, refreshToken, roles);
         setInterval(() => {
           refreshTokenService(refreshToken);
         }, expiredTime);
