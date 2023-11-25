@@ -7,7 +7,10 @@ RUN mvn clean package -Dprod -DskipTests
 # Docker build image stage
 FROM openjdk:11.0.16
 MAINTAINER chiendao1808
+WORKDIR /usr/local/app
+ADD src ./src
 ARG JAR_FILE=./target/*.jar
-COPY --from=build ${JAR_FILE} e_learning_support_backend.jar
+ARG WORK_DIR=/usr/local/app
+COPY --from=build ${JAR_FILE} ${WORK_DIR}/e_learning_support_backend.jar
 EXPOSE 8088
 ENTRYPOINT ["java", "-jar", "e_learning_support_backend.jar"]
