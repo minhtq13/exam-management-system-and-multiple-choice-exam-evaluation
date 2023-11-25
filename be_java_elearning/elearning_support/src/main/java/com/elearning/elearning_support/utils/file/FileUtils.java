@@ -130,4 +130,25 @@ public class FileUtils {
         }
     }
 
+    public static class Excel {
+
+        public static final String[] EXTENSIONS = new String[] {
+          "xlsx", "xls"
+        };
+        public static final String[] CONTENT_TYPES = new String[] {
+            "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        };
+    }
+
+    public  static  class Word {
+        public static final String[] EXTENSIONS = new String[] {
+            "docx", "doc"
+        };
+        public static final String[] CONTENT_TYPES = new String[] {
+            "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        };
+    }
+
+
+
 }

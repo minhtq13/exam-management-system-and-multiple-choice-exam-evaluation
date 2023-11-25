@@ -6,16 +6,19 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.math3.util.Pair;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,7 +42,9 @@ import com.elearning.elearning_support.dtos.users.UserCreateDTO;
 import com.elearning.elearning_support.dtos.users.UserDetailDTO;
 import com.elearning.elearning_support.dtos.users.UserSaveReqDTO;
 import com.elearning.elearning_support.dtos.users.importUser.CommonUserImportDTO;
+import com.elearning.elearning_support.dtos.users.student.StudentExportDTO;
 import com.elearning.elearning_support.dtos.users.student.StudentImportDTO;
+import com.elearning.elearning_support.dtos.users.teacher.TeacherExportDTO;
 import com.elearning.elearning_support.entities.users.User;
 import com.elearning.elearning_support.entities.users.UserRole;
 import com.elearning.elearning_support.enums.commons.DeletedFlag;
@@ -73,6 +78,8 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     private final ExceptionFactory exceptionFactory;
+
+    private final ExcelFileUtils excelFileUtils;
 
 
     private final String[] IGNORE_COPY_USER_PROPERTIES = new String[]{
@@ -268,6 +275,22 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public InputStreamResource exportStudent(String studentName, String studentCode) throws IOException {
+        List<StudentExportDTO> lstStudent = userRepository.getListStudent(studentName, studentCode).stream().map(StudentExportDTO::new).collect(
+            Collectors.toList());
+        // Tạo map cấu trúc file excel
+        Map<Integer, Pair<String, String>> mapStructure = new LinkedHashMap<>();
+        mapStructure.put(1, Pair.create("lastName", "getLastName"));
+        mapStructure.put(2, Pair.create("firstName", "getFirstName"));
+        mapStructure.put(3, Pair.create("gender", "getGender"));
+        mapStructure.put(4, Pair.create("birthDate", "getBirthDate"));
+        mapStructure.put(5, Pair.create("email", "getEmail"));
+        mapStructure.put(6, Pair.create("phoneNumber", "getPhoneNumber"));
+        mapStructure.put(7, Pair.create("courseNum", "getCourseNum"));
+        return excelFileUtils.createWorkbook(lstStudent, mapStructure);
+    }
+
     @Transactional
     @Override
     public ImportResponseDTO importTeacher(MultipartFile fileImport) {
@@ -370,6 +393,21 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public InputStreamResource exportTeacher(String teacherName, String teacherCode) throws IOException {
+        List<TeacherExportDTO> lstTeacher = userRepository.getListTeacher(teacherName, teacherCode).stream().map(TeacherExportDTO::new).collect(
+            Collectors.toList());
+        // Tạo map cấu trúc file excel
+        Map<Integer, Pair<String, String>> mapStructure = new LinkedHashMap<>();
+        mapStructure.put(1, Pair.create("lastName", "getLastName"));
+        mapStructure.put(2, Pair.create("firstName", "getFirstName"));
+        mapStructure.put(3, Pair.create("gender", "getGender"));
+        mapStructure.put(4, Pair.create("birthDate", "getBirthDate"));
+        mapStructure.put(5, Pair.create("email", "getEmail"));
+        mapStructure.put(6, Pair.create("phoneNumber", "getPhoneNumber"));
+        mapStructure.put(7, Pair.create("departmentName", "getDepartmentName"));
+        return excelFileUtils.createWorkbook(lstTeacher, mapStructure);
+    }
 
     /**
      * Hàm check trùng các thông tin

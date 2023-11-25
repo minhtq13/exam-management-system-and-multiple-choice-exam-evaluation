@@ -1,6 +1,8 @@
 package com.elearning.elearning_support.services.users;
 
+import java.io.IOException;
 import java.util.List;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -64,10 +66,19 @@ public interface UserService {
 
 
     /**
+     * Export danh sách HSSV
+     */
+    InputStreamResource exportStudent(String studentName, String studentCode) throws IOException;
+
+
+    /**
      * Import danh sách GV
      */
     ImportResponseDTO importTeacher(MultipartFile fileImport);
 
-
+    /**
+     * Export danh sách GV
+     */
+    InputStreamResource exportTeacher(String studentName, String studentCode) throws IOException;
 
 }

@@ -1,11 +1,17 @@
 package com.elearning.elearning_support.controllers.users;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +28,7 @@ import com.elearning.elearning_support.dtos.users.UserCreateDTO;
 import com.elearning.elearning_support.dtos.users.UserDetailDTO;
 import com.elearning.elearning_support.dtos.users.UserSaveReqDTO;
 import com.elearning.elearning_support.services.users.UserService;
+import com.elearning.elearning_support.utils.file.FileUtils.Excel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +62,7 @@ public class UserController {
 
     @GetMapping("/{userId}")
     @Operation(summary = "Chi tiết người dùng")
-    public UserDetailDTO getUserDetail(@PathVariable(name = "userId") Long userId){
+    public UserDetailDTO getUserDetail(@PathVariable(name = "userId") Long userId) {
         return userService.getUserDetail(userId);
     }
 
@@ -89,9 +96,23 @@ public class UserController {
     }
 
     @PostMapping(value = "/student/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Import sinh viên")
+    @Operation(summary = "Import HSSV")
     public ImportResponseDTO importStudent(@RequestParam("file") MultipartFile fileImport) {
         return userService.importStudent(fileImport);
+    }
+
+    @GetMapping(value = "/student/export", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @Operation(summary = "Export danh sách HSSV")
+    public ResponseEntity<InputStreamResource> exportStudent(
+        @RequestParam(name = "name", required = false, defaultValue = "") String name,
+        @RequestParam(name = "code", required = false, defaultValue = "") String code
+    ) throws IOException {
+
+        HttpHeaders headers = new HttpHeaders();
+        String fileName = String.format("StudentExport_%s_.docx", LocalDateTime.now());
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.parseMediaType(String.join(";", Arrays.asList(Excel.CONTENT_TYPES))).toString());
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+        return ResponseEntity.ok().headers(headers).body(userService.exportStudent(name, code));
     }
 
     /*
@@ -129,6 +150,19 @@ public class UserController {
     @Operation(summary = "Import giáo viên / giảng viên")
     public ImportResponseDTO importTeacher(@RequestParam("file") MultipartFile fileImport) {
         return userService.importTeacher(fileImport);
+    }
+
+    @GetMapping(value = "/teacher/export", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @Operation(summary = "Export danh sách GV")
+    public ResponseEntity<?> exportTeacher(
+        @RequestParam(name = "name", required = false, defaultValue = "") String name,
+        @RequestParam(name = "code", required = false, defaultValue = "") String code
+    ) throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        String fileName = String.format("TeacherExport_%s_.docx", LocalDateTime.now());
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.parseMediaType(String.join(";", Arrays.asList(Excel.CONTENT_TYPES))).toString());
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+        return ResponseEntity.ok().headers(headers).body(userService.exportTeacher(name, code));
     }
 
     /*

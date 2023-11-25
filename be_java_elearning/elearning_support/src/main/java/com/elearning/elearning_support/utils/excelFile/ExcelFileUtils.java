@@ -2,18 +2,34 @@ package com.elearning.elearning_support.utils.excelFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import javax.sql.DataSource;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.math3.util.Pair;
+import org.apache.logging.log4j.util.Strings;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.IgnoredErrorType;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.streaming.SXSSFRow;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.postgresql.PGConnection;
 import org.postgresql.copy.CopyManager;
 import org.postgresql.core.BaseConnection;
@@ -22,17 +38,95 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import com.elearning.elearning_support.constants.message.messageConst.MessageConst;
 import com.elearning.elearning_support.utils.DateUtils;
 import com.elearning.elearning_support.utils.springCustom.SpringContextUtils;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class ExcelFileUtils {
+
+    /**
+     * Map<Integer, Pair<String, String>> = {Integer : columnIdx, Pair<headerName, methodName>}
+     */
+    public <T> InputStreamResource createWorkbook(List<T> lstObject, Map<Integer, Pair<String, String>> structure) throws IOException {
+        if (ObjectUtils.isEmpty(lstObject)) {
+            return null;
+        }
+        long startTime = System.currentTimeMillis();
+        log.info("createWorkbook: start at {}, lstObj {} items", startTime, lstObject.size());
+        ByteArrayOutputStream outputStream;
+        try (SXSSFWorkbook workbook = new SXSSFWorkbook()) {
+            workbook.setCompressTempFiles(true);
+
+            // Create data sheet
+            SXSSFSheet sheet = workbook.createSheet("result");
+            // prevent overload in memory by fix size of accessible data kept in memory in any time
+            sheet.setRandomAccessWindowSize(100);
+            try {
+                Field _sh = SXSSFSheet.class.getDeclaredField("_sh");
+                _sh.setAccessible(true);
+                XSSFSheet xssfSheet = (XSSFSheet) _sh.get(sheet);
+                CellRangeAddress cellRange = new CellRangeAddress(0, lstObject.size(), 0, structure.size());
+                xssfSheet.addIgnoredErrors(cellRange, IgnoredErrorType.NUMBER_STORED_AS_TEXT);
+            } catch (NoSuchFieldException | IllegalAccessException exception) {
+                log.error(MessageConst.EXCEPTION_LOG_FORMAT, exception.getMessage(), exception.getCause());
+            }
+
+            // Fill data to sheet
+            fillDataToSheet(sheet, lstObject, structure);
+
+            // Write data to output stream
+            outputStream = new ByteArrayOutputStream();
+            workbook.write(outputStream);
+        }
+        log.info("createWorkbook: end after {}, lstObj {} items", System.currentTimeMillis() - startTime, lstObject.size());
+        return new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray()));
+    }
+
+    /**
+     * Fill data to a sheet
+     */
+    public <T> void fillDataToSheet(SXSSFSheet sheet, List<T> lstObject, Map<Integer, Pair<String, String>> structure) {
+        int columnSize = structure.size();
+        // create a map between columnIdx and methodName
+        Map<Integer, String> mapFieldIdx = new HashMap<>();
+        SXSSFRow headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("No");
+        // Init mapFieldIdx and create other columns of the header
+        for (int i = 1; i <= columnSize; i++) {
+            Pair<String, String> colStructure = structure.get(i);
+            headerRow.createCell(i).setCellValue(colStructure.getKey());
+            mapFieldIdx.put(i, colStructure.getValue());
+        }
+
+        // Fill data
+        int rowIdx = 1;
+        // get classType of item => using reflection => invoke method
+        Class<?> clazzT = lstObject.get(0).getClass();
+        for (T item : lstObject) {
+            SXSSFRow row = sheet.createRow(rowIdx);
+            row.createCell(0, CellType.NUMERIC).setCellValue(rowIdx); // No cell
+            for (int i = 1; i <= columnSize; i++) {
+                try {
+                    Method invokeMethod = clazzT.getDeclaredMethod(mapFieldIdx.get(i));
+                    String cellValue = Objects.toString(invokeMethod.invoke(item), Strings.EMPTY);
+                    row.createCell(i, CellType.STRING).setCellValue(cellValue);
+                } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException exception) {
+                    log.error(MessageConst.EXCEPTION_LOG_FORMAT, exception.getMessage(), exception.getCause());
+                }
+            }
+            rowIdx++;
+        }
+    }
 
     /**
      * Get Response Stream CSV from InputStreamResource
      */
-    public static ResponseEntity<InputStreamResource> getResponseCSVStream(InputStreamResource inputStreamResource){
-        String fileName = String.format("Export_surgery_%s.csv", new SimpleDateFormat(DateUtils.FORMAT_DATE_YYYY_MMDD_HHMMSS).format(new Date()));
+    public static ResponseEntity<InputStreamResource> getResponseCSVStream(InputStreamResource inputStreamResource) {
+        String fileName = String.format("Export_surgery_%s.csv",
+            new SimpleDateFormat(DateUtils.FORMAT_DATE_YYYY_MMDD_HHMMSS).format(new Date()));
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachments; filename=" + fileName)
             .contentType(MediaType.parseMediaType("text/csv; charset=utf-8"))
             .body(inputStreamResource);
@@ -50,7 +144,8 @@ public class ExcelFileUtils {
             connection = dataSource.getConnection();
             CopyManager copyManager = new CopyManager((BaseConnection) connection.unwrap(PGConnection.class));
             outputStream.write(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF}); // Add UTF-8 BOM marker bytes
-            copyManager.copyOut("COPY ((" + headerQuery + ") UNION ALL (" + contentQuery + ")) TO STDOUT WITH (FORMAT CSV, ENCODING UTF8)", outputStream);
+            copyManager.copyOut("COPY ((" + headerQuery + ") UNION ALL (" + contentQuery + ")) TO STDOUT WITH (FORMAT CSV, ENCODING UTF8)",
+                outputStream);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -65,14 +160,17 @@ public class ExcelFileUtils {
      * Hỗ trợ import file excel từ database
      *******************************************************************************************************************************************/
 
-    public static String getStringCellValue(Cell cell){
-        if (Objects.isNull(cell))
+    public static String getStringCellValue(Cell cell) {
+        if (Objects.isNull(cell)) {
             return "";
-        switch (cell.getCellType()){
+        }
+        switch (cell.getCellType()) {
             case STRING:
                 return cell.getStringCellValue().trim();
             case NUMERIC:
-                return String.valueOf(cell.getNumericCellValue()).trim();
+                double cellNumberVal = cell.getNumericCellValue();
+                return cellNumberVal != Math.floor(cellNumberVal) ? String.valueOf(cellNumberVal).trim() : String.format("%.0f", cellNumberVal)
+                    .trim();
             case BOOLEAN:
                 return String.valueOf(cell.getBooleanCellValue()).trim();
             case FORMULA:
@@ -100,7 +198,6 @@ public class ExcelFileUtils {
         cellStyle.setBorderLeft(borderStyle);
         cellStyle.setBorderRight(borderStyle);
     }
-
 
 
     /**

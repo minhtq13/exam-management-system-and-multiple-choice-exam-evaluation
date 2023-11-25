@@ -1,6 +1,10 @@
 package com.elearning.elearning_support.dtos.users;
 
 
+import java.util.Date;
+import com.elearning.elearning_support.utils.DateUtils;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public interface IGetUserListDTO {
 
     Long getId();
@@ -21,7 +25,8 @@ public interface IGetUserListDTO {
 
     String getLastName();
 
-    java.util.Date getBirthDate();
+    @JsonFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_SLASH, timezone = DateUtils.TIME_ZONE)
+    Date getBirthDate();
 
     String getAddress();
 
