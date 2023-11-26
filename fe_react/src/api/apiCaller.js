@@ -46,34 +46,6 @@ axios.interceptors.response.use(
     });
   }
 );
-export const getRequestWithBody = (url = "", data, successCallback, errorCallback, timeout) => {
-  return axios
-    .request({
-      url,
-      method: 'get',
-      params: data, // Dữ liệu sẽ được chuyển vào URL
-      data, // Dữ liệu sẽ được chuyển vào body
-      timeout,
-    })
-    .then((response) => {
-      if (successCallback) {
-        try {
-          successCallback(response);
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    })
-    .catch((error) => {
-      if (errorCallback) {
-        try {
-          errorCallback(error);
-        } finally {
-          console.log(error);
-        }
-      }
-    });
-};
 export const getRequest = (url = "", params, successCallback, errorCallback, timeout) => {
   return axios
     .get(url, {
@@ -92,10 +64,9 @@ export const getRequest = (url = "", params, successCallback, errorCallback, tim
     .catch((error) => {
       if (error) {
         if (
-          error?.response?.data?.errors?.httpResponseError?.err_code === 113 &&
-          error?.response?.data?.errors?.httpResponseError?.http_code === 403
+          error?.response?.data?.message === "Unauthorized"
         ) {
-          notificationWarning("Token expried");
+          notificationWarning("Token hết hạn, vui lòng đăng nhập lại!");
           setTimeout(() => logOut(), 3000);
         }
       }
@@ -120,6 +91,14 @@ export const postRequest = async (url = "", params, successCallback, errorCallba
       }
     })
     .catch((error) => {
+      if (error) {
+        if (
+          error?.response?.data?.message === "Unauthorized"
+        ) {
+          notificationWarning("Token hết hạn, vui lòng đăng nhập lại!");
+          setTimeout(() => logOut(), 3000);
+        }
+      }
       if (errorCallback)
         try {
           errorCallback(error);
@@ -154,10 +133,9 @@ export const putRequest = (
     .catch((error) => {
       if (error) {
         if (
-          error?.response?.data?.errors?.httpResponseError?.err_code === 113 &&
-          error?.response?.data?.errors?.httpResponseError?.http_code === 403
+          error?.response?.data?.message === "Unauthorized"
         ) {
-          notificationWarning("Token expried");
+          notificationWarning("Token hết hạn, vui lòng đăng nhập lại!");
           setTimeout(() => logOut(), 3000);
         }
       }
@@ -187,10 +165,9 @@ export const deleteRequest = (url = "", params = {}, successCallback, errorCallb
     .catch((error) => {
       if (error) {
         if (
-          error?.response?.data?.errors?.httpResponseError?.err_code === 113 &&
-          error?.response?.data?.errors?.httpResponseError?.http_code === 403
+          error?.response?.data?.message === "Unauthorized"
         ) {
-          notificationWarning("Token expried");
+          notificationWarning("Token hết hạn, vui lòng đăng nhập lại!");
           setTimeout(() => logOut(), 3000);
         }
       }

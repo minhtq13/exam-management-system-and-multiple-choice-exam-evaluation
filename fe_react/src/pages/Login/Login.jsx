@@ -1,12 +1,14 @@
-import { Button, Form, Input } from "antd";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import SignFragment from "../../components/SignFragment/SignFragment";
-import { appPath } from "../../config/appPath";
-import useNotify from "../../hooks/useNotify";
-import { loginAuthenticService, refreshTokenService } from "../../services/accountServices";
-import { saveInfoToLocalStorage } from "../../utils/storage";
-import "./Login.scss";
+import './Login.scss';
+
+import { Button, Form, Input } from 'antd';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import SignFragment from '../../components/SignFragment/SignFragment';
+import { appPath } from '../../config/appPath';
+import useNotify from '../../hooks/useNotify';
+import { loginAuthenticService } from '../../services/accountServices';
+import { saveInfoToLocalStorage } from '../../utils/storage';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -14,7 +16,6 @@ const Login = () => {
 
   const notify = useNotify();
   const navigate = useNavigate();
-  const expiredTime = 1000000 - 10000;
   const onFinish = (values) => {
     setLoading(true);
     loginAuthenticService(
@@ -26,9 +27,6 @@ const Login = () => {
         notify.success(`Đăng nhập thành công!`);
         navigate(appPath.home);
         saveInfoToLocalStorage(accessToken, refreshToken, roles);
-        setInterval(() => {
-          refreshTokenService(refreshToken);
-        }, expiredTime);
       },
       (error) => {
         console.log(error);

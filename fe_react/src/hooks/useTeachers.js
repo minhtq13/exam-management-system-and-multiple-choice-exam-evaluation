@@ -1,6 +1,6 @@
 import { useState } from "react";
+import { getPagingTeachersService } from "../services/teachersServices";
 import useNotify from "./useNotify";
-import { getAllTeachersService, getPagingTeachersService } from "../services/teachersServices";
 
 const useTeachers = () => {
   const notify = useNotify();
@@ -23,12 +23,9 @@ const useTeachers = () => {
       },
       (err) => {
         setTableLoading(true);
-        if (err.response.status === 401) {
-          notify.warning(err.response.data.message || "Permission denied");
-        }
         if (err.response.status === 404) {
           notify.warning(
-            err.response.data.message || "No information in database"
+            err.response.data.message || "Không có thông tin trong cơ sở dữ liệu!"
           );
         }
       }

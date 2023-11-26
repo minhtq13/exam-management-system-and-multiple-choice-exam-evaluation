@@ -169,9 +169,9 @@ const TestList = () => {
   const handleClickAddTest = () => {
     navigate("/test-create");
   };
-  const handleEdit = (record) => {
-    navigate(`${appPath.subjectView}/${record.code}`);
-  };
+  // const handleEdit = (record) => {
+  //   navigate(`${appPath.subjectView}/${record.code}`);
+  // };
   const handleDelete = () => {
     deleteTestService(
       deleteKey,

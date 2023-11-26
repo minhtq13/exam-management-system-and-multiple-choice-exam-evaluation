@@ -1,7 +1,7 @@
 import { DatePicker, Form, Input, Select, Button } from "antd";
-import "./UserInfo.scss";
+import "./UserForm.scss";
 import React from "react";
-const UserInfo = ({
+const UserForm = ({
 	onFinish,
 	initialValues,
 	infoHeader,
@@ -221,4 +221,4 @@ const UserInfo = ({
 		</div>
 	);
 };
-export default UserInfo;
+export default UserForm;

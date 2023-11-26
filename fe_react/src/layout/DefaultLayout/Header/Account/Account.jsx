@@ -47,7 +47,9 @@ const Account = () => {
 					<div className="account-content">Hồ sơ</div>
 				</div>
 			),
-			onClick: () => {},
+			onClick: () => {
+				navigate("/profile-user");
+			},
 		},
 		{
 			key: 3,

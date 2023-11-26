@@ -34,6 +34,7 @@ const AddQuestions = () => {
         chapterId: null,
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subjectId]);
   const subjectOptions = allSubjects.map((item) => {
     return { value: item.id, label: item.name };

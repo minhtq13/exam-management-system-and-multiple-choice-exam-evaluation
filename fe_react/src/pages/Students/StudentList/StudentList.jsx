@@ -42,14 +42,14 @@ const StudentList = () => {
         formData
       );
       if (response.status === 200) {
-        notify.success("File uploaded successfully");
+        notify.success("Tải lên file thành công!");
         getAllStudents(param);
         setImportLoading(false);
       }
     } catch (error) {
       setImportLoading(false);
       console.log(error);
-      notify.error("Error uploading file");
+      notify.error("Tải lên file thất bại!");
     }
   };
   const handleChange = (e) => {

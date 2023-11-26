@@ -1,8 +1,7 @@
 import {
-  postRequest,
-  getRequest,
   deleteRequest,
-  getRequestWithBody,
+  getRequest,
+  postRequest
 } from "../api/apiCaller";
 import { apiPath } from "../config/apiPath";
 export const testRandomService = async (

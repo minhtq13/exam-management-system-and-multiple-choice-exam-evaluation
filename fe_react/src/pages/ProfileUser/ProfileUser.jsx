@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import UserForm from "../../../components/UserForm/UserForm";
-import useNotify from "../../../hooks/useNotify";
-import { createUser } from "../../../services/userService";
-import { formatDateParam } from "../../../utils/tools";
-import "./CreateUser.scss";
-const CreateUser = () => {
-	const [loading, setLoading] = useState(false);
+import React, { useState } from 'react'
+import useNotify from '../../hooks/useNotify';
+import { createUser } from '../../services/userService';
+import { formatDateParam } from '../../utils/tools';
+import UserForm from '../../components/UserForm/UserForm';
+
+const ProfileUser = () => {
+  const [loading, setLoading] = useState(false);
 	const [formKey, setFormKey] = useState(0);
 	const notify = useNotify();
 	const onFinish = (value) => {
@@ -30,9 +30,9 @@ const CreateUser = () => {
 		console.log(value);
 	};
 	return (
-		<div className="student-add">
+		<div className="profile-user">
 			<UserForm
-				infoHeader="Thêm người dùng"
+				infoHeader="Thông tin người dùng"
 				onFinish={onFinish}
 				datePickerOnchange={datePickerOnchange}
 				genderOnchange={genderOnchange}
@@ -45,7 +45,6 @@ const CreateUser = () => {
 			/>
 		</div>
 	);
-};
-export default CreateUser;
+}
 
-
+export default ProfileUser

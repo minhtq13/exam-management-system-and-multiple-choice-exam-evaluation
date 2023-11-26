@@ -67,7 +67,6 @@ const Sidebar = () => {
 					icon: <GiTeacher style={{ color: "#ffff" }} />,
 					children: [
 						{ label: "Danh sách giảng viên", key: "teacher-list" },
-						{ label: "Thêm giảng viên", key: "teacher-add" },
 					],
 				},
 

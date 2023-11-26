@@ -16,11 +16,6 @@ const useExamClasses = () => {
 			},
 			(err) => {
 				setTableLoading(true);
-				if (err.response.status === 401) {
-					notify.warning(
-						err.response.data.message || "Permission denied"
-					);
-				}
 				if (err.response.status === 404) {
 					notify.warning(
 						err.response.data.message ||

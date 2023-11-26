@@ -15,7 +15,6 @@ export const appPath = {
 	//teacher
 	teacherList: "/teacher-list",
 	teacherView: "/teacher-view",
-	teacherAdd: "/teacher-add",
 	teacherEdit: "/teacher-edit",
 	//subject
 	subjectList: "/subject-list",
@@ -44,4 +43,5 @@ export const appPath = {
 	examClassList: "/exam-class-list",
 	// user
 	createUser: "/create-user",
+	profileUser: "/profile-user",
 };

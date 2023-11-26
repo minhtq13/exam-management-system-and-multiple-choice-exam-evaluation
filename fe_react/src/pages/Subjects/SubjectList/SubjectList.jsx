@@ -50,6 +50,7 @@ const SubjectList = () => {
   const [deleteKey, setDeleteKey] = useState(null);
   const [param, setParam] = useState(initialParam);
   const [openModal, setOpenModal] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [data, setData] = useState(subjectInfo.lstChapter);
   const [subjectId, setSubjectId] = useState(null);
   const searchInput = useRef(null);
