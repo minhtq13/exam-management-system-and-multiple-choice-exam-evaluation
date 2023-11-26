@@ -31,7 +31,7 @@ const TestSetCreate = () => {
     testSetDetailService(
       {testId: testId, code: test.testSetCode},
       (res) => {
-        setQuestions(res.data.questions);
+        setQuestions(res.data.lstQuestion);
         setTestDetail(res.data.testSet);
         setViewLoading(false);
         setButtonDisable(false);
@@ -141,7 +141,7 @@ const TestSetCreate = () => {
                   className="preview"
                   onClick={() => {
                     onView(item);
-                    setTestNo(item);
+                    setTestNo(item.testSetCode);
                   }}
                 >
                   <div className="preview-text">Preview</div>

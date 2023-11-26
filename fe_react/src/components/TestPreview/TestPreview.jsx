@@ -1,5 +1,6 @@
 import "./TestPreview.scss";
 const TestPreview = ({questions, testDetail, testNo}) => {
+  console.log(testNo)
   return (
     <div className="test-preview">
       <div className="test-top">
@@ -29,7 +30,7 @@ const TestPreview = ({questions, testDetail, testNo}) => {
         return (
           <div className="question-items" key={index}>
             <div className="question-topic">{`Câu ${index + 1}: ${
-              item.topicText
+              item.content
             }`}</div>
             {item.answers &&
               item.answers.map((ans, ansNo) => {

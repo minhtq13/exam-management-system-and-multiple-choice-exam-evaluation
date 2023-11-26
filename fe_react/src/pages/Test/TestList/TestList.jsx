@@ -266,7 +266,7 @@ const TestList = () => {
                         {testId: testItem.id ?? null, code: item},
                         (res) => {
                           setViewLoading(false);
-                          setQuestions(res.data.questions);
+                          setQuestions(res.data.lstQuestion);
                           setTestDetail(res.data.testSet);
                         },
                         (error) => {

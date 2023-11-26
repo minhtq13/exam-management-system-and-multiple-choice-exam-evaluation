@@ -22,7 +22,7 @@ const TeacherList = () => {
     name: null,
     code: null,
     page: 0,
-    size: 3,
+    size: 10,
     sort: "lastModifiedAt",
   };
   const [param, setParam] = useState(initialParam);
@@ -116,7 +116,7 @@ const TeacherList = () => {
     };
   };
   const handleEdit = (record) => {
-    navigate(`${appPath.teacherEdit}/${record.code}`);
+    navigate(`${appPath.teacherEdit}/${record.id}`);
   };
   useEffect(() => {
     getAllTeachers(param);
@@ -124,7 +124,6 @@ const TeacherList = () => {
   }, [param]);
   const notify = useNotify();
   const navigate = useNavigate();
-
   const columns = [
     {
       title: "Mã cán bộ",
@@ -202,6 +201,7 @@ const TeacherList = () => {
   ];
   const dataFetch = allTeachers.map((obj, index) => ({
     key: (index + 1).toString(),
+    identityType: obj.identityType,
     name: obj.lastName + " " + obj.firstName,
     email: obj.email,
     phoneNumber: obj.phoneNumber,
@@ -308,7 +308,7 @@ const TeacherList = () => {
             total: pagination.total,
             pageSize: pagination.pageSize,
             showSizeChanger: true,
-            pageSizeOptions: ["3", "5", "10"],
+            pageSizeOptions: ["10", "20", "50", "100"],
             showQuickJumper: true,
             onChange: (page, pageSize) => {
               setParam({

@@ -277,6 +277,7 @@ const AddQuestions = () => {
                 <Button
                   onClick={() => parentListOperations.add()}
                   icon={<PlusOutlined />}
+                  disabled={chapterId === null}
                 >
                   Thêm mới
                 </Button>

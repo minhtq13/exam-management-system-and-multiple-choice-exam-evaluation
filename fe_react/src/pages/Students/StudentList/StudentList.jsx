@@ -21,7 +21,7 @@ const StudentList = () => {
     name: null,
     code: null,
     page: 0,
-    size: 3,
+    size: 10,
     sort: "lastModifiedAt",
   };
   const [deleteDisable, setDeleteDisable] = useState(true);
@@ -146,7 +146,7 @@ const StudentList = () => {
   const notify = useNotify();
   const navigate = useNavigate();
   const handleEdit = (record) => {
-    navigate(`${appPath.studentEdit}/${record.code}`);
+    navigate(`${appPath.studentEdit}/${record.id}`);
   };
   const columns = [
     {
@@ -230,7 +230,10 @@ const StudentList = () => {
   ];
   const dataFetch = allStudents.map((obj, index) => ({
     key: (index + 1).toString(),
+    identityType: obj.identityType,
     name: obj.lastName + " " + obj.firstName,
+    firstName: obj.firstName,
+    lastName: obj.lastName,
     email: obj.email,
     phoneNumber: obj.phoneNumber,
     birthDate: obj.birthDate,
@@ -341,7 +344,7 @@ const StudentList = () => {
             total: pagination.total,
             pageSize: pagination.pageSize,
             showSizeChanger: true,
-            pageSizeOptions: ["3", "5", "10"],
+            pageSizeOptions: ["10", "20", "50", "100"],
             showQuickJumper: true,
             onChange: (page, pageSize) => {
               setParam({

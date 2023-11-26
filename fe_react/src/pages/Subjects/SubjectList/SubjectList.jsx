@@ -31,7 +31,7 @@ const SubjectList = () => {
     title: null,
     code: null,
     page: 0,
-    size: 3,
+    size: 10,
     sort: "code",
   };
   const [form] = Form.useForm();
@@ -50,8 +50,6 @@ const SubjectList = () => {
   const [deleteKey, setDeleteKey] = useState(null);
   const [param, setParam] = useState(initialParam);
   const [openModal, setOpenModal] = useState(false);
-  // eslint-disable-next-line no-unused-vars
-  const [data, setData] = useState(subjectInfo.lstChapter);
   const [subjectId, setSubjectId] = useState(null);
   const searchInput = useRef(null);
   const getColumnSearchProps = (dataIndex) => ({
@@ -214,6 +212,7 @@ const SubjectList = () => {
             Sửa
           </Button>
           <Button onClick={() => handleView(record)}>Nội dung</Button>
+          <Button onClick={() => navigate(`${appPath.subjectView}/${record.id}`)}>Thêm chương</Button>
         </Space>
       ),
     },
@@ -281,7 +280,7 @@ const SubjectList = () => {
           </span>
         ) : (
           <Button disabled={editingKey !== ""} onClick={() => edit(record)}>
-            Edit
+            Sửa
           </Button>
         );
       },
@@ -382,7 +381,7 @@ const SubjectList = () => {
             total: pagination.total,
             pageSize: pagination.pageSize,
             showSizeChanger: true,
-            pageSizeOptions: ["3", "5", "10"],
+            pageSizeOptions: ["10", "20", "50", "100"],
             showQuickJumper: true,
             onChange: (page, pageSize) => {
               setParam({
@@ -420,9 +419,7 @@ const SubjectList = () => {
               }}
               bordered
               dataSource={
-                data
-                  ? data
-                  : subjectInfo.lstChapter
+                subjectInfo.lstChapter
                   ? subjectInfo.lstChapter.sort((a, b) => a.orders - b.orders)
                   : []
               }

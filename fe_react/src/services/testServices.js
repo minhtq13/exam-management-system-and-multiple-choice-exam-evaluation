@@ -41,7 +41,7 @@ export const testSetDetailService = async (
   successCallback,
   errorCallback
 ) => {
-  await getRequest(
+  await postRequest(
     `${apiPath.testSetDetail}`,
     params,
     successCallback,

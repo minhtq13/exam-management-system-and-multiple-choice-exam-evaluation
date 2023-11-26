@@ -117,7 +117,7 @@ const TeacherInfo = ({
 					<Input placeholder="Nhập địa chỉ email" />
 				</Form.Item>
 				<Form.Item
-					name="birthday"
+					name="birthDate"
 					label="Ngày sinh"
 					colon={true}
 					rules={[

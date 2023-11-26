@@ -90,12 +90,12 @@ const StudentInfo = ({
 				<Form.Item
 					name="course"
 					label="Khóa"
-					rules={[{ required: true, message: errorMessange }]}
+					//rules={[{ required: true, message: errorMessange }]}
 				>
 					<Input disabled={courseDisable} placeholder="Nhập khóa" />
 				</Form.Item>
 				<Form.Item
-					name="gender"
+					name="genderType"
 					colon={true}
 					label="Giới tính"
 					rules={[
@@ -131,7 +131,7 @@ const StudentInfo = ({
 					<Input placeholder="Nhập địa chỉ email" />
 				</Form.Item>
 				<Form.Item
-					name="birthday"
+					name="birthDate"
 					label="Ngày sinh"
 					colon={true}
 					rules={[

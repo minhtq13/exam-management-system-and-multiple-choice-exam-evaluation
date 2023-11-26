@@ -14,6 +14,95 @@
   }
 }
 
+.subject-content-tab {
+  padding: 20px 30px;
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 15px;
+
+  .subject-content-header-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--hust-color);
+    margin-bottom: 30px;
+  }
+
+  .chapter-title {
+    color: var(--hust-color);
+    margin: 20px 0px 20px 0px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+}
+
+.subject-content-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 20px;
+
+  .btn {
+    display: flex;
+    justify-content: center;
+  }
+
+  .btn-submit {
+    span {
+      font-size: 20px;
+    }
+  }
+
+  .btn-space {
+    margin-bottom: 20px;
+  }
+
+  .chapter-view-title,
+  .chapter-view-orders {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    span {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+
+  .chapter-view-title {
+    width: 90%;
+
+    span {
+      width: 15%;
+    }
+  }
+
+  .form-space {
+    width: 80%;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 20px;
+
+
+    input:nth-child(1) {
+      width: 10% !important;
+    }
+  }
+
+  input {
+    height: 40px;
+  }
+
+  .item-space {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+}
+
 .subject-view-header {
   font-size: 30px;
   font-weight: 600;
@@ -29,5 +118,20 @@
     font-size: 16px;
     font-family: "Poppins", sans-serif;
     margin-bottom: 15px;
+  }
+}
+
+.subject-content {
+  border-bottom: 1px solid gainsboro;
+  padding-bottom: 15px;
+
+  .subject-content-nonedit {
+    display: flex;
+    gap: 15px;
+    margin: 10px 0px;
+
+    span {
+      font-size: 18px;
+    }
   }
 }
