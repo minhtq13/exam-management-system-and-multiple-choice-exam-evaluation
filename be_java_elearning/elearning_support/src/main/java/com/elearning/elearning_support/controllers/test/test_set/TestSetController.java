@@ -44,7 +44,7 @@ public class TestSetController {
     @Operation(summary = "Export đề thi ra file word")
     public ResponseEntity<InputStreamResource> exportTestSetToWord(@RequestBody TestSetSearchReqDTO searchReqDTO) throws IOException {
         HttpHeaders headers = new HttpHeaders();
-        String fileName = String.format("TestSetExport_%s_.docx", LocalDateTime.now());
+        String fileName = String.format("TestSetExport_%s_%s.docx", searchReqDTO.getCode(), LocalDateTime.now());
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.parseMediaType(String.join(";", Arrays.asList(Word.CONTENT_TYPES))).toString());
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
         return ResponseEntity.ok().headers(headers).body(testSetService.exportTestSet(searchReqDTO));

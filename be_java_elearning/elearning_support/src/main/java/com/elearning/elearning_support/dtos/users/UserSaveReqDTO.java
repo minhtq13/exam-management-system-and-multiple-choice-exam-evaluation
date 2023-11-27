@@ -79,7 +79,6 @@ public class UserSaveReqDTO {
     Set<Long> lstRoleId = new HashSet<>();
 
     @Schema(description = "Id phòng/ ban đơn vị")
-    @NotNull
     Long departmentId;
 
     @Schema(description = "Loại người dùng (-1: SUPER_ADMIN, 0: TEACHER, 1: STUDENT)")
@@ -87,5 +86,5 @@ public class UserSaveReqDTO {
     Integer userType;
 
     @Schema(description = "Thông tin bổ sung của user")
-    Object metadata;
+    Object metaData;
 }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -185,7 +186,8 @@ public class TestSetServiceImpl implements TestSetService {
         }
         // Lấy thông tin câu hỏi và đáp án trong đề;
         List<TestQuestionAnswerResDTO> lstQuestions = testSetRepository.getListTestSetQuestion(testSetDetail.getTestSetId()).stream()
-            .map(TestQuestionAnswerResDTO::new).collect(Collectors.toList());
+            .map(TestQuestionAnswerResDTO::new).sorted(Comparator.comparing(TestQuestionAnswerResDTO::getQuestionNo))
+            .collect(Collectors.toList());
         return new TestSetDetailDTO(testSetDetail, lstQuestions);
     }
 

@@ -48,6 +48,9 @@ public class UserDetailDTO {
     @Schema(description = "Tên")
     String lastName;
 
+    @Schema(description = "Giới tính")
+    String gender;
+
     @JsonFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_SLASH, timezone = DateUtils.TIME_ZONE)
     @Schema(description = "Ngày sinh")
     Date birthDate;

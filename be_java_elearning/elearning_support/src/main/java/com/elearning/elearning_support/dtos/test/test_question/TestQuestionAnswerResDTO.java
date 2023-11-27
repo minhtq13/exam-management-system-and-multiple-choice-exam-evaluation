@@ -35,7 +35,9 @@ public class TestQuestionAnswerResDTO {
 
     public TestQuestionAnswerResDTO(ITestQuestionAnswerResDTO iTestQuestionAnswerResDTO){
         BeanUtils.copyProperties(iTestQuestionAnswerResDTO, this);
+        // Map list answer and sort by answer no
         this.answers = ObjectMapperUtil.listMapper(iTestQuestionAnswerResDTO.getLstAnswerJson(), TestSetAnswerResDTO.class);
+        // Map question images
         this.images = ObjectMapperUtil.listMapper(iTestQuestionAnswerResDTO.getLstImageJson(), FileAttachDTO.class);
     }
 
