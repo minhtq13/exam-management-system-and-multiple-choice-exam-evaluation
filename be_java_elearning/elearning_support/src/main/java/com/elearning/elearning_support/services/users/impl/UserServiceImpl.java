@@ -135,10 +135,12 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         // Update user_role (delete all -> save new)
-        userRoleRepository.deleteAllByUserId(user.getId());
-        List<UserRole> lstUserRole = updateDTO.getLstRoleId().stream().map(roleId -> new UserRole(user.getId(), roleId))
-            .collect(Collectors.toList());
-        userRoleRepository.saveAll(lstUserRole);
+        if (!ObjectUtils.isEmpty(updateDTO.getLstRoleId())) {
+            userRoleRepository.deleteAllByUserId(user.getId());
+            List<UserRole> lstUserRole = updateDTO.getLstRoleId().stream().map(roleId -> new UserRole(user.getId(), roleId))
+                .collect(Collectors.toList());
+            userRoleRepository.saveAll(lstUserRole);
+        }
     }
 
     @Override

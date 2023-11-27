@@ -42,6 +42,9 @@ public class UserDetailDTO {
     @Schema(description = "Id ảnh đại diện đã tải lên")
     Long avatarId;
 
+    @Schema(description = "Họ và tên")
+    String name;
+
     @Schema(description = "Họ và tên đệm")
     String firstName;
 

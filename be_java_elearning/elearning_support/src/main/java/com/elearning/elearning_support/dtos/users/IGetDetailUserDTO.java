@@ -10,6 +10,10 @@ public interface IGetDetailUserDTO {
 
     String getName();
 
+    String getFirstName();
+
+    String getLastName();
+
     String getCode();
 
     String getIdentificationNum();

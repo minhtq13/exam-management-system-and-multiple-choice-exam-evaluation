@@ -6,6 +6,8 @@ public class SQLUser {
         "SELECT \n" +
             "    users.id AS id,\n" +
             "    users.code AS code, \n" +
+            "    users.last_name AS lastName, \n" +
+            "    users.first_name AS firstName, \n" +
             "    CONCAT_WS(' ', users.last_name, users.first_name) AS name, \n" +
             "    users.identification_number AS identificationNum,\n" +
             "    CASE \n" +
