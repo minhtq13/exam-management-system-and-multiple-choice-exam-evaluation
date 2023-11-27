@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { Form, Input, Button, Checkbox, Select } from "antd";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
+import ReactQuill, { Quill } from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import ImageResize from "quill-image-resize-module-react";
 import "./AddQuestions.scss";
 import { addQuestionService } from "../../../services/questionServices";
 import useNotify from "../../../hooks/useNotify";
 import useCombo from "../../../hooks/useCombo";
 
+Quill.register("modules/imageResize", ImageResize);
 const AddQuestions = () => {
   const [checked, setChecked] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -21,7 +25,47 @@ const AddQuestions = () => {
   } = useCombo();
   const [subjectId, setSubjectId] = useState(null);
   const [chapterId, setChapterId] = useState(null);
+  const [value, setValue] = useState("");
+  const modules = {
+    toolbar: [
+      ["bold", "italic", "underline", "strike"], // toggled buttons
+      ["blockquote", "code-block"],
 
+      [{ header: 1 }, { header: 2 }], // custom button values
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ script: "sub" }, { script: "super" }], // superscript/subscript
+      [{ align: [] }],
+      ["image"],
+      [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+      [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+      [{ font: [] }],
+      ["clean"],
+    ],
+    clipboard: {
+      matchVisual: false,
+    },
+    imageResize: {
+      parchment: Quill.import("parchment"),
+      modules: ["Resize", "DisplaySize"],
+    },
+  };
+  const formats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+    "video",
+  ];
   useEffect(() => {
     getAllSubjects({ subjectCode: null, subjectTitle: null });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -34,7 +78,7 @@ const AddQuestions = () => {
         chapterId: null,
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subjectId]);
   const subjectOptions = allSubjects.map((item) => {
     return { value: item.id, label: item.name };
@@ -106,6 +150,7 @@ const AddQuestions = () => {
       label: "Khó",
     },
   ];
+  console.log(value);
   return (
     <div className="question-add">
       <div className="question-add-header">Thêm câu hỏi</div>
@@ -143,11 +188,7 @@ const AddQuestions = () => {
           />
         </div>
       </div>
-      <Form
-        onFinish={onFinish}
-        name="question-form"
-        key={formKey}
-      >
+      <Form onFinish={onFinish} name="question-form" key={formKey}>
         <Form.List name="lstQuestion">
           {(parentFields, parentListOperations) => (
             <>
@@ -171,7 +212,14 @@ const AddQuestions = () => {
                         },
                       ]}
                     >
-                      <Input placeholder="Nhập câu hỏi..." />
+                      <ReactQuill
+                        theme="snow"
+                        onChange={setValue}
+                        value={value}
+                        modules={modules}
+                        formats={formats}
+                        bounds="#root"
+                      />
                     </Form.Item>
                     <Form.Item
                       key={`level${parentField.key}`}
