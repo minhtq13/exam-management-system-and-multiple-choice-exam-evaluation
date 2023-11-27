@@ -10,6 +10,10 @@ public interface IGetDetailUserDTO {
 
     String getName();
 
+    Long getAvatarId();
+
+    String getAvatarPath();
+
     String getFirstName();
 
     String getLastName();

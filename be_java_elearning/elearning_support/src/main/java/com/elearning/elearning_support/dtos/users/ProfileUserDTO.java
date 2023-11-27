@@ -23,6 +23,10 @@ public class ProfileUserDTO {
 
     String name;
 
+    Long avatarId;
+
+    String avatarPath;
+
     String code;
 
     String identificationNum;

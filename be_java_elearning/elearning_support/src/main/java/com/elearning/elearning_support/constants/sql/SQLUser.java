@@ -33,9 +33,12 @@ public class SQLUser {
             "     department.name AS department, \n" +
             "     department.id AS departmentId, \n" +
             "     users.user_type AS userType, \n" +
+            "     avatar.id AS avatarId, \n" +
+            "     COALESCE(avatar.file_path, avatar.external_link) AS avatarPath, \n" +
             "     {h-schema}get_user_role_json(users.id) AS roleJson \n" +
             "FROM {h-schema}users \n" +
             "     LEFT JOIN {h-schema}department ON users.department_id = department.id \n" +
+            "     LEFT JOIN {h-schema}file_attach AS avatar ON users.avatar_id = avatar.id AND avatar.type IN (0,1) \n" +
             "WHERE \n" +
             "     users.id = :userId AND users.deleted_flag = 1 ";
 

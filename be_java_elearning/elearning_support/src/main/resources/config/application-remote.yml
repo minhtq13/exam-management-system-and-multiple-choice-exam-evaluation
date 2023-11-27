@@ -53,7 +53,7 @@ spring:
 # Cấu hình Json Web Token
 jwt:
   secretKey: ELEARNINGKsu295JdkjKHJJHW2349gfbnaf23cheh34HIMAde24
-  accessTokenExpiredMs: 1000000
+  accessTokenExpiredMs: 100000000
   refreshTokenExpiredMs: 100000000000
 
 # Cấu hình Server Cloudinary
