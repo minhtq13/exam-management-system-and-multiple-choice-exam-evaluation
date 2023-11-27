@@ -1,8 +1,10 @@
 package com.elearning.elearning_support.controllers.test;
 
 import java.util.Date;
-import java.util.List;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.validation.annotation.Validated;
@@ -52,14 +54,20 @@ public class TestController {
 
     @GetMapping
     @Operation(summary = "Lấy danh sách các kỳ thi")
-    public List<ITestListDTO> getListTest(
+    public Page<ITestListDTO> getListTest(
         @RequestParam(name = "subjectId", required = false, defaultValue = "-1") Long subjectId,
         @RequestParam(name = "subjectCode", required = false, defaultValue = "ALL") String subjectCode,
         @DateTimeFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_HH_MM, iso = ISO.DATE_TIME)
         @RequestParam(name = "startTime", required = false, defaultValue = "01/01/1970 00:00") Date startTime,
         @DateTimeFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_HH_MM, iso = ISO.DATE_TIME)
-        @RequestParam(name = "endTime", required = false, defaultValue = "01/01/1970 00:00") Date endTime) {
-        return testService.getListTest(subjectId, subjectCode, startTime, endTime);
+        @RequestParam(name = "endTime", required = false, defaultValue = "01/01/1970 00:00") Date endTime,
+        @RequestParam(name = "semesterId", required = false, defaultValue = "-1") Long semesterId,
+        @RequestParam(name = "semesterCode", required = false, defaultValue = "") String semesterCode,
+        @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
+        @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
+        @RequestParam(name = "sort", required = false, defaultValue = "modifiedAt") String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
+        return testService.getListTest(subjectId, subjectCode, startTime, endTime, semesterId, semesterCode, pageable);
     }
 
     @PutMapping("/status/{testId}")

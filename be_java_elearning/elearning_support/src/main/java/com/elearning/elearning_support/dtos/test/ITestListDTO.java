@@ -10,6 +10,8 @@ public interface ITestListDTO {
 
     String getName();
 
+    String getSemester();
+
     Integer getDuration();
 
     Integer getQuestionQuantity();

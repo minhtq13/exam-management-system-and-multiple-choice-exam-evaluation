@@ -1,8 +1,9 @@
 package com.elearning.elearning_support.repositories.test;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,7 +22,8 @@ public interface TestRepository extends JpaRepository<Test, Long> {
 
 
     @Query(nativeQuery = true, value = SQLTest.GET_LIST_TEST)
-    List<ITestListDTO> getListTest(Long subjectId, String subjectCode, Date startTime, Date endTime);
+    Page<ITestListDTO> getListTest(Long subjectId, String subjectCode, Date startTime, Date endTime, Long semesterId, String semesterCode,
+        Pageable pageable);
 
     @Transactional
     @Modifying

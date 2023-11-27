@@ -7,6 +7,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -149,8 +151,9 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public List<ITestListDTO> getListTest(Long subjectId, String subjectCode, Date startTime, Date endTime) {
-        return testRepository.getListTest(subjectId, subjectCode, startTime, endTime);
+    public Page<ITestListDTO> getListTest(Long subjectId, String subjectCode, Date startTime, Date endTime, Long semesterId, String semesterCode,
+        Pageable pageable) {
+        return testRepository.getListTest(subjectId, subjectCode, startTime, endTime, semesterId, semesterCode, pageable);
     }
 
     @Override
