@@ -1,15 +1,13 @@
-import "./TeacherEdit.scss";
-import React, { useEffect, useState } from "react";
-import useNotify from "../../../hooks/useNotify";
-import { formatDateParam } from "../../../utils/tools";
-import { useSelector } from "react-redux";
-import dayjs from "dayjs";
-import { updateTeachersService } from "../../../services/teachersServices";
-import TeacherInfo from "../../../components/TeacherInfo/TeacherInfo";
-import useUser from "../../../services/useUser";
-import { useLocation } from "react-router-dom";
 import { Skeleton } from "antd";
 import moment from "moment/moment";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import TeacherInfo from "../../../components/TeacherInfo/TeacherInfo";
+import useNotify from "../../../hooks/useNotify";
+import { updateTeachersService } from "../../../services/teachersServices";
+import useUser from "../../../services/useUser";
+import { formatDateParam } from "../../../utils/tools";
+import "./TeacherEdit.scss";
 
 const TeacherEdit = () => {
   const [loading, setLoading] = useState(false);
@@ -19,6 +17,7 @@ const TeacherEdit = () => {
   const id = location.pathname.split("/")[2];
   useEffect(() => {
     getDetailUser({}, id);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const onFinish = (value) => {
     setLoading(true);

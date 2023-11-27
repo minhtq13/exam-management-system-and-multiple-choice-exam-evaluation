@@ -1,7 +1,7 @@
-import { DatePicker, Form, Input, Select, Button } from "antd";
-import "./UserForm.scss";
-import React from "react";
-const UserForm = ({
+import { Button, DatePicker, Form, Input, Select } from "antd";
+import React, { useEffect } from "react";
+import "./UserInfo.scss";
+const UserInfo = ({
 	onFinish,
 	initialValues,
 	infoHeader,
@@ -11,7 +11,6 @@ const UserForm = ({
 	loading,
 	isPasswordDisplay,
 	isUserNameDisplay,
-	formKey
 }) => {
 	const genderOption = [
 		{
@@ -35,17 +34,27 @@ const UserForm = ({
 	];
 	const dateFormat = "DD/MM/YYYY";
 	const messageRequired = "Trường này là bắt buộc!"
+
+	// Patch value to form
+	const form = Form.useForm()[0];
+	useEffect(() => {
+		if (initialValues !== undefined) {
+			form.setFieldsValue(initialValues);
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [initialValues]);
+
+
 	return (
-		<div className="user-form-component">
+		<div className="user-info-component">
 			<p className="info-header">{infoHeader}</p>
 			<Form
+				form={form}
 				name="info-user-form"
 				className="info-user-form"
-				initialValues={initialValues}
 				onFinish={onFinish}
-				key= {formKey}
 			>
-				<div className="info-user-header">Thông tin người dùng</div>
+				<div className="info-user-header">Cập nhật thông tin người dùng</div>
 				<Form.Item
 					name="firstName"
 					label="Họ và tên đệm"
@@ -108,10 +117,10 @@ const UserForm = ({
 						label="Tên người dùng"
 						colon={true}
 						rules={[
-							{
-								required: true,
-								message: messageRequired,
-							},
+							// {
+							// 	required: true,
+							// 	message: messageRequired,
+							// },
 							{
 								min: 6,
 								message: "Tên người dùng phải có ít nhất 6 ký tự"
@@ -126,10 +135,10 @@ const UserForm = ({
 					colon={true}
 					label="Giới tính"
 					rules={[
-						{
-							required: true,
-							message: messageRequired,
-						},
+						// {
+						// 	required: true,
+						// 	message: messageRequired,
+						// },
 					]}
 				>
 					<Select
@@ -162,13 +171,14 @@ const UserForm = ({
 					label="Ngày sinh"
 					colon={true}
 					rules={[
-						{
-							required: true,
-							message: messageRequired,
-						},
+						// {
+						// 	required: true,
+						// 	message: messageRequired,
+						// },
 					]}
 				>
 					<DatePicker
+					initialValues
 						onChange={datePickerOnchange}
 						format={dateFormat}
 						placeholder="Chọn ngày sinh"
@@ -178,10 +188,10 @@ const UserForm = ({
 					<Form.Item
 						name="password"
 						rules={[
-							{
-								required: true,
-								message: messageRequired,
-							},
+							// {
+							// 	required: true,
+							// 	message: messageRequired,
+							// },
 						]}
 						label="Mật khẩu"
 						colon={true}
@@ -221,4 +231,4 @@ const UserForm = ({
 		</div>
 	);
 };
-export default UserForm;
+export default UserInfo;

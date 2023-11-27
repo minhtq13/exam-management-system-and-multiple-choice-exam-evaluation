@@ -17,6 +17,7 @@ const StudentEdit = () => {
   const id = location.pathname.split("/")[2];
   useEffect(() => {
     getDetailUser({}, id);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const onFinish = (value) => {
     setLoading(true);

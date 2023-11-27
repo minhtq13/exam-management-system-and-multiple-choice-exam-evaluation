@@ -4,13 +4,18 @@ import { appPath } from "../config/appPath";
 import { getProfileUserService, loginAuthenticService } from "../services/accountServices";
 import useNotify from "./useNotify";
 import { logOut } from "../api/apiCaller";
+import { setUserId } from "../redux/slices/userSlice";
+import { useDispatch } from "react-redux";
+import { getInfoUserService } from "../services/userService";
 
 const useAccount = () => {
   const [authenticResult, setAuthenticResult] = useState("");
   const [userInfo, setUserInfo] = useState({})
+  const [profileUser, setProfileUser] = useState({})
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const notify = useNotify();
+  const dispatch = useDispatch();
   const authenticAction = (payload = {}) => {
     loginAuthenticService(
       payload,
@@ -30,7 +35,8 @@ const useAccount = () => {
     getProfileUserService(
       payload,
       (res) => {
-        setUserInfo(res.data)
+        setProfileUser(res.data)
+        dispatch(setUserId(res.data.id));
       },
       (error) => {
         logOut();
@@ -38,7 +44,19 @@ const useAccount = () => {
       }
     );
   };
-  return { authenticResult, authenticAction, loading, setLoading, userInfo, getProfileUser };
+  const getUserInfoAPI = (userId, payload = {}) => {
+    getInfoUserService(
+      userId,
+      payload,
+      (res) => {
+        setUserInfo(res.data)
+      },
+      (error) => {
+        console.log(error)
+      }
+    );
+  };
+  return { authenticResult, authenticAction, loading, setLoading, profileUser, getProfileUser, userInfo, getUserInfoAPI };
 };
 
 export default useAccount;

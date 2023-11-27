@@ -18,7 +18,7 @@ const user = {
 const Account = () => {
 	const navigate = useNavigate();
 	const token = getToken()
-	const {getProfileUser, userInfo} = useAccount();
+	const {getProfileUser, profileUser} = useAccount();
 	useEffect(() => {
     getProfileUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -32,8 +32,8 @@ const Account = () => {
 						<Avatar size={40} src={user.avatar} />
 					</div>
 					<div className="name-role">
-						<span>{userInfo.name}</span>
-						<span>{userInfo.email}</span>
+						<span>{profileUser.name}</span>
+						<span>{profileUser.email}</span>
 					</div>
 				</div>
 			),

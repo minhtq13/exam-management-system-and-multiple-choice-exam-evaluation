@@ -56,5 +56,6 @@ export const apiPath = {
   comboChapter: BASE_URL + "/api/combobox/subject/chapter",
   // user
   createUser: BASE_URL + "/api/user",
-  updateUser: BASE_URL + "/api/user"
+  updateUser: BASE_URL + "/api/user",
+  infoUser: BASE_URL + "/api/user"
 };
