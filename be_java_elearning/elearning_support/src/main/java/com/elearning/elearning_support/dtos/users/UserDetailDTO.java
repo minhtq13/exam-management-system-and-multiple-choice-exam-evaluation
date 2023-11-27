@@ -31,10 +31,10 @@ public class UserDetailDTO {
     String code;
 
     @Schema(description = "Loại giấy tờ chứng thực cá nhân")
-    IdentityTypeEnum identityType;
+    String identityType;
 
     @Schema(description = "Số giấy tờ chứng thực")
-    String identificationNumber;
+    String identificationNum;
 
     @Schema(description = "Đường dẫn ảnh đại diện")
     String avatarPath;

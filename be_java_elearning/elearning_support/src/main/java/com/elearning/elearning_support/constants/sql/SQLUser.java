@@ -32,6 +32,7 @@ public class SQLUser {
             "     users.modified_at AS modifiedAt, \n" +
             "     department.name AS department, \n" +
             "     department.id AS departmentId, \n" +
+            "     users.user_type AS userType, \n" +
             "     {h-schema}get_user_role_json(users.id) AS roleJson \n" +
             "FROM {h-schema}users \n" +
             "     LEFT JOIN {h-schema}department ON users.department_id = department.id \n" +
