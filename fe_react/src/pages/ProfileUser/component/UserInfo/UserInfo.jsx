@@ -8,7 +8,6 @@ const UserInfo = ({
 	btnText,
 	datePickerOnchange,
 	genderOnchange,
-	loading,
 	isPasswordDisplay,
 	isUserNameDisplay,
 }) => {
@@ -24,6 +23,10 @@ const UserInfo = ({
 	];
 	const roleOption = [
 		{
+			value: -1,
+			label: "Admin",
+		},
+		{
 			value: 0,
 			label: "Giảng viên",
 		},
@@ -34,7 +37,6 @@ const UserInfo = ({
 	];
 	const dateFormat = "DD/MM/YYYY";
 	const messageRequired = "Trường này là bắt buộc!"
-
 	// Patch value to form
 	const form = Form.useForm()[0];
 	useEffect(() => {
@@ -178,7 +180,6 @@ const UserInfo = ({
 					]}
 				>
 					<DatePicker
-					initialValues
 						onChange={datePickerOnchange}
 						format={dateFormat}
 						placeholder="Chọn ngày sinh"
@@ -196,7 +197,7 @@ const UserInfo = ({
 						label="Mật khẩu"
 						colon={true}
 					>
-						<Input.Password placeholder="Nhập mật khẩu" />
+						<Input.Password placeholder="Nhập mật khẩu" autoComplete="on" />
 					</Form.Item>
 				)}
 				<Form.Item
@@ -221,7 +222,6 @@ const UserInfo = ({
 					<Button
 						type="primary"
 						htmlType="submit"
-						loading={loading}
 						style={{ width: 150, height: 50 }}
 					>
 						{btnText}

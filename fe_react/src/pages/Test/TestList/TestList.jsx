@@ -138,7 +138,7 @@ const TestList = () => {
       ),
     },
   ];
-  const dataFetch = allTest.map((obj, index) => ({
+  const dataFetch = allTest?.map((obj, index) => ({
     key: (index + 1).toString(),
     questionQuantity: obj.questionQuantity,
     subjectName: obj.subjectName,

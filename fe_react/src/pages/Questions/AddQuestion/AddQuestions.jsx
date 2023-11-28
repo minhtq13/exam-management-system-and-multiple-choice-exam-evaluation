@@ -150,7 +150,6 @@ const AddQuestions = () => {
       label: "Khó",
     },
   ];
-  console.log(value);
   return (
     <div className="question-add">
       <div className="question-add-header">Thêm câu hỏi</div>
@@ -201,7 +200,7 @@ const AddQuestions = () => {
                   <div className="question-text">
                     <Form.Item
                       className="topic-Text"
-                      key={`content${parentField.key}`}
+                      // key={`content${parentField.key}`}
                       {...parentField}
                       label={`Câu ${parentIndex + 1}:`}
                       name={[parentField.name, `content`]}
@@ -222,7 +221,7 @@ const AddQuestions = () => {
                       />
                     </Form.Item>
                     <Form.Item
-                      key={`level${parentField.key}`}
+                      // key={`level${parentField.key}`}
                       {...parentField}
                       label={"Level"}
                       name={[parentField.name, `level`]}
@@ -232,9 +231,9 @@ const AddQuestions = () => {
                           message: "Chưa chọn mức độ câu hỏi!",
                         },
                       ]}
+                      initialValue={"EASY"}
                     >
                       <Select
-                        defaultValue={"EASY"}
                         options={levelOption}
                         style={{ width: 120 }}
                       ></Select>
@@ -248,7 +247,7 @@ const AddQuestions = () => {
                     </div>
                   </div>
                   <Form.List
-                    key={`lstAnswer${parentIndex}`}
+                    // key={`lstAnswer${parentIndex}`}
                     {...parentField}
                     name={[parentField.name, `lstAnswer`]}
                     initialValue={[
@@ -264,54 +263,48 @@ const AddQuestions = () => {
                   >
                     {(childFields, childListOperations) => (
                       <div className="answers">
-                        {childFields.map((childField, childIndex) => (
-                          <div
-                            key={`frAnswers${childIndex}`}
-                            name={[childField.name, `frAnswers${childIndex}`]}
-                            className="answer-list"
-                          >
-                            <div className="answer-list-text-checkbox">
-                              <Form.Item
-                                {...childField}
-                                name={[childField.name, `isCorrect`]}
-                                key={`isCorrect${childIndex}`}
-                                valuePropName="checked"
-                              >
-                                <Checkbox
-                                  checked={checked}
-                                  onChange={onChange}
+                        {childFields.map((childField, childIndex) => {
+                          return (
+                            <div
+                              key={`frAnswers${childIndex}-${parentIndex}`}
+                              name={[childField.name, `frAnswers${childIndex}`]}
+                              className="answer-list"
+                            >
+                              <div className="answer-list-text-checkbox">
+                                <Form.Item
+                                  {...childField}
+                                  name={[childField.name, `isCorrect`]}
+                                  // key={`isCorrect${childIndex}-${parentIndex}`}
+                                  valuePropName="checked"
+                                >
+                                  <Checkbox checked={checked} onChange={onChange} />
+                                </Form.Item>
+                                <Form.Item
+                                  {...childField}
+                                  name={[childField.name, `content`]}
+                                  // key={`content${childIndex}-${parentIndex}`}
+                                  rules={[
+                                    {
+                                      required: true,
+                                      message: "Chưa điền câu trả lời",
+                                    },
+                                  ]}
+                                  className="answers-item"
+                                >
+                                  <Input placeholder="Nhập câu trả lời..." />
+                                </Form.Item>
+                                <Button
+                                  type="dashed"
+                                  onClick={() => childListOperations.remove(childIndex)}
+                                  icon={<DeleteOutlined />}
                                 />
-                              </Form.Item>
-                              <Form.Item
-                                {...childField}
-                                name={[childField.name, `content`]}
-                                key={`content${childIndex}`}
-                                rules={[
-                                  {
-                                    required: true,
-                                    message: "Chưa điền câu trả lời",
-                                  },
-                                ]}
-                                className="answers-item"
-                              >
-                                <Input placeholder="Nhập câu trả lời..." />
-                              </Form.Item>
-                              <Button
-                                type="dashed"
-                                onClick={() =>
-                                  childListOperations.remove(childIndex)
-                                }
-                                icon={<DeleteOutlined />}
-                              />
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                         {childFields.length < 4 && (
                           <Form.Item className="add-answer-btn">
-                            <Button
-                              onClick={() => childListOperations.add()}
-                              icon={<PlusOutlined />}
-                            >
+                            <Button onClick={() => childListOperations.add()} icon={<PlusOutlined />}>
                               Thêm tùy chọn
                             </Button>
                           </Form.Item>

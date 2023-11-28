@@ -156,11 +156,14 @@
     }
 
     .add-question-btn {
-
       .ant-btn {
         background-color: var(--add-color);
         height: 40px;
         cursor: pointer;
+      }
+      .ant-btn-default:disabled {
+        background-color: #d9d9d9 !important;
+        border: none;
       }
 
       span {

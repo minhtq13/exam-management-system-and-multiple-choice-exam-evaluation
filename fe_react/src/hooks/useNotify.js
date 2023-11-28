@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 
 const useNotify = () => {
   const error = (message, position = "top-right", autoClose, icon) => {
+    toast.dismiss();
     toast.error(message, {
       position: position,
       autoClose: autoClose || 2000,
@@ -13,6 +14,7 @@ const useNotify = () => {
   };
 
   const success = (message, position = "top-right", autoClose) => {
+    toast.dismiss();
     toast.success(message, {
       position: position,
       autoClose: autoClose || 2000,
@@ -23,6 +25,7 @@ const useNotify = () => {
   };
 
   const warning = (message, position = "top-right", autoClose) => {
+    toast.dismiss();
     toast.warning(message, {
       position: position,
       autoClose: autoClose || 2000,
