@@ -1,22 +1,22 @@
-import "./StudentEdit.scss";
+import { Skeleton } from "antd";
+import moment from "moment/moment";
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import StudentInfo from "../../../components/StudentInfo/StudentInfo";
 import useNotify from "../../../hooks/useNotify";
-import { formatDateParam } from "../../../utils/tools";
-import moment from "moment/moment";
 import { updateUser } from "../../../services/userService";
-import { useLocation } from "react-router-dom";
-import useUser from "../../../services/useUser";
-import { Skeleton } from "antd";
+import { formatDateParam } from "../../../utils/tools";
+import "./StudentEdit.scss";
+import useAccount from "../../../hooks/useAccount";
 
 const StudentEdit = () => {
   const [loading, setLoading] = useState(false);
-  const { userInfo, getDetailUser, infoLoading } = useUser();
+  const {getUserInfoAPI, userInfo} = useAccount();
   const notify = useNotify();
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   useEffect(() => {
-    getDetailUser({}, id);
+    getUserInfoAPI(id, {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const onFinish = (value) => {
@@ -40,6 +40,7 @@ const StudentEdit = () => {
       (res) => {
         setLoading(false);
         notify.success("Cập nhật thông tin sinh viên thành công!");
+        getUserInfoAPI(id, {});
       },
       (error) => {
         setLoading(false);
@@ -56,7 +57,7 @@ const StudentEdit = () => {
   };
   return (
     <div className="student-add">
-      <Skeleton active loading={infoLoading}>
+      <Skeleton active loading={false} >
         <StudentInfo
           infoHeader="Cập nhật thông tin"
           onFinish={onFinish}
@@ -73,7 +74,7 @@ const StudentEdit = () => {
             email: userInfo ? userInfo.email : "",
             code: userInfo ? userInfo.code : "",
             phoneNumber: userInfo ? userInfo.phoneNumber : "",
-            birthDate: userInfo ? moment(userInfo.birthDate) : undefined,
+            birthDate: userInfo ? moment(userInfo.birthDate) : null,
             genderType: userInfo ? userInfo.gender : undefined,
             courseNum: userInfo ? userInfo.courseNum : null,
           }}

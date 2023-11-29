@@ -17,6 +17,7 @@ const useAccount = () => {
   const notify = useNotify();
   const dispatch = useDispatch();
   const authenticAction = (payload = {}) => {
+    setLoading(true)
     loginAuthenticService(
       payload,
       (res) => {
@@ -45,14 +46,17 @@ const useAccount = () => {
     );
   };
   const getUserInfoAPI = (userId, payload = {}) => {
+    setLoading(true)
     getInfoUserService(
       userId,
       payload,
       (res) => {
         setUserInfo(res.data)
+        setLoading(false)
       },
       (error) => {
         console.log(error)
+        setLoading(false)
       }
     );
   };

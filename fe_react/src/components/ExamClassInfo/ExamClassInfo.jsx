@@ -20,6 +20,7 @@ const ExamClassInfo = ({
 	const errorMessange = "Chưa điền đầy đủ thông tin";
 	useEffect(() => {
 		getAllSemesters({ search: "" });
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	useEffect(() => {
 		getAllSubjects({ subjectCode: null, subjectTitle: null });

@@ -1,7 +1,7 @@
 import { Button, DatePicker, Form, Input, Select } from "antd";
 import React, { useEffect } from "react";
-import "./UserInfo.scss";
-const UserInfo = ({
+import "./UpdateUserInfoForm.scss";
+const UpdateUserInfoForm = ({
 	onFinish,
 	initialValues,
 	infoHeader,
@@ -10,6 +10,7 @@ const UserInfo = ({
 	genderOnchange,
 	isPasswordDisplay,
 	isUserNameDisplay,
+	birthDate
 }) => {
 	const genderOption = [
 		{
@@ -45,10 +46,8 @@ const UserInfo = ({
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [initialValues]);
-
-
 	return (
-		<div className="user-info-component">
+		<div className="update-user-info-form-component">
 			<p className="info-header">{infoHeader}</p>
 			<Form
 				form={form}
@@ -95,6 +94,7 @@ const UserInfo = ({
 					]}
 				>
 					<Select
+						disabled={true}
 						placeholder="Chọn vai trò"
 						options={roleOption}
 						style={{ height: 45 }}
@@ -170,7 +170,7 @@ const UserInfo = ({
 				</Form.Item>
 				<Form.Item
 					name="birthDate"
-					label="Ngày sinh"
+					label="Ngày sinh"	
 					colon={true}
 					rules={[
 						// {
@@ -231,4 +231,4 @@ const UserInfo = ({
 		</div>
 	);
 };
-export default UserInfo;
+export default UpdateUserInfoForm;

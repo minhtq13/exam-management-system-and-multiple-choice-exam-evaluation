@@ -5,7 +5,7 @@ import useAccount from '../../hooks/useAccount';
 import useNotify from '../../hooks/useNotify';
 import { updateUser } from '../../services/userService';
 import { formatDateParam } from '../../utils/tools';
-import UserInfo from './component/UserInfo/UserInfo';
+import UpdateUserInfoForm from './component/UserInfo/UpdateUserInfoForm';
 
 const ProfileUser = () => {
 	
@@ -41,7 +41,7 @@ const ProfileUser = () => {
 	}
 	return (
 		<div className="profile-user">
-			<UserInfo
+			<UpdateUserInfoForm
 				infoHeader="Thông tin người dùng"
 				onFinish={onFinish}
 				datePickerOnchange={datePickerOnchange}
