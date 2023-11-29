@@ -31,6 +31,9 @@ const TeacherList = () => {
     useTeachers();
   const [deleteKey, setDeleteKey] = useState(null);
   const searchInput = useRef(null);
+  const handleReset = (clearFilters) => {
+    clearFilters();
+  };
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,
@@ -49,9 +52,14 @@ const TeacherList = () => {
           ref={searchInput}
           placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
-          onChange={(e) =>
-            setParam({ ...param, [dataIndex]: e.target.value, page: 0 })
-          }
+          onChange={(e) => {
+            setSelectedKeys(e.target.value ? [e.target.value] : []);
+            setParam({
+              ...param,
+              [dataIndex]: e.target.value,
+              page: 0,
+            });
+          }}
           onPressEnter={() => getAllTeachers(param)}
           style={{
             marginBottom: 8,
@@ -68,16 +76,19 @@ const TeacherList = () => {
               width: 90,
             }}
           >
-            Search
+            Tìm kiếm
           </Button>
           <Button
-            onClick={() => setParam(initialParam)}
+            onClick={() => {
+              clearFilters && handleReset(clearFilters);
+              setParam(initialParam);
+            }}
             size="small"
             style={{
               width: 90,
             }}
           >
-            Reset
+            Đặt lại
           </Button>
           <Button
             type="link"
@@ -86,7 +97,7 @@ const TeacherList = () => {
               close();
             }}
           >
-            Close
+            Đóng
           </Button>
         </Space>
       </div>

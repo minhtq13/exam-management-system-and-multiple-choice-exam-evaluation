@@ -2,7 +2,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./ExamClassList.scss";
 import { Button, Input, Space, Table } from "antd";
-import Highlighter from "react-highlight-words";
 import exportIcon from "../../../assets/images/svg/export-icon.svg";
 import deleteIcon from "../../../assets/images/svg/delete-icon.svg";
 import deletePopUpIcon from "../../../assets/images/svg/delete-popup-icon.svg";
@@ -18,13 +17,20 @@ import useExamClasses from "../../../hooks/useExamClass";
 import { deleteExamClassService } from "../../../services/examClassServices";
 
 const ExamClassList = () => {
+	const initialParam = {
+		code: null,
+		subjectId: null,
+		semesterId: null,
+		page: 0,
+		size: 10,
+		sort: "id",
+	};
 	const [deleteDisable, setDeleteDisable] = useState(true);
-	const { allExamClasses, getAllExamClasses, tableLoading } =
+	const { allExamClasses, getAllExamClasses, tableLoading, pagination } =
 		useExamClasses();
 	const [deleteKey, setDeleteKey] = useState(null);
-	const [searchText, setSearchText] = useState("");
-	const [searchedColumn, setSearchedColumn] = useState("");
 	const [importLoading, setImportLoading] = useState(false);
+	const [param, setParam] = useState(initialParam);
 	const searchInput = useRef(null);
 	const [fileList, setFileList] = useState(null);
 	const handleUpload = async () => {
@@ -50,15 +56,8 @@ const ExamClassList = () => {
 	const handleChange = (e) => {
 		setFileList(e.target.files[0]);
 	};
-	const handleSearch = (selectedKeys, confirm, dataIndex) => {
-		confirm();
-		setSearchText(selectedKeys[0]);
-		setSearchedColumn(dataIndex);
-	};
-
 	const handleReset = (clearFilters) => {
 		clearFilters();
-		setSearchText("");
 	};
 	const getColumnSearchProps = (dataIndex) => ({
 		filterDropdown: ({
@@ -78,12 +77,15 @@ const ExamClassList = () => {
 					ref={searchInput}
 					placeholder={`Search ${dataIndex}`}
 					value={selectedKeys[0]}
-					onChange={(e) =>
-						setSelectedKeys(e.target.value ? [e.target.value] : [])
-					}
-					onPressEnter={() =>
-						handleSearch(selectedKeys, confirm, dataIndex)
-					}
+					onChange={(e) => {
+						setSelectedKeys(e.target.value ? [e.target.value] : []);
+						setParam({
+							...param,
+							[dataIndex]: e.target.value,
+							page: 0,
+						});
+					}}
+					onPressEnter={() => getAllExamClasses(param)}
 					style={{
 						marginBottom: 8,
 						display: "block",
@@ -92,40 +94,26 @@ const ExamClassList = () => {
 				<Space>
 					<Button
 						type="primary"
-						onClick={() =>
-							handleSearch(selectedKeys, confirm, dataIndex)
-						}
+						onClick={() => getAllExamClasses({ ...param, page: 0 })}
 						icon={<SearchOutlined />}
 						size="small"
 						style={{
 							width: 90,
 						}}
 					>
-						Search
+						Tìm kiếm
 					</Button>
 					<Button
-						onClick={() =>
-							clearFilters && handleReset(clearFilters)
-						}
+						onClick={() => {
+							clearFilters && handleReset(clearFilters);
+							setParam(initialParam);
+						}}
 						size="small"
 						style={{
 							width: 90,
 						}}
 					>
-						Reset
-					</Button>
-					<Button
-						type="link"
-						size="small"
-						onClick={() => {
-							confirm({
-								closeDropdown: false,
-							});
-							setSearchText(selectedKeys[0]);
-							setSearchedColumn(dataIndex);
-						}}
-					>
-						Filter
+						Đặt lại
 					</Button>
 					<Button
 						type="link"
@@ -134,7 +122,7 @@ const ExamClassList = () => {
 							close();
 						}}
 					>
-						close
+						Đóng
 					</Button>
 				</Space>
 			</div>
@@ -156,20 +144,6 @@ const ExamClassList = () => {
 				setTimeout(() => searchInput.current?.select(), 100);
 			}
 		},
-		render: (text) =>
-			searchedColumn === dataIndex ? (
-				<Highlighter
-					highlightStyle={{
-						backgroundColor: "#ffc069",
-						padding: 0,
-					}}
-					searchWords={[searchText]}
-					autoEscape
-					textToHighlight={text ? text.toString() : ""}
-				/>
-			) : (
-				text
-			),
 	});
 	const dispatch = useDispatch();
 	const onRow = (record) => {
@@ -180,12 +154,12 @@ const ExamClassList = () => {
 		};
 	};
 	const handleEdit = (record) => {
-		navigate(`${appPath.studentEdit}/${record.code}`);
+		navigate(`${appPath.examClassEdit}/${record.id}`);
 	};
 	useEffect(() => {
-		getAllExamClasses();
+		getAllExamClasses(param);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [param]);
 	const notify = useNotify();
 	const navigate = useNavigate();
 
@@ -195,6 +169,11 @@ const ExamClassList = () => {
 			dataIndex: "code",
 			key: "code",
 			...getColumnSearchProps("code"),
+		},
+		{
+			title: "Kỳ thi",
+			dataIndex: "semester",
+			key: "semester",
 		},
 		{
 			title: "Phòng thi",
@@ -210,14 +189,14 @@ const ExamClassList = () => {
 			key: "semester",
 		},
 		{
-			title: "Mã lớp học",
-			dataIndex: "classCode",
-			key: "classCode",
+			title: "Môn thi",
+			dataIndex: "subjectTitle",
+			key: "subjectTitle",
 		},
 		{
-			title: "Giờ thi",
-			dataIndex: "time",
-			key: "time",
+			title: "Thời gian thi",
+			dataIndex: "examineTime",
+			key: "examineTime",
 		},
 		{
 			title: "Action",
@@ -226,6 +205,9 @@ const ExamClassList = () => {
 				<Space size="middle" style={{ cursor: "pointer" }}>
 					<Button danger onClick={() => handleEdit(record)}>
 						Xem chi tiết
+					</Button>
+					<Button danger onClick={() => handleEdit(record)}>
+						Sửa
 					</Button>
 				</Space>
 			),
@@ -236,7 +218,10 @@ const ExamClassList = () => {
 		code: obj.code,
 		roomName: obj.roomName,
 		classCode: obj.classCode,
-		time: obj.time,
+		semester: obj.semester,
+		subjectTitle: obj.subjectTitle,
+		examineTime: obj.examineTime,
+		id: obj.id,
 	}));
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 	const onSelectChange = (newSelectedRowKeys) => {
@@ -338,11 +323,29 @@ const ExamClassList = () => {
 					columns={columns}
 					dataSource={dataFetch}
 					rowSelection={rowSelection}
-					pagination={{
-						pageSize: 8,
-					}}
 					onRow={onRow}
 					loading={tableLoading}
+					pagination={{
+						current: pagination.current,
+						total: pagination.total,
+						pageSize: pagination.pageSize,
+						showSizeChanger: true,
+						pageSizeOptions: ["10", "20", "50", "100"],
+						showQuickJumper: true,
+						onChange: (page, pageSize) => {
+							setParam({
+								...param,
+								page: page - 1,
+								size: pageSize,
+							});
+						},
+						onShowSizeChange: (current, size) => {
+							setParam({
+								...param,
+								size: size,
+							});
+						},
+					}}
 				/>
 			</div>
 		</div>

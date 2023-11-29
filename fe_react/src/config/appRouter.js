@@ -5,6 +5,8 @@ import EditBlog from "../pages/Blogs/EditBlog/EditBlog";
 import AdminDashboard from "../pages/Dashboard/AdminDashboard/AdminDashboard";
 import StudentDashboard from "../pages/Dashboard/StudentDashboard/StudentDashboard";
 import TeacherDashboard from "../pages/Dashboard/TeacherDashboard/TeacherDashboard";
+import ExamClassAdd from "../pages/ExamClass/ExamClassCreate/ExamClassCreate";
+import ExamClassEdit from "../pages/ExamClass/ExamClassEdit/ExamClassEdit";
 
 import ExamClassList from "../pages/ExamClass/ExamClassList/ExamClassList";
 import Home from "../pages/Home/Home";
@@ -83,6 +85,9 @@ const publicRoutes = [
 	},
 	// exam class
 	{ path: appPath.examClassList, component: ExamClassList },
+	{ path: appPath.examClassCreate, component: ExamClassAdd },
+	{ path: appPath.examClassEdit, component: ExamClassEdit },
+	{ path: appPath.examClassEdit + "/:id", component: ExamClassEdit },
 	// user
 	{ path: appPath.createUser, component: CreateUser },
 	{ path: appPath.profileUser, component: ProfileUser },
@@ -93,4 +98,3 @@ const publicRoutes = [
 
 const privateRoutes = [];
 export { privateRoutes, publicRoutes };
-

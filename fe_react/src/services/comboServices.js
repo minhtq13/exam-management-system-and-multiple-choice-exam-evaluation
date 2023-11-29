@@ -42,3 +42,20 @@ export const getComboChapService = async (subjectId, chapterCode, chapterTitle, 
   await getRequest(apiUrl, null, successCallback, errorCallback);
 };
 
+export const getComboSemesterServices = async (search, successCallback, errorCallback) => {
+  const params = {
+  };
+
+  if (search) {
+    params.search = search;
+  }
+
+  const queryString = Object.entries(params)
+    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+    .join("&");
+
+  const apiUrl = `${apiPath.comboSemester}?${queryString}`;
+
+  await getRequest(apiUrl, null, successCallback, errorCallback);
+};
+

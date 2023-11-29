@@ -4,10 +4,10 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import TeacherInfo from "../../../components/TeacherInfo/TeacherInfo";
 import useNotify from "../../../hooks/useNotify";
-import { updateTeachersService } from "../../../services/teachersServices";
 import useUser from "../../../services/useUser";
 import { formatDateParam } from "../../../utils/tools";
 import "./TeacherEdit.scss";
+import { updateUser } from "../../../services/userService";
 
 const TeacherEdit = () => {
   const [loading, setLoading] = useState(false);
@@ -17,23 +17,24 @@ const TeacherEdit = () => {
   const id = location.pathname.split("/")[2];
   useEffect(() => {
     getDetailUser({}, id);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const onFinish = (value) => {
     setLoading(true);
-    const nameStr = value.fullName.split(" ");
-    updateTeachersService(
+    updateUser(
       userInfo ? userInfo.id : null,
       {
         phoneNumber: value.phoneNumber,
         genderType: value.genderType,
         email: value.email,
         birthDate: formatDateParam(value.birthDate),
-        firstName: nameStr.slice(0, -1).join(" "),
-        lastName: nameStr[nameStr.length - 1],
+        firstName: value.firstName,
+        lastName: value.lastName,
         departmentId: -1,
         userType: 1,
         code: value.code,
+        identityType: "CITIZEN_ID_CARD",
+        identificationNumber: value.identificationNumber
       },
       (res) => {
         setLoading(false);
@@ -63,18 +64,18 @@ const TeacherEdit = () => {
           btnText="Cập nhật"
           initialValues={{
             remember: false,
-            fullName: userInfo
-              ? `${userInfo.firstName}${userInfo.lastName}`
-              : "",
+            identificationNumber: userInfo
+              ? userInfo.identificationNumber
+              : null,
+            firstName: userInfo ? userInfo.firstName : "",
+            lastName: userInfo ? userInfo.lastName : "",
             email: userInfo ? userInfo.email : "",
             phoneNumber: userInfo ? userInfo.phoneNumber : "",
             birthDate: userInfo ? moment(userInfo.birthDate) : undefined,
-            //gender: userInfo ? userInfo.gender[0] : null,
+            genderType: userInfo ? userInfo.genderType : null,
             code: userInfo ? userInfo.code : null,
           }}
           loading={loading}
-          isPasswordDisplay={false}
-          isUserNameDisplay={false}
         />
       </Skeleton>
     </div>

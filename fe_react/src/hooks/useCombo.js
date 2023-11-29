@@ -1,12 +1,17 @@
-import { useState } from "react"
+import { useState } from "react";
 import useNotify from "./useNotify";
-import { getComboChapService, getComboSubService } from "../services/comboServices";
+import {
+  getComboChapService,
+  getComboSemesterServices,
+  getComboSubService,
+} from "../services/comboServices";
 const useCombo = () => {
   const [allSubjects, setAllSubjects] = useState([]);
   const [allChapters, setAllChapters] = useState([]);
   const [subLoading, setSubLoading] = useState(false);
   const [chapterLoading, setChapterLoading] = useState(false);
-
+  const [allSemester, setAllSemester] = useState([]);
+  const [semesterLoading, setSemesterLoading] = useState(false);
   const notify = useNotify();
   const getAllSubjects = (payload) => {
     setSubLoading(true);
@@ -20,8 +25,8 @@ const useCombo = () => {
       (error) => {
         notify.error("Chưa chọn môn học để hiển thị câu hỏi!");
       }
-    )
-  }
+    );
+  };
   const getAllChapters = (payload) => {
     setChapterLoading(true);
     getComboChapService(
@@ -35,8 +40,31 @@ const useCombo = () => {
       (error) => {
         notify.error("Chưa chọn môn học để hiển thị câu hỏi!");
       }
-    )
-  }
-  return {subLoading, chapterLoading, allSubjects, getAllSubjects, allChapters, getAllChapters}
-} 
+    );
+  };
+  const getAllSemesters = (payload) => {
+    setSemesterLoading(true);
+    getComboSemesterServices(
+      payload.search,
+      (res) => {
+        setAllSemester(res.data);
+        setSemesterLoading(false);
+      },
+      (error) => {
+        notify.error("Chưa chọn môn học để hiển thị câu hỏi!");
+      }
+    );
+  };
+  return {
+    subLoading,
+    chapterLoading,
+    allSubjects,
+    getAllSubjects,
+    allChapters,
+    getAllChapters,
+    getAllSemesters,
+    allSemester,
+    semesterLoading,
+  };
+};
 export default useCombo;

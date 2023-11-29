@@ -17,11 +17,10 @@ const StudentEdit = () => {
   const id = location.pathname.split("/")[2];
   useEffect(() => {
     getDetailUser({}, id);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const onFinish = (value) => {
     setLoading(true);
-    const nameStr = value.fullName.split(" ");
     updateUser(
       userInfo ? userInfo.id : null,
       {
@@ -29,11 +28,14 @@ const StudentEdit = () => {
         genderType: value.genderType,
         email: value.email,
         birthDate: formatDateParam(value.birthDate),
-        firstName: nameStr.slice(0, -1).join(" "),
-        lastName: nameStr[nameStr.length - 1],
+        firstName: value.firstName,
+        lastName: value.lastName,
         departmentId: -1,
         userType: 1,
         code: value.code,
+        metaData: { courseNum: Number(value.courseNum) },
+        identityType: "CITIZEN_ID_CARD",
+        identificationNumber: value.identificationNumber
       },
       (res) => {
         setLoading(false);
@@ -63,21 +65,21 @@ const StudentEdit = () => {
           btnText="Cập nhật"
           initialValues={{
             remember: false,
-            //identityType: userInfo ? userInfo.identityType : null,
-            fullName: userInfo
-              ? `${userInfo.firstName}${userInfo.lastName}`
-              : "",
+            identificationNumber: userInfo
+              ? userInfo.identificationNumber
+              : null,
+            firstName: userInfo ? userInfo.firstName : "",
+            lastName: userInfo ? userInfo.lastName : "",
             email: userInfo ? userInfo.email : "",
             code: userInfo ? userInfo.code : "",
             phoneNumber: userInfo ? userInfo.phoneNumber : "",
             birthDate: userInfo ? moment(userInfo.birthDate) : undefined,
-            genderType: null,
-            course: userInfo ? userInfo.courseNum : null,
+            genderType: userInfo ? userInfo.gender : undefined,
+            courseNum: userInfo ? userInfo.courseNum : null,
           }}
           loading={loading}
           isPasswordDisplay={false}
           isUserNameDisplay={false}
-          courseDisable={true}
         />
       </Skeleton>
     </div>
