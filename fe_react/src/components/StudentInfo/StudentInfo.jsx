@@ -8,7 +8,7 @@ const StudentInfo = ({
   btnText,
   datePickerOnchange,
   genderOnchange,
-  loading,
+  loading
 }) => {
   const genderOption = [
     {

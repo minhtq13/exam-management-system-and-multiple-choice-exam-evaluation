@@ -1,17 +1,16 @@
 import { Skeleton } from "antd";
-import moment from "moment/moment";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import StudentInfo from "../../../components/StudentInfo/StudentInfo";
 import useNotify from "../../../hooks/useNotify";
 import { updateUser } from "../../../services/userService";
-import { formatDateParam } from "../../../utils/tools";
-import "./StudentEdit.scss";
+import dayjs from "dayjs";
 import useAccount from "../../../hooks/useAccount";
+import { formatDateParam } from "../../../utils/tools";
 
 const StudentEdit = () => {
   const [loading, setLoading] = useState(false);
-  const {getUserInfoAPI, userInfo} = useAccount();
+  const { getUserInfoAPI, userInfo, infoLoading } = useAccount();
   const notify = useNotify();
   const location = useLocation();
   const id = location.pathname.split("/")[2];
@@ -35,7 +34,7 @@ const StudentEdit = () => {
         code: value.code,
         metaData: { courseNum: Number(value.courseNum) },
         identityType: "CITIZEN_ID_CARD",
-        identificationNumber: value.identificationNumber
+        identificationNumber: value.identificationNumber,
       },
       (res) => {
         setLoading(false);
@@ -55,9 +54,17 @@ const StudentEdit = () => {
   const genderOnchange = (dateString) => {
     console.log(dateString);
   };
+  const getFormatDate = (dateString) => {
+    let formattedDate = "";
+    if (dateString) {
+      const parts = dateString.split("/");
+      formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+    }
+    return formattedDate;
+  };
   return (
     <div className="student-add">
-      <Skeleton active loading={false} >
+      <Skeleton active loading={infoLoading}>
         <StudentInfo
           infoHeader="Cập nhật thông tin"
           onFinish={onFinish}
@@ -66,15 +73,16 @@ const StudentEdit = () => {
           btnText="Cập nhật"
           initialValues={{
             remember: false,
-            identificationNumber: userInfo
-              ? userInfo.identificationNumber
-              : null,
+            identificationNumber: userInfo ? userInfo.identificationNum : null,
             firstName: userInfo ? userInfo.firstName : "",
             lastName: userInfo ? userInfo.lastName : "",
             email: userInfo ? userInfo.email : "",
             code: userInfo ? userInfo.code : "",
             phoneNumber: userInfo ? userInfo.phoneNumber : "",
-            birthDate: userInfo ? moment(userInfo.birthDate) : null,
+            birthDate:
+              userInfo && userInfo.birthDate
+                ? dayjs(getFormatDate(userInfo.birthDate), "YYYY-MM-DD")
+                : "",
             genderType: userInfo ? userInfo.gender : undefined,
             courseNum: userInfo ? userInfo.courseNum : null,
           }}

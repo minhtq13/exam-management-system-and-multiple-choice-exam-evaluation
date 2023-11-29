@@ -179,8 +179,8 @@ const StudentList = () => {
 		},
 		{
 			title: "Khóa",
-			dataIndex: "course",
-			key: "course",
+			dataIndex: "courseNum",
+			key: "courseNum",
 		},
 		{
 			title: "Email",
@@ -254,7 +254,7 @@ const StudentList = () => {
 		gender: [obj.gender],
 		code: obj.code,
 		id: obj.id,
-		course: obj.course,
+		courseNum: obj.courseNum,
 	}));
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 	const onSelectChange = (newSelectedRowKeys) => {
