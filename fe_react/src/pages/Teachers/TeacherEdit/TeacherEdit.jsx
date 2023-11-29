@@ -4,19 +4,19 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import TeacherInfo from "../../../components/TeacherInfo/TeacherInfo";
 import useNotify from "../../../hooks/useNotify";
-import useUser from "../../../services/useUser";
 import { formatDateParam } from "../../../utils/tools";
 import "./TeacherEdit.scss";
 import { updateUser } from "../../../services/userService";
+import useAccount from "../../../hooks/useAccount";
 
 const TeacherEdit = () => {
   const [loading, setLoading] = useState(false);
-  const { userInfo, getDetailUser, infoLoading } = useUser();
+  const { userInfo, getUserInfoAPI } = useAccount();
   const notify = useNotify();
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   useEffect(() => {
-    getDetailUser({}, id);
+    getUserInfoAPI(id, {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const onFinish = (value) => {
@@ -39,6 +39,7 @@ const TeacherEdit = () => {
       (res) => {
         setLoading(false);
         notify.success("Cập nhật thông tin giảng viên thành công!");
+        getUserInfoAPI(id, {});
       },
       (error) => {
         setLoading(false);
@@ -55,7 +56,7 @@ const TeacherEdit = () => {
   };
   return (
     <div className="teacher-add">
-      <Skeleton active loading={infoLoading}>
+      <Skeleton active loading={false}>
         <TeacherInfo
           infoHeader="Cập nhật thông tin"
           onFinish={onFinish}
