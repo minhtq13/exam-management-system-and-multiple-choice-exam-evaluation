@@ -1,5 +1,4 @@
 import { Skeleton } from "antd";
-import moment from "moment/moment";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import TeacherInfo from "../../../components/TeacherInfo/TeacherInfo";
@@ -8,10 +7,11 @@ import { formatDateParam } from "../../../utils/tools";
 import "./TeacherEdit.scss";
 import { updateUser } from "../../../services/userService";
 import useAccount from "../../../hooks/useAccount";
+import dayjs from "dayjs";
 
 const TeacherEdit = () => {
   const [loading, setLoading] = useState(false);
-  const { userInfo, getUserInfoAPI } = useAccount();
+  const { userInfo, getUserInfoAPI, infoLoading } = useAccount();
   const notify = useNotify();
   const location = useLocation();
   const id = location.pathname.split("/")[2];
@@ -47,6 +47,14 @@ const TeacherEdit = () => {
       }
     );
   };
+  const getFormatDate = (dateString) => {
+    let formattedDate = "";
+    if (dateString) {
+      const parts = dateString.split("/");
+      formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+    }
+    return formattedDate;
+  };
 
   const datePickerOnchange = (date, dateString) => {
     console.log(date, dateString);
@@ -56,7 +64,7 @@ const TeacherEdit = () => {
   };
   return (
     <div className="teacher-add">
-      <Skeleton active loading={false}>
+      <Skeleton active loading={infoLoading}>
         <TeacherInfo
           infoHeader="Cập nhật thông tin"
           onFinish={onFinish}
@@ -72,8 +80,11 @@ const TeacherEdit = () => {
             lastName: userInfo ? userInfo.lastName : "",
             email: userInfo ? userInfo.email : "",
             phoneNumber: userInfo ? userInfo.phoneNumber : "",
-            birthDate: userInfo ? moment(userInfo.birthDate) : undefined,
-            genderType: userInfo ? userInfo.genderType : null,
+            birthDate:
+            userInfo && userInfo.birthDate
+              ? dayjs(getFormatDate(userInfo.birthDate), "YYYY-MM-DD")
+              : "",
+            genderType: userInfo ? userInfo.gender : null,
             code: userInfo ? userInfo.code : null,
           }}
           loading={loading}

@@ -13,6 +13,7 @@ const useAccount = () => {
   const [userInfo, setUserInfo] = useState({})
   const [profileUser, setProfileUser] = useState({})
   const [loading, setLoading] = useState(false);
+  const [infoLoading, setInfoLoading] = useState(true);
   const navigate = useNavigate();
   const notify = useNotify();
   const dispatch = useDispatch();
@@ -46,21 +47,21 @@ const useAccount = () => {
     );
   };
   const getUserInfoAPI = (userId, payload = {}) => {
-    setLoading(true)
+    setInfoLoading(true)
     getInfoUserService(
       userId,
       payload,
       (res) => {
         setUserInfo(res.data)
-        setLoading(false)
+        setInfoLoading(false)
       },
       (error) => {
         console.log(error)
-        setLoading(false)
+        setInfoLoading(false)
       }
     );
   };
-  return { authenticResult, authenticAction, loading, setLoading, profileUser, getProfileUser, userInfo, getUserInfoAPI };
+  return { authenticResult, authenticAction, loading, setLoading, profileUser, getProfileUser, userInfo, getUserInfoAPI, infoLoading };
 };
 
 export default useAccount;
