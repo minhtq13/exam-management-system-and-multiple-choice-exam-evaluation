@@ -1,10 +1,17 @@
 package com.elearning.elearning_support.controllers.examClass;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +29,7 @@ import com.elearning.elearning_support.dtos.examClass.IExamClassParticipantDTO;
 import com.elearning.elearning_support.dtos.examClass.UserExamClassDTO;
 import com.elearning.elearning_support.enums.examClass.UserExamClassRoleEnum;
 import com.elearning.elearning_support.services.examClass.ExamClassService;
+import com.elearning.elearning_support.utils.file.FileUtils.Excel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -78,6 +86,18 @@ public class ExamClassController {
     public List<IExamClassParticipantDTO> getListExamClassParticipant(@PathVariable(name = "examClassId") Long examClassId,
         @RequestParam(name = "roleType") UserExamClassRoleEnum roleType) {
         return examClassService.getListExamClassParticipant(examClassId, roleType);
+    }
+
+    @GetMapping("/participant/export/{examClassId}")
+    @Operation(summary = "Export danh sách SV / GV lớp thi")
+    public ResponseEntity<InputStreamResource> exportExamClassParticipant(@PathVariable(name = "examClassId") Long examClassId,
+        @RequestParam(name = "roleType") UserExamClassRoleEnum roleType) throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        String exportObject = roleType == UserExamClassRoleEnum.STUDENT ? "student" : "supervisor";
+        String fileName = String.format("ExamClass_%s_%s_.xlsx", exportObject, LocalDateTime.now());
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.parseMediaType(String.join(";", Arrays.asList(Excel.CONTENT_TYPES))).toString());
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+        return ResponseEntity.ok().headers(headers).body(examClassService.exportExamClassParticipant(examClassId, roleType));
     }
 
 }

@@ -19,6 +19,9 @@ public interface ICommonExamClassDTO {
     @JsonFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_HH_MM, timezone = DateUtils.TIME_ZONE)
     String getExamineTime();
 
+    @Schema(description = "Thời gian làm bài")
+    Integer getDuration();
+
     @Schema(description = "Id kỳ học")
     Long getSemesterId();
 

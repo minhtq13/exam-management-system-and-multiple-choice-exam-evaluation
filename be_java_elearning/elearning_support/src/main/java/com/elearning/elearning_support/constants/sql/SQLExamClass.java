@@ -19,6 +19,7 @@ public class SQLExamClass {
             "    exClass.examine_time AS examineTime, \n" +
             "    test.id AS testId, \n" +
             "    test.name AS testName, \n" +
+            "    test.duration AS duration, \n" +
             "    semester.code AS semester, \n" +
             "    subject.title AS subjectTitle, \n" +
             "    examClassParticipantCTE.numStudents AS numberOfStudents, \n" +
@@ -72,9 +73,12 @@ public class SQLExamClass {
             "       WHEN userExClass.role_type = 0 THEN 'Thí sinh' \n" +
             "       WHEN userExClass.role_type = 1 THEN 'Giám thị' \n" +
             "       ELSE '' \n" +
-            "   END AS roleName \n" +
+            "   END AS roleName, \n" +
+            "   exClass.id AS examClassId, \n" +
+            "   exClass.code AS examClassCode \n" +
             "FROM {h-schema}user_exam_class AS userExClass \n" +
             "    JOIN {h-schema}users AS participant ON userExClass.user_id = participant.id \n" +
+            "    JOIN {h-schema}exam_class AS exClass ON exClass.id = userExClass.exam_class_id \n" +
             "WHERE userExClass.exam_class_id = :examClassId AND userExClass.role_type = :roleType ";
 
     public static final String DELETE_EXAM_CLASS_PARTICIPANT_BY_ID =

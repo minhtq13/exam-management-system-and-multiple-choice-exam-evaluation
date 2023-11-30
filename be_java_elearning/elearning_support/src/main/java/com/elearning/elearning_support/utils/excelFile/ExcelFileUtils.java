@@ -50,7 +50,7 @@ public class ExcelFileUtils {
     /**
      * Map<Integer, Pair<String, String>> = {Integer : columnIdx, Pair<headerName, methodName>}
      */
-    public <T> InputStreamResource createWorkbook(List<T> lstObject, Map<Integer, Pair<String, String>> structure) throws IOException {
+    public <T> InputStreamResource createWorkbook(List<T> lstObject, Map<Integer, Pair<String, String>> structure, String sheetName) throws IOException {
         if (ObjectUtils.isEmpty(lstObject)) {
             return null;
         }
@@ -61,7 +61,7 @@ public class ExcelFileUtils {
             workbook.setCompressTempFiles(true);
 
             // Create data sheet
-            SXSSFSheet sheet = workbook.createSheet("result");
+            SXSSFSheet sheet = workbook.createSheet(sheetName);
             // prevent overload in memory by fix size of accessible data kept in memory in any time
             sheet.setRandomAccessWindowSize(100);
             try {

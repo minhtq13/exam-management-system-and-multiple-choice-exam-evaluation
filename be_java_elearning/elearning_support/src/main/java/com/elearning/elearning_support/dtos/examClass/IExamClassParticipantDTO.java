@@ -12,4 +12,6 @@ public interface IExamClassParticipantDTO {
 
     String getRoleName();
 
+    String getExamClassCode();
+
 }

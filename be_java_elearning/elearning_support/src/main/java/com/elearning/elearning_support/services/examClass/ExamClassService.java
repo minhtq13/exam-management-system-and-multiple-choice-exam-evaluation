@@ -1,6 +1,8 @@
 package com.elearning.elearning_support.services.examClass;
 
+import java.io.IOException;
 import java.util.List;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -47,5 +49,10 @@ public interface ExamClassService {
      * Lấy danh sách Giám thị / thí sinh trong lớp thi
      */
     List<IExamClassParticipantDTO> getListExamClassParticipant(Long examClassId, UserExamClassRoleEnum roleType);
+
+    /**
+     * Export danh sách SV / GV trong lớp thi
+     */
+    InputStreamResource exportExamClassParticipant(Long examClassId, UserExamClassRoleEnum roleType) throws IOException;
 
 }

@@ -1,11 +1,16 @@
 package com.elearning.elearning_support.services.examClass.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import org.apache.commons.math3.util.Pair;
 import org.springframework.beans.BeanUtils;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,10 +32,10 @@ import com.elearning.elearning_support.enums.examClass.UserExamClassRoleEnum;
 import com.elearning.elearning_support.exceptions.exceptionFactory.ExceptionFactory;
 import com.elearning.elearning_support.repositories.examClass.ExamClassRepository;
 import com.elearning.elearning_support.repositories.examClass.UserExamClassRepository;
-import com.elearning.elearning_support.repositories.test.TestRepository;
 import com.elearning.elearning_support.services.examClass.ExamClassService;
 import com.elearning.elearning_support.services.test.TestService;
 import com.elearning.elearning_support.utils.auth.AuthUtils;
+import com.elearning.elearning_support.utils.excelFile.ExcelFileUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,6 +51,8 @@ public class ExamClassServiceImpl implements ExamClassService {
     private final UserExamClassRepository userExamClassRepository;
 
     private final TestService testService;
+
+    private final ExcelFileUtils excelFileUtils;
 
     @Transactional
     @Override
@@ -124,6 +131,19 @@ public class ExamClassServiceImpl implements ExamClassService {
     @Override
     public List<IExamClassParticipantDTO> getListExamClassParticipant(Long examClassId, UserExamClassRoleEnum roleType) {
         return examClassRepository.getListExamClassParticipant(examClassId, roleType.getType());
+    }
+
+    @Override
+    public InputStreamResource exportExamClassParticipant(Long examClassId, UserExamClassRoleEnum roleType) throws IOException {
+        List<IExamClassParticipantDTO> participants = examClassRepository.getListExamClassParticipant(examClassId, roleType.getType());
+        // Create export structure
+        String sheetName = ObjectUtils.isEmpty(participants) ? "result" : participants.get(0).getExamClassCode();
+        Map<Integer, Pair<String, String>> structure = new LinkedHashMap<>();
+        structure.put(1, Pair.create("name", "getName"));
+        structure.put(2, Pair.create("code", "getCode"));
+        structure.put(3, Pair.create("role", "getRoleName"));
+        structure.put(4, Pair.create("exam_class", "getExamClassCode"));
+        return excelFileUtils.createWorkbook(participants, structure, sheetName);
     }
 
     /**

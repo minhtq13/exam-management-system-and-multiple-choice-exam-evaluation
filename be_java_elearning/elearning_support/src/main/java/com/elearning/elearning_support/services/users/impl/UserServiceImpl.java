@@ -290,7 +290,7 @@ public class UserServiceImpl implements UserService {
         mapStructure.put(5, Pair.create("email", "getEmail"));
         mapStructure.put(6, Pair.create("phoneNumber", "getPhoneNumber"));
         mapStructure.put(7, Pair.create("courseNum", "getCourseNum"));
-        return excelFileUtils.createWorkbook(lstStudent, mapStructure);
+        return excelFileUtils.createWorkbook(lstStudent, mapStructure, "students");
     }
 
     @Transactional
@@ -408,7 +408,7 @@ public class UserServiceImpl implements UserService {
         mapStructure.put(5, Pair.create("email", "getEmail"));
         mapStructure.put(6, Pair.create("phoneNumber", "getPhoneNumber"));
         mapStructure.put(7, Pair.create("departmentName", "getDepartmentName"));
-        return excelFileUtils.createWorkbook(lstTeacher, mapStructure);
+        return excelFileUtils.createWorkbook(lstTeacher, mapStructure, "teacher");
     }
 
     /**

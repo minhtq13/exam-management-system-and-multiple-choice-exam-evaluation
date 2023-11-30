@@ -109,7 +109,7 @@ public class UserController {
     ) throws IOException {
 
         HttpHeaders headers = new HttpHeaders();
-        String fileName = String.format("StudentExport_%s_.docx", LocalDateTime.now());
+        String fileName = String.format("StudentExport_%s_.xlsx", LocalDateTime.now());
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.parseMediaType(String.join(";", Arrays.asList(Excel.CONTENT_TYPES))).toString());
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
         return ResponseEntity.ok().headers(headers).body(userService.exportStudent(name, code));
@@ -159,7 +159,7 @@ public class UserController {
         @RequestParam(name = "code", required = false, defaultValue = "") String code
     ) throws IOException {
         HttpHeaders headers = new HttpHeaders();
-        String fileName = String.format("TeacherExport_%s_.docx", LocalDateTime.now());
+        String fileName = String.format("TeacherExport_%s_.xlsx", LocalDateTime.now());
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.parseMediaType(String.join(";", Arrays.asList(Excel.CONTENT_TYPES))).toString());
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
         return ResponseEntity.ok().headers(headers).body(userService.exportTeacher(name, code));
