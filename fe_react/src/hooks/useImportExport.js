@@ -4,16 +4,16 @@ import useNotify from "./useNotify";
 import { useState } from "react";
 
 const useImportExport = () => {
-  const notify = useNotify();
+	const notify = useNotify();
 	const [loadingExport, setLoadingExport] = useState(false);
-  
-  const exportList = (params, object) => {
-		// object = "student" or "teacher" 
+
+	const exportList = (params, object) => {
+		// object = "student" or "teacher"
 		axios({
-			url: `${BASE_URL}/api/user/${object}/export`, 
+			url: `${BASE_URL}/api/user/${object}/export`,
 			method: "GET",
-			responseType: "blob", 
-			params
+			responseType: "blob",
+			params,
 		})
 			.then((response) => {
 				const url = window.URL.createObjectURL(
@@ -26,18 +26,18 @@ const useImportExport = () => {
 				link.click();
 			})
 			.catch((error) => {
-				console.log(error)
+				console.log(error);
 				notify.error("Lỗi tải file!");
 			});
-  }
-	const exportTestList = (params, object) => {
+	};
+	const exportTestList = (params, nameFile) => {
 		// object = "test-set"
-		setLoadingExport(true)
+		setLoadingExport(true);
 		axios({
-			url: `${BASE_URL}/api/${object}/export`, 
+			url: `${BASE_URL}/api/test-set/export`,
 			method: "POST",
-			responseType: "blob", 
-			params
+			responseType: "blob",
+			data: params,
 		})
 			.then((response) => {
 				const url = window.URL.createObjectURL(
@@ -45,17 +45,20 @@ const useImportExport = () => {
 				);
 				const link = document.createElement("a");
 				link.href = url;
-				link.setAttribute("download", `${object}-${Date.now()}.xlsx`);
+				link.setAttribute(
+					"download",
+					`Test-${nameFile}-${Date.now()}.docx`
+				);
 				document.body.appendChild(link);
 				link.click();
-				setLoadingExport(false)
+				setLoadingExport(false);
 			})
 			.catch((error) => {
-				console.log(error)
+				console.log(error);
 				notify.error("Lỗi tải file!");
-				setLoadingExport(false)
+				setLoadingExport(false);
 			});
-  }
-  return { exportList, loadingExport, exportTestList }
-}
+	};
+	return { exportList, loadingExport, exportTestList };
+};
 export default useImportExport;
