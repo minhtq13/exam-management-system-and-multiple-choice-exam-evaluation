@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table, Tag } from "antd";
-import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -27,31 +26,15 @@ const StudentList = () => {
 	};
 	const [deleteDisable, setDeleteDisable] = useState(true);
 	const { allStudents, getAllStudents, tableLoading, pagination } = useStudents();
-	const { exportList } = useImportExport();
+	const { importList, exportList, loadingImport } = useImportExport();
 	const [deleteKey, setDeleteKey] = useState(null);
-	const [importLoading, setImportLoading] = useState(false);
 	const searchInput = useRef(null);
 	const [fileList, setFileList] = useState(null);
 	const [param, setParam] = useState(initialParam);
 	const handleUpload = async () => {
 		const formData = new FormData();
 		formData.append("file", fileList);
-		setImportLoading(true);
-		try {
-			const response = await axios.post(
-				"http://localhost:8088/e-learning/api/user/student/import",
-				formData
-			);
-			if (response.status === 200) {
-				notify.success("Tải lên file thành công!");
-				getAllStudents(param);
-				setImportLoading(false);
-			}
-		} catch (error) {
-			setImportLoading(false);
-			console.log(error);
-			notify.error("Tải lên file thất bại!");
-		}
+		importList(formData, "student")
 	};
 	const handleChange = (e) => {
 		setFileList(e.target.files[0]);
@@ -331,7 +314,7 @@ const StudentList = () => {
 						type="primary"
 						onClick={handleUpload}
 						disabled={!fileList}
-						loading={importLoading}
+						loading={loadingImport}
 					>
 						Import
 					</Button>

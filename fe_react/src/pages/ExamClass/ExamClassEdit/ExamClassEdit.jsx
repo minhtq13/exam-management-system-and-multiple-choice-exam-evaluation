@@ -1,13 +1,13 @@
 import "./ExamClassEdit.scss";
 import React, { useEffect, useState } from "react";
 import useNotify from "../../../hooks/useNotify";
-import ExamClassInfo from "../../../components/ExamClassInfo/ExamClassInfo";
 import dayjs from "dayjs";
 import { updateExamClassService } from "../../../services/examClassServices";
 import { useLocation } from "react-router-dom";
 import useExamClasses from "../../../hooks/useExamClass";
 import moment from "moment";
 import { Skeleton } from "antd";
+import UpdateExamClassInfoForm from "../component/UpdateExamClassInfoForm/UpdateExamClassInfoForm";
 const ExamClassEdit = () => {
 	const { getExamClassDetail, examClassInfo, infoLoading } = useExamClasses();
 	const [loading, setLoading] = useState(false);
@@ -42,7 +42,7 @@ const ExamClassEdit = () => {
 	return (
 		<div className="exam-class-edit">
 			<Skeleton active loading={infoLoading}>
-				<ExamClassInfo
+				<UpdateExamClassInfoForm
 					infoHeader="Cập nhật lớp thi"
 					onFinish={onFinish}
 					btnText="Thêm"

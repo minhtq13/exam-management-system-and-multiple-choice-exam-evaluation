@@ -1,8 +1,8 @@
 import { DatePicker, Form, Input, Select, Button } from "antd";
-import "./ExamClassInfo.scss";
+import "./UpdateExamClassInfoForm.scss";
 import React, { useEffect } from "react";
-import useCombo from "../../hooks/useCombo";
-const ExamClassInfo = ({
+import useCombo from "../../../../hooks/useCombo";
+const UpdateExamClassInfoForm = ({
 	onFinish,
 	initialValues,
 	infoHeader,
@@ -135,4 +135,4 @@ const ExamClassInfo = ({
 		</div>
 	);
 };
-export default ExamClassInfo;
+export default UpdateExamClassInfoForm;

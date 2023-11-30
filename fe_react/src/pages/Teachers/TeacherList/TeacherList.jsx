@@ -29,7 +29,7 @@ const TeacherList = () => {
   const [deleteDisable, setDeleteDisable] = useState(true);
   const [deleteKey, setDeleteKey] = useState(null);
   const { allTeachers, getAllTeachers, tableLoading, pagination } = useTeachers();
-  const { exportListStudentTeacher } = useImportExport();
+  const { exportList } = useImportExport();
   const searchInput = useRef(null);
   const handleReset = (clearFilters) => {
     clearFilters();
@@ -261,7 +261,7 @@ const TeacherList = () => {
       name: param.name,
       code: param.code,
     }
-    exportListStudentTeacher(params, "teacher")
+    exportList(params, "teacher")
   };
   return (
     <div className="teacher-list">

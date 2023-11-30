@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import UserForm from "../../../components/UserForm/UserForm";
+import UserForm from "./UserForm/UserForm";
 import useNotify from "../../../hooks/useNotify";
 import { createUser } from "../../../services/userService";
 import { formatDateParam } from "../../../utils/tools";

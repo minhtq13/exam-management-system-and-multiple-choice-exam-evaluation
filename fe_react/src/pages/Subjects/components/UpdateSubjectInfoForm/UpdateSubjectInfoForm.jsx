@@ -1,13 +1,13 @@
 import { Form, Input, Button, Skeleton } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
-import "./SubjectInfo.scss";
+import "./UpdateSubjectInfoForm.scss";
 import React from "react";
-import useNotify from "../../hooks/useNotify";
-import deletePopUpIcon from "../../assets/images/svg/delete-icon.svg";
-import ModalPopup from "../ModalPopup/ModalPopup";
-import { deleteChaptersService } from "../../services/subjectsService";
-import useSubjects from "../../hooks/useSubjects";
-const SubjectInfo = ({
+import useNotify from "../../../../hooks/useNotify";
+import deletePopUpIcon from "../../../../assets/images/svg/delete-icon.svg";
+import ModalPopup from "../../../../components/ModalPopup/ModalPopup";
+import { deleteChaptersService } from "../../../../services/subjectsService";
+import useSubjects from "../../../../hooks/useSubjects";
+const UpdateSubjectInfoForm = ({
 	onFinish,
 	initialValues,
 	infoHeader,
@@ -213,4 +213,4 @@ const SubjectInfo = ({
 		</div>
 	);
 };
-export default SubjectInfo;
+export default UpdateSubjectInfoForm;

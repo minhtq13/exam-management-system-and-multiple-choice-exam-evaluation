@@ -37,7 +37,7 @@ const ModalPopup = ({
 
   return (
     <>
-      <div className="button-delete-face" onClick={showModal}>
+      <div className="button-delete" onClick={showModal}>
         {buttonOpenModal}
       </div>
       <Modal
@@ -59,6 +59,7 @@ const ModalPopup = ({
               height: "44px",
               outline: "none",
               border: "none",
+              minWidth: "100px",
             }}
           >
             Cancel
@@ -68,6 +69,7 @@ const ModalPopup = ({
               borderRadius: "6px",
               height: "44px",
               marginRight: "12px",
+              minWidth: "100px",
             }}
             key="submit"
             type="primary"
@@ -90,7 +92,7 @@ const ModalPopup = ({
           >
             {message}
           </p>
-          <h4 style={{ marginTop: "10px" }}>{confirmMessage}</h4>
+          <h4 style={{ marginTop: "10px", fontStyle: "italic", color: "#bbb" }}>{confirmMessage}</h4>
         </div>
       </Modal>
     </>

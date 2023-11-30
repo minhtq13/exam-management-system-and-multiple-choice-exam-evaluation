@@ -1,13 +1,13 @@
 import { Skeleton } from "antd";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import TeacherInfo from "../../../components/TeacherInfo/TeacherInfo";
 import useNotify from "../../../hooks/useNotify";
 import { formatDateParam } from "../../../utils/tools";
 import "./TeacherEdit.scss";
 import { updateUser } from "../../../services/userService";
 import useAccount from "../../../hooks/useAccount";
 import dayjs from "dayjs";
+import UpdateTeacherInfoForm from "../components/UpdateTeacherInfoForm/UpdateTeacherInfoForm";
 
 const TeacherEdit = () => {
   const [loading, setLoading] = useState(false);
@@ -65,7 +65,7 @@ const TeacherEdit = () => {
   return (
     <div className="teacher-add">
       <Skeleton active loading={infoLoading}>
-        <TeacherInfo
+        <UpdateTeacherInfoForm
           infoHeader="Cập nhật thông tin"
           onFinish={onFinish}
           datePickerOnchange={datePickerOnchange}

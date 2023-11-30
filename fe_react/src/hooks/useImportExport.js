@@ -6,6 +6,22 @@ import { useState } from "react";
 const useImportExport = () => {
   const notify = useNotify();
 	const [loadingExport, setLoadingExport] = useState(false);
+	const [loadingImport, setLoadingImport] = useState(false);
+
+	const importList = (file, object) => {
+		setLoadingImport(true)
+		axios.post(`${BASE_URL}/api/user/${object}/import`, file)
+			.then((response) => {
+				console.log(response)
+				notify.success("Tải file thành công!");
+				setLoadingImport(false)
+			})
+			.catch((error) => {
+				console.log(error)
+				notify.error("Lỗi tải file!");
+				setLoadingImport(false)
+			});
+	}
   
   const exportList = (params, object) => {
 		// object = "student" or "teacher" 
@@ -56,6 +72,6 @@ const useImportExport = () => {
 				setLoadingExport(false)
 			});
   }
-  return { exportList, loadingExport, exportTestList }
+  return { importList, loadingImport, exportList, loadingExport, exportTestList }
 }
 export default useImportExport;
