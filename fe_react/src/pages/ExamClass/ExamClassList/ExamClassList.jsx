@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useRef, useState } from "react";
 import "./ExamClassList.scss";
-import { Button, Input, Space, Table } from "antd";
+import { Button, Input, Modal, Space, Table, Tabs, Select } from "antd";
 import exportIcon from "../../../assets/images/svg/export-icon.svg";
 import deleteIcon from "../../../assets/images/svg/delete-icon.svg";
 import deletePopUpIcon from "../../../assets/images/svg/delete-popup-icon.svg";
@@ -16,6 +16,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import useExamClasses from "../../../hooks/useExamClass";
 import { deleteExamClassService } from "../../../services/examClassServices";
 import useImportExport from "../../../hooks/useImportExport";
+import useCombo from "../../../hooks/useCombo";
 
 const ExamClassList = () => {
 	const initialParam = {
@@ -27,14 +28,101 @@ const ExamClassList = () => {
 		sort: "id",
 	};
 	const [deleteDisable, setDeleteDisable] = useState(true);
-	const { allExamClasses, getAllExamClasses, tableLoading, pagination } =
-		useExamClasses();
+	const {
+		allExamClasses,
+		getAllExamClasses,
+		tableLoading,
+		pagination,
+		getParticipants,
+		partiLoading,
+		participants,
+	} = useExamClasses();
+	const {
+		subLoading,
+		allSubjects,
+		getAllSubjects,
+		allSemester,
+		semesterLoading,
+		getAllSemesters,
+	} = useCombo();
 	const { exportList } = useImportExport();
 	const [deleteKey, setDeleteKey] = useState(null);
 	const [importLoading, setImportLoading] = useState(false);
 	const [param, setParam] = useState(initialParam);
 	const searchInput = useRef(null);
 	const [fileList, setFileList] = useState(null);
+	const [openModal, setOpenModal] = useState(false);
+	const [roleType, setRoleType] = useState("STUDENT");
+	const [classId, setClassId] = useState(null);
+	useEffect(() => {
+		if (classId) {
+			getParticipants(classId, roleType);
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+		}
+	}, [classId, roleType]);
+	useEffect(() => {
+		getAllSubjects({ subjectCode: null, subjectTitle: null });
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+	useEffect(() => {
+		getAllSemesters({ search: "" });
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+	const subjectOptions = allSubjects.map((item) => {
+		return { value: item.id, label: item.name };
+	});
+	const semesterOptions =
+		allSemester && allSemester.length > 0
+			? allSemester.map((item) => {
+					return { value: item.id, label: item.name };
+			  })
+			: [];
+	const subjectOnChange = (value) => {
+		setParam({ ...param, subjectId: value });
+	};
+	const semsOnChange = (value) => {
+		setParam({ ...param, semesterId: value });
+	};
+	const tabsColumn = [
+		{
+			title: "Họ tên",
+			dataIndex: "name",
+			key: "name",
+		},
+		{
+			title: roleType === "STUDENT" ? "MSSV" : "Mã cán bộ",
+			dataIndex: "code",
+			key: "code",
+		},
+	];
+	const tabsData = participants?.map((item, index) => ({
+		key: (index + 1).toString(),
+		name: item.name,
+		code: item.code,
+	}));
+	const renderTab = () => {
+		return (
+			<Table
+				className="exam-class-participant"
+				columns={tabsColumn}
+				dataSource={tabsData}
+				loading={partiLoading}
+			/>
+		);
+	};
+	const tabsOptions = [
+		{
+			key: "STUDENT",
+			label: "Học sinh",
+			children: renderTab(),
+		},
+		{
+			key: "SUPERVISOR",
+			label: "Giám thị",
+			children: renderTab(),
+		},
+	];
+
 	const handleUpload = async () => {
 		const formData = new FormData();
 		formData.append("file", fileList);
@@ -205,7 +293,13 @@ const ExamClassList = () => {
 			key: "action",
 			render: (_, record) => (
 				<Space size="middle" style={{ cursor: "pointer" }}>
-					<Button danger onClick={() => handleEdit(record)}>
+					<Button
+						danger
+						onClick={() => {
+							setClassId(record.id);
+							setOpenModal(true);
+						}}
+					>
 						Xem chi tiết
 					</Button>
 					<Button danger onClick={() => handleEdit(record)}>
@@ -257,7 +351,7 @@ const ExamClassList = () => {
 		);
 	};
 	const handleExport = () => {
-		exportList(param, "class")
+		exportList(param, "class");
 	};
 	return (
 		<div className="exam-class-list">
@@ -301,6 +395,40 @@ const ExamClassList = () => {
 					</Button>
 				</div>
 			</div>
+			<div className="examclass-subject-semester">
+				<div className="examclass-select">
+					<span className="select-label">Học phần:</span>
+					<Select
+						allowClear
+						showSearch
+						placeholder="Chọn môn học để hiển thị danh sách đề thi"
+						optionFilterProp="children"
+						filterOption={(input, option) =>
+							(option?.label ?? "").includes(input)
+						}
+						optionLabelProp="label"
+						options={subjectOptions}
+						onChange={subjectOnChange}
+						loading={subLoading}
+					/>
+				</div>
+				<div className="examclass-select examclass-select-semester">
+					<span className="select-label">Kỳ thi:</span>
+					<Select
+						allowClear
+						showSearch
+						placeholder="Kỳ thi"
+						optionFilterProp="children"
+						filterOption={(input, option) =>
+							(option?.label ?? "").includes(input)
+						}
+						optionLabelProp="label"
+						options={semesterOptions}
+						onChange={semsOnChange}
+						loading={semesterLoading}
+					/>
+				</div>
+			</div>
 			<div className="exam-class-list-wrapper">
 				<Table
 					className="exam-class-list-table"
@@ -331,6 +459,21 @@ const ExamClassList = () => {
 						},
 					}}
 				/>
+				<Modal
+					open={openModal}
+					title="Danh sách người tham gia"
+					onOk={() => setOpenModal(false)}
+					onCancel={() => setOpenModal(false)}
+					maskClosable={true}
+					style={{ height: "80vh", overflowY: "scroll" }}
+					centered={true}
+				>
+					<Tabs
+						defaultActiveKey="STUDENT"
+						items={tabsOptions}
+						onChange={(key) => setRoleType(key)}
+					/>
+				</Modal>
 			</div>
 		</div>
 	);

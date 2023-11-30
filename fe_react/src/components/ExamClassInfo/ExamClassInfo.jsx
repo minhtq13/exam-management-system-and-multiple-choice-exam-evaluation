@@ -20,7 +20,7 @@ const ExamClassInfo = ({
 	const errorMessange = "Chưa điền đầy đủ thông tin";
 	useEffect(() => {
 		getAllSemesters({ search: "" });
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	useEffect(() => {
 		getAllSubjects({ subjectCode: null, subjectTitle: null });
@@ -116,8 +116,8 @@ const ExamClassInfo = ({
 					]}
 				>
 					<DatePicker
-						format={"YYYY-MM-DD HH:mm"}
-						showTime={{ format: "HH:mm" }}
+						format={"YYYY-MM-DD HH:mm:ss"}
+						showTime={{ format: "HH:mm:ss" }}
 					></DatePicker>
 				</Form.Item>
 				<Form.Item className="btn-info">

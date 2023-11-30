@@ -23,7 +23,14 @@ import "./TestList.scss";
 const TestList = () => {
 	const [deleteDisable, setDeleteDisable] = useState(true);
 	const { allTest, getAllTests, tableLoading } = useTest();
-	const { subLoading, allSubjects, getAllSubjects } = useCombo();
+	const {
+		subLoading,
+		allSubjects,
+		getAllSubjects,
+		allSemester,
+		semesterLoading,
+		getAllSemesters,
+	} = useCombo();
 	const { exportTestList, loadingExport } = useImportExport();
 	const [deleteKey, setDeleteKey] = useState(null);
 	const [openModal, setOpenModal] = useState(false);
@@ -34,7 +41,7 @@ const TestList = () => {
 	const [viewLoading, setViewLoading] = useState(false);
 	const [testItem, setTestItem] = useState({});
 	const [testSetNos, setTestSetNos] = useState([]);
-	const [param, setParam] = useState({ subjectId: null });
+	const [param, setParam] = useState({ subjectId: null, semesterId: null });
 	const handleCreate = (record) => {
 		console.log(record);
 		navigate(`${appPath.testSetCreate}/${record.id}`);
@@ -47,12 +54,26 @@ const TestList = () => {
 		getAllSubjects({ subjectCode: null, subjectTitle: null });
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+	useEffect(() => {
+		getAllSemesters({ search: "" });
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 	const subjectOptions = allSubjects.map((item) => {
 		return { value: item.id, label: item.name };
 	});
+	const semesterOptions =
+		allSemester && allSemester.length > 0
+			? allSemester.map((item) => {
+					return { value: item.id, label: item.name };
+			  })
+			: [];
 	const subjectOnChange = (value) => {
-		setParam({ subjectId: value });
+		setParam({ ...param, subjectId: value });
 	};
+	const semsOnChange = (value) => {
+		setParam({ ...param, semesterId: value });
+	};
+
 	const handleExport = (param) => {
 		const params = { testId: param.testId, code: param.testSetCode };
 		exportTestList(
@@ -107,7 +128,11 @@ const TestList = () => {
 							onClick={() => {
 								setTestItem(record);
 								console.log(record);
-								setTestSetNos(record.lstTestSetCode.split(","));
+								setTestSetNos(
+									record.lstTestSetCode.length > 0
+										? record.lstTestSetCode.split(",")
+										: []
+								);
 								setOpenModal(true);
 							}}
 						>
@@ -152,9 +177,6 @@ const TestList = () => {
 	const handleClickAddTest = () => {
 		navigate("/test-create");
 	};
-	// const handleEdit = (record) => {
-	//   navigate(`${appPath.subjectView}/${record.code}`);
-	// };
 	const handleDelete = () => {
 		deleteTestService(
 			deleteKey,
@@ -216,21 +238,39 @@ const TestList = () => {
 				</div>
 			</div>
 			<div className="test-list-wrapper">
-				<div className="test-subject">
-					<span className="select-label">Học phần:</span>
-					<Select
-						allowClear
-						showSearch
-						placeholder="Chọn môn học để hiển thị danh sách đề thi"
-						optionFilterProp="children"
-						filterOption={(input, option) =>
-							(option?.label ?? "").includes(input)
-						}
-						optionLabelProp="label"
-						options={subjectOptions}
-						onChange={subjectOnChange}
-						loading={subLoading}
-					/>
+				<div className="test-subject-semester">
+					<div className="test-select">
+						<span className="select-label">Học phần:</span>
+						<Select
+							allowClear
+							showSearch
+							placeholder="Chọn môn học để hiển thị danh sách đề thi"
+							optionFilterProp="children"
+							filterOption={(input, option) =>
+								(option?.label ?? "").includes(input)
+							}
+							optionLabelProp="label"
+							options={subjectOptions}
+							onChange={subjectOnChange}
+							loading={subLoading}
+						/>
+					</div>
+					<div className="test-select test-select-semester">
+						<span className="select-label">Kỳ thi:</span>
+						<Select
+							allowClear
+							showSearch
+							placeholder="Kỳ thi"
+							optionFilterProp="children"
+							filterOption={(input, option) =>
+								(option?.label ?? "").includes(input)
+							}
+							optionLabelProp="label"
+							options={semesterOptions}
+							onChange={semsOnChange}
+							loading={semesterLoading}
+						/>
+					</div>
 				</div>
 				<Table
 					className="test-list-table"
