@@ -49,6 +49,7 @@ const StudentEdit = () => {
 	};
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	const datePickerOnchange = (date, dateString) => {
 		console.log(date, dateString);
 	};
@@ -99,6 +100,8 @@ const StudentEdit = () => {
 		</div>
 	);
 =======
+=======
+>>>>>>> 3875280... get participants
   const datePickerOnchange = (date, dateString) => {
     console.log(date, dateString);
   };
@@ -144,6 +147,60 @@ const StudentEdit = () => {
       </Skeleton>
     </div>
   );
+<<<<<<< HEAD
 >>>>>>> 2cb7f71... update structure and import
+=======
+=======
+	const datePickerOnchange = (date, dateString) => {
+		console.log(date, dateString);
+	};
+	const genderOnchange = (dateString) => {
+		console.log(dateString);
+	};
+	const getFormatDate = (dateString) => {
+		let formattedDate = "";
+		if (dateString) {
+			const parts = dateString.split("/");
+			formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+		}
+		return formattedDate;
+	};
+	return (
+		<div className="student-add">
+			<Skeleton active loading={infoLoading}>
+				<StudentInfo
+					infoHeader="Cập nhật thông tin"
+					onFinish={onFinish}
+					datePickerOnchange={datePickerOnchange}
+					genderOnchange={genderOnchange}
+					btnText="Cập nhật"
+					initialValues={{
+						remember: false,
+						identificationNumber: userInfo
+							? userInfo.identificationNum
+							: null,
+						firstName: userInfo ? userInfo.firstName : "",
+						lastName: userInfo ? userInfo.lastName : "",
+						email: userInfo ? userInfo.email : "",
+						code: userInfo ? userInfo.code : "",
+						phoneNumber: userInfo ? userInfo.phoneNumber : "",
+						birthDate: userInfo.birthDate
+							? dayjs(
+									getFormatDate(userInfo.birthDate),
+									"YYYY-MM-DD"
+							  )
+							: "",
+						genderType: userInfo ? userInfo.gender : undefined,
+						courseNum: userInfo ? userInfo.courseNum : null,
+					}}
+					loading={loading}
+					isPasswordDisplay={false}
+					isUserNameDisplay={false}
+				/>
+			</Skeleton>
+		</div>
+	);
+>>>>>>> 59d67e1... get participants
+>>>>>>> 3875280... get participants
 };
 export default StudentEdit;
