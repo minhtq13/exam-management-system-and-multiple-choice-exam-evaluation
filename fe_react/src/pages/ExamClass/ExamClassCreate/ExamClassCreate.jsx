@@ -2,14 +2,13 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 import useNotify from "../../../hooks/useNotify";
 import { addExamClassService } from "../../../services/examClassServices";
-import UpdateExamClassInfoForm from "../component/UpdateExamClassInfoForm/UpdateExamClassInfoForm";
+import UpdateExamClassInfoForm from "../components/UpdateExamClassInfoForm/UpdateExamClassInfoForm";
 import "./ExamClassCreate.scss";
 const ExamClassAdd = () => {
 	const [loading, setLoading] = useState(false);
 	const notify = useNotify();
 	const onFinish = (value) => {
 		setLoading(true);
-		console.log(value);
 		addExamClassService(
 			{
 				...value,

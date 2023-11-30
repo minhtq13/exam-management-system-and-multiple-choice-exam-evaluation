@@ -1,13 +1,11 @@
 import { Button, DatePicker, Form, Input, Select } from "antd";
 import React from "react";
-import "./UpadateStudentInfoForm.scss";
-const UpadateStudentInfoForm = ({
+import "./UpdateStudentInfoForm.scss";
+const UpdateStudentInfoForm = ({
   onFinish,
   initialValues,
   infoHeader,
   btnText,
-  datePickerOnchange,
-  genderOnchange,
   loading
 }) => {
   const genderOption = [
@@ -20,7 +18,7 @@ const UpadateStudentInfoForm = ({
       label: "Nữ",
     },
   ];
-  const dateFormat = "YYYY-MM-DD";
+  const dateFormat = "DD/MM/YYYY";
   const errorMessange = "Chưa điền đầy đủ thông tin";
   return (
     <div className="student-info">
@@ -36,12 +34,7 @@ const UpadateStudentInfoForm = ({
           name="firstName"
           label="Họ và tên đệm"
           colon={true}
-          rules={[
-            {
-              required: true,
-              message: errorMessange,
-            },
-          ]}
+          rules={[{ required: true, message: errorMessange }]}
         >
           <Input placeholder="Nhập họ và tên đệm sinh viên" />
         </Form.Item>
@@ -50,10 +43,6 @@ const UpadateStudentInfoForm = ({
           label="Tên"
           colon={true}
           rules={[
-            {
-              pattern: /^[\p{L}\s]*$/u,
-              message: "Vui lòng điền đúng định dạng. Ví dụ: Dương",
-            },
             {
               required: true,
               message: errorMessange,
@@ -66,12 +55,7 @@ const UpadateStudentInfoForm = ({
           name="identificationNumber"
           label="Số CCCD"
           colon={true}
-          rules={[
-            {
-              required: true,
-              message: errorMessange,
-            },
-          ]}
+          rules={[{ required: true, message: errorMessange }]}
         >
           <Input placeholder="Nhập MSSV" />
         </Form.Item>
@@ -103,17 +87,11 @@ const UpadateStudentInfoForm = ({
           name="genderType"
           colon={true}
           label="Giới tính"
-          rules={[
-            {
-              required: true,
-              message: "Chưa chọn giới tính",
-            },
-          ]}
+          rules={[{ required: true, message: errorMessange }]}
         >
           <Select
             placeholder="Chọn giới tính"
             options={genderOption}
-            onChange={genderOnchange}
             style={{ height: 45 }}
           ></Select>
         </Form.Item>
@@ -139,15 +117,9 @@ const UpadateStudentInfoForm = ({
           name="birthDate"
           label="Ngày sinh"
           colon={true}
-          rules={[
-            {
-              required: true,
-              message: errorMessange,
-            },
-          ]}
+          rules={[{ required: true, message: errorMessange }]}
         >
           <DatePicker
-            onChange={datePickerOnchange}
             format={dateFormat}
           ></DatePicker>
         </Form.Item>
@@ -183,4 +155,4 @@ const UpadateStudentInfoForm = ({
     </div>
   );
 };
-export default UpadateStudentInfoForm;
+export default UpdateStudentInfoForm;

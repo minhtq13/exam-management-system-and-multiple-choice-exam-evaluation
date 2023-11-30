@@ -6,8 +6,6 @@ const UpdateTeacherInfoForm = ({
   initialValues,
   infoHeader,
   btnText,
-  datePickerOnchange,
-  genderOnchange,
   loading,
 }) => {
   const genderOption = [
@@ -36,16 +34,7 @@ const UpdateTeacherInfoForm = ({
           name="firstName"
           label="Họ và tên đệm"
           colon={true}
-          rules={[
-            {
-              pattern: /^[\p{L}\s]*$/u,
-              message: "Vui lòng điền đúng định dạng. Ví dụ: Nguyễn Văn",
-            },
-            {
-              required: true,
-              message: errorMessange,
-            },
-          ]}
+          rules={[{ required: true, message: errorMessange }]}
         >
           <Input placeholder="Nhập họ và tên đệm giáo viên" />
         </Form.Item>
@@ -53,16 +42,7 @@ const UpdateTeacherInfoForm = ({
           name="lastName"
           label="Tên"
           colon={true}
-          rules={[
-            {
-              pattern: /^[\p{L}\s]*$/u,
-              message: "Vui lòng điền đúng định dạng. Ví dụ: Dương",
-            },
-            {
-              required: true,
-              message: errorMessange,
-            },
-          ]}
+          rules={[{ required: true, message: errorMessange }]}
         >
           <Input placeholder="Nhập tên giáo viên" />
         </Form.Item>
@@ -70,12 +50,7 @@ const UpdateTeacherInfoForm = ({
           name="identificationNumber"
           label="Số CCCD"
           colon={true}
-          rules={[
-            {
-              required: true,
-              message: errorMessange,
-            },
-          ]}
+          rules={[{ required: true, message: errorMessange }]}
         >
           <Input placeholder="Nhập MSSV" />
         </Form.Item>
@@ -83,12 +58,7 @@ const UpdateTeacherInfoForm = ({
           name="code"
           label="Mã cán bộ"
           colon={true}
-          rules={[
-            {
-              required: true,
-              message: errorMessange,
-            },
-          ]}
+          rules={[{ required: true, message: errorMessange }]}
         >
           <Input placeholder="Nhập mã cán bộ" />
         </Form.Item>
@@ -96,17 +66,11 @@ const UpdateTeacherInfoForm = ({
           name="genderType"
           colon={true}
           label="Giới tính"
-          rules={[
-            {
-              required: true,
-              message: "Chưa chọn giới tính",
-            },
-          ]}
+          rules={[{ required: true, message: errorMessange }]}
         >
           <Select
             placeholder="Chọn giới tính"
             options={genderOption}
-            onChange={genderOnchange}
             style={{ height: 45 }}
           ></Select>
         </Form.Item>
@@ -132,15 +96,9 @@ const UpdateTeacherInfoForm = ({
           name="birthDate"
           label="Ngày sinh"
           colon={true}
-          rules={[
-            {
-              required: true,
-              message: "Chưa chọn ngày sinh",
-            },
-          ]}
+          rules={[{ required: true, message: errorMessange }]}
         >
           <DatePicker
-            onChange={datePickerOnchange}
             format={dateFormat}
           ></DatePicker>
         </Form.Item>

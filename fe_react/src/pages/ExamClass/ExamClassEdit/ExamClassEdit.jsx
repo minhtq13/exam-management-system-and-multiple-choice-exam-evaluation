@@ -6,7 +6,7 @@ import { updateExamClassService } from "../../../services/examClassServices";
 import { useLocation } from "react-router-dom";
 import useExamClasses from "../../../hooks/useExamClass";
 import { Skeleton } from "antd";
-import UpdateExamClassInfoForm from "../component/UpdateExamClassInfoForm/UpdateExamClassInfoForm";
+import UpdateExamClassInfoForm from "../components/UpdateExamClassInfoForm/UpdateExamClassInfoForm";
 const ExamClassEdit = () => {
 	const { getExamClassDetail, examClassInfo, infoLoading } = useExamClasses();
 	const [loading, setLoading] = useState(false);
@@ -19,7 +19,6 @@ const ExamClassEdit = () => {
 	}, []);
 	const onFinish = (value) => {
 		setLoading(true);
-		console.log(value);
 		updateExamClassService(
 			id,
 			{

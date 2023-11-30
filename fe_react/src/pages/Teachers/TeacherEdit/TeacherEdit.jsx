@@ -56,25 +56,17 @@ const TeacherEdit = () => {
 		return formattedDate;
 	};
 
-  const datePickerOnchange = (date, dateString) => {
-    console.log(date, dateString);
-  };
-  const genderOnchange = (dateString) => {
-    console.log(dateString);
-  };
   return (
     <div className="teacher-add">
       <Skeleton active loading={infoLoading}>
         <UpdateTeacherInfoForm
           infoHeader="Cập nhật thông tin"
           onFinish={onFinish}
-          datePickerOnchange={datePickerOnchange}
-          genderOnchange={genderOnchange}
           btnText="Cập nhật"
           initialValues={{
             remember: false,
             identificationNumber: userInfo
-              ? userInfo.identificationNumber
+              ? userInfo.identificationNum
               : null,
             firstName: userInfo ? userInfo.firstName : "",
             lastName: userInfo ? userInfo.lastName : "",

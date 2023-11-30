@@ -1,12 +1,12 @@
 import { Skeleton } from "antd";
+import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import useAccount from "../../../hooks/useAccount";
 import useNotify from "../../../hooks/useNotify";
 import { updateUser } from "../../../services/userService";
-import dayjs from "dayjs";
-import useAccount from "../../../hooks/useAccount";
 import { formatDateParam } from "../../../utils/tools";
-import UpadateStudentInfoForm from "./UpadateStudentInfoForm";
+import UpdateStudentInfoForm from "../components/UpdateStudentInfoForm";
 
 const StudentEdit = () => {
 	const [loading, setLoading] = useState(false);
@@ -48,12 +48,7 @@ const StudentEdit = () => {
 		);
 	};
 
-	const datePickerOnchange = (date, dateString) => {
-		console.log(date, dateString);
-	};
-	const genderOnchange = (dateString) => {
-		console.log(dateString);
-	};
+
 	const getFormatDate = (dateString) => {
 		let formattedDate = "";
 		if (dateString) {
@@ -65,28 +60,19 @@ const StudentEdit = () => {
 	return (
 		<div className="student-add">
 			<Skeleton active loading={infoLoading}>
-				<UpadateStudentInfoForm
+				<UpdateStudentInfoForm
 					infoHeader="Cập nhật thông tin"
 					onFinish={onFinish}
-					datePickerOnchange={datePickerOnchange}
-					genderOnchange={genderOnchange}
 					btnText="Cập nhật"
 					initialValues={{
 						remember: false,
-						identificationNumber: userInfo
-							? userInfo.identificationNum
-							: null,
+						identificationNumber: userInfo ? userInfo.identificationNum : null,
 						firstName: userInfo ? userInfo.firstName : "",
 						lastName: userInfo ? userInfo.lastName : "",
 						email: userInfo ? userInfo.email : "",
 						code: userInfo ? userInfo.code : "",
 						phoneNumber: userInfo ? userInfo.phoneNumber : "",
-						birthDate: userInfo.birthDate
-							? dayjs(
-									getFormatDate(userInfo.birthDate),
-									"YYYY-MM-DD"
-							  )
-							: "",
+						birthDate: userInfo.birthDate ? dayjs(getFormatDate(userInfo.birthDate),"YYYY-MM-DD") : "",
 						genderType: userInfo ? userInfo.gender : undefined,
 						courseNum: userInfo ? userInfo.courseNum : null,
 					}}

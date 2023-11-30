@@ -230,7 +230,7 @@ const TeacherList = () => {
 		name: obj.lastName + " " + obj.firstName,
 		email: obj.email,
 		phoneNumber: obj.phoneNumber,
-		birthDate: obj.birtDate,
+		birthDate: obj.birthDate,
 		gender: [obj.gender],
 		code: obj.code,
 		id: obj.id,
@@ -239,13 +239,8 @@ const TeacherList = () => {
 	const onSelectChange = (newSelectedRowKeys) => {
 		setSelectedRowKeys(newSelectedRowKeys);
 		if (newSelectedRowKeys.length === 1) {
-			setDeleteKey(
-				dataFetch.find((item) => item.key === newSelectedRowKeys[0]).id
-			);
+			setDeleteKey(dataFetch.find((item) => item.key === newSelectedRowKeys[0]).id);
 			setDeleteDisable(false);
-			console.log(
-				dataFetch.find((item) => item.key === newSelectedRowKeys[0])
-			);
 		} else {
 			setDeleteDisable(true);
 		}
