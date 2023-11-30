@@ -22,6 +22,7 @@ const StudentInfo = ({
   ];
   const dateFormat = "YYYY-MM-DD";
   const errorMessange = "Chưa điền đầy đủ thông tin";
+	console.log(initialValues);
   return (
     <div className="student-info">
       <p className="info-header">{infoHeader}</p>
