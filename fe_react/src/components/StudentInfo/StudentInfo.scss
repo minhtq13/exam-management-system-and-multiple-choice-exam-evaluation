@@ -102,7 +102,8 @@
   }
 
   .btn-info:active {
-    background-color: #ffffff;
+    background-color: #ffffff !important;
+    border-color: #ffffff !important;
   }
 
 }

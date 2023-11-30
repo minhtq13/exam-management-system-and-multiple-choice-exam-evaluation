@@ -12,7 +12,7 @@ const useTest = () => {
     getTestsService(
       param.subjectId,
       (res) => {
-				setAllTest(res.data);
+				setAllTest(res.data.content);
 				//setPagination({current: res.data.pageable.pageNumber + 1, pageSize: res.data.pageable.pageSize, total: res.data.totalElements})
 				setTableLoading(false);
 			},
