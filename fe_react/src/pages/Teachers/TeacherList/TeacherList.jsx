@@ -288,7 +288,7 @@ const TeacherList = () => {
             onAccept={handleDelete}
           />
           <Button className="options" onClick={handleClickAddStudent}>
-            <img src={addIcon} alt="Add Icon" />
+            {/* <img src={addIcon} alt="Add Icon" /> */}
             Thêm
           </Button>
         </div>
