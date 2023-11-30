@@ -50,6 +50,9 @@ const StudentEdit = () => {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9c56e81b5cf2622b53ee7d9a21fbc701e93cd3ed
 	const datePickerOnchange = (date, dateString) => {
 		console.log(date, dateString);
 	};
@@ -99,6 +102,7 @@ const StudentEdit = () => {
 			</Skeleton>
 		</div>
 	);
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 3875280... get participants
@@ -202,5 +206,7 @@ const StudentEdit = () => {
 	);
 >>>>>>> 59d67e1... get participants
 >>>>>>> 3875280... get participants
+=======
+>>>>>>> 9c56e81b5cf2622b53ee7d9a21fbc701e93cd3ed
 };
 export default StudentEdit;
