@@ -15,7 +15,6 @@ import useTeachers from "../../../hooks/useTeachers";
 import { setSelectedItem } from "../../../redux/slices/appSlice";
 import { deleteTeachersService } from "../../../services/teachersServices";
 import "./TeacherList.scss";
-import axios from "axios";
 
 const TeacherList = () => {
   const initialParam = {

@@ -59,6 +59,7 @@ const ExamClassList = () => {
 			getParticipants(classId, roleType);
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [classId, roleType]);
 	useEffect(() => {
 		getAllSubjects({ subjectCode: null, subjectTitle: null });
