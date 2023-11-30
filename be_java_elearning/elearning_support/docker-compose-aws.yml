@@ -1,5 +1,5 @@
 # docker compose -f docker-compose.yml up
-# docker compose -f .\docker-compose.yml up -d (detached mode)
+# docker compose -f .\docker-compose-aws.yml up -d (detached mode)
 version: '3.7'
 services:
   backend_app:
@@ -7,6 +7,6 @@ services:
     image: elearning_support_backend:1.0.0
     build:
       dockerfile: Dockerfile
-      context: elearning_support_backend
+      context: elearning_support
     ports:
-      - '8088:8088' # local
+      - '80:8088' # AWS EC2 instance mapping port
