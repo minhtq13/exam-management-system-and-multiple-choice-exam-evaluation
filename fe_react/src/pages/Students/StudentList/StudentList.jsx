@@ -1,20 +1,21 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useRef, useState } from "react";
-import "./StudentList.scss";
+import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table, Tag } from "antd";
-import useStudents from "../../../hooks/useStudents";
-import exportIcon from "../../../assets/images/svg/export-icon.svg";
+import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import deleteIcon from "../../../assets/images/svg/delete-icon.svg";
 import deletePopUpIcon from "../../../assets/images/svg/delete-popup-icon.svg";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import useNotify from "../../../hooks/useNotify";
+import exportIcon from "../../../assets/images/svg/export-icon.svg";
+import ModalPopup from "../../../components/ModalPopup/ModalPopup";
 import { appPath } from "../../../config/appPath";
-import { useDispatch } from "react-redux";
+import useImportExport from "../../../hooks/useImportExport";
+import useNotify from "../../../hooks/useNotify";
+import useStudents from "../../../hooks/useStudents";
 import { setSelectedItem } from "../../../redux/slices/appSlice";
 import { deleteStudentsService } from "../../../services/studentsService";
-import ModalPopup from "../../../components/ModalPopup/ModalPopup";
-import { SearchOutlined } from "@ant-design/icons";
+import "./StudentList.scss";
 
 const StudentList = () => {
 	const initialParam = {
@@ -25,8 +26,8 @@ const StudentList = () => {
 		sort: "lastModifiedAt",
 	};
 	const [deleteDisable, setDeleteDisable] = useState(true);
-	const { allStudents, getAllStudents, tableLoading, pagination } =
-		useStudents();
+	const { allStudents, getAllStudents, tableLoading, pagination } = useStudents();
+	const { exportList } = useImportExport();
 	const [deleteKey, setDeleteKey] = useState(null);
 	const [importLoading, setImportLoading] = useState(false);
 	const searchInput = useRef(null);
@@ -288,25 +289,11 @@ const StudentList = () => {
 		);
 	};
 	const handleExport = () => {
-		axios({
-			url: "http://localhost:8088/e-learning/api/student/export", // Replace with your API endpoint
-			method: "GET",
-			responseType: "blob", // Set the response type to 'blob'
-		})
-			.then((response) => {
-				// Create a download link
-				const url = window.URL.createObjectURL(
-					new Blob([response.data])
-				);
-				const link = document.createElement("a");
-				link.href = url;
-				link.setAttribute("download", `Students-${Date.now()}.xlsx`); // Set the desired file name
-				document.body.appendChild(link);
-				link.click();
-			})
-			.catch((error) => {
-				notify.error("Lỗi tải file!");
-			});
+		const params = {
+      name: param.name,
+      code: param.code,
+    }
+		exportList(params, "student")
 	};
 	return (
 		<div className="student-list">

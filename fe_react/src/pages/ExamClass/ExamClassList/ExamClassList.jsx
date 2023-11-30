@@ -15,6 +15,7 @@ import ModalPopup from "../../../components/ModalPopup/ModalPopup";
 import { SearchOutlined } from "@ant-design/icons";
 import useExamClasses from "../../../hooks/useExamClass";
 import { deleteExamClassService } from "../../../services/examClassServices";
+import useImportExport from "../../../hooks/useImportExport";
 
 const ExamClassList = () => {
 	const initialParam = {
@@ -28,6 +29,7 @@ const ExamClassList = () => {
 	const [deleteDisable, setDeleteDisable] = useState(true);
 	const { allExamClasses, getAllExamClasses, tableLoading, pagination } =
 		useExamClasses();
+	const { exportList } = useImportExport();
 	const [deleteKey, setDeleteKey] = useState(null);
 	const [importLoading, setImportLoading] = useState(false);
 	const [param, setParam] = useState(initialParam);
@@ -255,30 +257,12 @@ const ExamClassList = () => {
 		);
 	};
 	const handleExport = () => {
-		axios({
-			url: "http://localhost:8088/e-learning/api/class/export", // Replace with your API endpoint
-			method: "GET",
-			responseType: "blob", // Set the response type to 'blob'
-		})
-			.then((response) => {
-				// Create a download link
-				const url = window.URL.createObjectURL(
-					new Blob([response.data])
-				);
-				const link = document.createElement("a");
-				link.href = url;
-				link.setAttribute("download", `Students-${Date.now()}.xlsx`); // Set the desired file name
-				document.body.appendChild(link);
-				link.click();
-			})
-			.catch((error) => {
-				notify.error("Lỗi tải file!");
-			});
+		exportList(param, "class")
 	};
 	return (
 		<div className="exam-class-list">
 			<div className="header-exam-class-list">
-				<p>Danh sách sinh viên</p>
+				<p>Danh sách lớp thi</p>
 				<div className="block-button">
 					<Button className="options" onClick={handleExport}>
 						<img src={exportIcon} alt="Export Icon" />

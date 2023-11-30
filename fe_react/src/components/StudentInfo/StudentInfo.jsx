@@ -22,7 +22,6 @@ const StudentInfo = ({
   ];
   const dateFormat = "YYYY-MM-DD";
   const errorMessange = "Chưa điền đầy đủ thông tin";
-	console.log(initialValues);
   return (
     <div className="student-info">
       <p className="info-header">{infoHeader}</p>
@@ -38,10 +37,6 @@ const StudentInfo = ({
           label="Họ và tên đệm"
           colon={true}
           rules={[
-            {
-              pattern: /^[\p{L}\s]*$/u,
-              message: "Vui lòng điền đúng định dạng. Ví dụ: Nguyễn Văn",
-            },
             {
               required: true,
               message: errorMessange,

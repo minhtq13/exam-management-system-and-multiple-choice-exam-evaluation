@@ -1,21 +1,21 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
+import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table, Tag } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import addIcon from "../../../assets/images/svg/add-icon.svg";
 import deleteIcon from "../../../assets/images/svg/delete-icon.svg";
+import deletePopUpIcon from "../../../assets/images/svg/delete-popup-icon.svg";
 import exportIcon from "../../../assets/images/svg/export-icon.svg";
+import ModalPopup from "../../../components/ModalPopup/ModalPopup";
 import { appPath } from "../../../config/appPath";
+import useImportExport from "../../../hooks/useImportExport";
 import useNotify from "../../../hooks/useNotify";
 import useTeachers from "../../../hooks/useTeachers";
 import { setSelectedItem } from "../../../redux/slices/appSlice";
 import { deleteTeachersService } from "../../../services/teachersServices";
-import ModalPopup from "../../../components/ModalPopup/ModalPopup";
-import deletePopUpIcon from "../../../assets/images/svg/delete-popup-icon.svg";
 import "./TeacherList.scss";
-import axios from "axios";
-import { SearchOutlined } from "@ant-design/icons";
 
 const TeacherList = () => {
   const initialParam = {
@@ -27,9 +27,9 @@ const TeacherList = () => {
   };
   const [param, setParam] = useState(initialParam);
   const [deleteDisable, setDeleteDisable] = useState(true);
-  const { allTeachers, getAllTeachers, tableLoading, pagination } =
-    useTeachers();
   const [deleteKey, setDeleteKey] = useState(null);
+  const { allTeachers, getAllTeachers, tableLoading, pagination } = useTeachers();
+  const { exportListStudentTeacher } = useImportExport();
   const searchInput = useRef(null);
   const handleReset = (clearFilters) => {
     clearFilters();
@@ -257,24 +257,11 @@ const TeacherList = () => {
     );
   };
   const handleExport = () => {
-    axios({
-      url: "http://localhost:8088/e-learning/api/teacher/export", // Replace with your API endpoint
-      method: "GET",
-      responseType: "blob", // Set the response type to 'blob'
-    })
-      .then((response) => {
-        // Create a download link
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", `Teachers-${Date.now()}.xlsx`); // Set the desired file name
-        document.body.appendChild(link);
-        link.click();
-      })
-      .catch((error) => {
-        notify.error("Error downloading Excel file!");
-        console.error("Error downloading Excel file:", error);
-      });
+    const params = {
+      name: param.name,
+      code: param.code,
+    }
+    exportListStudentTeacher(params, "teacher")
   };
   return (
     <div className="teacher-list">

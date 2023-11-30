@@ -10,7 +10,6 @@ const UpdateUserInfoForm = ({
 	genderOnchange,
 	isPasswordDisplay,
 	isUserNameDisplay,
-	birthDate
 }) => {
 	const genderOption = [
 		{
