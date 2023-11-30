@@ -27,6 +27,23 @@
     }
   }
 
+  .examclass-subject-semester {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 15px;
+
+    .examclass-select-semester {
+      .ant-select {
+        width: 100px;
+      }
+    }
+  }
+
+  .select-label {
+    font-weight: bold;
+    margin-right: 15px;
+  }
+
   .exam-class-list-table {
     border: 1px solid #ccc;
     padding: 12px;

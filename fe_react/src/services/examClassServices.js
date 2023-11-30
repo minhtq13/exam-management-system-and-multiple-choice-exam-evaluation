@@ -16,30 +16,30 @@ export const getPagingClassesService = async (
 	errorCallback
 ) => {
 	const params = {
-    page,
-    size,
-    sort,
-  };
+		page,
+		size,
+		sort,
+	};
 
-  if (code) {
-    params.code = code;
-  }
+	if (code) {
+		params.code = code;
+	}
 
-  if (subjectId) {
-    params.subjectId = subjectId;
-  }
+	if (subjectId) {
+		params.subjectId = subjectId;
+	}
 
-	if(semesterId) {
+	if (semesterId) {
 		params.semesterId = semesterId;
 	}
 
-  const queryString = Object.entries(params)
-    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-    .join("&");
+	const queryString = Object.entries(params)
+		.map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+		.join("&");
 
-  const apiUrl = `${apiPath.pageExamClasses}?${queryString}`;
+	const apiUrl = `${apiPath.pageExamClasses}?${queryString}`;
 
-  await getRequest(apiUrl, null, successCallback, errorCallback);
+	await getRequest(apiUrl, null, successCallback, errorCallback);
 };
 export const examClassDetails = async (
 	classId,
@@ -104,4 +104,19 @@ export const updateExamClassService = async (
 		successCallback,
 		errorCallback
 	);
+};
+export const getParticipantServices = async (
+	classId,
+	roleType,
+	successCallback,
+	errorCallback
+) => {
+	const params = { roleType };
+	const queryString = Object.entries(params)
+		.map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+		.join("&");
+
+	const apiUrl = `${apiPath.getParticipant}/${classId}?${queryString}`;
+
+	await getRequest(apiUrl, null, successCallback, errorCallback);
 };

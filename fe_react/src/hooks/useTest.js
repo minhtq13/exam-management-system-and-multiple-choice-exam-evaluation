@@ -1,17 +1,18 @@
-import {useState} from "react";
+import { useState } from "react";
 import useNotify from "./useNotify";
 import { getTestsService } from "../services/testServices";
 
 const useTest = () => {
-  const notify = useNotify();
-  const [allTest, setAllTest] = useState([]);
+	const notify = useNotify();
+	const [allTest, setAllTest] = useState([]);
 	const [tableLoading, setTableLoading] = useState(true);
-  
-  const getAllTests = (param) => {
-    setTableLoading(true);
-    getTestsService(
-      param.subjectId,
-      (res) => {
+
+	const getAllTests = (param) => {
+		setTableLoading(true);
+		getTestsService(
+			param.subjectId,
+			param.semesterId,
+			(res) => {
 				setAllTest(res.data.content);
 				//setPagination({current: res.data.pageable.pageNumber + 1, pageSize: res.data.pageable.pageSize, total: res.data.totalElements})
 				setTableLoading(false);
@@ -25,8 +26,8 @@ const useTest = () => {
 					);
 				}
 			}
-    )
-  }
-  return {allTest, tableLoading, getAllTests}
-}
+		);
+	};
+	return { allTest, tableLoading, getAllTests };
+};
 export default useTest;

@@ -6,7 +6,6 @@ import dayjs from "dayjs";
 import { updateExamClassService } from "../../../services/examClassServices";
 import { useLocation } from "react-router-dom";
 import useExamClasses from "../../../hooks/useExamClass";
-import moment from "moment";
 import { Skeleton } from "antd";
 const ExamClassEdit = () => {
 	const { getExamClassDetail, examClassInfo, infoLoading } = useExamClasses();
@@ -16,13 +15,13 @@ const ExamClassEdit = () => {
 	const id = location.pathname.split("/")[2];
 	useEffect(() => {
 		getExamClassDetail({}, id);
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	const onFinish = (value) => {
 		setLoading(true);
 		console.log(value);
 		updateExamClassService(
-      id,
+			id,
 			{
 				...value,
 				examineTime: dayjs(value.examineTime).format(
@@ -55,9 +54,13 @@ const ExamClassEdit = () => {
 							? examClassInfo.semesterId
 							: null,
 						roomName: examClassInfo ? examClassInfo.roomName : null,
-						examineTime: examClassInfo
-							? moment(examClassInfo.examineTime)
-							: null,
+						examineTime: examClassInfo.examineTime
+							? dayjs(
+									examClassInfo.examineTime,
+									"YYYY-MM-DD HH:mm:ss"
+							  )
+							: "",
+						code: examClassInfo ? examClassInfo.code : null,
 					}}
 					loading={loading}
 				/>
