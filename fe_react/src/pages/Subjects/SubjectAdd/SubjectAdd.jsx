@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import SubjectInfo from "../../../components/SubjectInfo/SubjectInfo";
 import useNotify from "../../../hooks/useNotify";
 import { addSubjectsService } from "../../../services/subjectsService";
+import UpdateSubjectInfoForm from "../components/UpdateSubjectInfoForm/UpdateSubjectInfoForm";
 const SubjectAdd = () => {
   const [loading, setLoading] = useState(false);
   const notify = useNotify();
@@ -20,7 +20,7 @@ const SubjectAdd = () => {
     );
   };
   return (
-    <SubjectInfo
+    <UpdateSubjectInfoForm
       chaptersVisible={false}
       infoHeader="Thêm học phần"
       btnText="Thêm"

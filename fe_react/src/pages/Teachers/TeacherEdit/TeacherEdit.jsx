@@ -1,13 +1,13 @@
 import { Skeleton } from "antd";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import TeacherInfo from "../../../components/TeacherInfo/TeacherInfo";
 import useNotify from "../../../hooks/useNotify";
 import { formatDateParam } from "../../../utils/tools";
 import "./TeacherEdit.scss";
 import { updateUser } from "../../../services/userService";
 import useAccount from "../../../hooks/useAccount";
 import dayjs from "dayjs";
+import UpdateTeacherInfoForm from "../components/UpdateTeacherInfoForm/UpdateTeacherInfoForm";
 
 const TeacherEdit = () => {
 	const [loading, setLoading] = useState(false);
@@ -56,43 +56,41 @@ const TeacherEdit = () => {
 		return formattedDate;
 	};
 
-	const datePickerOnchange = (date, dateString) => {
-		console.log(date, dateString);
-	};
-	const genderOnchange = (dateString) => {
-		console.log(dateString);
-	};
-	return (
-		<div className="teacher-add">
-			<Skeleton active loading={infoLoading}>
-				<TeacherInfo
-					infoHeader="Cập nhật thông tin"
-					onFinish={onFinish}
-					datePickerOnchange={datePickerOnchange}
-					genderOnchange={genderOnchange}
-					btnText="Cập nhật"
-					initialValues={{
-						remember: false,
-						identificationNumber: userInfo
-							? userInfo.identificationNumber
-							: null,
-						firstName: userInfo ? userInfo.firstName : "",
-						lastName: userInfo ? userInfo.lastName : "",
-						email: userInfo ? userInfo.email : "",
-						phoneNumber: userInfo ? userInfo.phoneNumber : "",
-						birthDate: userInfo.birthDate
-							? dayjs(
-									getFormatDate(userInfo.birthDate),
-									"YYYY-MM-DD"
-							  )
-							: "",
-						genderType: userInfo ? userInfo.gender : null,
-						code: userInfo ? userInfo.code : null,
-					}}
-					loading={loading}
-				/>
-			</Skeleton>
-		</div>
-	);
+  const datePickerOnchange = (date, dateString) => {
+    console.log(date, dateString);
+  };
+  const genderOnchange = (dateString) => {
+    console.log(dateString);
+  };
+  return (
+    <div className="teacher-add">
+      <Skeleton active loading={infoLoading}>
+        <UpdateTeacherInfoForm
+          infoHeader="Cập nhật thông tin"
+          onFinish={onFinish}
+          datePickerOnchange={datePickerOnchange}
+          genderOnchange={genderOnchange}
+          btnText="Cập nhật"
+          initialValues={{
+            remember: false,
+            identificationNumber: userInfo
+              ? userInfo.identificationNumber
+              : null,
+            firstName: userInfo ? userInfo.firstName : "",
+            lastName: userInfo ? userInfo.lastName : "",
+            email: userInfo ? userInfo.email : "",
+            phoneNumber: userInfo ? userInfo.phoneNumber : "",
+            birthDate:
+            userInfo && userInfo.birthDate
+              ? dayjs(getFormatDate(userInfo.birthDate), "YYYY-MM-DD")
+              : "",
+            genderType: userInfo ? userInfo.gender : null,
+            code: userInfo ? userInfo.code : null,
+          }}
+          loading={loading}
+        />
+      </Skeleton>
+    </div>
+  );
 };
 export default TeacherEdit;

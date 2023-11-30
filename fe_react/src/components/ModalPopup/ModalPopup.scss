@@ -1,12 +1,13 @@
 .modal-popup-component {
+  
   .ant-modal-content {
     width: 800px !important;
     height: 388px !important;
     align-items: center !important;
-    position: relative !important;
-    right: 50% !important;
-    top: 50% !important;
-    transform: translate(15%, 10%) !important;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     border-radius: 6px !important;
   }
 
@@ -14,7 +15,11 @@
     height: 64px !important;
     display: flex !important;
     justify-content: flex-end;
+    align-items: center;
     gap: 12px;
+    span {
+      font-size: 16px;
+    }
   }
 
   .ant-modal-header {
@@ -32,6 +37,7 @@
   }
 
   .ant-modal-body {
+    padding: 26px 0px;
     text-align: center;
   }
 

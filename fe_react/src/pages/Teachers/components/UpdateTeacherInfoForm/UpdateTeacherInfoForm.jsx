@@ -1,7 +1,7 @@
 import { DatePicker, Form, Input, Select, Button } from "antd";
-import "./TeacherInfo.scss";
+import "./UpdateTeacherInfoForm.scss";
 import React from "react";
-const TeacherInfo = ({
+const UpdateTeacherInfoForm = ({
   onFinish,
   initialValues,
   infoHeader,
@@ -175,4 +175,4 @@ const TeacherInfo = ({
     </div>
   );
 };
-export default TeacherInfo;
+export default UpdateTeacherInfoForm;
