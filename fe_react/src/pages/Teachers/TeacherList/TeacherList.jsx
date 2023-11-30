@@ -35,10 +35,10 @@ const TeacherList = () => {
 	const handleReset = (clearFilters) => {
 		clearFilters();
 	};
-	const handleUpload = async () => {
+  const handleUpload = async () => {
 		const formData = new FormData();
 		formData.append("file", fileList);
-		importList(formData, "teacher", getAllTeachers, initialParam);
+		importList(formData, "teacher")
 	};
 	const handleChange = (e) => {
 		setFileList(e.target.files[0]);
@@ -142,9 +142,11 @@ const TeacherList = () => {
 		navigate(`${appPath.teacherEdit}/${record.id}`);
 	};
 	useEffect(() => {
-		getAllTeachers(param);
+    if (!loadingImport) {
+      getAllTeachers(param);
+    }
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [param]);
+	}, [param, loadingImport]);
 	const notify = useNotify();
 	const navigate = useNavigate();
 	const columns = [

@@ -139,9 +139,11 @@ const StudentList = () => {
 	};
 
 	useEffect(() => {
-		getAllStudents(param);
+		if (!loadingImport) {
+			getAllStudents(param);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [param]);
+	}, [param, loadingImport]);
 	const notify = useNotify();
 	const navigate = useNavigate();
 	const handleEdit = (record) => {
