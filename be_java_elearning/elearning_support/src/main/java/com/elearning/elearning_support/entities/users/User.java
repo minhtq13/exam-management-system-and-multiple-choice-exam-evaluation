@@ -119,7 +119,7 @@ public class User extends BaseEntity implements Serializable {
 
     @Column(name = "meta_data", columnDefinition = "jsonb")
     @Type(type = "jsonb")
-    Object metadata;
+    Object metaData;
 
 
     /**

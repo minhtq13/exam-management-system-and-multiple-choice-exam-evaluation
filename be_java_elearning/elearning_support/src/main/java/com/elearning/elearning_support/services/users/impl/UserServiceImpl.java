@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService {
         validateUpdateUser(userId, updateDTO);
 
         // Update fields
-        org.springframework.beans.BeanUtils.copyProperties(updateDTO, user);
+        org.springframework.beans.BeanUtils.copyProperties(updateDTO, user, IGNORE_COPY_USER_PROPERTIES);
         user.setGender(updateDTO.getGenderType().getType());
         user.setModifiedAt(new Date());
         user.setModifiedBy(AuthUtils.getCurrentUserId());

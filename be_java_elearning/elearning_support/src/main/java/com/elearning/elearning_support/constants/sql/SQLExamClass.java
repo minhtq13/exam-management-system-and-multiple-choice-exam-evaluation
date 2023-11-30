@@ -45,7 +45,9 @@ public class SQLExamClass {
             "    exClass.examine_time AS examineTime, \n" +
             "    test.id AS testId, \n" +
             "    test.name AS testName, \n" +
+            "    semester.id AS semesterId, \n" +
             "    semester.code AS semester, \n" +
+            "    subject.id AS subjectId, \n" +
             "    subject.title AS subjectTitle, \n" +
             "    examClassParticipantCTE.numStudents AS numberOfStudents, \n" +
             "    examClassParticipantCTE.numSupervisors AS numberOfSupervisors, \n" +
