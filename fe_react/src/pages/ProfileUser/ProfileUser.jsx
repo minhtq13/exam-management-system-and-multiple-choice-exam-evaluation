@@ -5,7 +5,7 @@ import useAccount from '../../hooks/useAccount';
 import useNotify from '../../hooks/useNotify';
 import { updateUser } from '../../services/userService';
 import { formatDateParam } from '../../utils/tools';
-import UpdateUserInfoForm from './component/UserInfo/UpdateUserInfoForm';
+import UpdateUserInfoForm from './UpdateUserInfoForm';
 
 const ProfileUser = () => {
 	

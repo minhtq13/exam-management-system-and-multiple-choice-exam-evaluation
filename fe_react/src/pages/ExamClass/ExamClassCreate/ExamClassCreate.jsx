@@ -1,9 +1,9 @@
-import "./ExamClassCreate.scss";
+import dayjs from "dayjs";
 import React, { useState } from "react";
 import useNotify from "../../../hooks/useNotify";
-import ExamClassInfo from "../../../components/ExamClassInfo/ExamClassInfo";
-import dayjs from "dayjs";
 import { addExamClassService } from "../../../services/examClassServices";
+import UpdateExamClassInfoForm from "../component/UpdateExamClassInfoForm/UpdateExamClassInfoForm";
+import "./ExamClassCreate.scss";
 const ExamClassAdd = () => {
 	const [loading, setLoading] = useState(false);
 	const notify = useNotify();
@@ -29,7 +29,7 @@ const ExamClassAdd = () => {
 	};
 	return (
 		<div className="exam-class-add">
-			<ExamClassInfo
+			<UpdateExamClassInfoForm
 				infoHeader="Thêm lớp thi"
 				onFinish={onFinish}
 				btnText="Thêm"

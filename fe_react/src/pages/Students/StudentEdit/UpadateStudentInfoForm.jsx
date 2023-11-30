@@ -1,7 +1,7 @@
 import { Button, DatePicker, Form, Input, Select } from "antd";
 import React from "react";
-import "./StudentInfo.scss";
-const StudentInfo = ({
+import "./UpadateStudentInfoForm.scss";
+const UpadateStudentInfoForm = ({
   onFinish,
   initialValues,
   infoHeader,
@@ -184,4 +184,4 @@ const StudentInfo = ({
     </div>
   );
 };
-export default StudentInfo;
+export default UpadateStudentInfoForm;

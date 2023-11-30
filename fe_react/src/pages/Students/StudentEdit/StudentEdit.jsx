@@ -1,12 +1,12 @@
 import { Skeleton } from "antd";
+import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import StudentInfo from "../../../components/StudentInfo/StudentInfo";
+import useAccount from "../../../hooks/useAccount";
 import useNotify from "../../../hooks/useNotify";
 import { updateUser } from "../../../services/userService";
-import dayjs from "dayjs";
-import useAccount from "../../../hooks/useAccount";
 import { formatDateParam } from "../../../utils/tools";
+import UpadateStudentInfoForm from "./UpadateStudentInfoForm";
 
 const StudentEdit = () => {
 	const [loading, setLoading] = useState(false);
@@ -48,6 +48,7 @@ const StudentEdit = () => {
 		);
 	};
 
+<<<<<<< HEAD
 	const datePickerOnchange = (date, dateString) => {
 		console.log(date, dateString);
 	};
@@ -97,5 +98,52 @@ const StudentEdit = () => {
 			</Skeleton>
 		</div>
 	);
+=======
+  const datePickerOnchange = (date, dateString) => {
+    console.log(date, dateString);
+  };
+  const genderOnchange = (dateString) => {
+    console.log(dateString);
+  };
+  const getFormatDate = (dateString) => {
+    let formattedDate = "";
+    if (dateString) {
+      const parts = dateString.split("/");
+      formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+    }
+    return formattedDate;
+  };
+  return (
+    <div className="student-add">
+      <Skeleton active loading={infoLoading}>
+        <UpadateStudentInfoForm
+          infoHeader="Cập nhật thông tin"
+          onFinish={onFinish}
+          datePickerOnchange={datePickerOnchange}
+          genderOnchange={genderOnchange}
+          btnText="Cập nhật"
+          initialValues={{
+            remember: false,
+            identificationNumber: userInfo ? userInfo.identificationNum : null,
+            firstName: userInfo ? userInfo.firstName : "",
+            lastName: userInfo ? userInfo.lastName : "",
+            email: userInfo ? userInfo.email : "",
+            code: userInfo ? userInfo.code : "",
+            phoneNumber: userInfo ? userInfo.phoneNumber : "",
+            birthDate:
+              userInfo && userInfo.birthDate
+                ? dayjs(getFormatDate(userInfo.birthDate), "YYYY-MM-DD")
+                : "",
+            genderType: userInfo ? userInfo.gender : undefined,
+            courseNum: userInfo ? userInfo.courseNum : null,
+          }}
+          loading={loading}
+          isPasswordDisplay={false}
+          isUserNameDisplay={false}
+        />
+      </Skeleton>
+    </div>
+  );
+>>>>>>> 2cb7f71... update structure and import
 };
 export default StudentEdit;

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import SubjectInfo from "../../../components/SubjectInfo/SubjectInfo";
 import useNotify from "../../../hooks/useNotify";
 import { updateSubjectsService } from "../../../services/subjectsService";
 import { useLocation } from "react-router-dom";
 import useSubjects from "../../../hooks/useSubjects";
+import UpdateSubjectInfoForm from "../components/UpdateSubjectInfoForm/UpdateSubjectInfoForm";
 const SubjectEdit = () => {
   const [loading, setLoading] = useState(false);
   const { getSubjectByCode, subjectInfo, infoLoading } = useSubjects();
@@ -37,7 +37,7 @@ const SubjectEdit = () => {
     console.log(value, "formvalue");
   };
   return (
-    <SubjectInfo
+    <UpdateSubjectInfoForm
       infoHeader="Sửa thông tin học phần"
       editItems={
         subjectInfo.lstChapter
