@@ -39,10 +39,6 @@ const StudentInfo = ({
           colon={true}
           rules={[
             {
-              pattern: /^[\p{L}\s]*$/u,
-              message: "Vui lòng điền đúng định dạng. Ví dụ: Nguyễn Văn",
-            },
-            {
               required: true,
               message: errorMessange,
             },

@@ -1,29 +1,30 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Button, List, Modal, Select, Space, Spin, Table } from "antd";
 import React, { useEffect, useState } from "react";
+import { AiFillEye } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import addIcon from "../../../assets/images/svg/add-icon.svg";
 import deleteIcon from "../../../assets/images/svg/delete-icon.svg";
 import deletePopUpIcon from "../../../assets/images/svg/delete-popup-icon.svg";
-import { appPath } from "../../../config/appPath";
-import useNotify from "../../../hooks/useNotify";
-import { setSelectedItem } from "../../../redux/slices/appSlice";
-import "./TestList.scss";
 import ModalPopup from "../../../components/ModalPopup/ModalPopup";
-import useTest from "../../../hooks/uesTest";
+import TestPreview from "../../../components/TestPreview/TestPreview";
+import { appPath } from "../../../config/appPath";
+import useCombo from "../../../hooks/useCombo";
+import useImportExport from "../../../hooks/useImportExport";
+import useNotify from "../../../hooks/useNotify";
+import useTest from "../../../hooks/useTest";
+import { setSelectedItem } from "../../../redux/slices/appSlice";
 import {
   deleteTestService,
   testSetDetailService,
 } from "../../../services/testServices";
-import { AiFillEye } from "react-icons/ai";
-import TestPreview from "../../../components/TestPreview/TestPreview";
-import axios from "axios";
-import useCombo from "../../../hooks/useCombo";
+import "./TestList.scss";
 const TestList = () => {
   const [deleteDisable, setDeleteDisable] = useState(true);
   const { allTest, getAllTests, tableLoading } = useTest();
   const { subLoading, allSubjects, getAllSubjects } = useCombo();
+  const { exportTestList, loadingExport } = useImportExport();
   const [deleteKey, setDeleteKey] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [openModalPreview, setOpenModalPreview] = useState(false);
@@ -31,7 +32,6 @@ const TestList = () => {
   const [testDetail, setTestDetail] = useState({});
   const [testNo, setTestNo] = useState(null);
   const [viewLoading, setViewLoading] = useState(false);
-  const [downLoading, setDownLoading] = useState(false);
   const [testItem, setTestItem] = useState({});
   const [testSetNos, setTestSetNos] = useState([]);
   const [param, setParam] = useState({ subjectId: null });
@@ -54,30 +54,8 @@ const TestList = () => {
     setParam({ subjectId: value });
   };
   const handleExport = (testId, testNo) => {
-    setDownLoading(true);
-    axios({
-      url: `http://localhost:8088/e-learning/api/test-set/word/export/${testId}/${testNo}`, // Replace with your API endpoint
-      method: "GET",
-      responseType: "blob", // Set the response type to 'blob'
-    })
-      .then((response) => {
-        // Create a download link
-        setDownLoading(false);
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute(
-          "download",
-          `Test-${testDetail.testDay}-${testDetail.subjectCode}.docx`
-        ); // Set the desired file name
-        document.body.appendChild(link);
-        link.click();
-      })
-      .catch((error) => {
-        setDownLoading(false);
-        notify.error("Lỗi tải file!");
-        console.error("Lỗi tải file:", error);
-      });
+    const params = { testId: testId, testNo: testNo };
+    exportTestList(params, "test-set");
   };
   const notify = useNotify();
   const navigate = useNavigate();
@@ -295,7 +273,7 @@ const TestList = () => {
           centered={true}
           style={{ height: "80vh", overflowY: "scroll" }}
           width={"40vw"}
-          okButtonProps={{ loading: downLoading }}
+          okButtonProps={{ loading: loadingExport }}
         >
           <Spin tip="Loading..." spinning={viewLoading}>
             <TestPreview
