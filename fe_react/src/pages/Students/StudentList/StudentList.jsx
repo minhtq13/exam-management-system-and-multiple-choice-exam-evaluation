@@ -25,7 +25,8 @@ const StudentList = () => {
 		sort: "lastModifiedAt",
 	};
 	const [deleteDisable, setDeleteDisable] = useState(true);
-	const { allStudents, getAllStudents, tableLoading, pagination } = useStudents();
+	const { allStudents, getAllStudents, tableLoading, pagination } =
+		useStudents();
 	const { importList, exportList, loadingImport } = useImportExport();
 	const [deleteKey, setDeleteKey] = useState(null);
 	const searchInput = useRef(null);
@@ -34,7 +35,7 @@ const StudentList = () => {
 	const handleUpload = async () => {
 		const formData = new FormData();
 		formData.append("file", fileList);
-		importList(formData, "student")
+		importList(formData, "student", getAllStudents, initialParam);
 	};
 	const handleChange = (e) => {
 		setFileList(e.target.files[0]);
@@ -273,10 +274,10 @@ const StudentList = () => {
 	};
 	const handleExport = () => {
 		const params = {
-      name: param.name,
-      code: param.code,
-    }
-		exportList(params, "student")
+			name: param.name,
+			code: param.code,
+		};
+		exportList(params, "student");
 	};
 	return (
 		<div className="student-list">

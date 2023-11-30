@@ -8,23 +8,25 @@ const useImportExport = () => {
 	const [loadingExport, setLoadingExport] = useState(false);
 	const [loadingImport, setLoadingImport] = useState(false);
 
-	const importList = (file, object) => {
-		setLoadingImport(true)
-		axios.post(`${BASE_URL}/api/user/${object}/import`, file)
+	const importList = (file, object, getdata, param) => {
+		setLoadingImport(true);
+		axios
+			.post(`${BASE_URL}/api/user/${object}/import`, file)
 			.then((response) => {
-				console.log(response)
+				console.log(response);
 				notify.success("Tải file thành công!");
-				setLoadingImport(false)
+				setLoadingImport(false);
+				getdata(param);
 			})
 			.catch((error) => {
-				console.log(error)
+				console.log(error);
 				notify.error("Lỗi tải file!");
-				setLoadingImport(false)
+				setLoadingImport(false);
 			});
-	}
-  
-  const exportList = (params, object) => {
-		// object = "student" or "teacher" 
+	};
+
+	const exportList = (params, object) => {
+		// object = "student" or "teacher"
 		axios({
 			url: `${BASE_URL}/api/user/${object}/export`,
 			method: "GET",
@@ -74,7 +76,13 @@ const useImportExport = () => {
 				notify.error("Lỗi tải file!");
 				setLoadingExport(false);
 			});
-  }
-  return { importList, loadingImport, exportList, loadingExport, exportTestList }
-}
+	};
+	return {
+		importList,
+		loadingImport,
+		exportList,
+		loadingExport,
+		exportTestList,
+	};
+};
 export default useImportExport;
