@@ -32,6 +32,8 @@ import com.elearning.elearning_support.dtos.chapter.ISubjectChapterDTO;
 import com.elearning.elearning_support.dtos.common.ICommonIdCode;
 import com.elearning.elearning_support.dtos.fileAttach.importFile.ImportResponseDTO;
 import com.elearning.elearning_support.dtos.fileAttach.importFile.RowErrorDTO;
+import com.elearning.elearning_support.dtos.question.IQuestionDetailsDTO;
+import com.elearning.elearning_support.dtos.question.QuestionDetailsDTO;
 import com.elearning.elearning_support.dtos.question.QuestionListCreateDTO;
 import com.elearning.elearning_support.dtos.question.QuestionListDTO;
 import com.elearning.elearning_support.dtos.question.QuestionUpdateDTO;
@@ -77,7 +79,7 @@ public class QuestionServiceImpl implements QuestionService {
         List<Question> lstQuestion = new ArrayList<>();
         createDTO.getLstQuestion().forEach(questionDTO -> {
             Question question = Question.builder()
-                .imageId(questionDTO.getImageId())
+                .imageIds(questionDTO.getLstImageId())
                 .level(questionDTO.getLevel().getLevel())
                 .chapterId(createDTO.getChapterId())
                 .content(questionDTO.getContent())
@@ -99,13 +101,18 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public void updateQuestion(Long questionId, QuestionUpdateDTO updateDTO) {
         Question question = questionRepository.findById(questionId).orElseThrow(
-                () -> exceptionFactory.resourceExistedException(MessageConst.Question.NOT_FOUND, Resources.QUESTION, MessageConst.RESOURCE_NOT_FOUND,
-                    ErrorKey.Question.ID, String.valueOf(questionId)));
+            () -> exceptionFactory.resourceExistedException(MessageConst.Question.NOT_FOUND, Resources.QUESTION, MessageConst.RESOURCE_NOT_FOUND,
+                ErrorKey.Question.ID, String.valueOf(questionId)));
         // Set thông tin cập nhất question
         question.setContent(updateDTO.getContent());
         question.setLevel(updateDTO.getLevel().getLevel());
         question.setModifiedAt(new Date());
         question.setModifiedBy(AuthUtils.getCurrentUserId());
+        // update images
+        if (Objects.nonNull(updateDTO.getLstImageId())) {
+            question.setImageIds(updateDTO.getLstImageId());
+        }
+
         //xoá tất cả các answer của question hiện tại
         answerRepository.deleteAllByQuestionId(questionId);
         // Lưu list answer mới
@@ -115,9 +122,11 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<QuestionListDTO> getListQuestion(Long subjectId, String subjectCode, Set<Long> chapterIds, String chapterCode, QuestionLevelEnum level) {
-        return questionRepository.getListQuestion(subjectId, subjectCode, chapterIds, chapterCode, level.getLevel()).stream().map(QuestionListDTO::new).collect(
-            Collectors.toList());
+    public List<QuestionListDTO> getListQuestion(Long subjectId, String subjectCode, Set<Long> chapterIds, String chapterCode,
+        QuestionLevelEnum level) {
+        return questionRepository.getListQuestion(subjectId, subjectCode, chapterIds, chapterCode, level.getLevel()).stream()
+            .map(QuestionListDTO::new).collect(
+                Collectors.toList());
     }
 
     @Override
@@ -273,10 +282,20 @@ public class QuestionServiceImpl implements QuestionService {
         }
     }
 
+    @Override
+    public QuestionDetailsDTO getQuestionDetails(Long questionId) {
+        IQuestionDetailsDTO questionDetails = questionRepository.getQuestionDetails(questionId);
+        if (Objects.isNull(questionDetails)) {
+            throw exceptionFactory.resourceExistedException(MessageConst.Question.NOT_FOUND, Resources.QUESTION, MessageConst.RESOURCE_NOT_FOUND,
+                ErrorKey.Question.ID, String.valueOf(questionId));
+        }
+        return new QuestionDetailsDTO(questionDetails);
+    }
+
     /**
      * Generate question code
      */
-    private String generateQuestionCode(){
+    private String generateQuestionCode() {
         String baseCode = "Q";
         Random random = new Random();
         String generatedCode = baseCode + (random.nextInt(900000) + 100000);

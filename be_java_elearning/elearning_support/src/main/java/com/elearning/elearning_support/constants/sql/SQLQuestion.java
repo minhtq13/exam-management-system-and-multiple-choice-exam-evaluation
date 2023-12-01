@@ -2,13 +2,13 @@ package com.elearning.elearning_support.constants.sql;
 
 public class SQLQuestion {
 
-    public static final String GET_LIST_QUESTION = 
+    public static final String GET_LIST_QUESTION =
         "SELECT \n" +
             "    question.id AS id, \n" +
             "    question.code AS code, \n" +
             "    question.content AS content, \n" +
             "    question.level AS level, \n" +
-            "    {h-schema}get_list_file_json_by_ids_id(('{' || question.image_id || '}')::::int8[]) AS lstImageJson, \n" +
+            "    {h-schema}get_list_file_json_by_ids_id(question.image_ids) AS lstImageJson, \n" +
             "    {h-schema}get_list_answer_json_by_question_id(question.id) AS lstAnswerJson \n" +
             "FROM {h-schema}question \n" +
             "    LEFT JOIN {h-schema}chapter ON question.chapter_id = chapter.id \n" +
@@ -35,5 +35,25 @@ public class SQLQuestion {
             "   LEFT JOIN {h-schema} answer ON testQuest.question_id = answer.question_id \n" +
             "WHERE testQuest.test_id = :testId AND question.is_enabled = true \n" +
             "GROUP BY testQuest.question_id, question.level";
+
+    public static final String GET_QUESTION_DETAILS =
+        "SELECT \n" +
+            "    question.id AS id, \n" +
+            "    question.code AS code, \n" +
+            "    question.content AS content, \n" +
+            "    question.level AS level, \n" +
+            "    subject.id AS subjectId, \n" +
+            "    subject.title AS subjectTitle, \n" +
+            "    chapter.id AS chapterId, \n" +
+            "    chapter.title AS chapterTitle, \n" +
+            "    {h-schema}get_list_file_json_by_ids_id(question.image_ids) AS lstImageJson, \n" +
+            "    {h-schema}get_list_answer_json_by_question_id(question.id) AS lstAnswerJson \n" +
+            "FROM {h-schema}question \n" +
+            "    LEFT JOIN {h-schema}chapter ON question.chapter_id = chapter.id \n" +
+            "    LEFT JOIN {h-schema}subject ON chapter.subject_id = subject.id \n" +
+            "WHERE \n" +
+            "    question.is_enabled = true AND \n" +
+            "    question.deleted_flag = 1 AND \n" +
+            "    question.id = :questionId ";
 
 }

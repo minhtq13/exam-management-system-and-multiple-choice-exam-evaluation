@@ -1,7 +1,9 @@
 package com.elearning.elearning_support.dtos.question;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.validation.constraints.NotNull;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst;
 import com.elearning.elearning_support.dtos.answer.AnswerReqDTO;
@@ -29,6 +31,9 @@ public class QuestionUpdateDTO {
     @Schema(description = "Mức độ câu hỏi")
     @NotNull
     QuestionLevelEnum level;
+
+    @Schema(description = "Id các ảnh đính kèm câu hỏi")
+    Long[] lstImageId;
 
     @Schema(description = "Danh sách câu trả cập nhật")
     List<AnswerReqDTO> lstAnswer = new ArrayList<>();

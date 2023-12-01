@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.elearning.elearning_support.constants.sql.SQLQuestion;
 import com.elearning.elearning_support.dtos.question.IListQuestionDTO;
 import com.elearning.elearning_support.dtos.question.IQuestionAnswerDTO;
+import com.elearning.elearning_support.dtos.question.IQuestionDetailsDTO;
 import com.elearning.elearning_support.entities.question.Question;
 
 @Repository
@@ -23,5 +24,8 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Query(nativeQuery = true, value = SQLQuestion.GET_LIST_QUESTION_IN_TEST)
     Set<IQuestionAnswerDTO> getListQuestionInTest(Long testId);
+
+    @Query(nativeQuery = true, value = SQLQuestion.GET_QUESTION_DETAILS)
+    IQuestionDetailsDTO getQuestionDetails(Long questionId);
 
 }

@@ -20,7 +20,7 @@ public class QuestionCreateDTO {
 
     QuestionLevelEnum level;
 
-    Long imageId;
+    Long[] lstImageId;
 
     List<AnswerReqDTO> lstAnswer = new ArrayList<>();
 }

@@ -70,7 +70,7 @@ public class SQLTest {
             "    question.content AS content, \n" +
             "    question.level AS level, \n" +
             "    testSetQuest.question_no AS questionNo, \n" +
-            "    COALESCE({h-schema}get_list_file_json_by_ids_id(('{' || question.image_id || '}')::::int8[]), '[]') AS lstImageJson, \n" +
+            "    COALESCE({h-schema}get_list_file_json_by_ids_id(question.image_ids), '[]') AS lstImageJson, \n" +
             "    COALESCE({h-schema}get_list_test_question_answer_json(testSetQuest.lst_answer_json), '[]') AS lstAnswerJson \n" +
             "FROM {h-schema}test_set_question testSetQuest \n" +
             "     JOIN {h-schema}question ON testSetQuest.question_id = question.id \n" +

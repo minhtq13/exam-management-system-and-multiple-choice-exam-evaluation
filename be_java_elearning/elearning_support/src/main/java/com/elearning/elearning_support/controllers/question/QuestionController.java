@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.elearning.elearning_support.dtos.fileAttach.importFile.ImportResponseDTO;
+import com.elearning.elearning_support.dtos.question.QuestionDetailsDTO;
 import com.elearning.elearning_support.dtos.question.QuestionListCreateDTO;
 import com.elearning.elearning_support.dtos.question.QuestionListDTO;
 import com.elearning.elearning_support.dtos.question.QuestionUpdateDTO;
@@ -52,6 +53,12 @@ public class QuestionController {
         @RequestParam(name = "chapterIds", required = false, defaultValue = "-1") Set<Long> chapterIds,
         @RequestParam(name = "level", required = false, defaultValue = "ALL") QuestionLevelEnum level) {
         return questionService.getListQuestion(subjectId, subjectCode, chapterIds, chapterCode, level);
+    }
+
+    @GetMapping("/detail/{questionId}")
+    @Operation(summary = "Chi tiết câu hỏi")
+    public QuestionDetailsDTO getQuestionDetails(@PathVariable(name = "questionId") Long questionId){
+        return questionService.getQuestionDetails(questionId);
     }
 
     @PutMapping("/{questionId}")

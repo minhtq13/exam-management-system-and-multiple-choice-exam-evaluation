@@ -9,15 +9,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 import com.elearning.elearning_support.entities.BaseEntity;
 import com.elearning.elearning_support.entities.answer.Answer;
+import com.vladmihalcea.hibernate.type.array.LongArrayType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,6 +29,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "question", schema = "elearning_support_dev")
+@TypeDef(typeClass = LongArrayType.class, name = "long-array")
 public class Question extends BaseEntity {
 
     @Id
@@ -47,8 +48,9 @@ public class Question extends BaseEntity {
     @Column(name = "level")
     private Integer level;
 
-    @Column(name = "image_id")
-    private Long imageId;
+    @Column(name = "image_ids", columnDefinition = "Long[]")
+    @Type(type = "long-array")
+    private Long[] imageIds;
 
     @Column(name = "content")
     @Type(type = "org.hibernate.type.TextType")

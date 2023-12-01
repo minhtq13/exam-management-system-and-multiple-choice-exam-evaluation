@@ -5,6 +5,7 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.elearning.elearning_support.dtos.fileAttach.importFile.ImportResponseDTO;
+import com.elearning.elearning_support.dtos.question.QuestionDetailsDTO;
 import com.elearning.elearning_support.dtos.question.QuestionListCreateDTO;
 import com.elearning.elearning_support.dtos.question.QuestionListDTO;
 import com.elearning.elearning_support.dtos.question.QuestionUpdateDTO;
@@ -23,6 +24,12 @@ public interface QuestionService {
      * Import questions
      */
     ImportResponseDTO importQuestion(MultipartFile fileImport);
+
+
+    /**
+     * Get question details
+     */
+    QuestionDetailsDTO getQuestionDetails(Long questionId);
 
 
 }
