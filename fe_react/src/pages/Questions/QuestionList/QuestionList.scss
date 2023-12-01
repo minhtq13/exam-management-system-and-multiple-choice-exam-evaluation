@@ -15,6 +15,7 @@
     .select-label {
       font-size: 16px;
       font-weight: bold;
+      flex-shrink: 0;
     }
   }
 
@@ -27,7 +28,7 @@
     .select-label {
       font-size: 16px;
       font-weight: bold;
-      width: 50%;
+      flex-shrink: 0;
     }
   }
 
@@ -45,6 +46,15 @@
 
   .question-items {
     margin-bottom: 15px;
+
+    .ql-container {
+      border: none;
+    }
+
+    .ql-editor {
+      padding: 0px;
+      border: none;
+    }
 
     .topic-remove {
       display: flex;
@@ -68,14 +78,26 @@
     .question-topic {
       margin-bottom: 5px;
       font-size: 16px;
+      display: flex;
+      gap: 5px;
+
+      .question-number {
+        flex-shrink: 0;
+        font-weight: bold;
+      }
+
     }
 
     .answer-items {
       font-size: 16px;
+      display: flex;
+      gap: 5px;
     }
 
     .corrected {
       font-weight: bold;
+      display: flex;
+      gap: 5px;
     }
   }
 }

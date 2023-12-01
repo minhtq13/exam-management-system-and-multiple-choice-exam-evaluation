@@ -22,7 +22,7 @@ import {
 import "./TestList.scss";
 const TestList = () => {
 	const [deleteDisable, setDeleteDisable] = useState(true);
-	const { allTest, getAllTests, tableLoading } = useTest();
+	const { allTest, getAllTests, tableLoading, pagination } = useTest();
 	const {
 		subLoading,
 		allSubjects,
@@ -31,6 +31,7 @@ const TestList = () => {
 		semesterLoading,
 		getAllSemesters,
 	} = useCombo();
+	const initialParam = { jectId: null, semesterId: null, page: 0, size: 10 };
 	const { exportTestList, loadingExport } = useImportExport();
 	const [deleteKey, setDeleteKey] = useState(null);
 	const [openModal, setOpenModal] = useState(false);
@@ -41,7 +42,7 @@ const TestList = () => {
 	const [viewLoading, setViewLoading] = useState(false);
 	const [testItem, setTestItem] = useState({});
 	const [testSetNos, setTestSetNos] = useState([]);
-	const [param, setParam] = useState({ subjectId: null, semesterId: null });
+	const [param, setParam] = useState(initialParam);
 	const handleCreate = (record) => {
 		console.log(record);
 		navigate(`${appPath.testSetCreate}/${record.id}`);
@@ -277,11 +278,29 @@ const TestList = () => {
 					columns={columns}
 					dataSource={dataFetch}
 					rowSelection={rowSelection}
-					pagination={{
-						pageSize: 8,
-					}}
 					onRow={onRow}
 					loading={tableLoading}
+					pagination={{
+						current: pagination.current,
+						total: pagination.total,
+						pageSize: pagination.pageSize,
+						showSizeChanger: true,
+						pageSizeOptions: ["10", "20", "50", "100"],
+						showQuickJumper: true,
+						onChange: (page, pageSize) => {
+							setParam({
+								...param,
+								page: page - 1,
+								size: pageSize,
+							});
+						},
+						onShowSizeChange: (current, size) => {
+							setParam({
+								...param,
+								size: size,
+							});
+						},
+					}}
 				/>
 				<Modal
 					open={openModal}
@@ -326,6 +345,7 @@ const TestList = () => {
 						centered={true}
 						style={{
 							height: "80vh",
+							width: "70vw",
 							overflowY: "scroll",
 						}}
 						width={"40vw"}

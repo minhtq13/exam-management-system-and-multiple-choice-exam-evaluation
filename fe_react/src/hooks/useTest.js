@@ -6,15 +6,22 @@ const useTest = () => {
 	const notify = useNotify();
 	const [allTest, setAllTest] = useState([]);
 	const [tableLoading, setTableLoading] = useState(true);
+	const [pagination, setPagination] = useState({});
 
 	const getAllTests = (param) => {
 		setTableLoading(true);
 		getTestsService(
 			param.subjectId,
 			param.semesterId,
+			param.page,
+			param.size,
 			(res) => {
 				setAllTest(res.data.content);
-				//setPagination({current: res.data.pageable.pageNumber + 1, pageSize: res.data.pageable.pageSize, total: res.data.totalElements})
+				setPagination({
+					current: res.data.pageable.pageNumber + 1,
+					pageSize: res.data.pageable.pageSize,
+					total: res.data.totalElements,
+				});
 				setTableLoading(false);
 			},
 			(err) => {
@@ -28,6 +35,6 @@ const useTest = () => {
 			}
 		);
 	};
-	return { allTest, tableLoading, getAllTests };
+	return { allTest, tableLoading, getAllTests, pagination };
 };
 export default useTest;

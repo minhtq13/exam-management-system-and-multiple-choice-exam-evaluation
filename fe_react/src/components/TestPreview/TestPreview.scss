@@ -1,14 +1,25 @@
 .test-preview {
 
   div,
-  p {
+  p,
+  span {
     font-family: "Times New Roman", serif;
     font-size: 16px;
   }
 
-  .question-topic,
   .text-bold {
     font-weight: bold;
+  }
+
+  .question-topic {
+    display: flex;
+    gap: 5px;
+
+    .question-number {
+      flex-shrink: 0;
+      font-weight: bold;
+      font-family: "Times New Roman", serif
+    }
   }
 
   .test-top {
@@ -25,6 +36,20 @@
 
   .question-items {
     margin-bottom: 10px;
+
+    .ql-container {
+      border: none;
+    }
+
+    .ql-editor {
+      padding: 0px;
+      border: none;
+    }
+  }
+
+  .answer-items {
+    display: flex;
+    gap: 5px;
   }
 
   .test-header-content {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Form, Input, Button, Checkbox, Select } from "antd";
+import { Form, Button, Checkbox, Select } from "antd";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -25,23 +25,17 @@ const AddQuestions = () => {
   } = useCombo();
   const [subjectId, setSubjectId] = useState(null);
   const [chapterId, setChapterId] = useState(null);
-  const [value, setValue] = useState("");
   const modules = {
     toolbar: [
-      ["bold", "italic", "underline", "strike"], // toggled buttons
+      ["bold", "italic", "underline"], // toggled buttons
       ["blockquote", "code-block"],
-
-      [{ header: 1 }, { header: 2 }], // custom button values
       [{ list: "ordered" }, { list: "bullet" }],
       [{ script: "sub" }, { script: "super" }], // superscript/subscript
       [{ align: [] }],
       ["image"],
       [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
-      [{ size: ["small", false, "large", "huge"] }], // custom dropdown
-      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-      [{ font: [] }],
-      ["clean"],
     ],
+
     clipboard: {
       matchVisual: false,
     },
@@ -51,20 +45,18 @@ const AddQuestions = () => {
     },
   };
   const formats = [
-    "header",
-    "font",
+    "list",
     "size",
     "bold",
     "italic",
     "underline",
-    "strike",
     "blockquote",
-    "list",
-    "bullet",
     "indent",
     "link",
     "image",
-    "video",
+    "code-block",
+    "align",
+    "script",
   ];
   useEffect(() => {
     getAllSubjects({ subjectCode: null, subjectTitle: null });
@@ -193,42 +185,45 @@ const AddQuestions = () => {
             <>
               {parentFields.map((parentField, parentIndex) => (
                 <div
-                  key={`fragQuestions${parentIndex}`}
+                  key={`fragQuestions${parentField.key}`}
                   className="question-list"
-                  name={[parentField.name, `fragQuetion${parentIndex}`]}
+                  name={[
+                    parentField.name,
+                    `fragQuetion${parentField.key}`,
+                  ]}
                 >
                   <div className="question-text">
                     <Form.Item
                       className="topic-Text"
-                      // key={`content${parentField.key}`}
+                      key={`content${parentField.key}`}
                       {...parentField}
                       label={`Câu ${parentIndex + 1}:`}
                       name={[parentField.name, `content`]}
                       rules={[
                         {
                           required: true,
-                          message: "Chưa nhập câu hỏi!",
+                          message:
+                            "Chưa nhập câu hỏi!",
                         },
                       ]}
                     >
                       <ReactQuill
                         theme="snow"
-                        onChange={setValue}
-                        value={value}
                         modules={modules}
                         formats={formats}
                         bounds="#root"
                       />
                     </Form.Item>
                     <Form.Item
-                      // key={`level${parentField.key}`}
+                      key={`level${parentField.key}`}
                       {...parentField}
                       label={"Level"}
                       name={[parentField.name, `level`]}
                       rules={[
                         {
                           required: true,
-                          message: "Chưa chọn mức độ câu hỏi!",
+                          message:
+                            "Chưa chọn mức độ câu hỏi!",
                         },
                       ]}
                       initialValue={"EASY"}
@@ -241,13 +236,17 @@ const AddQuestions = () => {
                     <div className="btn-remove">
                       <Button
                         type="dashed"
-                        onClick={() => parentListOperations.remove(parentIndex)}
+                        onClick={() =>
+                          parentListOperations.remove(
+                            parentIndex
+                          )
+                        }
                         icon={<DeleteOutlined />}
                       ></Button>
                     </div>
                   </div>
                   <Form.List
-                    // key={`lstAnswer${parentIndex}`}
+                    key={`lstAnswer${parentField.key}`}
                     {...parentField}
                     name={[parentField.name, `lstAnswer`]}
                     initialValue={[
@@ -263,48 +262,92 @@ const AddQuestions = () => {
                   >
                     {(childFields, childListOperations) => (
                       <div className="answers">
-                        {childFields.map((childField, childIndex) => {
-                          return (
-                            <div
-                              key={`frAnswers${childIndex}-${parentIndex}`}
-                              name={[childField.name, `frAnswers${childIndex}`]}
-                              className="answer-list"
-                            >
-                              <div className="answer-list-text-checkbox">
-                                <Form.Item
-                                  {...childField}
-                                  name={[childField.name, `isCorrect`]}
-                                  // key={`isCorrect${childIndex}-${parentIndex}`}
-                                  valuePropName="checked"
-                                >
-                                  <Checkbox checked={checked} onChange={onChange} />
-                                </Form.Item>
-                                <Form.Item
-                                  {...childField}
-                                  name={[childField.name, `content`]}
-                                  // key={`content${childIndex}-${parentIndex}`}
-                                  rules={[
-                                    {
-                                      required: true,
-                                      message: "Chưa điền câu trả lời",
-                                    },
-                                  ]}
-                                  className="answers-item"
-                                >
-                                  <Input placeholder="Nhập câu trả lời..." />
-                                </Form.Item>
-                                <Button
-                                  type="dashed"
-                                  onClick={() => childListOperations.remove(childIndex)}
-                                  icon={<DeleteOutlined />}
-                                />
+                        {childFields.map(
+                          (
+                            childField,
+                            childIndex
+                          ) => {
+                            return (
+                              <div
+                                key={`frAnswers${childField.key}-${parentIndex}`}
+                                name={[
+                                  childField.name,
+                                  `frAnswers${childField.key}`,
+                                ]}
+                                className="answer-list"
+                              >
+                                <div className="answer-list-text-checkbox">
+                                  <Form.Item
+                                    {...childField}
+                                    name={[
+                                      childField.name,
+                                      `isCorrect`,
+                                    ]}
+                                    key={`isCorrect${childField.key}-${parentField.key}`}
+                                    valuePropName="checked"
+                                  >
+                                    <Checkbox
+                                      checked={
+                                        checked
+                                      }
+                                      onChange={
+                                        onChange
+                                      }
+                                    />
+                                  </Form.Item>
+                                  <Form.Item
+                                    {...childField}
+                                    name={[
+                                      childField.name,
+                                      `content`,
+                                    ]}
+                                    key={`content${childField.key}-${parentField.key}`}
+                                    rules={[
+                                      {
+                                        required: true,
+                                        message:
+                                          "Chưa điền câu trả lời",
+                                      },
+                                    ]}
+                                    className="answers-item"
+                                  >
+                                    <ReactQuill
+                                      theme="snow"
+                                      modules={
+                                        modules
+                                      }
+                                      formats={
+                                        formats
+                                      }
+                                      bounds="#root"
+                                    />
+                                  </Form.Item>
+                                  <Button
+                                    type="dashed"
+                                    onClick={() =>
+                                      childListOperations.remove(
+                                        childIndex
+                                      )
+                                    }
+                                    icon={
+                                      <DeleteOutlined />
+                                    }
+                                  />
+                                </div>
                               </div>
-                            </div>
-                          );
-                        })}
+                            );
+                          }
+                        )}
                         {childFields.length < 4 && (
                           <Form.Item className="add-answer-btn">
-                            <Button onClick={() => childListOperations.add()} icon={<PlusOutlined />}>
+                            <Button
+                              onClick={() =>
+                                childListOperations.add()
+                              }
+                              icon={
+                                <PlusOutlined />
+                              }
+                            >
                               Thêm tùy chọn
                             </Button>
                           </Form.Item>

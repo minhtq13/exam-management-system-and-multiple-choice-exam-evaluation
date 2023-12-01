@@ -47,10 +47,12 @@ export const testSetDetailService = async (
 export const getTestsService = async (
 	subjectId,
 	semesterId,
+	page,
+	size,
 	successCallback,
 	errorCallback
 ) => {
-	const param = {};
+	const param = { page, size };
 	if (subjectId) {
 		param.subjectId = subjectId;
 	}

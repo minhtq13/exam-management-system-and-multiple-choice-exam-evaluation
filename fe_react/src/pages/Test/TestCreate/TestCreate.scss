@@ -24,13 +24,14 @@
       gap: 10px;
       width: 20%;
 
-      span {
-        width: 40%;
-      }
-
       .ant-select {
         width: 50%;
       }
+    }
+
+    .select-label {
+      font-weight: bold;
+      flex-shrink: 0;
     }
 
   }
