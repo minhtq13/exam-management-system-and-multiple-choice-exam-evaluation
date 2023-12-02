@@ -1,4 +1,5 @@
 import os
+import platform
 import cv2
 import numpy as np
 from ultralytics import YOLO
@@ -8,6 +9,12 @@ import time
 from tool import generate_output, get_parameter_number_anwser, remove_elements_info, remove_elements_answer, remove_elements_marker
 from tool import get_class, get_coordinates, get_coordinates_info, get_remainder, orient_image_by_angle
 from tool import warning_color, green_color, blue_color, threshold_warning
+
+# Shared data folder
+HOME_DIR = os.path.expanduser('~')
+WINDOWS_SHARED_DATA_DIR = HOME_DIR + "/AppData/Local/ELearningSupport/data"
+LINUX_SHARED_DATA_DIR = HOME_DIR + "/usr/local/app/ELearningSupport/data"
+SHARED_DATA_DIR = WINDOWS_SHARED_DATA_DIR if "windows" in platform.system().lower() else LINUX_SHARED_DATA_DIR
 
 
 
@@ -49,7 +56,7 @@ def get_marker(image, model, filename):
         if count_marker2 != 1 or count_maker1 != 3:
             error_message = f"Xem lại ảnh đầu vào {filename} có thể bị thiếu góc"
             maybe_wrong_marker.append(error_message)
-            with open(f"./MayBeWrong/error_{filename.split('.')[0]}.txt", "w", encoding="utf-8") as f:
+            with open(f"{SHARED_DATA_DIR}/AnsweredSheets/MayBeWrong/error_{filename.split('.')[0]}.txt", "w", encoding="utf-8") as f:
                 for string in maybe_wrong_marker:
                     f.write(string + "\n")
             raise Exception(error_message)
@@ -206,7 +213,7 @@ def mergeImages(filename, coord_array, array_img_graft, background_image, imgInf
         y_coord = coord_array[i][1]
         height, width, _ = array_img_graft[i].shape
         background_image[y_coord: y_coord + height, x_coord: x_coord + width] = array_img_graft[i] / 255
-    cv2.imwrite(f"./images/answer_sheets/handle-{args.input}/handle_{filename_cut}.jpg", background_image * 255)
+    cv2.imwrite(f"{SHARED_DATA_DIR}/AnsweredSheets/{args.input}/HandledSheets//handled_{filename_cut}.jpg", background_image * 255)
 
 
 if __name__ == "__main__":
@@ -221,18 +228,34 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # ================= Tạo folder ảnh gốc và ảnh đã qua xử lý===============================
-    folder_path = f"./images/answer_sheets/{args.input}"
-    folder_path_handle = f"./images/answer_sheets/handle-{args.input}"
+    folder_path = f"{SHARED_DATA_DIR}/AnsweredSheets/{args.input}"
+    folder_path_handle = f"{SHARED_DATA_DIR}/AnsweredSheets/{args.input}/HandledSheets"
+    folder_scored_path = f"{SHARED_DATA_DIR}/AnsweredSheets/{args.input}/ScoredSheets"
+    folder_maybe_wrong = f"{SHARED_DATA_DIR}/AnsweredSheets/{args.input}/MayBeWrong"
     if not os.path.exists(folder_path):
         try:
             os.makedirs(folder_path)
         except OSError:
             print(f"Lỗi: Không thể tạo thư mục {folder_path}.")
+            
     if not os.path.exists(folder_path_handle):
         try:
             os.makedirs(folder_path_handle)
         except OSError:
-            print(f"Lỗi: Không thể tạo thư mục {folder_path}.")
+            print(f"Lỗi: Không thể tạo thư mục {folder_path_handle}.")
+            
+    if not os.path.exists(folder_scored_path):
+        try:
+            os.makedirs(folder_scored_path)
+        except OSError:
+            print(f"Lỗi: Không thể tạo thư mục {folder_scored_path}.")
+            
+    if not os.path.exists(folder_maybe_wrong):
+        try:
+            os.makedirs(folder_maybe_wrong)
+        except OSError:
+            print(f"Lỗi: Không thể tạo thư mục {folder_maybe_wrong}.")            
+            
 
     # ================================= Chương trình chính=================================
     file_names = os.listdir(folder_path)
@@ -274,30 +297,31 @@ if __name__ == "__main__":
             # ================================= Format file json =============================
             array_result = []
             for key, value in enumerate(list_answer):
-                item = {"questionNo": int(key) + 1, "isSelected": value}
+                item = {"questionNo": int(key) + 1, "selectedAnswers": value}
                 array_result.append(item)
                 if key == (numberAnswer - 1):
                     break
             if len(result_info) == 3:
                 result = {
-                    "classCode": result_info["class_code"],
+                    "examClassCode": result_info["class_code"],
                     "studentCode": result_info["student_code"],
-                    "testNo": result_info["exam_code"],
+                    "testCode": result_info["exam_code"],
                     "answers": array_result,
                 }
             # =============================== Ghi file json ==========================
 
-            # file_path = f"json/{filename}/data.json"
-            # dir_path = os.path.dirname(file_path)
+            orig_file_name = filename.split(".")[0]
+            file_path = f"{folder_scored_path}/{orig_file_name}_data.json"
+            dir_path = os.path.dirname(file_path)
 
-            # if not os.path.exists(dir_path):
-            #     os.makedirs(dir_path)
-            # # Ghi dữ liệu từ điển vào tệp tin JSON
-            # with open(file_path, "w") as file:
-            #     json.dump(result, file)
+            if not os.path.exists(dir_path):
+                os.makedirs(dir_path)
+            # Ghi dữ liệu từ điển vào tệp tin JSON
+            with open(file_path, "w") as file:
+                json.dump(result, file)
             # =============================== Ghi file cảnh báo có thể sai ==========================
             if len(maybe_wrong_info) > 0 or len(maybe_wrong_answer_array) > 0:
-                with open(f"./MayBeWrong/warning_{filename.split('.')[0]}.txt", "w", encoding="utf-8") as f:
+                with open(f"{folder_maybe_wrong}/warning_{filename.split('.')[0]}.txt", "w", encoding="utf-8") as f:
                     if len(maybe_wrong_info) > 0:
                         for string in maybe_wrong_info:
                             f.write(string + "\n")
