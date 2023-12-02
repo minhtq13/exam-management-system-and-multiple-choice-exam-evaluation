@@ -1,6 +1,7 @@
 package com.elearning.elearning_support.services.test.impl;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -22,15 +23,20 @@ import org.apache.commons.math3.util.Pair;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import com.elearning.elearning_support.constants.SystemConstants;
 import com.elearning.elearning_support.dtos.common.ICommonIdCode;
 import com.elearning.elearning_support.dtos.test.test_set.ITestSetScoringDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetPreviewDTO;
+import com.elearning.elearning_support.entities.exam_class.ExamClass;
 import com.elearning.elearning_support.entities.studentTest.StudentTestSet;
 import com.elearning.elearning_support.entities.studentTest.StudentTestSetDetail;
 import com.elearning.elearning_support.enums.users.UserTypeEnum;
+import com.elearning.elearning_support.repositories.examClass.ExamClassRepository;
 import com.elearning.elearning_support.repositories.test.test_set.StudentTestSetRepository;
 import com.elearning.elearning_support.repositories.users.UserRepository;
 import com.elearning.elearning_support.utils.StringUtils;
+import com.elearning.elearning_support.utils.file.FileUtils;
 import com.elearning.elearning_support.utils.tests.TestUtils;
 import com.elearning.elearning_support.constants.message.errorKey.ErrorKey;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst;
@@ -84,6 +90,8 @@ public class TestSetServiceImpl implements TestSetService {
     private final TestSetQuestionRepository testSetQuestionRepository;
 
     private final StudentTestSetRepository studentTestSetRepository;
+
+    private final ExamClassRepository examClassRepository;
 
     @Transactional
     @Override
@@ -171,7 +179,8 @@ public class TestSetServiceImpl implements TestSetService {
             }
         }
         testSetQuestionRepository.saveAll(lstTestSetQuestion);
-        return lstTestSet.stream().map(testSet -> new TestSetPreviewDTO(testSet.getId(), testSet.getCode(), testSet.getTestNo(), testSet.getTestId())).collect(
+        return lstTestSet.stream()
+            .map(testSet -> new TestSetPreviewDTO(testSet.getId(), testSet.getCode(), testSet.getTestNo(), testSet.getTestId())).collect(
                 Collectors.toList());
     }
 
@@ -229,7 +238,7 @@ public class TestSetServiceImpl implements TestSetService {
         Set<String> lstRandomCode = new HashSet<>();
         do {
             String newCode = RandomStringUtils.randomNumeric(3);
-            if(!testSetRepository.existsByTestIdAndCode(testId, newCode)){
+            if (!testSetRepository.existsByTestIdAndCode(testId, newCode)) {
                 lstRandomCode.add(newCode);
             }
         } while (lstRandomCode.size() < length);
@@ -265,7 +274,7 @@ public class TestSetServiceImpl implements TestSetService {
 
 
     /**
-     *  ======================== TEST SET SCORING SERVICES ====================
+     * ======================== TEST SET SCORING SERVICES ====================
      */
     @Transactional
     @Override
@@ -346,5 +355,44 @@ public class TestSetServiceImpl implements TestSetService {
             lstStudentTestSet.add(studentTestSet);
         }
         studentTestSetRepository.saveAll(lstStudentTestSet);
+    }
+
+    @Override
+    public void uploadStudentHandledAnswerSheet(Long examClassId, MultipartFile[] handledFiles) {
+        // Check existed exam_class
+        ExamClass examClass = examClassRepository.findByIdAndIsEnabled(examClassId, Boolean.TRUE)
+            .orElseThrow(() -> exceptionFactory.resourceNotFoundException(MessageConst.ExamClass.NOT_FOUND, Resources.EXAM_CLASS,
+                MessageConst.RESOURCE_NOT_FOUND, ErrorKey.ExamClass.ID, String.valueOf(examClassId)));
+
+        // Check system os
+        boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
+        File sharedAppDataDir;
+        String sharedAppDataPath;
+        if (isWindows) {
+            sharedAppDataPath = SystemConstants.WINDOWS_SHARED_DIR;
+            log.info("Windows's shared app data {}", SystemConstants.WINDOWS_SHARED_DIR);
+        } else {
+            sharedAppDataPath = SystemConstants.LINUX_SHARED_DIR;
+            log.info("Linux's shared app data {}", SystemConstants.LINUX_SHARED_DIR);
+        }
+        sharedAppDataDir = new File(sharedAppDataPath);
+        if (!sharedAppDataDir.exists()) {
+            log.info("Make sharedAppDataDir {}", sharedAppDataDir.mkdirs() ? "successfully" : "fail");
+        }
+
+        // upload handled answer sheet's images
+        String examClassStoredPath = String.format("%s/%s/%s/", sharedAppDataPath, "AnsweredSheets", examClass.getCode());
+        File examClassStoredDir = new File(examClassStoredPath);
+        if (!examClassStoredDir.exists()) {
+            log.info("Make examClassStoredDir {}", examClassStoredDir.mkdirs() ? "successfully" : "fail");
+        }
+        // Write file to storage directory
+        try {
+            for (MultipartFile handledFile : handledFiles) {
+                FileUtils.covertMultipartToFile(examClassStoredPath, handledFile);
+            }
+        } catch (Exception exception) {
+            log.error(MessageConst.EXCEPTION_LOG_FORMAT, exception.getMessage(), exception.getCause());
+        }
     }
 }

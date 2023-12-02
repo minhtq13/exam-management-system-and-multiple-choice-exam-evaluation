@@ -9,11 +9,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import com.elearning.elearning_support.dtos.test.test_set.ScoringTestSetReqDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetGenerateReqDTO;
@@ -68,8 +71,16 @@ public class TestSetController {
      */
     @PostMapping("/scoring")
     @Operation(summary = "Chấm điểm bài thi chắc nghiệm")
-    public void scoringStudentTestSet(@RequestBody @Validated ScoringTestSetReqDTO scoringReqDTO){
+    public void scoringStudentTestSet(@RequestBody @Validated ScoringTestSetReqDTO scoringReqDTO) {
         testSetService.scoreStudentTestSet(scoringReqDTO.getHandledTestSets());
+    }
+
+    @PostMapping("/handled-answers/upload/{examClassId}")
+    @Operation(summary = "Upload bài làm theo lớp")
+    public void uploadStudentHandledTestSet(
+        @PathVariable(name = "examClassId") Long examClassId,
+        @RequestParam(name = "files") MultipartFile[] handledFiles) {
+        testSetService.uploadStudentHandledAnswerSheet(examClassId, handledFiles);
     }
 
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import com.elearning.elearning_support.dtos.studentTestSet.ScoredStudentTestResDTO;
 import com.elearning.elearning_support.dtos.studentTestSet.StudentHandledTestDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
@@ -36,5 +37,10 @@ public interface TestSetService {
      *  ======================== TEST SET SCORING SERVICES ====================
      */
     void scoreStudentTestSet(List<StudentHandledTestDTO> handledTestSets);
+
+    /**
+     * Upload handled answer sheet's images
+     */
+    void uploadStudentHandledAnswerSheet(Long examClassId, MultipartFile[] handledFiles);
 
 }

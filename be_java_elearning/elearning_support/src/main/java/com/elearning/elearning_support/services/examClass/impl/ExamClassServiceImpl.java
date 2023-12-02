@@ -114,7 +114,12 @@ public class ExamClassServiceImpl implements ExamClassService {
 
     @Override
     public IExamClassDetailDTO getExamClassDetail(Long id) {
-        return examClassRepository.getDetailExamClass(id);
+        IExamClassDetailDTO examClassDetails = examClassRepository.getDetailExamClass(id);
+        if (Objects.isNull(examClassDetails)) {
+            throw exceptionFactory.resourceNotFoundException(MessageConst.ExamClass.NOT_FOUND, Resources.EXAM_CLASS,
+                MessageConst.RESOURCE_NOT_FOUND, ErrorKey.ExamClass.ID, String.valueOf(id));
+        }
+        return examClassDetails;
     }
 
     @Transactional
