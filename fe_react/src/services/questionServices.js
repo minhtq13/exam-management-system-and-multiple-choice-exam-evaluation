@@ -41,3 +41,12 @@ export const updateQuesionsService = async (questionId, params, successCallback,
     errorCallback
   );
 };
+export const getQuestionDetailsService = async (questionId, params, successCallback, errorCallback) => {
+  await getRequest(
+    `${apiPath.getQuestionDetail}/${questionId}`,
+    params,
+    successCallback,
+    errorCallback
+  );
+};
+

@@ -212,6 +212,7 @@ const AddQuestions = () => {
                         modules={modules}
                         formats={formats}
                         bounds="#root"
+                        placeholder="Nhập câu hỏi..."
                       />
                     </Form.Item>
                     <Form.Item
@@ -320,6 +321,7 @@ const AddQuestions = () => {
                                         formats
                                       }
                                       bounds="#root"
+                                      placeholder="Nhập câu trả lời..."
                                     />
                                   </Form.Item>
                                   <Button

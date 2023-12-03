@@ -38,7 +38,8 @@ export const apiPath = {
 	addQuestion: BASE_URL + "/api/question",
 	getQuestionbyCode: BASE_URL + "/api/question",
 	deleteQuestion: BASE_URL + "/api/question/disable",
-	updateQuestion: BASE_URL + "/api/question/update",
+	updateQuestion: BASE_URL + "/api/question",
+	getQuestionDetail: BASE_URL + "/api/question/detail",
 	//Test:
 	testRandomCreate: BASE_URL + "/api/test/create/random",
 	testCreate: BASE_URL + "/api/test/create",
