@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -70,9 +71,15 @@ public class TestSetController {
     ==================================== TEST SET SCORING CONTROLLER =================================
      */
     @PostMapping("/scoring")
-    @Operation(summary = "Chấm điểm bài thi chắc nghiệm")
+    @Operation(summary = "Chấm điểm bài thi chắc nghiệm (với dữ liệu có sẵn)")
     public void scoringStudentTestSet(@RequestBody @Validated ScoringTestSetReqDTO scoringReqDTO) {
         testSetService.scoreStudentTestSet(scoringReqDTO.getHandledTestSets());
+    }
+
+    @GetMapping("/scoring/exam-class/{exClassCode}")
+    @Operation(summary = "Lấy dữ liệu chấm điểm từ công cụ AI")
+    public ResponseEntity<?> loadScoredStudentTestSet(@PathVariable(name = "exClassCode") String exClassCode){
+        return ResponseEntity.ok(testSetService.scoreExamClassTestSet(exClassCode));
     }
 
     @PostMapping("/handled-answers/upload/{examClassId}")

@@ -15,4 +15,6 @@ public class SystemConstants {
 
     public static final String LINUX_SHARED_DIR = USER_DIR + "/usr/local/app/ELearningSupport/data/";
 
+    public static final boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().contains("windows");
+
 }

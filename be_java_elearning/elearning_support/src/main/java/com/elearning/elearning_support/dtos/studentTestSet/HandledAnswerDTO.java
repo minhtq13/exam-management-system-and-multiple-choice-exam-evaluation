@@ -1,7 +1,5 @@
 package com.elearning.elearning_support.dtos.studentTestSet;
 
-import java.util.ArrayList;
-import java.util.List;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

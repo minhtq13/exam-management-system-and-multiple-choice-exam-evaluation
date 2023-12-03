@@ -39,6 +39,11 @@ public interface TestSetService {
     void scoreStudentTestSet(List<StudentHandledTestDTO> handledTestSets);
 
     /**
+     * Process answered sheets and score by exClassCode
+     */
+    List<StudentHandledTestDTO> scoreExamClassTestSet(String examClassCode);
+
+    /**
      * Upload handled answer sheet's images
      */
     void uploadStudentHandledAnswerSheet(Long examClassId, MultipartFile[] handledFiles);

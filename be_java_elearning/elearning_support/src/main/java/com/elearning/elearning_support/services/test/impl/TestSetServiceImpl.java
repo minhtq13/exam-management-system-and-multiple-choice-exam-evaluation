@@ -2,6 +2,7 @@ package com.elearning.elearning_support.services.test.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -76,6 +77,10 @@ import lombok.extern.slf4j.Slf4j;
 public class TestSetServiceImpl implements TestSetService {
 
     private final UserRepository userRepository;
+
+    public static final String ANSWERED_SHEETS = "AnsweredSheets";
+
+    public static final String SCORED_SHEETS = "ScoredSheets";
 
     private static final int MAX_NUM_ANSWERS_PER_QUESTION = 6;
 
@@ -276,6 +281,13 @@ public class TestSetServiceImpl implements TestSetService {
     /**
      * ======================== TEST SET SCORING SERVICES ====================
      */
+
+    @Override
+    public List<StudentHandledTestDTO> scoreExamClassTestSet(String examClassCode) {
+        return loadListStudentScoredSheets(examClassCode);
+    }
+
+
     @Transactional
     @Override
     public void scoreStudentTestSet(List<StudentHandledTestDTO> handledTestSets) {
@@ -365,10 +377,9 @@ public class TestSetServiceImpl implements TestSetService {
                 MessageConst.RESOURCE_NOT_FOUND, ErrorKey.ExamClass.ID, String.valueOf(examClassId)));
 
         // Check system os
-        boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
         File sharedAppDataDir;
         String sharedAppDataPath;
-        if (isWindows) {
+        if (SystemConstants.IS_WINDOWS) {
             sharedAppDataPath = SystemConstants.WINDOWS_SHARED_DIR;
             log.info("Windows's shared app data {}", SystemConstants.WINDOWS_SHARED_DIR);
         } else {
@@ -380,8 +391,10 @@ public class TestSetServiceImpl implements TestSetService {
             log.info("Make sharedAppDataDir {}", sharedAppDataDir.mkdirs() ? "successfully" : "fail");
         }
 
+        // TODO: classify answered sheets by examClassCode (call AI tool)
+
         // upload handled answer sheet's images
-        String examClassStoredPath = String.format("%s/%s/%s/", sharedAppDataPath, "AnsweredSheets", examClass.getCode());
+        String examClassStoredPath = String.format("%s/%s/%s/", sharedAppDataPath, ANSWERED_SHEETS, examClass.getCode());
         File examClassStoredDir = new File(examClassStoredPath);
         if (!examClassStoredDir.exists()) {
             log.info("Make examClassStoredDir {}", examClassStoredDir.mkdirs() ? "successfully" : "fail");
@@ -394,5 +407,36 @@ public class TestSetServiceImpl implements TestSetService {
         } catch (Exception exception) {
             log.error(MessageConst.EXCEPTION_LOG_FORMAT, exception.getMessage(), exception.getCause());
         }
+    }
+
+    /**
+     * Load scored student's answer sheets from shared folder
+     */
+    private List<StudentHandledTestDTO> loadListStudentScoredSheets(String exClassCode){
+        List<StudentHandledTestDTO> lstScoredData = new ArrayList<>();
+        File scoredSheetsDir;
+        String sharedAppDataPath;
+        if (SystemConstants.IS_WINDOWS) {
+            sharedAppDataPath = SystemConstants.WINDOWS_SHARED_DIR;
+            log.info("Windows's shared app data {}", SystemConstants.WINDOWS_SHARED_DIR);
+        } else {
+            sharedAppDataPath = SystemConstants.LINUX_SHARED_DIR;
+            log.info("Linux's shared app data {}", SystemConstants.LINUX_SHARED_DIR);
+        }
+        scoredSheetsDir = new File(String.format("%s/%s/%s/%s", sharedAppDataPath, ANSWERED_SHEETS, exClassCode, SCORED_SHEETS));
+        if (scoredSheetsDir.exists() && scoredSheetsDir.isDirectory()) {
+            for (File scoredDataFile : Objects.requireNonNull(scoredSheetsDir.listFiles())) {
+                try {
+                    String jsonData = org.apache.commons.io.FileUtils.readFileToString(scoredDataFile, "UTF-8");
+                    StudentHandledTestDTO scoredData = ObjectMapperUtil.objectMapper(jsonData, StudentHandledTestDTO.class);
+                    if (Objects.nonNull(scoredData)) {
+                        lstScoredData.add(scoredData);
+                    }
+                } catch (IOException e) {
+                    log.error(MessageConst.EXCEPTION_LOG_FORMAT, e.getMessage(), e.getCause());
+                }
+            }
+        }
+        return lstScoredData;
     }
 }
