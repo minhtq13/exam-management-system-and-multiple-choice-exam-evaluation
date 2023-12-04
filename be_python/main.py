@@ -20,7 +20,7 @@ SHARED_DATA_DIR = WINDOWS_SHARED_DATA_DIR if "windows" in platform.system().lowe
 
 # ============================================ HANDLE MARKER =======================================
 
-def get_marker(image, model, filename):
+def get_marker(image, model, filename, folder_code = ""):
     try:
         results = model.predict(image)
         data = results[0].boxes.data
@@ -56,7 +56,7 @@ def get_marker(image, model, filename):
         if count_marker2 != 1 or count_maker1 != 3:
             error_message = f"Xem lại ảnh đầu vào {filename} có thể bị thiếu góc"
             maybe_wrong_marker.append(error_message)
-            with open(f"{SHARED_DATA_DIR}/AnsweredSheets/MayBeWrong/error_{filename.split('.')[0]}.txt", "w", encoding="utf-8") as f:
+            with open(f"{SHARED_DATA_DIR}/AnsweredSheets/{folder_code}/MayBeWrong/error_{filename.split('.')[0]}.txt", "w", encoding="utf-8") as f:
                 for string in maybe_wrong_marker:
                     f.write(string + "\n")
             raise Exception(error_message)
@@ -264,7 +264,7 @@ if __name__ == "__main__":
         if filename.lower().endswith((".jpg", ".jpeg", ".png")):
             image_path = os.path.join(folder_path, filename)
             image = cv2.imread(image_path)
-            document, oritentation, maybe_wrong_marker = get_marker(image, model, filename)
+            document, oritentation, maybe_wrong_marker = get_marker(image, model, filename, args.input)
             if (document is None):
                 continue
             if oritentation == 'bl':
