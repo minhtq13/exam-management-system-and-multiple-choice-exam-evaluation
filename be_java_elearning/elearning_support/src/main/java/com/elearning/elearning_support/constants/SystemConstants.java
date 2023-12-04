@@ -11,9 +11,9 @@ public class SystemConstants {
 
     public static final String RESOURCE_PATH = BASE_PATH + "/src/main/resources/";
 
-    public static final String WINDOWS_SHARED_DIR = USER_DIR + "/AppData/Local/ELearningSupport/data/";
+    public static final String WINDOWS_SHARED_DIR = USER_DIR + "/AppData/Local/ELearningSupport";
 
-    public static final String LINUX_SHARED_DIR = USER_DIR + "/usr/local/app/ELearningSupport/data/";
+    public static final String LINUX_SHARED_DIR = USER_DIR + "/usr/local/app/ELearningSupport";
 
     public static final boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().contains("windows");
 

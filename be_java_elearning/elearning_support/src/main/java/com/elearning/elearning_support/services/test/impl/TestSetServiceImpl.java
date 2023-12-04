@@ -1,11 +1,13 @@
 package com.elearning.elearning_support.services.test.impl;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -25,6 +27,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import com.elearning.elearning_support.constants.FileConstants.Extension.Image;
 import com.elearning.elearning_support.constants.SystemConstants;
 import com.elearning.elearning_support.dtos.common.ICommonIdCode;
 import com.elearning.elearning_support.dtos.test.test_set.ITestSetScoringDTO;
@@ -284,6 +287,8 @@ public class TestSetServiceImpl implements TestSetService {
 
     @Override
     public List<StudentHandledTestDTO> scoreExamClassTestSet(String examClassCode) {
+        // TODO: Call AI tool to processed answered sheets
+        callAIModelProcessing(examClassCode);
         return loadListStudentScoredSheets(examClassCode);
     }
 
@@ -380,18 +385,16 @@ public class TestSetServiceImpl implements TestSetService {
         File sharedAppDataDir;
         String sharedAppDataPath;
         if (SystemConstants.IS_WINDOWS) {
-            sharedAppDataPath = SystemConstants.WINDOWS_SHARED_DIR;
+            sharedAppDataPath = SystemConstants.WINDOWS_SHARED_DIR + "/data";
             log.info("Windows's shared app data {}", SystemConstants.WINDOWS_SHARED_DIR);
         } else {
-            sharedAppDataPath = SystemConstants.LINUX_SHARED_DIR;
+            sharedAppDataPath = SystemConstants.LINUX_SHARED_DIR + "/data";
             log.info("Linux's shared app data {}", SystemConstants.LINUX_SHARED_DIR);
         }
         sharedAppDataDir = new File(sharedAppDataPath);
         if (!sharedAppDataDir.exists()) {
             log.info("Make sharedAppDataDir {}", sharedAppDataDir.mkdirs() ? "successfully" : "fail");
         }
-
-        // TODO: classify answered sheets by examClassCode (call AI tool)
 
         // upload handled answer sheet's images
         String examClassStoredPath = String.format("%s/%s/%s/", sharedAppDataPath, ANSWERED_SHEETS, examClass.getCode());
@@ -402,6 +405,7 @@ public class TestSetServiceImpl implements TestSetService {
         // Write file to storage directory
         try {
             for (MultipartFile handledFile : handledFiles) {
+                FileUtils.validateUploadFile(handledFile, Arrays.asList(Image.JPG, Image.PNG, Image.JPEG));
                 FileUtils.covertMultipartToFile(examClassStoredPath, handledFile);
             }
         } catch (Exception exception) {
@@ -412,15 +416,15 @@ public class TestSetServiceImpl implements TestSetService {
     /**
      * Load scored student's answer sheets from shared folder
      */
-    private List<StudentHandledTestDTO> loadListStudentScoredSheets(String exClassCode){
+    private List<StudentHandledTestDTO> loadListStudentScoredSheets(String exClassCode) {
         List<StudentHandledTestDTO> lstScoredData = new ArrayList<>();
         File scoredSheetsDir;
         String sharedAppDataPath;
         if (SystemConstants.IS_WINDOWS) {
-            sharedAppDataPath = SystemConstants.WINDOWS_SHARED_DIR;
+            sharedAppDataPath = SystemConstants.WINDOWS_SHARED_DIR + "/data";
             log.info("Windows's shared app data {}", SystemConstants.WINDOWS_SHARED_DIR);
         } else {
-            sharedAppDataPath = SystemConstants.LINUX_SHARED_DIR;
+            sharedAppDataPath = SystemConstants.LINUX_SHARED_DIR + "/data";
             log.info("Linux's shared app data {}", SystemConstants.LINUX_SHARED_DIR);
         }
         scoredSheetsDir = new File(String.format("%s/%s/%s/%s", sharedAppDataPath, ANSWERED_SHEETS, exClassCode, SCORED_SHEETS));
@@ -438,5 +442,39 @@ public class TestSetServiceImpl implements TestSetService {
             }
         }
         return lstScoredData;
+    }
+
+    /**
+     * Call Python AI model to process input images
+     */
+    private void callAIModelProcessing(String examClassCode) {
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder();
+            processBuilder.redirectErrorStream(true);
+            String[] commands;
+            String sharedAppAISrc;
+            if (SystemConstants.IS_WINDOWS) {
+                sharedAppAISrc = SystemConstants.WINDOWS_SHARED_DIR + "/source/elearning-support-system/be_python";
+                commands = new String[]{"cmd.exe", "/c", String.format("python main.py %s", examClassCode)};
+            } else {
+                sharedAppAISrc = SystemConstants.LINUX_SHARED_DIR + "/source/elearning-support-system/be_python";
+                commands = new String[]{"sh", "-c", String.format("python main.py %s", examClassCode)};
+            }
+            processBuilder.command(commands);
+            // point directory to python src (create and clone before using)
+            processBuilder.directory(new File(sharedAppAISrc));
+            Process aiProcess = processBuilder.start();
+            aiProcess.supportsNormalTermination();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(aiProcess.getInputStream()));
+            long currentTimeMillis = System.currentTimeMillis();
+            log.info("========== AI PROCESS STARTED ========");
+            String logLine;
+            while ((logLine = bufferedReader.readLine()) != null) {
+                System.out.println(logLine);
+            }
+            log.info("========= AI PROCESS ENDED AFTER : {} ms ==========", System.currentTimeMillis() - currentTimeMillis);
+        } catch (Exception exception) {
+            log.error(MessageConst.EXCEPTION_LOG_FORMAT, exception.getMessage(), exception.getCause());
+        }
     }
 }
