@@ -59,7 +59,7 @@ const ExamClassList = () => {
 			getParticipants(classId, roleType);
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [classId, roleType]);
 	useEffect(() => {
 		getAllSubjects({ subjectCode: null, subjectTitle: null });
@@ -101,14 +101,47 @@ const ExamClassList = () => {
 		name: item.name,
 		code: item.code,
 	}));
+	const handleExportStudent = () => {
+		const params = {
+			name: param.name,
+			code: param.code,
+		};
+		exportList(params, "exam-class/participant");
+	};
 	const renderTab = () => {
 		return (
-			<Table
-				className="exam-class-participant"
-				columns={tabsColumn}
-				dataSource={tabsData}
-				loading={partiLoading}
-			/>
+			<div className="exam-class-tabs">
+				{roleType === "STUDENT" && (
+					<div className="tab-button">
+						<Button
+							className="options"
+							onClick={handleExportStudent}
+						>
+							<img src={exportIcon} alt="Export Icon" />
+							Export
+						</Button>
+						<Input
+							type="file"
+							name="file"
+							onChange={(e) => handleChange(e)}
+						></Input>
+						<Button
+							type="primary"
+							//onClick={handleUpload}
+							disabled={!fileList}
+							//loading={loadingImport}
+						>
+							Import
+						</Button>
+					</div>
+				)}
+				<Table
+					className="exam-class-participant"
+					columns={tabsColumn}
+					dataSource={tabsData}
+					loading={partiLoading}
+				/>
+			</div>
 		);
 	};
 	const tabsOptions = [
@@ -142,7 +175,6 @@ const ExamClassList = () => {
 			setImportLoading(false);
 			notify.error("Lỗi tải file!");
 		}
-		console.log(fileList);
 	};
 	const handleChange = (e) => {
 		setFileList(e.target.files[0]);

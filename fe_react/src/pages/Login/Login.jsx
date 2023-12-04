@@ -1,49 +1,48 @@
-import './Login.scss';
+import "./Login.scss";
 
-import { Button, Form, Input } from 'antd';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Button, Form, Input } from "antd";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import SignFragment from '../../components/SignFragment/SignFragment';
-import { appPath } from '../../config/appPath';
-import useNotify from '../../hooks/useNotify';
-import { loginAuthenticService } from '../../services/accountServices';
-import { saveInfoToLocalStorage } from '../../utils/storage';
+import SignFragment from "../../components/SignFragment/SignFragment";
+import { appPath } from "../../config/appPath";
+import useNotify from "../../hooks/useNotify";
+import { loginAuthenticService } from "../../services/accountServices";
+import { saveInfoToLocalStorage } from "../../utils/storage";
 
 const Login = () => {
-  const [loading, setLoading] = useState(false);
-  const [authenticResult, setAuthenticResult] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [authenticResult, setAuthenticResult] = useState(false);
 
-  const notify = useNotify();
-  const navigate = useNavigate();
-  const onFinish = (values) => {
-    setLoading(true);
-    loginAuthenticService(
-      values,
-      (res) => {
-        const { roles, accessToken, refreshToken } = res.data;
-        setLoading(false);
-        setAuthenticResult(true);
-        notify.success(`Đăng nhập thành công!`);
-        navigate(appPath.home);
-        saveInfoToLocalStorage(accessToken, refreshToken, roles);
-      },
-      (error) => {
-        console.log(error);
-        setLoading(false);
-        setAuthenticResult(false);
-      }
-    );
-  };
-  const loginForm = (
-    <>
-      <Form
-        name="normal_login"
-        className="login-form"
-        initialValues={{ remember: false }}
-        onFinish={onFinish}
-      >
-        {/* <Form.Item
+	const notify = useNotify();
+	const navigate = useNavigate();
+	const onFinish = (values) => {
+		setLoading(true);
+		loginAuthenticService(
+			values,
+			(res) => {
+				const { roles, accessToken, refreshToken } = res.data;
+				setLoading(false);
+				setAuthenticResult(true);
+				notify.success(`Đăng nhập thành công!`);
+				navigate(appPath.home);
+				saveInfoToLocalStorage(accessToken, refreshToken, roles);
+			},
+			(error) => {
+				setLoading(false);
+				setAuthenticResult(false);
+			}
+		);
+	};
+	const loginForm = (
+		<>
+			<Form
+				name="normal_login"
+				className="login-form"
+				initialValues={{ remember: false }}
+				onFinish={onFinish}
+			>
+				{/* <Form.Item
           name="email"
           rules={[
             {
@@ -58,47 +57,46 @@ const Login = () => {
         >
           <Input placeholder="Email" />
         </Form.Item> */}
-        <Form.Item
-          name="username"
-          rules={[
-            {
-              required: true,
-              message: "Please input your user name!",
-            },
-          ]}
-        >
-          <Input placeholder="User name" />
-        </Form.Item>
-        <Form.Item
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "Please input your password!",
-            },
-          ]}
-        >
-          <Input.Password placeholder="Password" />
-        </Form.Item>
-        {authenticResult === "error" && (
-          <div className="error-authentic">Tài khoản đăng nhập hoặc mật khẩu không đúng!</div>
-        )}
-        <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading}>
-            Login
-          </Button>
-        </Form.Item>
-      </Form>
-      <div className="forgot-password">Forgot Password?</div>
-    </>
-  );
-  return (
-    <SignFragment
-      header={"Login"}
-      socialText={"Login with"}
-    >
-      {loginForm}
-    </SignFragment>
-  );
+				<Form.Item
+					name="username"
+					rules={[
+						{
+							required: true,
+							message: "Please input your user name!",
+						},
+					]}
+				>
+					<Input placeholder="User name" />
+				</Form.Item>
+				<Form.Item
+					name="password"
+					rules={[
+						{
+							required: true,
+							message: "Please input your password!",
+						},
+					]}
+				>
+					<Input.Password placeholder="Password" />
+				</Form.Item>
+				{authenticResult === "error" && (
+					<div className="error-authentic">
+						Tài khoản đăng nhập hoặc mật khẩu không đúng!
+					</div>
+				)}
+				<Form.Item>
+					<Button type="primary" htmlType="submit" loading={loading}>
+						Login
+					</Button>
+				</Form.Item>
+			</Form>
+			<div className="forgot-password">Forgot Password?</div>
+		</>
+	);
+	return (
+		<SignFragment header={"Login"} socialText={"Login with"}>
+			{loginForm}
+		</SignFragment>
+	);
 };
 export default Login;

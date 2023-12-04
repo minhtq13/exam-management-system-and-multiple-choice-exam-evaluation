@@ -13,13 +13,11 @@ const useImportExport = () => {
 		axios
 			.post(`${BASE_URL}/api/user/${object}/import`, file)
 			.then((response) => {
-				console.log(response);
 				notify.success("Tải file thành công!");
 				setLoadingImport(false);
 				getdata(param);
 			})
 			.catch((error) => {
-				console.log(error);
 				notify.error("Lỗi tải file!");
 				setLoadingImport(false);
 			});
@@ -44,7 +42,6 @@ const useImportExport = () => {
 				link.click();
 			})
 			.catch((error) => {
-				console.log(error);
 				notify.error("Lỗi tải file!");
 			});
 	};
@@ -72,7 +69,6 @@ const useImportExport = () => {
 				setLoadingExport(false);
 			})
 			.catch((error) => {
-				console.log(error);
 				notify.error("Lỗi tải file!");
 				setLoadingExport(false);
 			});

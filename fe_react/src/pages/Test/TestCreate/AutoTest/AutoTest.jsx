@@ -44,7 +44,6 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
 				},
 			},
 			(res) => {
-				console.log(res.data);
 				setLoading(false);
 				setOpenModal(true);
 				setTestId(res.data);
@@ -58,7 +57,6 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
 	const checkConfigTotal = (rule, value) => {
 		const total =
 			Number(easyNumber) + Number(mediumNumber) + Number(hardNumber);
-		console.log(total);
 		return total !== Number(totalQuestion)
 			? Promise.reject(
 					"Tổng số câu dễ, trung bình, khó phải bằng tổng số câu hỏi."

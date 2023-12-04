@@ -2,7 +2,6 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./TestPreview.scss";
 const TestPreview = ({ questions, testDetail, testNo }) => {
-	console.log(testNo);
 	return (
 		<div className="test-preview">
 			<div className="test-top">

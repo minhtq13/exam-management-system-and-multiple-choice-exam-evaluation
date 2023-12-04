@@ -44,7 +44,6 @@ const TestList = () => {
 	const [testSetNos, setTestSetNos] = useState([]);
 	const [param, setParam] = useState(initialParam);
 	const handleCreate = (record) => {
-		console.log(record);
 		navigate(`${appPath.testSetCreate}/${record.id}`);
 	};
 	useEffect(() => {
@@ -128,7 +127,6 @@ const TestList = () => {
 							danger
 							onClick={() => {
 								setTestItem(record);
-								console.log(record);
 								setTestSetNos(
 									record.lstTestSetCode.length > 0
 										? record.lstTestSetCode.split(",")
@@ -234,7 +232,7 @@ const TestList = () => {
 					/>
 					<Button className="options" onClick={handleClickAddTest}>
 						<img src={addIcon} alt="Add Icon" />
-						Add Test
+						Thêm
 					</Button>
 				</div>
 			</div>

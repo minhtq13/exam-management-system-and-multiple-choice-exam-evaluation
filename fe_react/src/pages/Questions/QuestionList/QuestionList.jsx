@@ -134,7 +134,7 @@ const QuestionList = () => {
 					<Select
 						allowClear
 						showSearch
-						placeholder="Chọn môn học để hiển thị ngân hàng câu hỏi"
+						placeholder="Chọn môn học"
 						optionFilterProp="children"
 						filterOption={(input, option) =>
 							(option?.label ?? "").includes(input)
@@ -151,7 +151,7 @@ const QuestionList = () => {
 						mode="multiple"
 						showSearch
 						allowClear
-						placeholder="Chọn chương để hiển thị ngân hàng câu hỏi"
+						placeholder="Chọn chương"
 						optionFilterProp="children"
 						filterOption={(input, option) =>
 							(option?.label ?? "").includes(input)

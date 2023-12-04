@@ -1,9 +1,9 @@
 .subject-chapters-top {
   display: flex;
-  justify-content: space-between;
   background-color: #ffffff;
   padding: 20px 30px;
   border-radius: 15px;
+  gap: 20px;
 
   .test-chapters,
   .test-subject {
@@ -29,6 +29,10 @@
       font-size: 16px;
       font-weight: bold;
       flex-shrink: 0;
+    }
+
+    .ant-select {
+      min-width: 120px;
     }
   }
 

@@ -43,7 +43,7 @@ const ExamClassEdit = () => {
 				<UpdateExamClassInfoForm
 					infoHeader="Cập nhật lớp thi"
 					onFinish={onFinish}
-					btnText="Thêm"
+					btnText="Cập nhật"
 					initialValues={{
 						remember: false,
 						subjectId: examClassInfo

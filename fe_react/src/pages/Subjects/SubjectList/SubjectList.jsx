@@ -244,7 +244,6 @@ const SubjectList = () => {
 			...record,
 		});
 		setEditingKey(record.id);
-		console.log(record);
 	};
 	const cancel = () => {
 		setEditingKey("");

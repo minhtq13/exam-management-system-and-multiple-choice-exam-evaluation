@@ -21,19 +21,11 @@ const StudentAdd = () => {
 			}
 		);
 	};
-	const datePickerOnchange = (date, dateString) => {
-		console.log(date, dateString);
-	};
-	const genderOnchange = (value) => {
-		console.log(value);
-	};
 	return (
 		<div className="student-add">
 			<StudentInfo
 				infoHeader="Thêm sinh viên"
 				onFinish={onFinish}
-				datePickerOnchange={datePickerOnchange}
-				genderOnchange={genderOnchange}
 				btnText="Thêm"
 				initialValues={{ remember: false }}
 				loading={loading}

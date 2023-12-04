@@ -25,7 +25,6 @@ const TestView = ({
 	const onChange = (checkValues) => {
 		setQesIds(checkValues);
 		setNumberQues(checkValues.length);
-		console.log(checkValues);
 	};
 	const navigate = useNavigate();
 	const notify = useNotify();
