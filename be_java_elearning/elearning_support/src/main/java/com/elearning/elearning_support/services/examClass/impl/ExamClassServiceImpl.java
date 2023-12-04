@@ -67,10 +67,12 @@ public class ExamClassServiceImpl implements ExamClassService {
         }
         Test test = testService.findTestById(createDTO.getTestId());
 
-        // Tạo examclass
+        // Tạo exam_class
         ExamClass newExamClass = new ExamClass();
         BeanUtils.copyProperties(createDTO, newExamClass);
         newExamClass.setTestId(test.getId());
+        newExamClass.setSubjectId(test.getSubjectId());
+        newExamClass.setSemesterId(test.getSemesterId());
         newExamClass.setCreatedBy(AuthUtils.getCurrentUserId());
         newExamClass.setCreatedAt(new Date());
         newExamClass.setIsEnabled(Boolean.TRUE);
