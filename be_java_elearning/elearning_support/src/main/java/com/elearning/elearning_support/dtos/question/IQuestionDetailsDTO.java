@@ -6,6 +6,8 @@ public interface IQuestionDetailsDTO {
 
     String getContent();
 
+    Integer getLevel();
+
     String getCode();
 
     Long getSubjectId();

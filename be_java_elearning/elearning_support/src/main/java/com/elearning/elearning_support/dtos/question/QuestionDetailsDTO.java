@@ -28,6 +28,9 @@ public class QuestionDetailsDTO {
     @Schema(description = "Mã số câu hỏi")
     String code;
 
+    @Schema(description = "Mức độ câu hỏi")
+    Integer level;
+
     @Schema(description = "Id môn học")
     Long subjectId;
 
