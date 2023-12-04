@@ -6,6 +6,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import com.elearning.elearning_support.dtos.CustomInputStreamResource;
 import com.elearning.elearning_support.dtos.examClass.ExamClassCreateDTO;
 import com.elearning.elearning_support.dtos.examClass.ExamClassSaveReqDTO;
 import com.elearning.elearning_support.dtos.examClass.ICommonExamClassDTO;
@@ -34,6 +35,10 @@ public interface ExamClassService {
      */
     Page<ICommonExamClassDTO> getPageExamClass(String code, Long semesterId, Long subjectId, Long testId, Pageable pageable);
 
+    /**
+     * Danh sách lớp thi trong kỳ thi/ kỳ học
+     */
+    CustomInputStreamResource exportListExamClass(Long semesterId, Long testId) throws IOException;
 
     /**
      * Lấy chi tiết lớp thi

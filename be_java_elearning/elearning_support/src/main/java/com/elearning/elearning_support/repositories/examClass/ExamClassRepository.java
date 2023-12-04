@@ -23,6 +23,9 @@ public interface ExamClassRepository extends JpaRepository<ExamClass, Long> {
     @Query(nativeQuery = true, value = SQLExamClass.GET_LIST_EXAM_CLASS)
     Page<ICommonExamClassDTO> getPageExamClass(String code, Long semesterId, Long subjectId, Long testId, Pageable pageable);
 
+    @Query(nativeQuery = true, value = SQLExamClass.GET_LIST_EXAM_CLASS)
+    List<ICommonExamClassDTO> getListExamClass(String code, Long semesterId, Long subjectId, Long testId);
+
     @Query(nativeQuery = true, value = SQLExamClass.GET_DETAILS_EXAM_CLASS)
     IExamClassDetailDTO getDetailExamClass(Long id);
 

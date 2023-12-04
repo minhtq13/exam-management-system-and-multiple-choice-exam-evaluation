@@ -136,7 +136,7 @@ public class FileUtils {
           "xlsx", "xls"
         };
         public static final String[] CONTENT_TYPES = new String[] {
-            "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.ms-excel"
         };
     }
 
@@ -145,7 +145,7 @@ public class FileUtils {
             "docx", "doc"
         };
         public static final String[] CONTENT_TYPES = new String[] {
-            "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/msword"
         };
     }
 

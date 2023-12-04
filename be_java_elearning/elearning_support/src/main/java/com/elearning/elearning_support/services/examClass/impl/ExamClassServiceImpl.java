@@ -1,6 +1,7 @@
 package com.elearning.elearning_support.services.examClass.impl;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -19,6 +20,7 @@ import org.springframework.util.ObjectUtils;
 import com.elearning.elearning_support.constants.message.errorKey.ErrorKey;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst.Resources;
+import com.elearning.elearning_support.dtos.CustomInputStreamResource;
 import com.elearning.elearning_support.dtos.examClass.ExamClassCreateDTO;
 import com.elearning.elearning_support.dtos.examClass.ExamClassSaveReqDTO;
 import com.elearning.elearning_support.dtos.examClass.ICommonExamClassDTO;
@@ -110,6 +112,28 @@ public class ExamClassServiceImpl implements ExamClassService {
     @Override
     public Page<ICommonExamClassDTO> getPageExamClass(String code, Long semesterId, Long subjectId, Long testId, Pageable pageable) {
         return examClassRepository.getPageExamClass(code, semesterId, subjectId, testId, pageable);
+    }
+
+    @Override
+    public CustomInputStreamResource exportListExamClass(Long semesterId, Long testId) throws IOException {
+        List<ICommonExamClassDTO> lstExamClass = examClassRepository.getListExamClass("", semesterId, -1L, testId);
+        String fileName = String.format("ExamClass_%s.xlsx", LocalDateTime.now());
+        String sheetName = "exam_class";
+        if (!ObjectUtils.isEmpty(lstExamClass)) {
+            fileName = String.format("ExamClass_%s_%s_%s.xlsx", lstExamClass.get(0).getSemester(), lstExamClass.get(0).getTestName(),
+                LocalDateTime.now());
+            sheetName = fileName;
+        }
+        Map<Integer, Pair<String, String>> structure = new LinkedHashMap<>();
+        structure.put(1, Pair.create("Mã lớp thi", "getCode"));
+        structure.put(2, Pair.create("Kỳ thi", "getTestName"));
+        structure.put(3, Pair.create("Phòng thi", "getRoomName"));
+        structure.put(4, Pair.create("Kỳ học", "getSemester"));
+        structure.put(5, Pair.create("Môn thi", "getSubjectTitle"));
+        structure.put(6, Pair.create("Ngày thi", "getExamineDate"));
+        structure.put(7, Pair.create("Thời gian thi", "getExamineTime"));
+        structure.put(8, Pair.create("Số lượng thí sinh", "getNumberOfStudents"));
+        return new CustomInputStreamResource(fileName, excelFileUtils.createWorkbook(lstExamClass, structure, sheetName));
     }
 
     @Override

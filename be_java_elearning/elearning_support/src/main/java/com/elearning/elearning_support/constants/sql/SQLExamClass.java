@@ -16,7 +16,8 @@ public class SQLExamClass {
             "    exClass.id AS id, \n" +
             "    exClass.code AS code, \n" +
             "    exClass.room_name AS roomName, \n" +
-            "    exClass.examine_time AS examineTime, \n" +
+            "    DATE(exClass.examine_time) AS examineDate, \n" +
+            "    TO_CHAR(exClass.examine_time, 'HH24:MI') AS examineTime, \n" +
             "    test.id AS testId, \n" +
             "    test.name AS testName, \n" +
             "    test.duration AS duration, \n" +

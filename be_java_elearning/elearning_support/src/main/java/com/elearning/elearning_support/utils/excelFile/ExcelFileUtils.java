@@ -74,6 +74,9 @@ public class ExcelFileUtils {
                 log.error(MessageConst.EXCEPTION_LOG_FORMAT, exception.getMessage(), exception.getCause());
             }
 
+            // create a cellstyle
+//            CellStyle cellStyle = workbook.createCellStyle();
+//            createBorderCellStyle(cellStyle, BorderStyle.MEDIUM);
             // Fill data to sheet
             fillDataToSheet(sheet, lstObject, structure);
 

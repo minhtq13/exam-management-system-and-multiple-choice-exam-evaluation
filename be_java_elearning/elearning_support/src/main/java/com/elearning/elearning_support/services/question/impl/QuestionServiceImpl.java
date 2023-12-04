@@ -106,6 +106,7 @@ public class QuestionServiceImpl implements QuestionService {
         // Set thông tin cập nhất question
         question.setContent(updateDTO.getContent());
         question.setLevel(updateDTO.getLevel().getLevel());
+        question.setChapterId(updateDTO.getChapterId());
         question.setModifiedAt(new Date());
         question.setModifiedBy(AuthUtils.getCurrentUserId());
         // update images

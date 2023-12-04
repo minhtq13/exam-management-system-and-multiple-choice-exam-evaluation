@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.elearning.elearning_support.dtos.CustomInputStreamResource;
 import com.elearning.elearning_support.dtos.examClass.ExamClassCreateDTO;
 import com.elearning.elearning_support.dtos.examClass.ExamClassSaveReqDTO;
 import com.elearning.elearning_support.dtos.examClass.ICommonExamClassDTO;
@@ -61,6 +62,19 @@ public class ExamClassController {
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
         return examClassService.getPageExamClass(code, semesterId, subjectId, testId, pageable);
+    }
+
+    @GetMapping("/export")
+    @Operation(summary = "Export danh sách lớp thi theo kỳ")
+    public ResponseEntity<InputStreamResource> exportExamClass(
+        @RequestParam(name = "semesterId", required = false, defaultValue = "-1") Long semesterId,
+        @RequestParam(name = "testId", required = false, defaultValue = "-1") Long testId
+    ) throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        CustomInputStreamResource resourceRes = examClassService.exportListExamClass(semesterId, testId);
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.parseMediaType(String.join(";", Arrays.asList(Excel.CONTENT_TYPES))).toString());
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resourceRes.getFileName());
+        return ResponseEntity.ok().headers(headers).body(resourceRes.getResource());
     }
 
     @GetMapping("/detail/{id}")
