@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import com.elearning.elearning_support.dtos.CustomInputStreamResource;
 import com.elearning.elearning_support.dtos.test.test_set.ScoringTestSetReqDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetGenerateReqDTO;
@@ -52,6 +53,16 @@ public class TestSetController {
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.parseMediaType(String.join(";", Arrays.asList(Word.CONTENT_TYPES))).toString());
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
         return ResponseEntity.ok().headers(headers).body(testSetService.exportTestSet(searchReqDTO));
+    }
+
+    @PostMapping(value = "/html/export", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @Operation(summary = "Export đề thi ra file Word từ nội dung HTML")
+    public ResponseEntity<InputStreamResource> exportTestSetToWordFromHtml(@RequestParam(name = "fileHtml") MultipartFile fileHtml) {
+        CustomInputStreamResource resourceRes = testSetService.exportTestSetFromHtml(fileHtml);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.parseMediaType(String.join(";", Arrays.asList(Word.CONTENT_TYPES))).toString());
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resourceRes.getFileName());
+        return ResponseEntity.ok().headers(headers).body(resourceRes.getResource());
     }
 
     @PostMapping("/detail")

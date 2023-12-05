@@ -149,6 +149,13 @@
       <version>1.12.1</version>
     </dependency>
 
+<!--    Aspose word-->
+    <dependency>
+      <groupId>com.luhuiguo</groupId>
+      <artifactId>aspose-words</artifactId>
+      <version>23.1</version>
+    </dependency>
+
 
     <!--  Mail Dependencies      -->
     <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail -->
