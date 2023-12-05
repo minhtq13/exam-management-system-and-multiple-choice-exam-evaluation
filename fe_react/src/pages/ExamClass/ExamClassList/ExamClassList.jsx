@@ -45,7 +45,7 @@ const ExamClassList = () => {
 		semesterLoading,
 		getAllSemesters,
 	} = useCombo();
-	const { exportList } = useImportExport();
+	const { exportList, exportExamClass } = useImportExport();
 	const [deleteKey, setDeleteKey] = useState(null);
 	const [importLoading, setImportLoading] = useState(false);
 	const [param, setParam] = useState(initialParam);
@@ -57,7 +57,6 @@ const ExamClassList = () => {
 	useEffect(() => {
 		if (classId) {
 			getParticipants(classId, roleType);
-			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [classId, roleType]);
@@ -327,7 +326,7 @@ const ExamClassList = () => {
 			key: "examineTime",
 		},
 		{
-			title: "Action",
+			title: "Thao tác",
 			key: "action",
 			render: (_, record) => (
 				<Space size="middle" style={{ cursor: "pointer" }}>
@@ -390,7 +389,7 @@ const ExamClassList = () => {
 		);
 	};
 	const handleExport = () => {
-		exportList(param, "class");
+		exportExamClass(param.semesterId, "exam-class");
 	};
 	return (
 		<div className="exam-class-list">
@@ -435,22 +434,6 @@ const ExamClassList = () => {
 				</div>
 			</div>
 			<div className="examclass-subject-semester">
-				<div className="examclass-select">
-					<span className="select-label">Học phần:</span>
-					<Select
-						allowClear
-						showSearch
-						placeholder="Chọn môn học để hiển thị danh sách đề thi"
-						optionFilterProp="children"
-						filterOption={(input, option) =>
-							(option?.label ?? "").includes(input)
-						}
-						optionLabelProp="label"
-						options={subjectOptions}
-						onChange={subjectOnChange}
-						loading={subLoading}
-					/>
-				</div>
 				<div className="examclass-select examclass-select-semester">
 					<span className="select-label">Kỳ thi:</span>
 					<Select
@@ -465,6 +448,23 @@ const ExamClassList = () => {
 						options={semesterOptions}
 						onChange={semsOnChange}
 						loading={semesterLoading}
+					/>
+				</div>
+				<div className="examclass-select">
+					<span className="select-label">Học phần:</span>
+					<Select
+						allowClear
+						showSearch
+						placeholder="Chọn môn học để hiển thị danh sách đề thi"
+						optionFilterProp="children"
+						filterOption={(input, option) =>
+							(option?.label ?? "").includes(input)
+						}
+						optionLabelProp="label"
+						options={subjectOptions}
+						onChange={subjectOnChange}
+						loading={subLoading}
+						className="examclass-select-subject"
 					/>
 				</div>
 			</div>

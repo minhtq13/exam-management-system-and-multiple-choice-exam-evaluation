@@ -1,7 +1,4 @@
 import AutomaticScoring from "../pages/AutomaticScoring/AutomaticScoring";
-import AddBlog from "../pages/Blogs/AddBlog/AddBlog";
-import AllBlogs from "../pages/Blogs/AllBlogs/AllBlogs";
-import EditBlog from "../pages/Blogs/EditBlog/EditBlog";
 import AdminDashboard from "../pages/Dashboard/AdminDashboard/AdminDashboard";
 import StudentDashboard from "../pages/Dashboard/StudentDashboard/StudentDashboard";
 import TeacherDashboard from "../pages/Dashboard/TeacherDashboard/TeacherDashboard";
@@ -63,9 +60,6 @@ const publicRoutes = [
 	//exament: ExamList },
 	{ path: appPath.automaticScoring, component: AutomaticScoring },
 	{ path: appPath.library, component: Library },
-	{ path: appPath.addBlog, component: AddBlog },
-	{ path: appPath.allBlogs, component: AllBlogs },
-	{ path: appPath.editBlog, component: EditBlog },
 	{ path: appPath.timeTable, component: TimeTable },
 	//question
 	{ path: appPath.listQuestions, component: QuestionList },

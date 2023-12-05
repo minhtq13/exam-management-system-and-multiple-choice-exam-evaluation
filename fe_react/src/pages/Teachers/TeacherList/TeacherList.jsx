@@ -15,6 +15,7 @@ import useTeachers from "../../../hooks/useTeachers";
 import { setSelectedItem } from "../../../redux/slices/appSlice";
 import { deleteTeachersService } from "../../../services/teachersServices";
 import "./TeacherList.scss";
+import { convertGender } from "../../../utils/tools";
 
 const TeacherList = () => {
 	const initialParam = {
@@ -193,7 +194,7 @@ const TeacherList = () => {
 						else color = "red";
 						return (
 							<Tag color={color} key={gender}>
-								{gender ? gender?.toUpperCase() : "UNKNOWN"}
+								{gender ? convertGender(gender?.toUpperCase()) : "Không xác định"}
 							</Tag>
 						);
 					})}
@@ -213,7 +214,7 @@ const TeacherList = () => {
 			filterSearch: true,
 		},
 		{
-			title: "Action",
+			title: "Thao tác",
 			key: "action",
 			render: (_, record) => (
 				<Space size="middle" style={{ cursor: "pointer" }}>
