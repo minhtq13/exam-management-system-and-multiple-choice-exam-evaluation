@@ -206,7 +206,7 @@ const TeacherList = () => {
 				},
 				{
 					text: "Nữ",
-					value: "FEMALE",
+					value: "FENam",
 				},
 			],
 			onFilter: (value, record) => record.gender.indexOf(value) === 0,
