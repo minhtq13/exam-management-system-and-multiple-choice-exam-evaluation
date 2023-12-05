@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import com.elearning.elearning_support.dtos.studentTestSet.ScoredStudentTestResDTO;
+import com.elearning.elearning_support.dtos.CustomInputStreamResource;
 import com.elearning.elearning_support.dtos.studentTestSet.StudentHandledTestDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetGenerateReqDTO;
@@ -27,6 +27,12 @@ public interface TestSetService {
      * Export file word đề thi
      */
     InputStreamResource exportTestSet(TestSetSearchReqDTO searchReqDTO) throws IOException;
+
+
+    /**
+     * Export file word đề thi từ nội dung HTML
+     */
+    CustomInputStreamResource exportTestSetFromHtml(MultipartFile fileHtml);
 
     /**
      *

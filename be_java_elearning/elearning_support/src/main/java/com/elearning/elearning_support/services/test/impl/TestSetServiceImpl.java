@@ -2,6 +2,7 @@ package com.elearning.elearning_support.services.test.impl;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,6 +21,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.compress.utils.FileNameUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.math3.util.Pair;
@@ -27,8 +29,12 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import com.aspose.words.Document;
+import com.aspose.words.SaveFormat;
+import com.aspose.words.SaveOptions;
 import com.elearning.elearning_support.constants.FileConstants.Extension.Image;
 import com.elearning.elearning_support.constants.SystemConstants;
+import com.elearning.elearning_support.dtos.CustomInputStreamResource;
 import com.elearning.elearning_support.dtos.common.ICommonIdCode;
 import com.elearning.elearning_support.dtos.test.test_set.ITestSetScoringDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetPreviewDTO;
@@ -218,6 +224,21 @@ public class TestSetServiceImpl implements TestSetService {
             }
         } catch (IOException e) {
             log.error(MessageConst.EXCEPTION_LOG_FORMAT, e.getMessage(), e.getCause());
+        }
+        return null;
+    }
+
+    @Override
+    public CustomInputStreamResource exportTestSetFromHtml(MultipartFile fileHtml) {
+        try {
+            Document document = new Document(new ByteArrayInputStream(fileHtml.getBytes()));
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            document.save(outputStream, SaveFormat.DOCX);
+            outputStream.close();
+            return new CustomInputStreamResource(FileNameUtils.getBaseName(fileHtml.getOriginalFilename()) + ".docx",
+                new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray())));
+        } catch (Exception exception) {
+            log.error(MessageConst.EXCEPTION_LOG_FORMAT, exception.getMessage(), exception.getCause());
         }
         return null;
     }
