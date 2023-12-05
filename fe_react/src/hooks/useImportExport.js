@@ -2,6 +2,7 @@ import axios from "axios";
 import { BASE_URL } from "../config/apiPath";
 import useNotify from "./useNotify";
 import { useState } from "react";
+import { capitalizeFirstLetter } from "../utils/tools";
 
 const useImportExport = () => {
 	const notify = useNotify();
@@ -18,7 +19,7 @@ const useImportExport = () => {
 				getdata(param);
 			})
 			.catch((error) => {
-				notify.error("Lỗi tải file!");
+				notify.error(capitalizeFirstLetter(error.response.data.message));
 				setLoadingImport(false);
 			});
 	};
@@ -42,7 +43,7 @@ const useImportExport = () => {
 				link.click();
 			})
 			.catch((error) => {
-				notify.error("Lỗi tải file!");
+				notify.error(capitalizeFirstLetter(error.response.data.message));
 			});
 	};
 	const exportTestList = (params, nameFile) => {
@@ -69,7 +70,35 @@ const useImportExport = () => {
 				setLoadingExport(false);
 			})
 			.catch((error) => {
-				notify.error("Lỗi tải file!");
+				notify.error(capitalizeFirstLetter(error.response.data.message));
+				setLoadingExport(false);
+			});
+	};
+	const exportExamClass = (params, object) => {
+		// object = "exam-class"
+		setLoadingExport(true);
+		axios({
+			url: `${BASE_URL}/api/${object}/export`,
+			method: "GET",
+			responseType: "blob",
+			data: params,
+		})
+			.then((response) => {
+				const url = window.URL.createObjectURL(
+					new Blob([response.data])
+				);
+				const link = document.createElement("a");
+				link.href = url;
+				link.setAttribute(
+					"download",
+					`${object}-${Date.now()}.xlsx`
+				);
+				document.body.appendChild(link);
+				link.click();
+				setLoadingExport(false);
+			})
+			.catch((error) => {
+				notify.error(capitalizeFirstLetter(error.response.data.message));
 				setLoadingExport(false);
 			});
 	};
@@ -79,6 +108,7 @@ const useImportExport = () => {
 		exportList,
 		loadingExport,
 		exportTestList,
+		exportExamClass,
 	};
 };
 export default useImportExport;

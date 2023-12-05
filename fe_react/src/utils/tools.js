@@ -40,3 +40,9 @@ export const wordLimit = (message, wordCount) => {
 export function convertGender(gender) {
   return gender === "MALE" ? "NAM" : "NỮ";
 }
+export function capitalizeFirstLetter(str) {
+  if (!str) {
+    return "";
+  }
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

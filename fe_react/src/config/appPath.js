@@ -26,9 +26,6 @@ export const appPath = {
   automaticScoring: "/automatic-scoring",
   timeTable: "/time-table",
   library: "/library",
-  allBlogs: "/all-blogs",
-  addBlog: "/add-blog",
-  editBlog: "/edit-blog",
   //question
   listQuestions: "/question-list",
   addQuestions: "/question-add",

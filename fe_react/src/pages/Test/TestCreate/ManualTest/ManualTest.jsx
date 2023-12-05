@@ -13,6 +13,7 @@ const ManualTest = ({ questionList, chapterIds, subjectId }) => {
 	const [easyNumber, setEasyNumber] = useState(null);
 	const [mediumNumber, setMediumNumber] = useState(null);
 	const [hardNumber, setHardNumber] = useState(null);
+	// eslint-disable-next-line no-unused-vars
 	const [semesterId, setSemesterId] = useState(null);
 	const { allSemester, semesterLoading, getAllSemesters } = useCombo();
 	useEffect(() => {

@@ -118,7 +118,7 @@ const TestList = () => {
 			key: "modifiedAt",
 		},
 		{
-			title: "Action",
+			title: "Thao tác",
 			key: "action",
 			render: (_, record) => (
 				<>

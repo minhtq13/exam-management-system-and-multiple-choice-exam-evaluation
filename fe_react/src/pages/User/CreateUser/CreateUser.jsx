@@ -2,20 +2,20 @@ import React, { useState } from "react";
 import UserForm from "./UserForm/UserForm";
 import useNotify from "../../../hooks/useNotify";
 import { createUser } from "../../../services/userService";
-import { formatDateParam } from "../../../utils/tools";
+import { capitalizeFirstLetter, formatDateParam } from "../../../utils/tools";
 import "./CreateUser.scss";
 const CreateUser = () => {
 	const [loading, setLoading] = useState(false);
 	const [formKey, setFormKey] = useState(0);
 	const notify = useNotify();
 	const onFinish = (value) => {
-		console.log(value)
+		console.log(value);
 		setLoading(true);
 		createUser(
 			{
 				...value,
 				birthDate: formatDateParam(value.birthDate),
-				lstRoleId: [value.role === 0 ? 3 : 2],
+				lstRoleId: [value.userType === 0 ? 3 : 2],
 				departmentId: -1,
 				metaData: {
 					courseNum: +value.metaData,
@@ -28,7 +28,7 @@ const CreateUser = () => {
 			},
 			(error) => {
 				setLoading(false);
-				notify.error("Lỗi thêm mới người dùng!");
+				notify.error(capitalizeFirstLetter(error.response.data.message));
 			}
 		);
 	};

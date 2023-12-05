@@ -219,7 +219,7 @@ const StudentList = () => {
 			filterSearch: true,
 		},
 		{
-			title: "Action",
+			title: "Thao tác",
 			key: "action",
 			render: (_, record) => (
 				<Space size="middle" style={{ cursor: "pointer" }}>
