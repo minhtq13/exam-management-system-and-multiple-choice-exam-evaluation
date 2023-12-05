@@ -10,6 +10,13 @@
     margin-top: 30vh;
   }
 
+  .semester-test {
+    .ant-select {
+      display: flex;
+      align-items: center;
+    }
+  }
+
   .ant-form {
     margin-top: 20px;
     background-color: #ffffff;

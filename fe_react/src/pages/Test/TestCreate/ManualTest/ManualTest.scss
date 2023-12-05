@@ -23,6 +23,11 @@
     .question-number {
       color: var(--hust-color);
     }
+
+    .ant-select {
+      display: flex;
+      align-items: center;
+    }
   }
 
   .test-re-view {
@@ -43,5 +48,15 @@
 
   .ant-modal-content {
     margin-top: 30vh;
+  }
+
+  .manual-config-details {
+    .ant-input {
+      margin-bottom: 10px;
+    }
+
+    .error-message {
+      color: #FF4D4F;
+    }
   }
 }

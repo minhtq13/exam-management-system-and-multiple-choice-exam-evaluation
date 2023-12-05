@@ -15,6 +15,7 @@ const AddQuestions = () => {
 	const [loading, setLoading] = useState(false);
 	const [formKey, setFormKey] = useState(0);
 	const [preChapter, setPreChapter] = useState(null);
+	const [value, setValue] = useState(null);
 	const {
 		chapterLoading,
 		subLoading,
@@ -319,6 +320,19 @@ const AddQuestions = () => {
 																			formats={
 																				formats
 																			}
+																			value={
+																				value
+																			}
+																			onChange={(
+																				value
+																			) => {
+																				setValue(
+																					value
+																				);
+																				console.log(
+																					value
+																				);
+																			}}
 																			bounds="#root"
 																			placeholder="Nhập câu trả lời..."
 																		/>

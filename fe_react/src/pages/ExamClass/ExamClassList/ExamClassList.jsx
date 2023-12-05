@@ -317,7 +317,12 @@ const ExamClassList = () => {
 			key: "subjectTitle",
 		},
 		{
-			title: "Thời gian thi",
+			title: "Ngày thi",
+			dataIndex: "examineDate",
+			key: "examineDate",
+		},
+		{
+			title: "Giờ thi",
 			dataIndex: "examineTime",
 			key: "examineTime",
 		},
@@ -349,7 +354,8 @@ const ExamClassList = () => {
 		classCode: obj.classCode,
 		semester: obj.semester,
 		subjectTitle: obj.subjectTitle,
-		examineTime: obj.examineTime,
+		examineDate: obj.examineTime.split(" ")[0],
+		examineTime: obj.examineTime.split(" ")[1],
 		id: obj.id,
 	}));
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -450,7 +456,7 @@ const ExamClassList = () => {
 					<Select
 						allowClear
 						showSearch
-						placeholder="Kỳ thi"
+						placeholder="Học kỳ"
 						optionFilterProp="children"
 						filterOption={(input, option) =>
 							(option?.label ?? "").includes(input)

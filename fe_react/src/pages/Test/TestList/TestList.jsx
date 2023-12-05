@@ -128,7 +128,8 @@ const TestList = () => {
 							onClick={() => {
 								setTestItem(record);
 								setTestSetNos(
-									record.lstTestSetCode.length > 0
+									record.lstTestSetCode &&
+										record.lstTestSetCode.length > 0
 										? record.lstTestSetCode.split(",")
 										: []
 								);
@@ -255,7 +256,7 @@ const TestList = () => {
 						/>
 					</div>
 					<div className="test-select test-select-semester">
-						<span className="select-label">Kỳ thi:</span>
+						<span className="select-label">Học kỳ:</span>
 						<Select
 							allowClear
 							showSearch
@@ -312,7 +313,7 @@ const TestList = () => {
 					<List
 						itemLayout="horizontal"
 						className="test-set-list"
-						dataSource={testSetNos}
+						dataSource={testSetNos ?? []}
 						renderItem={(item) => (
 							<List.Item
 								actions={[

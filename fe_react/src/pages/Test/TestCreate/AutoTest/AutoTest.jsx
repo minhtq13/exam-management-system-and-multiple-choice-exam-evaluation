@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { Form, Button, Input, DatePicker, Modal, Col, Row } from "antd";
+import { useEffect, useState } from "react";
+import { Form, Button, Input, DatePicker, Modal, Col, Row, Select } from "antd";
 import "./AutoTest.scss";
 import dayjs from "dayjs";
 import { testRandomService } from "../../../../services/testServices";
 import { useNavigate } from "react-router-dom";
 import useNotify from "../../../../hooks/useNotify";
 import { appPath } from "../../../../config/appPath";
+import useCombo from "../../../../hooks/useCombo";
 
 const AutoTest = ({ chapterIds, formKey, subjectId }) => {
 	const [loading, setLoading] = useState(false);
@@ -16,43 +17,58 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
 	const [mediumNumber, setMediumNumber] = useState(0);
 	const [hardNumber, setHardNumber] = useState(0);
 	const [form] = Form.useForm();
+	const { allSemester, semesterLoading, getAllSemesters } = useCombo();
 	const notify = useNotify();
+	useEffect(() => {
+		getAllSemesters({ search: "" });
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+	const options =
+		allSemester && allSemester.length > 0
+			? allSemester.map((item) => {
+					return { value: item.id, label: item.name };
+			  })
+			: [];
 	const navigate = useNavigate();
 	const onFinish = (value) => {
-		setLoading(true);
-		testRandomService(
-			{
-				subjectId: subjectId,
-				chapterIds: chapterIds,
-				name: value.name,
-				startTime: dayjs(value.startTime).format("DD/MM/YYYY HH:mm"),
-				endTime: dayjs(value.endTime).format("DD/MM/YYYY HH:mm"),
-				duration: Number(value.duration),
-				questionQuantity: Number(value.questionQuantity),
-				totalPoint: Number(value.totalPoint),
-				generateConfig: {
-					numEasyQuestion: Number(
-						value.generateConfig.numEasyQuestion
+		if (subjectId !== null && chapterIds.length > 0) {
+			setLoading(true);
+			testRandomService(
+				{
+					subjectId: subjectId,
+					chapterIds: chapterIds,
+					name: value.name,
+					startTime: dayjs(value.startTime).format(
+						"DD/MM/YYYY HH:mm"
 					),
-					numMediumQuestion: Number(
-						value.generateConfig.numMediumQuestion
-					),
-					numHardQuestion: Number(
-						value.generateConfig.numHardQuestion
-					),
-					numTotalQuestion: Number(totalQuestion),
+					endTime: dayjs(value.endTime).format("DD/MM/YYYY HH:mm"),
+					duration: Number(value.duration),
+					questionQuantity: Number(value.questionQuantity),
+					totalPoint: Number(value.totalPoint),
+					generateConfig: {
+						numEasyQuestion: Number(
+							value.generateConfig.numEasyQuestion
+						),
+						numMediumQuestion: Number(
+							value.generateConfig.numMediumQuestion
+						),
+						numHardQuestion: Number(
+							value.generateConfig.numHardQuestion
+						),
+						numTotalQuestion: Number(totalQuestion),
+					},
 				},
-			},
-			(res) => {
-				setLoading(false);
-				setOpenModal(true);
-				setTestId(res.data);
-			},
-			(error) => {
-				setLoading(false);
-				notify.error("Lỗi tạo đề thi!");
-			}
-		);
+				(res) => {
+					setLoading(false);
+					setOpenModal(true);
+					setTestId(res.data);
+				},
+				(error) => {
+					setLoading(false);
+					notify.error("Lỗi tạo đề thi!");
+				}
+			);
+		}
 	};
 	const checkConfigTotal = (rule, value) => {
 		const total =
@@ -131,21 +147,6 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
 					></DatePicker>
 				</Form.Item>
 				<Form.Item
-					name="endTime"
-					label="Thời gian bắt đầu:"
-					rules={[
-						{
-							required: true,
-							message: "Chưa chọn ngày",
-						},
-					]}
-				>
-					<DatePicker
-						format={"YYYY-MM-DD HH:mm"}
-						showTime={{ format: "HH:mm" }}
-					></DatePicker>
-				</Form.Item>
-				<Form.Item
 					name="duration"
 					label="Thời gian thi(phút):"
 					rules={[
@@ -158,19 +159,25 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
 					<Input type="number" placeholder="Nhập thời gian thi" />
 				</Form.Item>
 				<Form.Item
+					className="semester-test"
 					name="semesterId"
-					label="Kỳ thi"
+					label="Học kỳ"
 					rules={[
 						{
 							required: true,
-							message: "Chưa điền kỳ thi",
+							message: "Chưa chọn kỳ thi",
 						},
 					]}
 				>
-					<Input type="number" placeholder="Nhập kỳ thi" />
+					<Select
+						loading={semesterLoading}
+						placeholder="Chọn kỳ thi"
+						options={options}
+						style={{ height: 45 }}
+					/>
 				</Form.Item>
 				<Form.Item
-					label="Số câu"
+					label="Phân loại"
 					name="config"
 					rules={[
 						{

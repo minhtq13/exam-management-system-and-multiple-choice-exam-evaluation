@@ -16,6 +16,7 @@ const TestView = ({
 	totalPoint,
 	name,
 	subjectId,
+	semesterId,
 }) => {
 	const [quesIds, setQesIds] = useState([]);
 	const [openModal, setOpenModal] = useState(false);
@@ -123,6 +124,9 @@ const TestView = ({
 	return (
 		<div className="test-view">
 			<div className="test-wrap">
+				<div className="guide-text">
+					Chọn bộ câu hỏi dưới đây để sử dụng cho kỳ thi:
+				</div>
 				<div className="number-ques">{`Số lượng câu hỏi: ${numberQues}`}</div>
 				<Checkbox.Group options={options} onChange={onChange} />
 			</div>

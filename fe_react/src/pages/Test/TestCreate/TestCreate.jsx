@@ -61,11 +61,11 @@ const TestCreate = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [subjectId]);
 	useEffect(() => {
-		if (tabKey === "manual" && subjectId) {
+		if (tabKey === "manual") {
 			getAllQuestions(param);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [param, tabKey, subjectId]);
+	}, [param, tabKey]);
 	const subjectOptions = allSubjects.map((item) => {
 		return { value: item.id, label: item.name };
 	});
