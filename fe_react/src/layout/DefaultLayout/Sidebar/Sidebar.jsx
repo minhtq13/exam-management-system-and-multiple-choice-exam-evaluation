@@ -8,8 +8,9 @@ import { useEffect, useState } from "react";
 import { BsQuestionCircleFill } from "react-icons/bs";
 import { FaBookOpen, FaGraduationCap, FaRegCalendarAlt } from "react-icons/fa";
 import { GiTeacher } from "react-icons/gi";
-import { ImBlogger } from "react-icons/im";
 import { MdOutlineSubject } from "react-icons/md";
+import { AiFillCopy } from "react-icons/ai";
+import { SiManageiq } from "react-icons/si";
 import { VscLibrary } from "react-icons/vsc";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -27,28 +28,24 @@ const Sidebar = () => {
 						isCollapse ? "title-present-collapse" : "title-present"
 					}
 				>
-					Quản lý
+					<SiManageiq /> Quản lý
 				</div>
 			),
 			key: "quanly",
 			type: "group",
 			children: [
 				{
-					label: "Dashboard",
+					label: "Tổng quan",
 					key: "dashboard",
 					icon: <AppstoreOutlined style={{ color: "#ffff" }} />,
 					children: [
 						{
-							label: "Student Dashboard",
+							label: "Tổng quan sinh viên",
 							key: "student-dashboard",
 						},
 						{
-							label: "Teacher Dashboard",
+							label: "Tổng quan giáo viên",
 							key: "teacher-dashboard",
-						},
-						{
-							label: "Admin Dashboard",
-							key: "admin-dashboard",
 						},
 					],
 				},
@@ -89,7 +86,7 @@ const Sidebar = () => {
 						isCollapse ? "title-present-collapse" : "title-present"
 					}
 				>
-					Kỳ thi
+					<AiFillCopy /> Kỳ thi
 				</div>
 			),
 			key: "kythi",
@@ -142,16 +139,6 @@ const Sidebar = () => {
 					label: "Thư viện",
 					key: "library",
 					icon: <VscLibrary style={{ color: "#ffff" }} />,
-				},
-				{
-					label: "Blogs",
-					key: "blog",
-					icon: <ImBlogger style={{ color: "#ffff" }} />,
-					children: [
-						{ label: "All Blogs", key: "all-blogs" },
-						{ label: "Add Blog", key: "add-blog" },
-						{ label: "Edit Blog", key: "edit-blog" },
-					],
 				},
 			],
 		},
