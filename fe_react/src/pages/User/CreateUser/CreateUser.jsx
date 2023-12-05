@@ -9,7 +9,6 @@ const CreateUser = () => {
 	const [formKey, setFormKey] = useState(0);
 	const notify = useNotify();
 	const onFinish = (value) => {
-		console.log(value);
 		setLoading(true);
 		createUser(
 			{
