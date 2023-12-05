@@ -37,3 +37,6 @@ export const wordLimit = (message, wordCount) => {
   }
   return;
 };
+export function convertGender(gender) {
+  return gender === "MALE" ? "NAM" : "NỮ";
+}

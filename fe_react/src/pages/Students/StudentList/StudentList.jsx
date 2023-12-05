@@ -15,6 +15,7 @@ import useStudents from "../../../hooks/useStudents";
 import { setSelectedItem } from "../../../redux/slices/appSlice";
 import { deleteStudentsService } from "../../../services/studentsService";
 import "./StudentList.scss";
+import { convertGender } from "../../../utils/tools";
 
 const StudentList = () => {
 	const initialParam = {
@@ -198,7 +199,7 @@ const StudentList = () => {
 						else color = "red";
 						return (
 							<Tag color={color} key={gender}>
-								{gender ? gender?.toUpperCase() : "UNKNOWN"}
+								{gender ? convertGender(gender?.toUpperCase()) : "Không xác định"}
 							</Tag>
 						);
 					})}
@@ -206,11 +207,11 @@ const StudentList = () => {
 			),
 			filters: [
 				{
-					text: "Male",
+					text: "Nam",
 					value: "Nam",
 				},
 				{
-					text: "Female",
+					text: "Nữ",
 					value: "Nữ",
 				},
 			],

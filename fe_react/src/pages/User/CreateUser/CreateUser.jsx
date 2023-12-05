@@ -9,6 +9,7 @@ const CreateUser = () => {
 	const [formKey, setFormKey] = useState(0);
 	const notify = useNotify();
 	const onFinish = (value) => {
+		console.log(value)
 		setLoading(true);
 		createUser(
 			{
@@ -16,6 +17,9 @@ const CreateUser = () => {
 				birthDate: formatDateParam(value.birthDate),
 				lstRoleId: [value.role === 0 ? 3 : 2],
 				departmentId: -1,
+				metaData: {
+					courseNum: +value.metaData,
+				}
 			},
 			(res) => {
 				setLoading(false);

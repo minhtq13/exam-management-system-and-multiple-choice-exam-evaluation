@@ -1,6 +1,6 @@
 import { DatePicker, Form, Input, Select, Button } from "antd";
 import "./UserForm.scss";
-import React from "react";
+import React, {useState} from "react";
 const UserForm = ({
 	onFinish,
 	initialValues,
@@ -35,6 +35,10 @@ const UserForm = ({
 	];
 	const dateFormat = "DD/MM/YYYY";
 	const messageRequired = "Trường này là bắt buộc!"
+	const [role, setRole] = useState(-1)
+	const handleOnChange = (value) => {
+		setRole(value)
+	}
 	return (
 		<div className="user-form-component">
 			<p className="info-header">{infoHeader}</p>
@@ -87,8 +91,18 @@ const UserForm = ({
 						placeholder="Chọn vai trò"
 						options={roleOption}
 						style={{ height: 45 }}
+						onChange={handleOnChange}
 					></Select>
 				</Form.Item>
+				{role === 1 && (
+						<Form.Item
+							name="metaData"
+							label="Khoá"
+							colon={true}
+							rules={[{required: true, message: messageRequired}]}
+						>
+							<Input placeholder="Nhập tên người dùng" />
+						</Form.Item> )}
 				<Form.Item
 					name="code"
 					label="Mã số SV/GV"
