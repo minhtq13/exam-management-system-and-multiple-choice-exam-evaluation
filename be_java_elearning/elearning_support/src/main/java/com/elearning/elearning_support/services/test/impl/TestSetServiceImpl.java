@@ -31,12 +31,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import com.aspose.words.Document;
 import com.aspose.words.SaveFormat;
-import com.aspose.words.SaveOptions;
 import com.elearning.elearning_support.constants.FileConstants.Extension.Image;
 import com.elearning.elearning_support.constants.SystemConstants;
 import com.elearning.elearning_support.dtos.CustomInputStreamResource;
 import com.elearning.elearning_support.dtos.common.ICommonIdCode;
 import com.elearning.elearning_support.dtos.test.test_set.ITestSetScoringDTO;
+import com.elearning.elearning_support.dtos.test.test_set.ScoringPreviewDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetPreviewDTO;
 import com.elearning.elearning_support.entities.exam_class.ExamClass;
 import com.elearning.elearning_support.entities.studentTest.StudentTestSet;
@@ -194,8 +194,8 @@ public class TestSetServiceImpl implements TestSetService {
         }
         testSetQuestionRepository.saveAll(lstTestSetQuestion);
         return lstTestSet.stream()
-            .map(testSet -> new TestSetPreviewDTO(testSet.getId(), testSet.getCode(), testSet.getTestNo(), testSet.getTestId())).collect(
-                Collectors.toList());
+            .map(testSet -> new TestSetPreviewDTO(testSet.getId(), testSet.getCode(), testSet.getTestNo(), testSet.getTestId()))
+            .collect(Collectors.toList());
     }
 
 
@@ -240,7 +240,7 @@ public class TestSetServiceImpl implements TestSetService {
         } catch (Exception exception) {
             log.error(MessageConst.EXCEPTION_LOG_FORMAT, exception.getMessage(), exception.getCause());
         }
-        return null;
+        return new CustomInputStreamResource();
     }
 
     @Transactional
@@ -306,17 +306,19 @@ public class TestSetServiceImpl implements TestSetService {
      * ======================== TEST SET SCORING SERVICES ====================
      */
 
+    @Transactional
     @Override
-    public List<StudentHandledTestDTO> scoreExamClassTestSet(String examClassCode) {
-        // TODO: Call AI tool to processed answered sheets
+    public List<ScoringPreviewDTO> scoreExamClassTestSet(String examClassCode) {
         callAIModelProcessing(examClassCode);
-        return loadListStudentScoredSheets(examClassCode);
+        return scoreStudentTestSet(loadListStudentScoredSheets(examClassCode));
     }
 
 
     @Transactional
     @Override
-    public void scoreStudentTestSet(List<StudentHandledTestDTO> handledTestSets) {
+    public List<ScoringPreviewDTO> scoreStudentTestSet(List<StudentHandledTestDTO> handledTestSets) {
+        long startTimeMillis = System.currentTimeMillis();
+        log.info("============== STARTED SCORING HANDLED ANSWER SHEET AT {} =================", startTimeMillis);
         Long currentUserId = AuthUtils.getCurrentUserId();
         // find -> student, test-set
         // Map exam_class + testCode -> testSetId
@@ -332,10 +334,11 @@ public class TestSetServiceImpl implements TestSetService {
             .collect(Collectors.toMap(ICommonIdCode::getCode, ICommonIdCode::getId));
 
         // list student - test set
-        List<StudentTestSet> lstStudentTestSet = new ArrayList<>();
+//        List<StudentTestSet> lstStudentTestSet = new ArrayList<>();
 
         // map testSetId -> query test_set_question
         Map<Long, Set<ITestQuestionCorrectAnsDTO>> mapQueriedTestSetQuestions = new HashMap<>();
+        List<ScoringPreviewDTO> lstScoringPreview = new ArrayList<>();
         for (StudentHandledTestDTO handledItem : handledTestSets) {
             // init map
             ITestSetScoringDTO handledData = mapGeneralHandledData.get(Pair.create(handledItem.getExamClassCode(), handledItem.getTestCode()));
@@ -358,8 +361,9 @@ public class TestSetServiceImpl implements TestSetService {
             }
             correctAnswers.forEach(item -> mapQuestionCorrectAns.put(item.getQuestionNo(), item));
             // scoring
-//            int numCorrectAns = 0;
+            int numCorrectAns = 0;
             int numNotMarkedQuestions = 0;
+            double totalScore = 0.0;
             for (HandledAnswerDTO handledAnswer : handledItem.getAnswers()) {
                 // Get selected answers and check if not marked
                 Set<Integer> selectedAnsNo = TestUtils.getSelectedAnswer(handledAnswer.getSelectedAnswers());
@@ -381,7 +385,7 @@ public class TestSetServiceImpl implements TestSetService {
                 studentAnswerDetail.setCreatedBy(currentUserId);
                 if (!ObjectUtils.isEmpty(correctAnswerNo) && CollectionUtils.containsAll(correctAnswerNo, selectedAnsNo)) {
                     studentAnswerDetail.setIsCorrected(Boolean.TRUE);
-//                    numCorrectAns ++;
+                    numCorrectAns++;
                 } else {
                     studentAnswerDetail.setIsCorrected(Boolean.FALSE);
                 }
@@ -390,9 +394,20 @@ public class TestSetServiceImpl implements TestSetService {
             studentTestSet.setMarked(handledItem.getAnswers().size() - numNotMarkedQuestions);
             studentTestSet.setMarkerRate(((double) (studentTestSet.getMarked()) / (handledItem.getAnswers().size())) * 100.0);
             studentTestSet.setLstStudentTestSetDetail(lstDetails);
-            lstStudentTestSet.add(studentTestSet);
+            //lstStudentTestSet.add(studentTestSet);
+
+            // create scoring preview for each handled answer-sheet
+            ScoringPreviewDTO scoringPreviewItem = new ScoringPreviewDTO(handledItem);
+            scoringPreviewItem.setNumMarkedAnswers(handledItem.getAnswers().size() - numNotMarkedQuestions);
+            scoringPreviewItem.setNumCorrectAnswers(numCorrectAns);
+            scoringPreviewItem.setTotalScore(0.5 * numCorrectAns); // temp questionMark = 0.5
+            lstScoringPreview.add(scoringPreviewItem);
         }
-        studentTestSetRepository.saveAll(lstStudentTestSet);
+        //TODO: store temp data for saving later
+        //studentTestSetRepository.saveAll(lstStudentTestSet);
+
+        log.info("============== ENDED SCORING HANDLED ANSWER SHEET AFTER {} =================", System.currentTimeMillis() - startTimeMillis);
+        return lstScoringPreview;
     }
 
     @Override

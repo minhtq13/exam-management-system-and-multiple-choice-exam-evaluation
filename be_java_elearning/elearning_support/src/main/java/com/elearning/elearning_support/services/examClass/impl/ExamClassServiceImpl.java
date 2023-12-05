@@ -165,7 +165,7 @@ public class ExamClassServiceImpl implements ExamClassService {
     }
 
     @Override
-    public InputStreamResource exportExamClassParticipant(Long examClassId, UserExamClassRoleEnum roleType) throws IOException {
+    public CustomInputStreamResource exportExamClassParticipant(Long examClassId, UserExamClassRoleEnum roleType) throws IOException {
         List<IExamClassParticipantDTO> participants = examClassRepository.getListExamClassParticipant(examClassId, roleType.getType());
         // Create export structure
         String sheetName = ObjectUtils.isEmpty(participants) ? "result" : participants.get(0).getExamClassCode();
@@ -174,7 +174,9 @@ public class ExamClassServiceImpl implements ExamClassService {
         structure.put(2, Pair.create("code", "getCode"));
         structure.put(3, Pair.create("role", "getRoleName"));
         structure.put(4, Pair.create("exam_class", "getExamClassCode"));
-        return excelFileUtils.createWorkbook(participants, structure, sheetName);
+        String exportObject = roleType == UserExamClassRoleEnum.STUDENT ? "student" : "supervisor";
+        String fileName = String.format("ExamClass_%s_%s.xlsx", exportObject, LocalDateTime.now());
+        return new CustomInputStreamResource(fileName, excelFileUtils.createWorkbook(participants, structure, sheetName));
     }
 
     /**

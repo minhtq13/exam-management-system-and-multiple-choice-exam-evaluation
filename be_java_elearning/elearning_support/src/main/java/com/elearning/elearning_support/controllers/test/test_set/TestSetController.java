@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.elearning.elearning_support.dtos.CustomInputStreamResource;
+import com.elearning.elearning_support.dtos.test.test_set.ScoringPreviewDTO;
 import com.elearning.elearning_support.dtos.test.test_set.ScoringTestSetReqDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetGenerateReqDTO;
@@ -83,8 +84,8 @@ public class TestSetController {
      */
     @PostMapping("/scoring")
     @Operation(summary = "Chấm điểm bài thi chắc nghiệm (với dữ liệu có sẵn)")
-    public void scoringStudentTestSet(@RequestBody @Validated ScoringTestSetReqDTO scoringReqDTO) {
-        testSetService.scoreStudentTestSet(scoringReqDTO.getHandledTestSets());
+    public List<ScoringPreviewDTO> scoringStudentTestSet(@RequestBody @Validated ScoringTestSetReqDTO scoringReqDTO) {
+        return testSetService.scoreStudentTestSet(scoringReqDTO.getHandledTestSets());
     }
 
     @GetMapping("/scoring/exam-class/{exClassCode}")
