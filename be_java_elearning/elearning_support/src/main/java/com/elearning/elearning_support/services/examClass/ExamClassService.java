@@ -58,6 +58,6 @@ public interface ExamClassService {
     /**
      * Export danh sách SV / GV trong lớp thi
      */
-    InputStreamResource exportExamClassParticipant(Long examClassId, UserExamClassRoleEnum roleType) throws IOException;
+    CustomInputStreamResource exportExamClassParticipant(Long examClassId, UserExamClassRoleEnum roleType) throws IOException;
 
 }

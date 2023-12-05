@@ -1,7 +1,6 @@
 package com.elearning.elearning_support.controllers.examClass;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.core.io.InputStreamResource;
@@ -106,12 +105,11 @@ public class ExamClassController {
     @Operation(summary = "Export danh sách SV / GV lớp thi")
     public ResponseEntity<InputStreamResource> exportExamClassParticipant(@PathVariable(name = "examClassId") Long examClassId,
         @RequestParam(name = "roleType") UserExamClassRoleEnum roleType) throws IOException {
+        CustomInputStreamResource resourceRes = examClassService.exportExamClassParticipant(examClassId, roleType);
         HttpHeaders headers = new HttpHeaders();
-        String exportObject = roleType == UserExamClassRoleEnum.STUDENT ? "student" : "supervisor";
-        String fileName = String.format("ExamClass_%s_%s_.xlsx", exportObject, LocalDateTime.now());
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.parseMediaType(String.join(";", Arrays.asList(Excel.CONTENT_TYPES))).toString());
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
-        return ResponseEntity.ok().headers(headers).body(examClassService.exportExamClassParticipant(examClassId, roleType));
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resourceRes.getFileName());
+        return ResponseEntity.ok().headers(headers).body(resourceRes.getResource());
     }
 
 }

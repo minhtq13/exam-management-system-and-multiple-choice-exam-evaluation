@@ -34,7 +34,7 @@ public class SQLExamClass {
             "    exClass.is_enabled = true AND \n" +
             "    exClass.deleted_flag = 1 AND \n" +
             "    ('' = :code OR exClass.code ILIKE ('%' || :code || '%')) AND \n" +
-            "    (-1 = :semesterId OR exClass.semester_id = :semesterId) AND \n" +
+            "    (-1 = :semesterId OR test.semester_id = :semesterId) AND \n" +
             "    (-1 = :testId OR exClass.test_id = :testId) AND \n" +
             "    (-1 = :subjectId OR subject.id = :subjectId)";
 
