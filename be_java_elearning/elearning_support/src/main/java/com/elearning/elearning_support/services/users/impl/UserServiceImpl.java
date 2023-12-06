@@ -154,13 +154,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<IGetUserListDTO> getPageStudent(String studentName, String studentCode, Pageable pageable) {
-        return userRepository.getPageStudent(studentName, studentCode, pageable);
+    public Page<IGetUserListDTO> getPageStudent(String studentName, String studentCode, Integer courseNum, Pageable pageable) {
+        return userRepository.getPageStudent(studentName, studentCode, courseNum, pageable);
     }
 
     @Override
-    public List<IGetUserListDTO> getListStudent(String studentName, String studentCode) {
-        return userRepository.getListStudent(studentName, studentCode);
+    public List<IGetUserListDTO> getListStudent(String studentName, String studentCode, Integer courseNum) {
+        return userRepository.getListStudent(studentName, studentCode, courseNum);
     }
 
     @Override
@@ -278,8 +278,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public InputStreamResource exportStudent(String studentName, String studentCode) throws IOException {
-        List<StudentExportDTO> lstStudent = userRepository.getListStudent(studentName, studentCode).stream().map(StudentExportDTO::new).collect(
+    public InputStreamResource exportStudent(String studentName, String studentCode, Integer courseNum) throws IOException {
+        List<StudentExportDTO> lstStudent = userRepository.getListStudent(studentName, studentCode, courseNum).stream().map(StudentExportDTO::new).collect(
             Collectors.toList());
         // Tạo map cấu trúc file excel
         Map<Integer, Pair<String, String>> mapStructure = new LinkedHashMap<>();

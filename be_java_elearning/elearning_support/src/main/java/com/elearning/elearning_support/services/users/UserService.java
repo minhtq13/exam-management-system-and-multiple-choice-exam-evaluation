@@ -41,12 +41,12 @@ public interface UserService {
     /**
      * Lấy danh sách HSSV dạng page
      */
-    Page<IGetUserListDTO> getPageStudent(String studentName, String studentCode, Pageable pageable);
+    Page<IGetUserListDTO> getPageStudent(String studentName, String studentCode, Integer courseNum, Pageable pageable);
 
     /**
      * Lấy danh sách HSSV dạng list
      */
-    List<IGetUserListDTO> getListStudent(String studentName, String studentCode);
+    List<IGetUserListDTO> getListStudent(String studentName, String studentCode, Integer courseNum);
 
 
     /**
@@ -68,7 +68,7 @@ public interface UserService {
     /**
      * Export danh sách HSSV
      */
-    InputStreamResource exportStudent(String studentName, String studentCode) throws IOException;
+    InputStreamResource exportStudent(String studentName, String studentCode, Integer courseNum) throws IOException;
 
 
     /**

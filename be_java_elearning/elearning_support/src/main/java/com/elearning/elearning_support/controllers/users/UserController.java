@@ -79,20 +79,22 @@ public class UserController {
     public Page<IGetUserListDTO> getPageStudent(
         @RequestParam(name = "name", required = false, defaultValue = "") String studentName,
         @RequestParam(name = "code", required = false, defaultValue = "") String studentCode,
+        @RequestParam(name = "courseNum", required = false, defaultValue = "-1") Integer courseNum,
         @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
         @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
         @RequestParam(name = "sort", required = false, defaultValue = "lastModifiedAt") String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
-        return userService.getPageStudent(studentName, studentCode, pageable);
+        return userService.getPageStudent(studentName, studentCode, courseNum, pageable);
     }
 
     @GetMapping("/student/list")
     @Operation(summary = "Danh sách học sinh / sinh viên danh sách toàn bộ")
     public List<IGetUserListDTO> getListStudent(
         @RequestParam(name = "name", required = false, defaultValue = "") String studentName,
-        @RequestParam(name = "code", required = false, defaultValue = "") String studentCode
+        @RequestParam(name = "code", required = false, defaultValue = "") String studentCode,
+        @RequestParam(name = "courseNum", required = false, defaultValue = "-1") Integer courseNum
     ) {
-        return userService.getListStudent(studentName, studentCode);
+        return userService.getListStudent(studentName, studentCode, courseNum);
     }
 
     @PostMapping(value = "/student/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -105,14 +107,15 @@ public class UserController {
     @Operation(summary = "Export danh sách HSSV")
     public ResponseEntity<InputStreamResource> exportStudent(
         @RequestParam(name = "name", required = false, defaultValue = "") String name,
-        @RequestParam(name = "code", required = false, defaultValue = "") String code
+        @RequestParam(name = "code", required = false, defaultValue = "") String code,
+        @RequestParam(name = "courseNum", required = false, defaultValue = "-1") Integer courseNum
     ) throws IOException {
 
         HttpHeaders headers = new HttpHeaders();
         String fileName = String.format("StudentExport_%s_.xlsx", LocalDateTime.now());
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.parseMediaType(String.join(";", Arrays.asList(Excel.CONTENT_TYPES))).toString());
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
-        return ResponseEntity.ok().headers(headers).body(userService.exportStudent(name, code));
+        return ResponseEntity.ok().headers(headers).body(userService.exportStudent(name, code, courseNum));
     }
 
     /*

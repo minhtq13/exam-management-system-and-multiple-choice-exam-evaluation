@@ -68,7 +68,8 @@ public class SQLUser {
             "    student.deleted_flag = 1 AND \n" +
             "    student.user_type = 1 AND \n" +
             "    ('' = :name OR CONCAT_WS(' ', student.last_name, student.first_name) ILIKE ('%' || :name || '%')) AND \n" +
-            "    ('' = :code OR student.code ILIKE ('%' || :code || '%')) ";
+            "    ('' = :code OR student.code ILIKE ('%' || :code || '%')) AND \n" +
+            "    (-1 = :courseNum OR COALESCE(student.meta_data->>'courseNum', '-1')::::int4 = :courseNum) ";
 
     public static final String GET_LIST_TEACHER =
         "SELECT  \n" +
