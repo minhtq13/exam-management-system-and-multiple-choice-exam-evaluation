@@ -58,7 +58,7 @@
       height: 45px;
     }
 
-    label::after {
+    .ant-form-item-required::after {
       content: "*" !important;
       color: #ff4d4f;
     }

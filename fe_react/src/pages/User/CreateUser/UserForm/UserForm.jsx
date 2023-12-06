@@ -188,6 +188,14 @@ const UserForm = ({
 						placeholder="Chọn ngày sinh"
 					></DatePicker>
 				</Form.Item>
+				<Form.Item
+          name="identificationNumber"
+          label="Số CCCD"
+          colon={true}
+          className="test"
+        >
+          <Input placeholder="Nhập CCCD" />
+        </Form.Item>
 				{isPasswordDisplay && (
 					<Form.Item
 						name="password"

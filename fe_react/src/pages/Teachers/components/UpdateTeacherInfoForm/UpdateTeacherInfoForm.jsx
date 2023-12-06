@@ -50,9 +50,9 @@ const UpdateTeacherInfoForm = ({
           name="identificationNumber"
           label="Số CCCD"
           colon={true}
-          rules={[{ required: true, message: errorMessange }]}
+          className="test"
         >
-          <Input placeholder="Nhập MSSV" />
+          <Input placeholder="Nhập CCCD" />
         </Form.Item>
         <Form.Item
           name="code"

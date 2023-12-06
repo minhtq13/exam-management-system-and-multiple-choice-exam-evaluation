@@ -51,20 +51,20 @@ const Sidebar = () => {
 				},
 				{
 					label: "Sinh viên",
-					key: "students",
+					key: "student-list",
 					icon: <FaGraduationCap style={{ color: "#ffff" }} />,
-					children: [
-						{ label: "Danh sách sinh viên", key: "student-list" },
-						{ label: "Thêm sinh viên", key: "student-add" },
-					],
+					// children: [
+					// 	{ label: "Danh sách sinh viên", key: "student-list" },
+					// 	{ label: "Thêm sinh viên", key: "student-add" },
+					// ],
 				},
 				{
 					label: "Giảng viên",
-					key: "Teachers",
+					key: "teacher-list",
 					icon: <GiTeacher style={{ color: "#ffff" }} />,
-					children: [
-						{ label: "Danh sách giảng viên", key: "teacher-list" },
-					],
+					// children: [
+					// 	{ label: "Danh sách giảng viên", key: "teacher-list" },
+					// ],
 				},
 
 				{
