@@ -19,7 +19,9 @@ const useImportExport = () => {
 				getdata(param);
 			})
 			.catch((error) => {
-				notify.error(capitalizeFirstLetter(error.response.data.message));
+				notify.error(
+					capitalizeFirstLetter(error.response.data.message)
+				);
 				setLoadingImport(false);
 			});
 	};
@@ -43,7 +45,9 @@ const useImportExport = () => {
 				link.click();
 			})
 			.catch((error) => {
-				notify.error(capitalizeFirstLetter(error.response.data.message));
+				notify.error(
+					capitalizeFirstLetter(error.response.data.message)
+				);
 			});
 	};
 	const exportTestList = (params, nameFile) => {
@@ -70,7 +74,9 @@ const useImportExport = () => {
 				setLoadingExport(false);
 			})
 			.catch((error) => {
-				notify.error(capitalizeFirstLetter(error.response.data.message));
+				notify.error(
+					capitalizeFirstLetter(error.response.data.message)
+				);
 				setLoadingExport(false);
 			});
 	};
@@ -89,16 +95,42 @@ const useImportExport = () => {
 				);
 				const link = document.createElement("a");
 				link.href = url;
-				link.setAttribute(
-					"download",
-					`${object}-${Date.now()}.xlsx`
-				);
+				link.setAttribute("download", `${object}-${Date.now()}.xlsx`);
 				document.body.appendChild(link);
 				link.click();
 				setLoadingExport(false);
 			})
 			.catch((error) => {
-				notify.error(capitalizeFirstLetter(error.response.data.message));
+				notify.error(
+					capitalizeFirstLetter(error.response.data.message)
+				);
+				setLoadingExport(false);
+			});
+	};
+	const exportExamClassStudent = (params, object, classId) => {
+		// object = "exam-class"
+		setLoadingExport(true);
+		axios({
+			url: `${BASE_URL}/api/${object}/export/${classId}?roleType=STUDENT`,
+			method: "GET",
+			responseType: "blob",
+			data: params,
+		})
+			.then((response) => {
+				const url = window.URL.createObjectURL(
+					new Blob([response.data])
+				);
+				const link = document.createElement("a");
+				link.href = url;
+				link.setAttribute("download", `${object}-${Date.now()}.xlsx`);
+				document.body.appendChild(link);
+				link.click();
+				setLoadingExport(false);
+			})
+			.catch((error) => {
+				notify.error(
+					capitalizeFirstLetter(error.response.data.message)
+				);
 				setLoadingExport(false);
 			});
 	};
@@ -109,6 +141,7 @@ const useImportExport = () => {
 		loadingExport,
 		exportTestList,
 		exportExamClass,
+		exportExamClassStudent,
 	};
 };
 export default useImportExport;

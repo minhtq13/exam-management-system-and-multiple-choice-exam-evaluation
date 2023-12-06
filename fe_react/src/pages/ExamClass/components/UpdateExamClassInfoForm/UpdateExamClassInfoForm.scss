@@ -5,6 +5,7 @@
     color: var(--hust-color);
     padding: 20px 0px;
   }
+
 }
 
 .info-exam-class-form {
@@ -45,6 +46,12 @@
       }
     }
 
+    .test-select {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
     .ant-row {
       position: relative;
       display: block;
@@ -83,7 +90,6 @@
       label {
         height: 20px;
         margin: 0px;
-        // color: #ABABAB;
       }
     }
   }
@@ -104,5 +110,19 @@
   .btn-info:active {
     background-color: #ffffff;
   }
+
+}
+
+.test-set-no-examclass,
+.test-set-item-examclass {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+
+.test-set-no-label {
+  font-weight: bold;
 
 }

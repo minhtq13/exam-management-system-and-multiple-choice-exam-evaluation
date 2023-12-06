@@ -16,6 +16,7 @@ const AddQuestions = () => {
 	const [formKey, setFormKey] = useState(0);
 	const [preChapter, setPreChapter] = useState(null);
 	const [value, setValue] = useState(null);
+	const [errorStates, setErrorStates] = useState([]);
 	const {
 		chapterLoading,
 		subLoading,
@@ -93,37 +94,51 @@ const AddQuestions = () => {
 	};
 	const notify = useNotify();
 	const onFinish = (values) => {
-		setLoading(true);
-		values.lstQuestion &&
-			values.lstQuestion.length > 0 &&
-			addQuestionService(
-				{
-					chapterId: chapterId,
-					lstQuestion: values.lstQuestion.map((item) => {
-						return {
-							...item,
-							imageId: null,
-							lstAnswer: item.lstAnswer.map((answer) => {
-								let isCorrectBol = answer.isCorrect;
-								return {
-									content: answer.content,
-									isCorrect: isCorrectBol ?? false,
-									imageId: null,
-								};
-							}),
-						};
-					}),
-				},
-				(res) => {
-					setLoading(false);
-					notify.success("Thêm câu hỏi thành công!");
-					setFormKey((prevKey) => prevKey + 1);
-				},
-				(error) => {
-					setLoading(false);
-					notify.error("Lỗi thêm mới câu hỏi!");
-				}
-			);
+		console.log(value.lstQuestion);
+		const isValid =
+			values.lstQuestion &&
+			values.lstQuestion.every((question, questionIndex) => {
+				const isQuestionValid = question.lstAnswer.some(
+					(answer) => answer.isCorrect
+				);
+				const updatedErrorStates = [...errorStates];
+				updatedErrorStates[questionIndex] = !isQuestionValid;
+				setErrorStates(updatedErrorStates);
+				return isQuestionValid;
+			});
+		if (isValid) {
+			setLoading(true);
+			values.lstQuestion &&
+				values.lstQuestion.length > 0 &&
+				addQuestionService(
+					{
+						chapterId: chapterId,
+						lstQuestion: values.lstQuestion.map((item) => {
+							return {
+								...item,
+								imageId: null,
+								lstAnswer: item.lstAnswer.map((answer) => {
+									let isCorrectBol = answer.isCorrect;
+									return {
+										content: answer.content,
+										isCorrect: isCorrectBol ?? false,
+										imageId: null,
+									};
+								}),
+							};
+						}),
+					},
+					(res) => {
+						setLoading(false);
+						notify.success("Thêm câu hỏi thành công!");
+						setFormKey((prevKey) => prevKey + 1);
+					},
+					(error) => {
+						setLoading(false);
+						notify.error("Lỗi thêm mới câu hỏi!");
+					}
+				);
+		}
 	};
 	const onChange = (checkValues) => {
 		setChecked(checkValues.target.checked);
@@ -370,6 +385,16 @@ const AddQuestions = () => {
 											</div>
 										)}
 									</Form.List>
+									<span
+										style={{
+											color: "red",
+											display: errorStates[parentIndex]
+												? "block"
+												: "none",
+										}}
+									>
+										Chưa chọn đáp án đúng cho câu hỏi!
+									</span>
 								</div>
 							))}
 							<Form.Item className="add-question-btn">
@@ -390,7 +415,6 @@ const AddQuestions = () => {
 						htmlType="submit"
 						style={{ width: 150, height: 50 }}
 						loading={loading}
-						onClick={onFinish}
 					>
 						Lưu
 					</Button>

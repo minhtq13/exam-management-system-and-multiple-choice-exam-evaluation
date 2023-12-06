@@ -1,11 +1,19 @@
 .manual-test {
   .manual-select {
     display: flex;
-    gap: 30px;
+    justify-content: space-between;
     background-color: #ffffff;
     padding: 20px 30px;
     border-radius: 15px;
     flex-wrap: wrap;
+
+    .manual-test-left,
+    .manual-test-right {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      width: 40%;
+    }
   }
 
   .manual-item {
@@ -13,20 +21,23 @@
     gap: 10px;
     align-items: center;
 
-    span {
+    .manual-item-label {
       font-size: 16px;
       font-weight: bold;
       font-family: "Poppins", sans-serif;
       flex-shrink: 0;
+      width: 35%;
     }
 
     .question-number {
       color: var(--hust-color);
     }
 
-    .ant-select {
+    .ant-select,
+    .ant-picker {
       display: flex;
       align-items: center;
+      width: 100%;
     }
   }
 

@@ -54,7 +54,7 @@
   }
 
   .btn-space {
-    margin-bottom: 20px;
+    margin-bottom: 40px;
   }
 
   .chapter-view-title,
@@ -66,6 +66,7 @@
     span {
       font-size: 18px;
       font-weight: bold;
+      flex-shrink: 0;
     }
   }
 
@@ -78,16 +79,33 @@
   }
 
   .form-space {
-    width: 100%;
+    width: 90%;
     display: flex;
-    gap: 40px;
+    gaport: 40px;
     align-items: center;
     margin-bottom: 20px;
 
 
-    input:nth-child(1) {
-      width: 10% !important;
+    .add-chapter-order {
+      width: 25%;
     }
+
+    .add-chapter-content {
+      width: 60%;
+    }
+
+    .ant-form-item-control {
+      width: 80%;
+
+      input {
+        width: 100%;
+      }
+    }
+
+    label {
+      font-weight: bold;
+    }
+
   }
 
   input {

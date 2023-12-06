@@ -10,6 +10,7 @@ import UpdateExamClassInfoForm from "../components/UpdateExamClassInfoForm/Updat
 const ExamClassEdit = () => {
 	const { getExamClassDetail, examClassInfo, infoLoading } = useExamClasses();
 	const [loading, setLoading] = useState(false);
+	const [selectedValue, setSelectedValue] = useState(null);
 	const notify = useNotify();
 	const location = useLocation();
 	const id = location.pathname.split("/")[2];

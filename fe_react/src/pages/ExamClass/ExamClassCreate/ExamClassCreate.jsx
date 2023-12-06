@@ -6,6 +6,7 @@ import UpdateExamClassInfoForm from "../components/UpdateExamClassInfoForm/Updat
 import "./ExamClassCreate.scss";
 const ExamClassAdd = () => {
 	const [loading, setLoading] = useState(false);
+	const [selectedTestId, setSelectedTestId] = useState(null);
 	const notify = useNotify();
 	const onFinish = (value) => {
 		setLoading(true);
@@ -15,6 +16,7 @@ const ExamClassAdd = () => {
 				examineTime: dayjs(value.examineTime).format(
 					"HH:mm DD/MM/YYYY"
 				),
+				testId: selectedTestId,
 			},
 			(res) => {
 				setLoading(false);
@@ -34,6 +36,7 @@ const ExamClassAdd = () => {
 				btnText="Thêm"
 				initialValues={{ remember: false }}
 				loading={loading}
+				onSelectTestId={(id) => setSelectedTestId(id)}
 			/>
 		</div>
 	);

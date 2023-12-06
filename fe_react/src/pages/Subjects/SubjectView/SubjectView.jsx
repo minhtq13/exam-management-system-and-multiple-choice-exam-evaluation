@@ -97,7 +97,7 @@ const SubjectView = () => {
 						key={formKey}
 					>
 						<Form.List name="chaptersAdd">
-							{(fields, { add, remove }) => {
+							{(fields, fieldOperations) => {
 								return (
 									<>
 										{fields.map((field, index) => (
@@ -106,66 +106,71 @@ const SubjectView = () => {
 												key={`addchapter${index}`}
 											>
 												<div className="form-space">
-													<div className="chapter-view-orders">
-														<span>Chương: </span>
-														<Form.Item
-															{...field}
-															name={[
-																field.name,
-																`orderAdd`,
-															]}
-															style={{
-																width: "20%",
-															}}
-															noStyle
-															key={`orders-add${index}`}
-															rules={[
-																{
-																	required: true,
-																	message:
-																		"Chưa điền đầy đủ thông tin",
+													<Form.Item
+														{...field}
+														className="add-chapter-order"
+														name={[
+															field.name,
+															`orderAdd`,
+														]}
+														key={`orders-add${index}`}
+														label="Chương"
+														rules={[
+															{
+																required: true,
+																message:
+																	"Chưa điền số chương",
+															},
+															{
+																validator: (
+																	_,
+																	value
+																) => {
+																	if (
+																		value &&
+																		value <
+																			1
+																	) {
+																		return Promise.reject(
+																			"Số chương bắt đầu từ 1"
+																		);
+																	}
+																	return Promise.resolve();
 																},
-															]}
-														>
-															<Input
-																type="number"
-																aria-label="Order"
-																placeholder="Nhập thứ tự chương"
-																style={{
-																	minWidth: "200px",
-																}}
-															/>
-														</Form.Item>
-													</div>
-													<div className="chapter-view-title">
-														<span>Nội dung:</span>
-														<Form.Item
-															{...field}
-															name={[ field.name, `titleAdd`]}
-															noStyle
-															style={{ width: "90%" }}
-															key={`title-add${index}`}
-															rules={[
-																{
-																	required: true,
-																	message:
-																		"Chưa điền đầy đủ thông tin",
-																},
-															]}
-														>
-															<Input
-																placeholder="Nhập tên chương"
-																style={{
-																	width: "100%",
-																}}
-															/>
-														</Form.Item>
-													</div>
+															},
+														]}
+													>
+														<Input
+															type="number"
+															placeholder="Nhập thứ tự chương"
+														/>
+													</Form.Item>
+													<Form.Item
+														{...fields}
+														className="add-chapter-content"
+														name={[
+															field.name,
+															`titleAdd`,
+														]}
+														key={`title-add${index}`}
+														label="Nội dung"
+														rules={[
+															{
+																required: true,
+																message:
+																	"Chưa điền nội dung",
+															},
+														]}
+													>
+														<Input placeholder="Nhập tên chương" />
+													</Form.Item>
 												</div>
 												<div className="btn-space">
 													<Button
 														onClick={() =>
-															remove(index)
+															fieldOperations.remove(
+																index
+															)
 														}
 														icon={
 															<DeleteOutlined />
@@ -181,7 +186,7 @@ const SubjectView = () => {
 											<Button
 												type="dashed"
 												onClick={() => {
-													add();
+													fieldOperations.add();
 												}}
 												block
 												icon={<PlusOutlined />}

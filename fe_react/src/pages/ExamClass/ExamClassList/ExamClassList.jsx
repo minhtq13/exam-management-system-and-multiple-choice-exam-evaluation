@@ -45,7 +45,7 @@ const ExamClassList = () => {
 		semesterLoading,
 		getAllSemesters,
 	} = useCombo();
-	const { exportList, exportExamClass } = useImportExport();
+	const { exportExamClass, exportExamClassStudent } = useImportExport();
 	const [deleteKey, setDeleteKey] = useState(null);
 	const [importLoading, setImportLoading] = useState(false);
 	const [param, setParam] = useState(initialParam);
@@ -105,7 +105,7 @@ const ExamClassList = () => {
 			name: param.name,
 			code: param.code,
 		};
-		exportList(params, "exam-class/participant");
+		exportExamClassStudent(params, "exam-class/participant", classId);
 	};
 	const renderTab = () => {
 		return (
@@ -353,8 +353,8 @@ const ExamClassList = () => {
 		classCode: obj.classCode,
 		semester: obj.semester,
 		subjectTitle: obj.subjectTitle,
-		examineDate: obj.examineTime.split(" ")[0],
-		examineTime: obj.examineTime.split(" ")[1],
+		examineDate: obj.examineDate,
+		examineTime: obj.examineTime,
 		id: obj.id,
 	}));
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);

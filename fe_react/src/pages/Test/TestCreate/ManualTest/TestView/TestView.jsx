@@ -11,12 +11,12 @@ import "react-quill/dist/quill.snow.css";
 const TestView = ({
 	questionList,
 	startTime,
-	endTime,
 	duration,
 	totalPoint,
 	name,
 	subjectId,
 	semesterId,
+	generateConfig,
 }) => {
 	const [quesIds, setQesIds] = useState([]);
 	const [openModal, setOpenModal] = useState(false);
@@ -34,13 +34,14 @@ const TestView = ({
 		testService(
 			{
 				subjectId: subjectId,
-				questionQuantity: numberQues,
 				name: name,
 				startTime: dayjs(startTime).format("DD/MM/YYYY HH:mm"),
-				endTime: dayjs(endTime).format("DD/MM/YYYY HH:mm"),
 				duration: Number(duration),
 				totalPoint: Number(totalPoint),
 				questionIds: quesIds,
+				semesterId: semesterId,
+				generateConfig: generateConfig,
+				questionQuantity: Number(generateConfig.numTotalQuestion),
 			},
 			(res) => {
 				setOpenModal(true);
