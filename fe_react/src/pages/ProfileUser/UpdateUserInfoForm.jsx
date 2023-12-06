@@ -59,12 +59,7 @@ const UpdateUserInfoForm = ({
 					name="firstName"
 					label="Họ và tên đệm"
 					colon={true}
-					rules={[
-						{
-							required: true,
-							message: messageRequired,
-						},
-					]}
+					rules={[{ required: true, message: messageRequired } ]}
 				>
 					<Input placeholder="Họ và tên đệm" />
 				</Form.Item>
@@ -72,12 +67,7 @@ const UpdateUserInfoForm = ({
 					name="lastName"
 					label="Tên"
 					colon={true}
-					rules={[
-						{
-							required: true,
-							message: messageRequired,
-						},
-					]}
+					rules={[{ required: true, message: messageRequired } ]}
 				>
 					<Input placeholder="Tên" />
 				</Form.Item>
@@ -85,12 +75,7 @@ const UpdateUserInfoForm = ({
 					name="userType"
 					colon={true}
 					label="Vai trò"
-					rules={[
-						{
-							required: true,
-							message: messageRequired,
-						},
-					]}
+					rules={[{ required: true, message: messageRequired } ]}
 				>
 					<Select
 						disabled={true}
@@ -103,12 +88,7 @@ const UpdateUserInfoForm = ({
 					name="code"
 					label="Mã số SV/GV"
 					colon={true}
-					rules={[
-						{
-							required: true,
-							message: messageRequired,
-						},
-					]}
+					rules={[{ required: true, message: messageRequired } ]}
 				>
 					<Input placeholder="Nhập mã số SV/GV" />
 				</Form.Item>
@@ -117,15 +97,11 @@ const UpdateUserInfoForm = ({
 						name="username"
 						label="Tên người dùng"
 						colon={true}
-						rules={[
-							// {
-							// 	required: true,
-							// 	message: messageRequired,
-							// },
+						rules={[{ required: true, message: messageRequired }, 
 							{
 								min: 6,
 								message: "Tên người dùng phải có ít nhất 6 ký tự"
-							}
+							} 
 						]}
 					>
 						<Input placeholder="Nhập tên người dùng" />
@@ -135,12 +111,7 @@ const UpdateUserInfoForm = ({
 					name="genderType"
 					colon={true}
 					label="Giới tính"
-					rules={[
-						// {
-						// 	required: true,
-						// 	message: messageRequired,
-						// },
-					]}
+					rules={[{ required: true, message: messageRequired } ]}
 				>
 					<Select
 						placeholder="Chọn giới tính"
@@ -171,12 +142,7 @@ const UpdateUserInfoForm = ({
 					name="birthDate"
 					label="Ngày sinh"	
 					colon={true}
-					rules={[
-						// {
-						// 	required: true,
-						// 	message: messageRequired,
-						// },
-					]}
+					rules={[{ required: true, message: messageRequired } ]}
 				>
 					<DatePicker
 						onChange={datePickerOnchange}
@@ -187,12 +153,7 @@ const UpdateUserInfoForm = ({
 				{isPasswordDisplay && (
 					<Form.Item
 						name="password"
-						rules={[
-							// {
-							// 	required: true,
-							// 	message: messageRequired,
-							// },
-						]}
+						rules={[{ required: true, message: messageRequired } ]}
 						label="Mật khẩu"
 						colon={true}
 					>

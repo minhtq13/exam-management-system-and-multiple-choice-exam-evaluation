@@ -132,7 +132,7 @@ const SubjectView = () => {
 																aria-label="Order"
 																placeholder="Nhập thứ tự chương"
 																style={{
-																	width: "100%",
+																	minWidth: "200px",
 																}}
 															/>
 														</Form.Item>
@@ -141,14 +141,9 @@ const SubjectView = () => {
 														<span>Nội dung:</span>
 														<Form.Item
 															{...field}
-															name={[
-																field.name,
-																`titleAdd`,
-															]}
+															name={[ field.name, `titleAdd`]}
 															noStyle
-															style={{
-																width: "70%",
-															}}
+															style={{ width: "90%" }}
 															key={`title-add${index}`}
 															rules={[
 																{
