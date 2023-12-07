@@ -20,6 +20,8 @@ public interface ExamClassRepository extends JpaRepository<ExamClass, Long> {
 
     Optional<ExamClass> findByIdAndIsEnabled(Long id, Boolean isEnabled);
 
+    Optional<ExamClass> findByCodeAndIsEnabled(String code, Boolean isEnabled);
+
     @Query(nativeQuery = true, value = SQLExamClass.GET_LIST_EXAM_CLASS)
     Page<ICommonExamClassDTO> getPageExamClass(String code, Long semesterId, Long subjectId, Long testId, Pageable pageable);
 

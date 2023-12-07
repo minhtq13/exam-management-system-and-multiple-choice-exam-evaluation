@@ -411,11 +411,11 @@ public class TestSetServiceImpl implements TestSetService {
     }
 
     @Override
-    public void uploadStudentHandledAnswerSheet(Long examClassId, MultipartFile[] handledFiles) {
+    public void uploadStudentHandledAnswerSheet(String examClassCode, MultipartFile[] handledFiles) {
         // Check existed exam_class
-        ExamClass examClass = examClassRepository.findByIdAndIsEnabled(examClassId, Boolean.TRUE)
+        ExamClass examClass = examClassRepository.findByCodeAndIsEnabled(examClassCode, Boolean.TRUE)
             .orElseThrow(() -> exceptionFactory.resourceNotFoundException(MessageConst.ExamClass.NOT_FOUND, Resources.EXAM_CLASS,
-                MessageConst.RESOURCE_NOT_FOUND, ErrorKey.ExamClass.ID, String.valueOf(examClassId)));
+                MessageConst.RESOURCE_NOT_FOUND, ErrorKey.ExamClass.CODE, String.valueOf(examClassCode)));
 
         // Check system os
         File sharedAppDataDir;

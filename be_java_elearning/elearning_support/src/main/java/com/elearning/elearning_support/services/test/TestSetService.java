@@ -52,6 +52,6 @@ public interface TestSetService {
     /**
      * Upload handled answer sheet's images
      */
-    void uploadStudentHandledAnswerSheet(Long examClassId, MultipartFile[] handledFiles);
+    void uploadStudentHandledAnswerSheet(String examClassCode, MultipartFile[] handledFiles);
 
 }

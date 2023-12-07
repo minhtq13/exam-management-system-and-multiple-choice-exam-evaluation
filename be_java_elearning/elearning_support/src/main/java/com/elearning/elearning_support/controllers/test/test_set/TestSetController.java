@@ -94,12 +94,12 @@ public class TestSetController {
         return ResponseEntity.ok(testSetService.scoreExamClassTestSet(exClassCode));
     }
 
-    @PostMapping("/handled-answers/upload/{examClassId}")
+    @PostMapping("/handled-answers/upload/{examClassCode}")
     @Operation(summary = "Upload bài làm theo lớp")
     public void uploadStudentHandledTestSet(
-        @PathVariable(name = "examClassId") Long examClassId,
+        @PathVariable(name = "examClassCode") String examClassCode,
         @RequestParam(name = "files") MultipartFile[] handledFiles) {
-        testSetService.uploadStudentHandledAnswerSheet(examClassId, handledFiles);
+        testSetService.uploadStudentHandledAnswerSheet(examClassCode, handledFiles);
     }
 
 
