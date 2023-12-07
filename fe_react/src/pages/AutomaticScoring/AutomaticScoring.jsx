@@ -31,7 +31,7 @@ const AutomaticScoring = () => {
 	const [previewImage, setPreviewImage] = useState("");
 	const [previewTitle, setPreviewTitle] = useState("");
 	const handleCancel = () => setPreviewOpen(false);
-	const examClassIdTest = '2';
+	const examClassIdTest = '247103';
 	const uploadButton = (
 		<div>
 			<Button icon={<UploadOutlined />}>Tải ảnh lên</Button>
@@ -76,16 +76,13 @@ const AutomaticScoring = () => {
 		);
 	};
 	const handleSubmit = () => {
-		getModelAI();
+		getModelAI(examClassIdTest);
 	}
 
 
 	const onFinish = (values) => {
 		if (urlImg) {
-			getModelAI({
-				classCode: examClassIdTest,
-				// numberAnswer: values.numberAnswer,
-			});
+			getModelAI(examClassIdTest);
 		}
 	};
 

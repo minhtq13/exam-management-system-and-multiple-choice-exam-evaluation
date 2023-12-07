@@ -7,9 +7,11 @@ const useAI = () => {
   const [resultAI, setResultAI] = useState();
   const [loading, setLoading] = useState(false);
 
-  const getModelAI = (payload = {}) => {
+  const getModelAI = (examClassCode, payload) => {
     setLoading(true);
     getModelAIService(
+      examClassCode,
+      payload,
       (res) => {
         setLoading(false);
         setResultAI(res.data);
