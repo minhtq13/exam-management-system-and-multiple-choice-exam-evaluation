@@ -5,6 +5,7 @@ import useAI from "../../hooks/useAI";
 import "./AutomaticScoring.scss";
 import HeaderSelect from "./HeaderSelect";
 import TableResult from "./TableResult";
+import { BASE_URL } from "../../config/apiPath";
 
 const formItemLayout = {
 	labelCol: {
@@ -30,17 +31,17 @@ const AutomaticScoring = () => {
 	const [previewImage, setPreviewImage] = useState("");
 	const [previewTitle, setPreviewTitle] = useState("");
 	const handleCancel = () => setPreviewOpen(false);
-
+	const examClassIdTest = '2';
 	const uploadButton = (
 		<div>
-			<Button icon={<UploadOutlined />}>Click to Upload</Button>
+			<Button icon={<UploadOutlined />}>Tải ảnh lên</Button>
 		</div>
 	);
 	const props = {
 		name: "files",
 		listType: "picture",
 		multiple: true,
-		action: "http://localhost:8088/e-learning/api/student-test/uploads?examClassCode=exam-class1",
+		action: `${BASE_URL}/test-set/handled-answers/upload/${examClassIdTest}`,
 		beforeUpload: (file) => {
 			const isPNG =
 				file.type === "image/png" ||
@@ -74,11 +75,15 @@ const AutomaticScoring = () => {
 			file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
 		);
 	};
+	const handleSubmit = () => {
+		getModelAI();
+	}
+
 
 	const onFinish = (values) => {
 		if (urlImg) {
 			getModelAI({
-				classCode: "exam-class1",
+				classCode: examClassIdTest,
 				// numberAnswer: values.numberAnswer,
 			});
 		}
@@ -127,12 +132,8 @@ const AutomaticScoring = () => {
 						<div className="number-answer">
 							<Form.Item
 								name="numberAnswer"
-								label="Number Answer"
-								rules={[
-									{
-										required: false,
-									},
-								]}
+								label="Số lượng câu hỏi"
+								rules={[{required: false}]}
 							>
 								<Input type="number" />
 							</Form.Item>
@@ -140,12 +141,8 @@ const AutomaticScoring = () => {
 						<div className="exam-class-code">
 							<Form.Item
 								name="examClassCode"
-								label="Exam Class Code"
-								rules={[
-									{
-										required: false,
-									},
-								]}
+								label="Mã lớp thi"
+								rules={[{ required: false }]}
 							>
 								<Input type="text" />
 							</Form.Item>
@@ -164,6 +161,14 @@ const AutomaticScoring = () => {
 						<Button
 							type="primary"
 							htmlType="submit"
+							loading={loading}
+							className="button-submit-ai"
+						>
+							Chấm điểm
+						</Button>
+						<Button
+							type="primary"
+							onClick={handleSubmit}
 							loading={loading}
 							className="button-submit-ai"
 						>

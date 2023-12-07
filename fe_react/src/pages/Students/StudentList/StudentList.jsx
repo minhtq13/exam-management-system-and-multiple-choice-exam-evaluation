@@ -23,6 +23,7 @@ const StudentList = () => {
 		code: null,
 		page: 0,
 		size: 10,
+		courseNum: -1,
 		sort: "lastModifiedAt",
 	};
 	const [deleteDisable, setDeleteDisable] = useState(true);
@@ -169,6 +170,31 @@ const StudentList = () => {
 			title: "Khóa",
 			dataIndex: "courseNum",
 			key: "courseNum",
+			filters: [
+				{
+					text: "64",
+					value: 64,
+				},
+				{
+					text: "65",
+					value: 65,
+				},
+				{
+					text: "66",
+					value: 66,
+				},
+				{
+					text: "67",
+					value: 67,
+				},
+				{
+					text: "68",
+					value: 68,
+				},
+			],
+			onFilter: (value, record) => {
+        return record.courseNum === value;
+      },
 		},
 		{
 			title: "Email",
@@ -205,16 +231,6 @@ const StudentList = () => {
 					})}
 				</>
 			),
-			filters: [
-				{
-					text: "Nam",
-					value: "Nam",
-				},
-				{
-					text: "Nữ",
-					value: "Nữ",
-				},
-			],
 			onFilter: (value, record) => record.gender.indexOf(value) === 0,
 			filterSearch: true,
 		},
@@ -279,6 +295,7 @@ const StudentList = () => {
 		const params = {
 			name: param.name,
 			code: param.code,
+			courseNum: param.courseNum,
 		};
 		exportList(params, "student");
 	};

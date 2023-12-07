@@ -77,11 +77,11 @@ const SubjectView = () => {
 					<div className="chapter-title">Nội dung</div>
 					<div className="subject-content">
 						<Skeleton loading={infoLoading}>
-							{contents.map((item, key) => {
+							{contents.map((item, index) => {
 								return (
 									<div
 										className="subject-content-nonedit"
-										key={key}
+										key={index}
 									>
 										<span>{`Chương ${item.orders}:`}</span>
 										<span>{`${item.title}`}</span>
@@ -122,18 +122,8 @@ const SubjectView = () => {
 																	"Chưa điền số chương",
 															},
 															{
-																validator: (
-																	_,
-																	value
-																) => {
-																	if (
-																		value &&
-																		value <
-																			1
-																	) {
-																		return Promise.reject(
-																			"Số chương bắt đầu từ 1"
-																		);
+																validator: ( _, value ) => { if ( value && value < 1 ) {
+																		return Promise.reject("Số chương bắt đầu từ 1");
 																	}
 																	return Promise.resolve();
 																},

@@ -10,15 +10,15 @@ const useAI = () => {
   const getModelAI = (payload = {}) => {
     setLoading(true);
     getModelAIService(
-      payload,
       (res) => {
         setLoading(false);
         setResultAI(res.data);
       },
       (err) => {
+        console.log(err)
         setLoading(false);
         if (err.response.status === 404) {
-          notify.warning(err.response.data.message || "No information in database");
+          notify.warning(err.response.data.message || "Không tìm thấy dữ liệu");
         }
       }
     );

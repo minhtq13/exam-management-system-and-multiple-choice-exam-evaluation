@@ -55,6 +55,7 @@ const SubjectList = () => {
 	const handleReset = (clearFilters) => {
 		clearFilters();
 	};
+	const errorMessange = "Chưa điền đầy đủ thông tin";
 	const getColumnSearchProps = (dataIndex) => ({
 		filterDropdown: ({
 			setSelectedKeys,
@@ -163,7 +164,7 @@ const SubjectList = () => {
 						rules={[
 							{
 								required: true,
-								message: `Please Input ${title}!`,
+								message: errorMessange,
 							},
 						]}
 					>
