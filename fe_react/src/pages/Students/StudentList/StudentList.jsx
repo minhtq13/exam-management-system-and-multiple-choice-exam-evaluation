@@ -42,6 +42,7 @@ const StudentList = () => {
 	const handleChange = (e) => {
 		setFileList(e.target.files[0]);
 	};
+	console.log(fileList);
 	const handleReset = (clearFilters) => {
 		clearFilters();
 	};
@@ -225,7 +226,9 @@ const StudentList = () => {
 						else color = "red";
 						return (
 							<Tag color={color} key={gender}>
-								{gender ? convertGender(gender?.toUpperCase()) : "Không xác định"}
+								{gender
+									? convertGender(gender?.toUpperCase())
+									: "Không xác định"}
 							</Tag>
 						);
 					})}

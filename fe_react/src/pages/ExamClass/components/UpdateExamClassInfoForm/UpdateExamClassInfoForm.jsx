@@ -63,6 +63,7 @@ const UpdateExamClassInfoForm = ({
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}
 	}, [param, openModal]);
+	// eslint-disable-next-line
 	const options =
 		allSemester && allSemester.length > 0
 			? allSemester.map((item) => {

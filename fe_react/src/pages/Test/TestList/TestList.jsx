@@ -14,12 +14,17 @@ import useCombo from "../../../hooks/useCombo";
 import useImportExport from "../../../hooks/useImportExport";
 import useNotify from "../../../hooks/useNotify";
 import useTest from "../../../hooks/useTest";
+import ReactDOMServer from "react-dom/server";
 import { setSelectedItem } from "../../../redux/slices/appSlice";
 import {
 	deleteTestService,
 	testSetDetailService,
 } from "../../../services/testServices";
 import "./TestList.scss";
+import axios from "axios";
+import { BASE_URL } from "../../../config/apiPath";
+import TestHeader from "../../../components/TestPreview/TestHeader";
+import TestFooter from "../../../components/TestPreview/TestFooter";
 const TestList = () => {
 	const [deleteDisable, setDeleteDisable] = useState(true);
 	const { allTest, getAllTests, tableLoading, pagination } = useTest();
@@ -32,7 +37,7 @@ const TestList = () => {
 		getAllSemesters,
 	} = useCombo();
 	const initialParam = { jectId: null, semesterId: null, page: 0, size: 10 };
-	const { exportTestList, loadingExport } = useImportExport();
+	const { loadingExport } = useImportExport();
 	const [deleteKey, setDeleteKey] = useState(null);
 	const [openModal, setOpenModal] = useState(false);
 	const [openModalPreview, setOpenModalPreview] = useState(false);
@@ -72,14 +77,6 @@ const TestList = () => {
 	};
 	const semsOnChange = (value) => {
 		setParam({ ...param, semesterId: value });
-	};
-
-	const handleExport = (param) => {
-		const params = { testId: param.testId, code: param.testSetCode };
-		exportTestList(
-			params,
-			`${testDetail.subjectCode}-${testDetail.semester}`
-		);
 	};
 	const notify = useNotify();
 	const navigate = useNavigate();
@@ -209,6 +206,63 @@ const TestList = () => {
 			}
 		);
 	};
+
+	const createTemporaryHtmlFile = () => {
+		const testHeader = (
+			<TestHeader testDetail={testDetail} testNo={testNo} />
+		);
+		const testFooter = <TestFooter />;
+		let combinedString = "";
+		questions.length > 0 &&
+			questions.forEach((question, index) => {
+				// Nối chuỗi câu hỏi
+				combinedString += `<div style="display: flex;"><p>Câu ${
+					index + 1
+				}: </p><p>${question.content}</p></div>`;
+
+				// Nối chuỗi câu trả lời
+				question.answers.forEach((answer) => {
+					combinedString += `<div style="display: flex;"><p>${answer.answerNoMask}. </p> <p>${answer.content}</p></div>`;
+				});
+
+				// Thêm dòng trống giữa các câu hỏi
+				combinedString += "<br>";
+			});
+		const htmlContent =
+			ReactDOMServer.renderToStaticMarkup(testHeader) +
+			combinedString +
+			ReactDOMServer.renderToStaticMarkup(testFooter);
+
+		const blob = new Blob([htmlContent], { type: "text/html" });
+		const link = document.createElement("a");
+		link.href = URL.createObjectURL(blob);
+		link.download = "temporaryFile.html";
+		link.click();
+	};
+
+	const sendFileHtml = (file) => {
+		const formData = new FormData();
+		formData.append("fileHtml", file);
+		axios({
+			url: BASE_URL + "/api/test-set/html/export",
+			method: "POST",
+			responseType: "blob",
+			data: formData,
+		})
+			.then((res) => {
+				const url = window.URL.createObjectURL(new Blob([res.data]));
+				const link = document.createElement("a");
+				link.href = url;
+				link.setAttribute("download", `Test.docx`);
+				document.body.appendChild(link);
+				link.click();
+				URL.revokeObjectURL(file);
+			})
+			.catch((error) => {
+				notify.error("Lỗi tải đề thi!");
+			});
+	};
+
 	return (
 		<div className="test-list">
 			<div className="header-test-list">
@@ -338,7 +392,11 @@ const TestList = () => {
 					<Modal
 						open={openModalPreview}
 						okText="Download"
-						onOk={() => handleExport(testDetail)}
+						onOk={() => {
+							createTemporaryHtmlFile();
+							const htmlBlob = createTemporaryHtmlFile();
+							sendFileHtml(htmlBlob);
+						}}
 						onCancel={() => setOpenModalPreview(false)}
 						maskClosable={true}
 						centered={true}

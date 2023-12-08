@@ -50,8 +50,9 @@ const TestPreview = ({ questions, testDetail, testNo }) => {
 										key={`answer${ansNo}`}
 									>
 										<span>
-											{`${String.fromCharCode(65 + ansNo)}
-											.`}
+											{`${String.fromCharCode(
+												65 + ansNo
+											)}.`}
 										</span>
 										<ReactQuill
 											key={ansNo}
