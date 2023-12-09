@@ -11,18 +11,17 @@ const SignFragment = ({ header, socialText, children }) => {
       </div>
       <div className="login-form">
         <h1>{header}</h1>
-        <div className="header-login-content">Access to our dashboard</div>
+        <div className="header-login-content">Truy cập vào hệ thống</div>
         {children}
         <div className="login-or">
           <span className="or-line"></span>
-          <span className="or">OR</span>
         </div>
         <div className="social-login">
           <span>{socialText}</span>
-          <a href="/facebook" className="facebook">
+          <a href="https://www.facebook.com/" className="facebook">
             <TfiFacebook size={16} />
           </a>
-          <a href="/google" className="google">
+          <a href="https://www.google.com/" className="google">
             <FaGoogle size={16} />
           </a>
         </div>

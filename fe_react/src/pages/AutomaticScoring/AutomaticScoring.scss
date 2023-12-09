@@ -100,7 +100,7 @@
       .exam-class-code {
         width: 500px;
         input {
-          width: 200px;
+          width: 400px;
         }
       }
     }
@@ -112,9 +112,10 @@
       .total-record {
         position: absolute;
         bottom: 0;
-        bottom: 20px;
-        color: #ad9c9c;
+        top: -15px;
+        color: #a0a0a0;
         right: 70px;
+        font-style: italic;
       }
       .table-result-component {
         width: 1000px;
@@ -126,6 +127,7 @@
             outline: 1px solid #ccc;
           }
           .ant-table-body {
+            min-height: 400px;
             max-height: 500px;
           }
           .ant-table-expanded-row-fixed {

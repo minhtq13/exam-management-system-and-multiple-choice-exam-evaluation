@@ -5,12 +5,11 @@ import {
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { useEffect, useState } from "react";
+import { AiFillCopy, AiFillEdit } from "react-icons/ai";
 import { BsQuestionCircleFill } from "react-icons/bs";
 import { FaBookOpen, FaGraduationCap, FaRegCalendarAlt } from "react-icons/fa";
 import { GiTeacher } from "react-icons/gi";
 import { MdOutlineSubject } from "react-icons/md";
-import { AiFillCopy } from "react-icons/ai";
-import { SiManageiq } from "react-icons/si";
 import { VscLibrary } from "react-icons/vsc";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -28,7 +27,7 @@ const Sidebar = () => {
 						isCollapse ? "title-present-collapse" : "title-present"
 					}
 				>
-					<SiManageiq /> Quản lý
+					<AiFillEdit /> Quản lý
 				</div>
 			),
 			key: "quanly",

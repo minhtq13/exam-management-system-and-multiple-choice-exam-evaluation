@@ -4,8 +4,9 @@ import React, { useEffect, useMemo, useState } from "react";
 import { generateRandomSixDigitNumber } from "../../utils/tools";
 
 const TableResult = ({ resultAI }) => {
+  const numberAnswer = 60
   const columnsAnswer = [];
-  for (var i = 0; i < 15; i++) {
+  for (var i = 0; i < numberAnswer; i++) {
     columnsAnswer.push({
       title: `Câu ${i + 1}`,
       dataIndex: `answer${i + 1}`,
@@ -26,8 +27,8 @@ const TableResult = ({ resultAI }) => {
       title: "Mã lớp thi",
       width: 100,
       align: "center",
-      dataIndex: "classCode",
-      key: "classCode",
+      dataIndex: "examClassCode",
+      key: "examClassCode",
       fixed: "left",
     },
     {
@@ -42,38 +43,39 @@ const TableResult = ({ resultAI }) => {
       title: "Mã đề thi",
       width: 100,
       align: "center",
-      dataIndex: "testNo",
-      key: "testNo",
+      dataIndex: "testCode",
+      key: "testCode",
       fixed: "left",
     },
   ];
   const columnsMark = [
     {
       title: "Điểm",
-      key: "operation",
+      key: "totalScore",
+      dataIndex: "totalScore",
       fixed: "right",
       align: "center",
       width: 100,
-      render: () => <a>10</a>,
     },
   ];
   const columnsMerged = [...columnsInfo, ...columnsAnswer];
   const columns = [...columnsMerged, ...columnsMark];
 
-  const [dataArray, setDataArray] = useState([]); // Sử dụng state mới thay vì data
+  const [dataArray, setDataArray] = useState([]);
 
   useEffect(() => {
     if (resultAI) {
       const newDataArray = resultAI.map((item, key) => {
         const formatObj = {
           stt: key + 1,
-          classCode: item.classCode,
+          examClassCode: item.examClassCode,
           studentCode: item.studentCode,
-          testNo: item.testNo,
+          testCode: item.testCode,
           key: generateRandomSixDigitNumber(),
+          totalScore: item.totalScore
         };
-        for (let j = 0; j < 15; j++) {
-          formatObj[`answer${j + 1}`] = item.answers[j].isSelected;
+        for (let j = 0; j < numberAnswer; j++) {
+          formatObj[`answer${j + 1}`] = item.details[j].selectedAnswers;
         }
         return formatObj;
       });

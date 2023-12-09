@@ -62,22 +62,22 @@ const Login = () => {
 					rules={[
 						{
 							required: true,
-							message: "Please input your user name!",
+							message: "Vui lòng nhập tên đăng nhập!",
 						},
 					]}
 				>
-					<Input placeholder="User name" />
+					<Input placeholder="Tên đăng nhập" />
 				</Form.Item>
 				<Form.Item
 					name="password"
 					rules={[
 						{
 							required: true,
-							message: "Please input your password!",
+							message: "Vui lòng nhập mật khẩu!",
 						},
 					]}
 				>
-					<Input.Password placeholder="Password" />
+					<Input.Password placeholder="Mật khẩu" />
 				</Form.Item>
 				{authenticResult === "error" && (
 					<div className="error-authentic">
@@ -90,11 +90,11 @@ const Login = () => {
 					</Button>
 				</Form.Item>
 			</Form>
-			<div className="forgot-password">Forgot Password?</div>
+			<div className="forgot-password">Quên mật khẩu?</div>
 		</>
 	);
 	return (
-		<SignFragment header={"Login"} socialText={"Login with"}>
+		<SignFragment header={"Đăng nhập"} socialText={"Đăng nhập với"}>
 			{loginForm}
 		</SignFragment>
 	);

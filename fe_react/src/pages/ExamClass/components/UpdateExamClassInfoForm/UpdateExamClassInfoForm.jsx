@@ -62,6 +62,7 @@ const UpdateExamClassInfoForm = ({
 			getAllTests(param);
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [param, openModal]);
 	// eslint-disable-next-line
 	const options =

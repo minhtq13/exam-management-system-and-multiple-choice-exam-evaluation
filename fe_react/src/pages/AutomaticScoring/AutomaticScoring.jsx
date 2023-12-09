@@ -120,19 +120,14 @@ const AutomaticScoring = () => {
 					{...formItemLayout}
 					onFinish={onFinish}
 				>
-					<div className="upload">
-						<Form.Item name="pathImg">
-							<div>{uploadBlock}</div>
-						</Form.Item>
-					</div>
-					<div className="block-1">
+							<div className="block-1">
 						<div className="number-answer">
 							<Form.Item
 								name="numberAnswer"
 								label="Số lượng câu hỏi"
 								rules={[{required: false}]}
 							>
-								<Input type="number" />
+								<Input type="number" placeholder="Số lượng câu hỏi trong mỗi phiếu trả lời" />
 							</Form.Item>
 						</div>
 						<div className="exam-class-code">
@@ -141,16 +136,30 @@ const AutomaticScoring = () => {
 								label="Mã lớp thi"
 								rules={[{ required: false }]}
 							>
-								<Input type="text" />
+								<Input type="text" placeholder="Mã lớp thi cần chấm"/>
 							</Form.Item>
 						</div>
 					</div>
+					<div className="upload">
+						<Form.Item name="pathImg">
+							<div>{uploadBlock}</div>
+						</Form.Item>
+					</div>
+					<Button
+							type="primary"
+							onClick={handleSubmit}
+							loading={loading}
+							className="button-submit-ai"
+						>
+							Chấm điểm
+						</Button>
+			
 
 					<div className="result-ai">
 						<TableResult resultAI={resultAI} />
 						{resultAI && (
 							<div className="total-record">
-								Đã tìm thấy {resultAI.length} kết quả
+								Đã tìm thấy <span style={{ fontWeight: 600, color: "#000"}}>{resultAI.length}</span> kết quả
 							</div>
 						)}
 					</div>
@@ -161,15 +170,7 @@ const AutomaticScoring = () => {
 							loading={loading}
 							className="button-submit-ai"
 						>
-							Chấm điểm
-						</Button>
-						<Button
-							type="primary"
-							onClick={handleSubmit}
-							loading={loading}
-							className="button-submit-ai"
-						>
-							Submit
+							Lưu kết quả
 						</Button>
 					</div>
 				</Form>
