@@ -18,7 +18,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ScoringPreviewDTO {
+public class ScoringPreviewItemDTO {
 
     @Schema(description = "Mã số thí sinh")
     String studentCode;
@@ -48,7 +48,7 @@ public class ScoringPreviewDTO {
     @JsonFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YY_HH_MM_SS, timezone = DateUtils.TIME_ZONE)
     Date processedAt;
 
-    public ScoringPreviewDTO(StudentHandledTestDTO handledAnswerDTO){
+    public ScoringPreviewItemDTO(StudentHandledTestDTO handledAnswerDTO){
         BeanUtils.copyProperties(handledAnswerDTO, this);
         this.details = handledAnswerDTO.getAnswers();
         this.processedAt = new Date();

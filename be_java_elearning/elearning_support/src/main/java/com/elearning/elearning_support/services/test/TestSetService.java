@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.elearning.elearning_support.dtos.CustomInputStreamResource;
 import com.elearning.elearning_support.dtos.studentTestSet.StudentHandledTestDTO;
-import com.elearning.elearning_support.dtos.test.test_set.ScoringPreviewDTO;
+import com.elearning.elearning_support.dtos.test.test_set.ScoringPreviewResDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetGenerateReqDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetPreviewDTO;
@@ -42,16 +42,21 @@ public interface TestSetService {
     /**
      *  ======================== TEST SET SCORING SERVICES ====================
      */
-    List<ScoringPreviewDTO> scoreStudentTestSet(List<StudentHandledTestDTO> handledTestSets);
+    ScoringPreviewResDTO scoreStudentTestSet(List<StudentHandledTestDTO> handledTestSets);
 
     /**
      * Process answered sheets and score by exClassCode
      */
-    List<ScoringPreviewDTO> scoreExamClassTestSet(String examClassCode);
+    ScoringPreviewResDTO scoreExamClassTestSet(String examClassCode);
 
     /**
      * Upload handled answer sheet's images
      */
     void uploadStudentHandledAnswerSheet(String examClassCode, MultipartFile[] handledFiles);
+
+    /**
+     * Save scored results
+     */
+    void saveScoringResults(String tempFileCode, String option);
 
 }

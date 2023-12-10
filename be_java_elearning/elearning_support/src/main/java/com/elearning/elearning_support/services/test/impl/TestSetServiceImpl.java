@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,12 +38,14 @@ import com.elearning.elearning_support.constants.SystemConstants;
 import com.elearning.elearning_support.dtos.CustomInputStreamResource;
 import com.elearning.elearning_support.dtos.common.ICommonIdCode;
 import com.elearning.elearning_support.dtos.test.test_set.ITestSetScoringDTO;
-import com.elearning.elearning_support.dtos.test.test_set.ScoringPreviewDTO;
+import com.elearning.elearning_support.dtos.test.test_set.ScoringPreviewItemDTO;
+import com.elearning.elearning_support.dtos.test.test_set.ScoringPreviewResDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetPreviewDTO;
 import com.elearning.elearning_support.entities.exam_class.ExamClass;
 import com.elearning.elearning_support.entities.studentTest.StudentTestSet;
 import com.elearning.elearning_support.entities.studentTest.StudentTestSetDetail;
 import com.elearning.elearning_support.enums.users.UserTypeEnum;
+import com.elearning.elearning_support.exceptions.BadRequestException;
 import com.elearning.elearning_support.repositories.examClass.ExamClassRepository;
 import com.elearning.elearning_support.repositories.test.test_set.StudentTestSetRepository;
 import com.elearning.elearning_support.repositories.users.UserRepository;
@@ -90,6 +94,8 @@ public class TestSetServiceImpl implements TestSetService {
     public static final String ANSWERED_SHEETS = "AnsweredSheets";
 
     public static final String SCORED_SHEETS = "ScoredSheets";
+
+    public static final String FILE_TEMP_SCORED_RESULTS_DATA = "temp_results_%s.json";
 
     private static final int MAX_NUM_ANSWERS_PER_QUESTION = 6;
 
@@ -308,7 +314,7 @@ public class TestSetServiceImpl implements TestSetService {
 
     @Transactional
     @Override
-    public List<ScoringPreviewDTO> scoreExamClassTestSet(String examClassCode) {
+    public ScoringPreviewResDTO scoreExamClassTestSet(String examClassCode) {
         callAIModelProcessing(examClassCode);
         return scoreStudentTestSet(loadListStudentScoredSheets(examClassCode));
     }
@@ -316,7 +322,7 @@ public class TestSetServiceImpl implements TestSetService {
 
     @Transactional
     @Override
-    public List<ScoringPreviewDTO> scoreStudentTestSet(List<StudentHandledTestDTO> handledTestSets) {
+    public ScoringPreviewResDTO scoreStudentTestSet(List<StudentHandledTestDTO> handledTestSets) {
         long startTimeMillis = System.currentTimeMillis();
         log.info("============== STARTED SCORING HANDLED ANSWER SHEET AT {} =================", startTimeMillis);
         Long currentUserId = AuthUtils.getCurrentUserId();
@@ -333,12 +339,12 @@ public class TestSetServiceImpl implements TestSetService {
         Map<String, Long> mapUserCodeId = userRepository.getListIdCodeByCodeAndUserType(lstStudentCode, UserTypeEnum.STUDENT.getType()).stream()
             .collect(Collectors.toMap(ICommonIdCode::getCode, ICommonIdCode::getId));
 
-        // list student - test set
-//        List<StudentTestSet> lstStudentTestSet = new ArrayList<>();
+//         list student - test set
+        List<StudentTestSet> lstStudentTestSet = new ArrayList<>();
 
         // map testSetId -> query test_set_question
         Map<Long, Set<ITestQuestionCorrectAnsDTO>> mapQueriedTestSetQuestions = new HashMap<>();
-        List<ScoringPreviewDTO> lstScoringPreview = new ArrayList<>();
+        List<ScoringPreviewItemDTO> lstScoringPreview = new ArrayList<>();
         for (StudentHandledTestDTO handledItem : handledTestSets) {
             // init map
             ITestSetScoringDTO handledData = mapGeneralHandledData.get(Pair.create(handledItem.getExamClassCode(), handledItem.getTestCode()));
@@ -394,20 +400,32 @@ public class TestSetServiceImpl implements TestSetService {
             studentTestSet.setMarked(handledItem.getAnswers().size() - numNotMarkedQuestions);
             studentTestSet.setMarkerRate(((double) (studentTestSet.getMarked()) / (handledItem.getAnswers().size())) * 100.0);
             studentTestSet.setLstStudentTestSetDetail(lstDetails);
-            //lstStudentTestSet.add(studentTestSet);
+            lstStudentTestSet.add(studentTestSet);
 
             // create scoring preview for each handled answer-sheet
-            ScoringPreviewDTO scoringPreviewItem = new ScoringPreviewDTO(handledItem);
+            ScoringPreviewItemDTO scoringPreviewItem = new ScoringPreviewItemDTO(handledItem);
             scoringPreviewItem.setNumMarkedAnswers(handledItem.getAnswers().size() - numNotMarkedQuestions);
             scoringPreviewItem.setNumCorrectAnswers(numCorrectAns);
             scoringPreviewItem.setTotalScore(0.5 * numCorrectAns); // temp questionMark = 0.5
             lstScoringPreview.add(scoringPreviewItem);
         }
-        //TODO: store temp data for saving later
-        //studentTestSetRepository.saveAll(lstStudentTestSet);
+
+        // store temp data for saving later
+        String tmpFileCode = null;
+        try {
+            tmpFileCode = String.format("%sTMP%s", AuthUtils.getCurrentUserId(), System.currentTimeMillis());
+            File tempData = new File(
+                SystemConstants.RESOURCE_PATH + FileUtils.DOCUMENTS_STORED_LOCATION + String.format(FILE_TEMP_SCORED_RESULTS_DATA, tmpFileCode));
+            String data = ObjectMapperUtil.toJsonString(lstStudentTestSet);
+            FileOutputStream fos = new FileOutputStream(tempData);
+            fos.write(data.getBytes(StandardCharsets.UTF_8));
+            fos.close();
+        } catch (Exception exception) {
+            log.error(MessageConst.EXCEPTION_LOG_FORMAT, exception.getMessage(), exception.getCause());
+        }
 
         log.info("============== ENDED SCORING HANDLED ANSWER SHEET AFTER {} =================", System.currentTimeMillis() - startTimeMillis);
-        return lstScoringPreview;
+        return new ScoringPreviewResDTO(tmpFileCode, lstScoringPreview);
     }
 
     @Override
@@ -443,6 +461,32 @@ public class TestSetServiceImpl implements TestSetService {
             for (MultipartFile handledFile : handledFiles) {
                 FileUtils.validateUploadFile(handledFile, Arrays.asList(Image.JPG, Image.PNG, Image.JPEG));
                 FileUtils.covertMultipartToFile(examClassStoredPath, handledFile);
+            }
+        } catch (Exception exception) {
+            log.error(MessageConst.EXCEPTION_LOG_FORMAT, exception.getMessage(), exception.getCause());
+        }
+    }
+
+    @Transactional
+    @Override
+    public void saveScoringResults(String tempFileCode, String option) {
+        try {
+            File tempDataFile = new File(
+                SystemConstants.RESOURCE_PATH + FileUtils.DOCUMENTS_STORED_LOCATION +
+                    String.format(FILE_TEMP_SCORED_RESULTS_DATA, tempFileCode));
+            if (!tempDataFile.exists()) {
+                throw exceptionFactory.resourceNotFoundException(MessageConst.RESOURCE_NOT_FOUND, MessageConst.RESOURCE_NOT_FOUND,
+                    "tempScoringResults", "tempFileCode", tempFileCode);
+            }
+            if (Objects.equals(option, "SAVE")) {
+                String json = org.apache.commons.io.FileUtils.readFileToString(tempDataFile, StandardCharsets.UTF_8);
+                List<StudentTestSet> results = ObjectMapperUtil.listMapper(json, StudentTestSet.class);
+                studentTestSetRepository.saveAll(results);
+                boolean deletedFile = tempDataFile.delete();
+            } else if (Objects.equals(option, "DELETE")) {
+                boolean deletedFile = tempDataFile.delete();
+            } else {
+                throw new BadRequestException("option invalid", "option", "option");
             }
         } catch (Exception exception) {
             log.error(MessageConst.EXCEPTION_LOG_FORMAT, exception.getMessage(), exception.getCause());
