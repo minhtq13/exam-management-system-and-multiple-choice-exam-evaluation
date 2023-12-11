@@ -31,4 +31,7 @@ public interface TestSetRepository extends JpaRepository<TestSet, Long> {
 
     @Query(nativeQuery = true, value = SQLTestSet.GET_LIST_TEST_SET_GENERAL_SCORING_DATA)
     List<ITestSetScoringDTO> getTestSetGeneralScoringData(Set<String> examClassCodes, Set<String> testCodes);
+
+    @Query(value = "SELECT testSet.id FROM TestSet testSet WHERE testSet.testId = :testId AND testSet.isEnabled = TRUE")
+    Set<Long> getListTestSetIdByTestId(Long testId);
 }

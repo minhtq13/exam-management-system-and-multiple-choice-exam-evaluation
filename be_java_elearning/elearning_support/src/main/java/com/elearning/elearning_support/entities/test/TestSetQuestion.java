@@ -45,6 +45,9 @@ public class TestSetQuestion {
     @Column(name = "question_no", nullable = false)
     private Integer questionNo;
 
+    @Column(name = "question_mark")
+    private Double questionMark;
+
     @Column(name = "lst_answer_json", columnDefinition = "jsonb")
     @Type(type = "jsonb")
     List<TestQuestionAnswer> lstAnswer;
