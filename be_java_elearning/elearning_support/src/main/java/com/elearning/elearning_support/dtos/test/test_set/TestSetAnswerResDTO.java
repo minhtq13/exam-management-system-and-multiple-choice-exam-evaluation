@@ -2,7 +2,6 @@ package com.elearning.elearning_support.dtos.test.test_set;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,5 +19,9 @@ public class TestSetAnswerResDTO {
     @Schema(description = "Đáp án dạng A,B,C,D,...")
     String answerNoMask;
 
+    @Schema(description = "Cờ đánh dấu đáp án đúng")
+    Boolean isCorrect;
+
+    @Schema(description = "Nội dung đáp án")
     String content;
 }

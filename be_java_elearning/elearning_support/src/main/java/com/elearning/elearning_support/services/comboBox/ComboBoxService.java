@@ -2,6 +2,7 @@ package com.elearning.elearning_support.services.comboBox;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
+import com.elearning.elearning_support.dtos.common.ICommonIdCode;
 import com.elearning.elearning_support.dtos.common.ICommonIdCodeName;
 import com.elearning.elearning_support.enums.users.UserTypeEnum;
 
@@ -46,6 +47,11 @@ public interface ComboBoxService {
      * Danh sách kỳ học
      */
     List<ICommonIdCodeName> getListTest(String search);
+
+    /**
+     * Danh sách lớp thi
+     */
+    List<ICommonIdCode> getListExamClass(Long semesterId, Long subjectId, String search);
 
 
 

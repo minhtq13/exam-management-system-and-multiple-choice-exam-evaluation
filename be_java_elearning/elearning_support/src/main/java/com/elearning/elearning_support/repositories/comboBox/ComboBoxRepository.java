@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import com.elearning.elearning_support.constants.sql.SQLComboBox;
+import com.elearning.elearning_support.dtos.common.ICommonIdCode;
 import com.elearning.elearning_support.dtos.common.ICommonIdCodeName;
 import com.elearning.elearning_support.entities.users.User;
 
@@ -28,6 +29,9 @@ public interface ComboBoxRepository extends JpaRepository<User, Long> {
 
     @Query(nativeQuery = true, value = SQLComboBox.GET_LIST_TEST)
     List<ICommonIdCodeName> getListTest(String search);
+
+    @Query(nativeQuery = true, value = SQLComboBox.GET_LIST_EXAM_CLASS)
+    List<ICommonIdCode> getListExamClass(Long semesterId, Long subjectId, String search);
 
 
 }

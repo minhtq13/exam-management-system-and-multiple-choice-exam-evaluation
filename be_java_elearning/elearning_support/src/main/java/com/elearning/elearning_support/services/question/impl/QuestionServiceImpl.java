@@ -49,6 +49,8 @@ import com.elearning.elearning_support.repositories.answer.AnswerRepository;
 import com.elearning.elearning_support.repositories.chapter.ChapterRepository;
 import com.elearning.elearning_support.repositories.question.QuestionRepository;
 import com.elearning.elearning_support.repositories.subject.SubjectRepository;
+import com.elearning.elearning_support.repositories.test.test_question.TestQuestionRepository;
+import com.elearning.elearning_support.repositories.test.test_set.TestSetQuestionRepository;
 import com.elearning.elearning_support.services.question.QuestionService;
 import com.elearning.elearning_support.utils.StringUtils;
 import com.elearning.elearning_support.utils.auth.AuthUtils;
@@ -71,6 +73,10 @@ public class QuestionServiceImpl implements QuestionService {
     private final SubjectRepository subjectRepository;
 
     private final ChapterRepository chapterRepository;
+
+    private final TestQuestionRepository testQuestionRepository;
+
+    private final TestSetQuestionRepository testSetQuestionRepository;
 
     @Transactional
     @Override
@@ -291,6 +297,23 @@ public class QuestionServiceImpl implements QuestionService {
                 ErrorKey.Question.ID, String.valueOf(questionId));
         }
         return new QuestionDetailsDTO(questionDetails);
+    }
+
+    @Transactional
+    @Override
+    public void deleteQuestion(Long questionId) {
+        if (!questionRepository.existsById(questionId)) {
+            throw exceptionFactory.resourceExistedException(MessageConst.Question.NOT_FOUND, Resources.QUESTION, MessageConst.RESOURCE_NOT_FOUND,
+                ErrorKey.Question.ID, String.valueOf(questionId));
+        } else {
+            questionRepository.deleteById(questionId);
+            // delete answer
+            answerRepository.deleteAllByQuestionId(questionId);
+            // delete test question
+            testQuestionRepository.deleteAllByQuestionId(questionId);
+            // delete testSetQuestion
+            testSetQuestionRepository.deleteAllByQuestionId(questionId);
+        }
     }
 
     /**

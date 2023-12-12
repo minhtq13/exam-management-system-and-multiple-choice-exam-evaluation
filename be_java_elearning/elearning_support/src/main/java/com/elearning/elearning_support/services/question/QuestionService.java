@@ -32,4 +32,10 @@ public interface QuestionService {
     QuestionDetailsDTO getQuestionDetails(Long questionId);
 
 
+    /**
+     * Xóa question
+     */
+    void deleteQuestion(Long questionId);
+
+
 }

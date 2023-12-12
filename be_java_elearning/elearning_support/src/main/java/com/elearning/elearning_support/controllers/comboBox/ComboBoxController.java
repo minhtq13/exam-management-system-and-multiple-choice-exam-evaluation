@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.elearning.elearning_support.dtos.common.ICommonIdCode;
 import com.elearning.elearning_support.dtos.common.ICommonIdCodeName;
 import com.elearning.elearning_support.enums.users.UserTypeEnum;
 import com.elearning.elearning_support.services.comboBox.ComboBoxService;
@@ -84,6 +85,16 @@ public class ComboBoxController {
     @Operation(summary = "Danh sách kỳ thi")
     public List<ICommonIdCodeName> getListTest(@RequestParam(name = "search", required = false, defaultValue = "") String search){
         return comboBoxService.getListTest(search);
+    }
+
+    @GetMapping("/exam-class")
+    @Operation(summary = "Danh sách mã lớp thi")
+    public List<ICommonIdCode> getListExamClass(
+        @RequestParam(name = "semesterId", required = false, defaultValue = "-1") Long semesterId,
+        @RequestParam(name = "subjectId", required = false, defaultValue = "-1") Long subjectId,
+        @RequestParam(name = "search", required = false, defaultValue = "") String search
+    ) {
+        return comboBoxService.getListExamClass(semesterId, subjectId, search);
     }
 
 }

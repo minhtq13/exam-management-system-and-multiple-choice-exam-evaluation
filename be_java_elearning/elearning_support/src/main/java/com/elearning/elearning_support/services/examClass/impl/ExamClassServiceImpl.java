@@ -11,7 +11,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import org.apache.commons.math3.util.Pair;
 import org.springframework.beans.BeanUtils;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -170,10 +169,10 @@ public class ExamClassServiceImpl implements ExamClassService {
         // Create export structure
         String sheetName = ObjectUtils.isEmpty(participants) ? "result" : participants.get(0).getExamClassCode();
         Map<Integer, Pair<String, String>> structure = new LinkedHashMap<>();
-        structure.put(1, Pair.create("name", "getName"));
-        structure.put(2, Pair.create("code", "getCode"));
-        structure.put(3, Pair.create("role", "getRoleName"));
-        structure.put(4, Pair.create("exam_class", "getExamClassCode"));
+        structure.put(1, Pair.create("Họ tên", "getName"));
+        structure.put(2, Pair.create("Mã", "getCode"));
+        structure.put(3, Pair.create("Vai trò trong lớp thi", "getRoleName"));
+        structure.put(4, Pair.create("Mã lớp thi", "getExamClassCode"));
         String exportObject = roleType == UserExamClassRoleEnum.STUDENT ? "student" : "supervisor";
         String fileName = String.format("ExamClass_%s_%s.xlsx", exportObject, LocalDateTime.now());
         return new CustomInputStreamResource(fileName, excelFileUtils.createWorkbook(participants, structure, sheetName));

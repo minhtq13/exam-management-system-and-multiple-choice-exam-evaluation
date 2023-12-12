@@ -283,13 +283,13 @@ public class UserServiceImpl implements UserService {
             Collectors.toList());
         // Tạo map cấu trúc file excel
         Map<Integer, Pair<String, String>> mapStructure = new LinkedHashMap<>();
-        mapStructure.put(1, Pair.create("lastName", "getLastName"));
-        mapStructure.put(2, Pair.create("firstName", "getFirstName"));
-        mapStructure.put(3, Pair.create("gender", "getGender"));
-        mapStructure.put(4, Pair.create("birthDate", "getBirthDate"));
-        mapStructure.put(5, Pair.create("email", "getEmail"));
-        mapStructure.put(6, Pair.create("phoneNumber", "getPhoneNumber"));
-        mapStructure.put(7, Pair.create("courseNum", "getCourseNum"));
+        mapStructure.put(1, Pair.create("Họ", "getLastName"));
+        mapStructure.put(2, Pair.create("Tên", "getFirstName"));
+        mapStructure.put(3, Pair.create("Giới tính", "getGender"));
+        mapStructure.put(4, Pair.create("Ngày sinh", "getBirthDate"));
+        mapStructure.put(5, Pair.create("Email", "getEmail"));
+        mapStructure.put(6, Pair.create("Số điện thoại", "getPhoneNumber"));
+        mapStructure.put(7, Pair.create("Khóa", "getCourseNum"));
         return excelFileUtils.createWorkbook(lstStudent, mapStructure, "students");
     }
 
@@ -401,13 +401,13 @@ public class UserServiceImpl implements UserService {
             Collectors.toList());
         // Tạo map cấu trúc file excel
         Map<Integer, Pair<String, String>> mapStructure = new LinkedHashMap<>();
-        mapStructure.put(1, Pair.create("lastName", "getLastName"));
-        mapStructure.put(2, Pair.create("firstName", "getFirstName"));
-        mapStructure.put(3, Pair.create("gender", "getGender"));
-        mapStructure.put(4, Pair.create("birthDate", "getBirthDate"));
-        mapStructure.put(5, Pair.create("email", "getEmail"));
-        mapStructure.put(6, Pair.create("phoneNumber", "getPhoneNumber"));
-        mapStructure.put(7, Pair.create("departmentName", "getDepartmentName"));
+        mapStructure.put(1, Pair.create("Họ", "getLastName"));
+        mapStructure.put(2, Pair.create("Tên", "getFirstName"));
+        mapStructure.put(3, Pair.create("Giới tính", "getGender"));
+        mapStructure.put(4, Pair.create("Ngày sinh", "getBirthDate"));
+        mapStructure.put(5, Pair.create("Email", "getEmail"));
+        mapStructure.put(6, Pair.create("Số điện thoại", "getPhoneNumber"));
+        mapStructure.put(7, Pair.create("Phòng ban", "getDepartmentName"));
         return excelFileUtils.createWorkbook(lstTeacher, mapStructure, "teacher");
     }
 

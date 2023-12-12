@@ -16,4 +16,9 @@ public interface TestQuestionRepository extends JpaRepository<TestQuestion, Long
     @Modifying
     void deleteAllByTestIdAndQuestionIdIn(Long testId, Set<Long> questionIds);
 
+
+    @Transactional
+    @Modifying
+    void deleteAllByQuestionId(Long questionId);
+
 }

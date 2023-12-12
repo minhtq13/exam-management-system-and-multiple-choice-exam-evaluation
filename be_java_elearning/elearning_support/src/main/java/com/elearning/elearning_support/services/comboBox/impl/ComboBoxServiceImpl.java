@@ -2,6 +2,7 @@ package com.elearning.elearning_support.services.comboBox.impl;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
+import com.elearning.elearning_support.dtos.common.ICommonIdCode;
 import com.elearning.elearning_support.dtos.common.ICommonIdCodeName;
 import com.elearning.elearning_support.enums.users.UserTypeEnum;
 import com.elearning.elearning_support.repositories.comboBox.ComboBoxRepository;
@@ -49,5 +50,10 @@ public class ComboBoxServiceImpl implements ComboBoxService {
     @Override
     public List<ICommonIdCodeName> getListTest(String search) {
         return comboBoxRepository.getListTest(search);
+    }
+
+    @Override
+    public List<ICommonIdCode> getListExamClass(Long semesterId, Long subjectId, String search) {
+        return comboBoxRepository.getListExamClass(semesterId, subjectId, search);
     }
 }

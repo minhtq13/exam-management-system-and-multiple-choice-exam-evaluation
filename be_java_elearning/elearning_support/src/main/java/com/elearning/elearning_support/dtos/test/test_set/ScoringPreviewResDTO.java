@@ -16,7 +16,7 @@ import lombok.experimental.FieldDefaults;
 public class ScoringPreviewResDTO {
 
     @Schema(description = "Mã temp data")
-    String tmpCode;
+    String tmpFileCode;
 
     @Schema(description = "Chi tiết kết quả chấm ứng với tempCode")
     List<ScoringPreviewItemDTO> previews = new ArrayList<>();

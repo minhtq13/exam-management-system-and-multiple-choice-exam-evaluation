@@ -56,5 +56,15 @@ public class SQLComboBox {
     public static final String GET_LIST_TEST =
         "SELECT id, name FROM {h-schema}test WHERE ('' = :search OR name ILIKE ('%' || :search || '%')) ";
 
+    public static final String GET_LIST_EXAM_CLASS =
+        "SELECT \n" +
+            "   exClass.id AS id, \n" +
+            "   exClass.code AS code \n" +
+            "FROM {h-schema}exam_class AS exClass \n" +
+            "   JOIN {h-schema}test ON exClass.test_id = test.id \n" +
+            "WHERE \n" +
+            "   (-1 = :semesterId OR exClass.semester_id = :semesterId) AND \n" +
+            "   (-1 = :subjectId OR test.subject_id = :subjectId) AND \n" +
+            "   ('' = :search OR exClass.code = :search)";
 
 }
