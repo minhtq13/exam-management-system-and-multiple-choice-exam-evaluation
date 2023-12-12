@@ -1,4 +1,4 @@
-const TestHeader = ({ testDetail, testNo }) => {
+export const TestHeader = ({ testDetail, testNo }) => {
 	// Đối tượng JavaScript đại diện cho các thuộc tính CSS
 
 	const contentStyle = {

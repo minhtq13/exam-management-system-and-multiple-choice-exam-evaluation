@@ -9,6 +9,8 @@ import { publicRoutes } from "./config/appRouter";
 import PrivateRoute from "./config/privateRouter";
 import DefaultLayout from "./layout/DefaultLayout";
 import SignLayout from "./layout/SignLayout";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 function App() {
   const getLayout = (layout) => {

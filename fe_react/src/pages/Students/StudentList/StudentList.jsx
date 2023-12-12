@@ -42,7 +42,6 @@ const StudentList = () => {
 	const handleChange = (e) => {
 		setFileList(e.target.files[0]);
 	};
-	console.log(fileList);
 	const handleReset = (clearFilters) => {
 		clearFilters();
 	};

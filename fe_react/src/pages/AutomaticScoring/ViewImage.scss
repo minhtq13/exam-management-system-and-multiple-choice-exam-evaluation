@@ -1,0 +1,60 @@
+:root {
+  --hust-color: #8c1515;
+}
+.view-image-component {
+  .view-image-button {
+    text-decoration: underline;
+    color: #007bff;
+    cursor: pointer;
+  }
+}
+.modal-view-image {
+  max-width: 65vw !important;
+  min-width: 65vw !important;
+  width: 65vw;
+  .ant-modal-body {
+    min-height: 62vh;
+  }
+  .modal-content-view-image {
+    .header {
+      margin: 32px 0px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .handle-img {
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        object-fit: contain;
+      }
+    }
+  }
+  .ant-modal-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    button {
+      min-width: 120px;
+    }
+  }
+}
+
+.slick-next,
+.slick-prev {
+  color: var(--hust-color) !important;
+}
+.slick-next:before,
+.slick-prev:before {
+  color: var(--hust-color) !important;
+}
+.slick-dots {
+  bottom: 0px !important;
+}
+.slick-dots li.slick-active button:before {
+  color: var(--hust-color) !important;
+}
+

@@ -1,10 +1,14 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Table } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
 import { generateRandomSixDigitNumber } from "../../utils/tools";
+import ViewImage from "./ViewImage";
 
 const TableResult = ({ resultAI }) => {
-  const numberAnswer = 60
+ 
+
+  const numberAnswer = 60;
   const columnsAnswer = [];
   for (var i = 0; i < numberAnswer; i++) {
     columnsAnswer.push({
@@ -16,32 +20,32 @@ const TableResult = ({ resultAI }) => {
   }
   const columnsInfo = [
     {
-      title: "STT",
-      width: 60,
+      title: "TT",
+      width: 50,
       align: "center",
       dataIndex: "stt",
       key: "stt",
       fixed: "left",
     },
     {
-      title: "Mã lớp thi",
-      width: 100,
+      title: "MLT",
+      width: 80,
       align: "center",
       dataIndex: "examClassCode",
       key: "examClassCode",
       fixed: "left",
     },
     {
-      title: "Số báo danh",
-      width: 150,
+      title: "SDB",
+      width: 100,
       align: "center",
       dataIndex: "studentCode",
       key: "studentCode",
       fixed: "left",
     },
     {
-      title: "Mã đề thi",
-      width: 100,
+      title: "MĐT",
+      width: 80,
       align: "center",
       dataIndex: "testCode",
       key: "testCode",
@@ -56,6 +60,19 @@ const TableResult = ({ resultAI }) => {
       fixed: "right",
       align: "center",
       width: 100,
+    },
+    {
+      title: "Chi tiết",
+      key: "imgHandle",
+      dataIndex: "imgHandle",
+      fixed: "right",
+      align: "center",
+      width: 150,
+      render: (text, record) => {
+        return (
+          <ViewImage dataArray={dataArray} index={record.stt}/>
+        );
+      },
     },
   ];
   const columnsMerged = [...columnsInfo, ...columnsAnswer];
@@ -72,7 +89,7 @@ const TableResult = ({ resultAI }) => {
           studentCode: item.studentCode,
           testCode: item.testCode,
           key: generateRandomSixDigitNumber(),
-          totalScore: item.totalScore
+          totalScore: item.totalScore,
         };
         for (let j = 0; j < numberAnswer; j++) {
           formatObj[`answer${j + 1}`] = item.details[j].selectedAnswers;
@@ -100,37 +117,67 @@ const TableResult = ({ resultAI }) => {
   //     setDataArray([]);
   //   }
   // };
-
   const renderTable = useMemo(() => {
     return (
-      <Table
-        // expandable={{
-        //   expandedRowRender: (record) => (
-        //     <p
-        //       style={{
-        //         margin: 0,
-        //       }}
-        //     >
-        //       {record.description}
-        //     </p>
-        //   ),
-        //   rowExpandable: (record) => record.isExpandable !== "Not Expandable",
-        // }}
-        className="table-ai"
-        columns={columns}
-        dataSource={dataArray}
-        scroll={{
-          x: 1500,
-          y: 600,
-        }}
-        // pagination={tableParams.pagination}
-        // onChange={handleTableChange}
-      />
+      <div>
+        <Table
+          // expandable={{
+          //   expandedRowRender: (record) => (
+          //     <p
+          //       style={{
+          //         margin: 0,
+          //       }}
+          //     >
+          //       {record.description}
+          //     </p>
+          //   ),
+          //   rowExpandable: (record) => record.isExpandable !== "Not Expandable",
+          // }}
+          className="table-ai"
+          columns={columns}
+          dataSource={dataArray}
+          scroll={{
+            x: 1500,
+            y: 600,
+          }}
+          // pagination={tableParams.pagination}
+          // onChange={handleTableChange}
+        />
+      </div>
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataArray]);
+  const [pageSize, setPageSize] = useState(10);
 
-  return <div className="table-result-component">{renderTable}</div>;
+  return (
+    <div className="table-result-component">
+      <Table
+          className="table-ai"
+          columns={columns}
+          dataSource={dataArray}
+          scroll={{
+            x: 1500,
+            y: 600,
+          }}
+          pagination = {{
+            // Thuộc tính của pagination
+            pageSize: pageSize,
+            total: dataArray.length,
+            showSizeChanger: true,
+            pageSizeOptions: ["10", "20", "50", "100"],
+						showQuickJumper: true,
+            onChange: (page, pageSize) => {
+              console.log('Page:', page, 'Page Size:', pageSize);
+            },
+            onShowSizeChange: (current, size) => {
+              setPageSize(size)
+              
+              console.log('Current Page:', current, 'Page Size:', size);
+            },
+          }}
+        />
+    </div>
+  );
 };
 
 export default TableResult;

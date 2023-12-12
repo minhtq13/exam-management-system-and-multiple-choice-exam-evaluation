@@ -14,7 +14,7 @@ const useAI = () => {
       payload,
       (res) => {
         setLoading(false);
-        setResultAI(res.data);
+        setResultAI(res.data.previews);
       },
       (err) => {
         console.log(err)

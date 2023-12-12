@@ -1,4 +1,4 @@
-const TestFooter = () => {
+export const TestFooter = () => {
 	const testSig = {
 		display: "flex",
 		justifyContent: "space-between",

@@ -114,11 +114,12 @@
         bottom: 0;
         top: -15px;
         color: #a0a0a0;
-        right: 70px;
+        right: 225px;
         font-style: italic;
+        height: 0px;
       }
       .table-result-component {
-        width: 1000px;
+        width: 1090px;
         min-height: 300px;
         .table-ai {
           margin-top: 24px;
@@ -127,8 +128,8 @@
             outline: 1px solid #ccc;
           }
           .ant-table-body {
-            min-height: 400px;
-            max-height: 500px;
+            min-height: 567px !important;
+            max-height: 567px !important;
           }
           .ant-table-expanded-row-fixed {
             min-height: 400px;
@@ -172,3 +173,4 @@
   align-items: center !important;
   justify-content: center !important;
 }
+
