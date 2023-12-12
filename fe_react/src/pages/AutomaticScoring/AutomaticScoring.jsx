@@ -137,6 +137,12 @@ const AutomaticScoring = () => {
 								rules={[{ required: false }]}
 							>
 								<Input type="text" placeholder="Mã lớp thi cần chấm"/>
+								{/* Call API get examClassCodeOption */}
+								{/* <Select
+									placeholder="Chọn mã lớp thi"
+									options={examClassCodeOption}
+									onChange={examClassCodeOOnchange}
+								></Select> */}
 							</Form.Item>
 						</div>
 					</div>
@@ -153,8 +159,6 @@ const AutomaticScoring = () => {
 						>
 							Chấm điểm
 						</Button>
-			
-
 					<div className="result-ai">
 						<TableResult resultAI={resultAI} />
 						{resultAI && (

@@ -12,7 +12,7 @@ const useImportExport = () => {
 	const importList = (file, object, getdata, param) => {
 		setLoadingImport(true);
 		axios
-			.post(`${BASE_URL}/api/user/${object}/import`, file)
+			.post(`${BASE_URL}/user/${object}/import`, file)
 			.then((response) => {
 				notify.success("Tải file thành công!");
 				setLoadingImport(false);
@@ -29,7 +29,7 @@ const useImportExport = () => {
 	const exportList = (params, object) => {
 		// object = "student" or "teacher"
 		axios({
-			url: `${BASE_URL}/api/user/${object}/export`,
+			url: `${BASE_URL}/user/${object}/export`,
 			method: "GET",
 			responseType: "blob",
 			params,
@@ -54,7 +54,7 @@ const useImportExport = () => {
 		// object = "test-set"
 		setLoadingExport(true);
 		axios({
-			url: `${BASE_URL}/api/test-set/export`,
+			url: `${BASE_URL}/test-set/export`,
 			method: "POST",
 			responseType: "blob",
 			data: params,
@@ -84,7 +84,7 @@ const useImportExport = () => {
 		// object = "exam-class"
 		setLoadingExport(true);
 		axios({
-			url: `${BASE_URL}/api/${object}/export`,
+			url: `${BASE_URL}/${object}/export`,
 			method: "GET",
 			responseType: "blob",
 			data: params,
@@ -110,7 +110,7 @@ const useImportExport = () => {
 		// object = "exam-class"
 		setLoadingExport(true);
 		axios({
-			url: `${BASE_URL}/api/${object}/export/${classId}?roleType=STUDENT`,
+			url: `${BASE_URL}/${object}/export/${classId}?roleType=STUDENT`,
 			method: "GET",
 			responseType: "blob",
 			data: params,

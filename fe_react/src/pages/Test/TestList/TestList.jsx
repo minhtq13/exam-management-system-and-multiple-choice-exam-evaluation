@@ -268,7 +268,7 @@ const TestList = () => {
 		const formData = new FormData();
 		formData.append("fileHtml", file);
 		axios({
-			url: BASE_URL + "/api/test-set/html/export",
+			url: BASE_URL + "/test-set/html/export",
 			method: "POST",
 			responseType: "blob",
 			data: formData,

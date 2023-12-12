@@ -36,7 +36,7 @@ const TableResult = ({ resultAI }) => {
       fixed: "left",
     },
     {
-      title: "SDB",
+      title: "MSSV",
       width: 100,
       align: "center",
       dataIndex: "studentCode",
@@ -181,3 +181,5 @@ const TableResult = ({ resultAI }) => {
 };
 
 export default TableResult;
+
+

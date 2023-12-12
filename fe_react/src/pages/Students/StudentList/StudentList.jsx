@@ -23,7 +23,7 @@ const StudentList = () => {
 		code: null,
 		page: 0,
 		size: 10,
-		courseNum: -1,
+		courseNum: null,
 		sort: "lastModifiedAt",
 	};
 	const [deleteDisable, setDeleteDisable] = useState(true);

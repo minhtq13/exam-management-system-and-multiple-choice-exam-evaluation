@@ -53,6 +53,7 @@ const TestEdit = () => {
 				setLoadingData(true);
 			}
 		);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleDragAndDrop = (results) => {

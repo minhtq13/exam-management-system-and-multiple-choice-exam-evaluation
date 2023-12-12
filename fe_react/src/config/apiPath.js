@@ -11,7 +11,7 @@ export const apiPath = {
 	updateStudent: BASE_URL + "/student/update",
 	addStudent: BASE_URL + "/student/add",
 	deleteStudent: BASE_URL + "/student/disable",
-	exportStudents: BASE_URL + "api/student/export",
+	exportStudents: BASE_URL + "/student/export",
 	// AI
 	automaticScoring: BASE_URL + "/test-set/scoring",
 	//Teacher:

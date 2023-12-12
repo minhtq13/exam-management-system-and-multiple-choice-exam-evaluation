@@ -1,4 +1,12 @@
 .exam-list-wrapper {
+  .ant-upload-list-item-name {
+    width: 120px;
+  }
+  .ant-upload-list .ant-upload-list-picture {
+    padding-bottom: 12px;
+    width: 1096px;
+    overflow: auto;
+  }
   .header-exam-list {
     padding: 12px;
     display: flex;
@@ -91,7 +99,12 @@
     padding: 32px;
     .upload {
       overflow-x: auto;
-      min-height: 160px;
+      min-height: 130px;
+      margin-bottom: 12px;
+      .ant-form-item {
+        margin-bottom: 0px !important;
+      }
+      
     }
     .block-1 {
       display: flex;
