@@ -22,8 +22,6 @@ import {
 	testSetDetailService,
 } from "../../../services/testServices";
 import "./TestList.scss";
-import axios from "axios";
-import { BASE_URL } from "../../../config/apiPath";
 import TestHeader from "../../../components/TestPreview/TestHeader";
 import TestFooter from "../../../components/TestPreview/TestFooter";
 const TestList = () => {
@@ -70,8 +68,8 @@ const TestList = () => {
 	const semesterOptions =
 		allSemester && allSemester.length > 0
 			? allSemester.map((item) => {
-					return { value: item.id, label: item.name };
-			  })
+				return { value: item.id, label: item.name };
+			})
 			: [];
 	const subjectOnChange = (value) => {
 		setParam({ ...param, subjectId: value });
@@ -221,11 +219,9 @@ const TestList = () => {
 		questions.length > 0 &&
 			questions.forEach((question, index) => {
 				// Nối chuỗi câu hỏi
-				combinedString += `<div style="display: flex; gap: 5px; margin-top: 5px;"><p style="flex-shrink:0; font-family: 'Times New Roman', Times, serif;">Câu ${
-					index + 1
-				}: </p><p style="font-family: 'Times New Roman', Times, serif;">${
-					question.content
-				}</p></div>`;
+				combinedString += `<div style="display: flex; gap: 5px; margin-top: 5px;"><p style="flex-shrink:0; font-family: 'Times New Roman', Times, serif;">Câu ${index + 1
+					}: </p><p style="font-family: 'Times New Roman', Times, serif;">${question.content
+					}</p></div>`;
 
 				// Nối chuỗi câu trả lời
 				question.answers.forEach((answer) => {
@@ -241,6 +237,10 @@ const TestList = () => {
       font-size: 16px;
       color: #000;
     }
+	img {
+		max-width: 500px;
+		object-fit: contain;
+	}
   </style>
   <div>
   ${ReactDOMServer.renderToStaticMarkup(testHeader)}
@@ -262,29 +262,6 @@ const TestList = () => {
 				pdfInstance.save();
 			});
 		}
-	};
-
-	const sendFileHtml = (file) => {
-		const formData = new FormData();
-		formData.append("fileHtml", file);
-		axios({
-			url: BASE_URL + "/test-set/html/export",
-			method: "POST",
-			responseType: "blob",
-			data: formData,
-		})
-			.then((res) => {
-				const url = window.URL.createObjectURL(new Blob([res.data]));
-				const link = document.createElement("a");
-				link.href = url;
-				link.setAttribute("download", `Test.docx`);
-				document.body.appendChild(link);
-				link.click();
-				URL.revokeObjectURL(file);
-			})
-			.catch((error) => {
-				notify.error("Lỗi tải đề thi!");
-			});
 	};
 
 	return (
@@ -414,15 +391,23 @@ const TestList = () => {
 						)}
 					/>
 					<Modal
+						className="test-list-preview"
 						open={openModalPreview}
 						okText="Tải xuống"
 						onOk={() => {
 							createTemporaryHtmlFile();
-							//const htmlBlob = createTemporaryHtmlFile();
-							//sendFileHtml(htmlBlob);
 						}}
-						cancelText="Sửa"
-						onCancel={handleEdit}
+						footer={[
+							<Button key="back" onClick={handleEdit}>
+								Sửa
+							</Button>,
+							<Button key="submit" type="primary" onClick={() => {
+								createTemporaryHtmlFile();
+							}}>
+								Submit
+							</Button>,
+						]}
+						onCancel={() => setOpenModalPreview(false)}
 						maskClosable={true}
 						centered={true}
 						style={{
@@ -430,7 +415,6 @@ const TestList = () => {
 							width: "70vw",
 							overflowY: "scroll",
 						}}
-						width={"40vw"}
 						okButtonProps={{ loading: loadingExport }}
 					>
 						<Spin tip="Loading..." spinning={viewLoading}>

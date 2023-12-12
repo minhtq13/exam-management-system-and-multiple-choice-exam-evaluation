@@ -91,7 +91,7 @@ export const updateTestSetService = async (
 	errorCallback
 ) => {
 	await putRequest(
-		`${apiPath.testSetUpdate}`,
+		`${apiPath.updateTestSet}`,
 		params,
 		successCallback,
 		errorCallback

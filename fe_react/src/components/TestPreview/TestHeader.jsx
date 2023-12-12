@@ -45,7 +45,7 @@ export const TestHeader = ({ testDetail, testNo }) => {
 						ĐỀ THI CUỐI KỲ
 					</p>
 					<p className="text-bold" style={textBold}>
-						{`HỌC KỲ:`}{" "}
+						{`HỌC KỲ: ${testDetail.semester}`}
 					</p>
 				</div>
 			</div>
@@ -58,7 +58,6 @@ export const TestHeader = ({ testDetail, testNo }) => {
 					<p
 						style={textBold}
 					>{`Tên học phần: ${testDetail.subjectTitle}`}</p>
-					<p style={textBold}>{`Lớp thi: `}</p>
 				</div>
 				<div className="test-header-content-right" style={contentStyle}>
 					<p

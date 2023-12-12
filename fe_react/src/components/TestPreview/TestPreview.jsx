@@ -11,7 +11,7 @@ const TestPreview = ({ questions, testDetail, testNo }) => {
 				</div>
 				<div className="test-semester">
 					<p className="text-bold">ĐỀ THI CUỐI KỲ</p>
-					<p className="text-bold">{`HỌC KỲ:`} </p>
+					<p className="text-bold">{`HỌC KỲ: ${testDetail.semester}`} </p>
 				</div>
 			</div>
 			<div className="test-header-content">
@@ -19,7 +19,6 @@ const TestPreview = ({ questions, testDetail, testNo }) => {
 					<p>Hình thức tổ chức thi: Trắc nghiệm</p>
 					<p>{`Mã học phần: ${testDetail.subjectCode}`}</p>
 					<p>{`Tên học phần: ${testDetail.subjectTitle}`}</p>
-					<p>{`Lớp thi: `}</p>
 				</div>
 				<div className="test-header-content-right">
 					<p className="text-bold">{`Thời gian làm bài: ${testDetail.duration} phút`}</p>

@@ -47,6 +47,7 @@ export const apiPath = {
 	//Test-set:
 	testSetCreate: BASE_URL + "/test-set/generate",
 	testSetDetail: BASE_URL + "/test-set/detail",
+	updateTestSet: BASE_URL + "/test-set",
 	//Exam-class:
 	examClassCreate: BASE_URL + "/exam-class",
 	pageExamClasses: BASE_URL + "/exam-class/page",

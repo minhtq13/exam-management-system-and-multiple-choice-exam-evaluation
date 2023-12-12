@@ -62,20 +62,20 @@ const UpdateExamClassInfoForm = ({
 			getAllTests(param);
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [param, openModal]);
 	// eslint-disable-next-line
 	const options =
 		allSemester && allSemester.length > 0
 			? allSemester.map((item) => {
-					return { value: item.id, label: item.name };
-			  })
+				return { value: item.id, label: item.name };
+			})
 			: [];
 	const subjectOptions =
 		allSubjects && allSubjects.length > 0
 			? allSubjects.map((item) => {
-					return { value: item.id, label: item.name };
-			  })
+				return { value: item.id, label: item.name };
+			})
 			: [];
 	const columns = [
 		{
@@ -270,6 +270,7 @@ const UpdateExamClassInfoForm = ({
 				</Form.Item>
 			</Form>
 			<Modal
+				className="exam-class-test-modal"
 				open={openModal}
 				title="Danh sách đề thi"
 				onOk={() => setOpenModal(false)}
