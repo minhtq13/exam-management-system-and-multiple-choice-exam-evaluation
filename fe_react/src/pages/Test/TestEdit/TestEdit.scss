@@ -1,103 +1,155 @@
-.test-preview {
-  background-color: #ffffff;
-  padding: 0px 25px;
+.test-edit {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-  div,
-  p {
-    font-family: "Times New Roman", serif;
-    font-size: 16px;
+  .test-edit-header {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--hust-color);
+    margin-bottom: 15px;
   }
 
-  .question-topic,
-  .text-bold {
-    font-weight: bold;
-  }
-
-  .test-top {
+  .test-edit-button {
     display: flex;
-    justify-content: space-between;
-    padding: 20px 40px 20px 30px;
+    gap: 15px;
+    align-items: center;
+    margin-top: 20px;
 
-    .test-bgd,
-    .test-semester {
-      border-bottom: 1px solid black;
-    }
-
-  }
-
-  .question-items {
-    margin-bottom: 10px;
-  }
-
-  .test-header-content {
-    display: flex;
-    justify-content: space-between;
-    padding: 0px 15px;
-    margin-bottom: 20px;
-
-    .test-header-content-left {
-      p {
-        font-weight: bold;
+    .test-edit-button-download {
+      .ant-btn {
+        background-color: #059862;
       }
     }
   }
 
-  .test-header-content-right,
-  .test-bgd,
-  .test-semester,
-  .sig-left,
-  .sig-right,
-  .test-end {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .test-preview {
+    background-color: #ffffff;
+    padding: 0px 25px;
+    max-height: 75vh;
+    width: 55vw;
+    overflow-y: scroll;
 
+    div,
     p {
-      display: block;
+      font-family: "Times New Roman", serif;
+      font-size: 16px;
     }
-  }
 
-  .test-footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    .question-topic,
+    .text-bold {
+      font-weight: bold;
+    }
 
-    .test-sig {
+    .test-top {
       display: flex;
       justify-content: space-between;
-      width: 100%;
-      padding: 0px 15px;
-      margin-bottom: 40px;
+      padding: 20px 40px 20px 30px;
+
+      .test-bgd,
+      .test-semester {
+        border-bottom: 1px solid black;
+      }
+
     }
 
-    .test-note {
-      .text-note {
-        padding-left: 0px;
-        font-style: normal;
+    .question-items {
+      margin-bottom: 10px;
+    }
+
+    .test-header-content {
+      display: flex;
+      justify-content: space-between;
+      padding: 0px 15px;
+      margin-bottom: 20px;
+
+      .test-header-content-left {
+        p {
+          font-weight: bold;
+        }
       }
+    }
+
+    .test-header-content-right,
+    .test-bgd,
+    .test-semester,
+    .sig-left,
+    .sig-right,
+    .test-end {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
       p {
         display: block;
-        padding-left: 20px;
-        font-style: italic;
       }
     }
-  }
 
-  .store-container {
-    padding: 5px 5px 5px 20px;
+    .test-footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
-    h3{
-      font-weight: bold;
+      .test-sig {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0px 15px;
+        margin-bottom: 40px;
+      }
+
+      .test-note {
+        .text-note {
+          padding-left: 0px;
+          font-style: normal;
+        }
+
+        p {
+          display: block;
+          padding-left: 20px;
+          font-style: italic;
+        }
+      }
+    }
+
+    .store-container {
+      padding: 5px 5px 5px 20px;
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+
+      h3 {
+        font-weight: bold;
+      }
+
+    }
+
+    .items-container {
+      padding-left: 20px;
+    }
+
+    .item-container {
+      padding: 5px;
+      margin-left: 20px;
+      display: flex;
+      gap: 10px
+    }
+
+    .text-title {
+      flex-shrink: 0;
+      font-size: 16px;
+      font-weight: 600;
     }
   }
+}
 
-  .items-container {
-    padding-left: 20px;
-  }
+.test-edit-view {
+  .ql-container {
+    border: none;
 
-  .item-container {
-    padding: 5px;
-    margin-left: 20px;
+    .ql-editor {
+      padding: 0px;
+    }
   }
 }

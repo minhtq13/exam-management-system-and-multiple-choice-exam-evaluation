@@ -1,4 +1,9 @@
-import { deleteRequest, getRequest, postRequest } from "../api/apiCaller";
+import {
+	deleteRequest,
+	getRequest,
+	postRequest,
+	putRequest,
+} from "../api/apiCaller";
 import { apiPath } from "../config/apiPath";
 export const testRandomService = async (
 	params,
@@ -75,6 +80,18 @@ export const deleteTestService = async (
 ) => {
 	await deleteRequest(
 		`${apiPath.deleteTest}/${testId}`,
+		params,
+		successCallback,
+		errorCallback
+	);
+};
+export const updateTestSetService = async (
+	params,
+	successCallback,
+	errorCallback
+) => {
+	await putRequest(
+		`${apiPath.testSetUpdate}`,
 		params,
 		successCallback,
 		errorCallback

@@ -16,6 +16,7 @@ import useNotify from "../../../hooks/useNotify";
 import useTest from "../../../hooks/useTest";
 import ReactDOMServer from "react-dom/server";
 import { setSelectedItem } from "../../../redux/slices/appSlice";
+import html2pdf from "html2pdf.js";
 import {
 	deleteTestService,
 	testSetDetailService,
@@ -207,6 +208,10 @@ const TestList = () => {
 		);
 	};
 
+	const handleEdit = () => {
+		navigate(`${appPath.testEdit}/${testNo}/${testItem.id}`);
+	};
+
 	const createTemporaryHtmlFile = () => {
 		const testHeader = (
 			<TestHeader testDetail={testDetail} testNo={testNo} />
@@ -216,28 +221,47 @@ const TestList = () => {
 		questions.length > 0 &&
 			questions.forEach((question, index) => {
 				// Nối chuỗi câu hỏi
-				combinedString += `<div style="display: flex;"><p>Câu ${
+				combinedString += `<div style="display: flex; gap: 5px; margin-top: 5px;"><p style="flex-shrink:0; font-family: 'Times New Roman', Times, serif;">Câu ${
 					index + 1
-				}: </p><p>${question.content}</p></div>`;
+				}: </p><p style="font-family: 'Times New Roman', Times, serif;">${
+					question.content
+				}</p></div>`;
 
 				// Nối chuỗi câu trả lời
 				question.answers.forEach((answer) => {
-					combinedString += `<div style="display: flex;"><p>${answer.answerNoMask}. </p> <p>${answer.content}</p></div>`;
+					combinedString += `<div style="display: flex; gap: 5px;"><p style="font-family: 'Times New Roman', Times, serif;">${answer.answerNoMask}. </p> <p style="font-family: 'Times New Roman', Times, serif;">${answer.content}</p></div>`;
 				});
 
 				// Thêm dòng trống giữa các câu hỏi
-				combinedString += "<br>";
 			});
-		const htmlContent =
-			ReactDOMServer.renderToStaticMarkup(testHeader) +
-			combinedString +
-			ReactDOMServer.renderToStaticMarkup(testFooter);
+		const htmlContent = `
+  <style>
+    p {
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 16px;
+      color: #000;
+    }
+  </style>
+  <div>
+  ${ReactDOMServer.renderToStaticMarkup(testHeader)}
+  ${combinedString}
+  ${ReactDOMServer.renderToStaticMarkup(testFooter)}
+  </div>
+`;
+		if (htmlContent) {
+			const pdfInstance = html2pdf(htmlContent, {
+				margin: 10,
+				filename: "document.pdf",
+				image: { type: "jpeg", quality: 0.98 },
+				html2canvas: { scale: 2 },
+				jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+				pagebreak: { mode: "avoid-all" }, //
+			});
 
-		const blob = new Blob([htmlContent], { type: "text/html" });
-		const link = document.createElement("a");
-		link.href = URL.createObjectURL(blob);
-		link.download = "temporaryFile.html";
-		link.click();
+			pdfInstance.from().then(() => {
+				pdfInstance.save();
+			});
+		}
 	};
 
 	const sendFileHtml = (file) => {
@@ -391,13 +415,14 @@ const TestList = () => {
 					/>
 					<Modal
 						open={openModalPreview}
-						okText="Download"
+						okText="Tải xuống"
 						onOk={() => {
 							createTemporaryHtmlFile();
-							const htmlBlob = createTemporaryHtmlFile();
-							sendFileHtml(htmlBlob);
+							//const htmlBlob = createTemporaryHtmlFile();
+							//sendFileHtml(htmlBlob);
 						}}
-						onCancel={() => setOpenModalPreview(false)}
+						cancelText="Sửa"
+						onCancel={handleEdit}
 						maskClosable={true}
 						centered={true}
 						style={{

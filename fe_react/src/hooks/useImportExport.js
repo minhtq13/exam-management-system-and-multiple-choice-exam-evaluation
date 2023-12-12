@@ -99,11 +99,10 @@ const useImportExport = () => {
 				document.body.appendChild(link);
 				link.click();
 				setLoadingExport(false);
+				notify.success("Tải danh sách lớp thi thành công!");
 			})
 			.catch((error) => {
-				notify.error(
-					capitalizeFirstLetter(error.response.data.message)
-				);
+				notify.error("Lỗi tải danh sách lớp thi!");
 				setLoadingExport(false);
 			});
 	};
@@ -126,11 +125,10 @@ const useImportExport = () => {
 				document.body.appendChild(link);
 				link.click();
 				setLoadingExport(false);
+				notify.success("Tải danh sách sinh viên thành công!");
 			})
 			.catch((error) => {
-				notify.error(
-					capitalizeFirstLetter(error.response.data.message)
-				);
+				notify.error("Lỗi tải danh sách sinh viên!");
 				setLoadingExport(false);
 			});
 	};

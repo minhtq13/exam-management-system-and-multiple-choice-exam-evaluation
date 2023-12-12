@@ -159,7 +159,7 @@ const TestSetCreate = () => {
 					onClick={() => handleExport()}
 					loading={loading}
 				>
-					Download
+					Tải xuống
 				</Button>
 			</div>
 		</div>

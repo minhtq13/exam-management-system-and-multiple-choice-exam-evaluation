@@ -71,6 +71,7 @@ const publicRoutes = [
 	{ path: appPath.testCreate, component: TestCreate },
 	{ path: appPath.testSetCreate, component: TestSetCreate },
 	{ path: appPath.testSetCreate + "/:testId", component: TestSetCreate },
+	{ path: `${appPath.testEdit}/:testSetId/:testId`, component: TestEdit },
 	{
 		path: appPath.login,
 		component: Login,

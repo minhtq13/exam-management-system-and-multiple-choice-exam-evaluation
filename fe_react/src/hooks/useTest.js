@@ -1,6 +1,9 @@
 import { useState } from "react";
 import useNotify from "./useNotify";
-import { getTestsService } from "../services/testServices";
+import {
+	getTestsService,
+	updateTestSetService,
+} from "../services/testServices";
 
 const useTest = () => {
 	const notify = useNotify();
@@ -35,6 +38,18 @@ const useTest = () => {
 			}
 		);
 	};
-	return { allTest, tableLoading, getAllTests, pagination };
+
+	const updateTestSet = (param) => {
+		updateTestSetService(
+			param,
+			(res) => {
+				notify.success("Cập nhật đề thi thành công!");
+			},
+			(error) => {
+				notify.error("Lỗi cập nhật đề thi!");
+			}
+		);
+	};
+	return { allTest, tableLoading, getAllTests, pagination, updateTestSet };
 };
 export default useTest;

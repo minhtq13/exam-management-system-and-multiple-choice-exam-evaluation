@@ -9,6 +9,7 @@ import { Skeleton } from "antd";
 import UpdateExamClassInfoForm from "../components/UpdateExamClassInfoForm/UpdateExamClassInfoForm";
 const ExamClassEdit = () => {
 	const { getExamClassDetail, examClassInfo, infoLoading } = useExamClasses();
+	const [selectedTestId, setSelectedTestId] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const notify = useNotify();
 	const location = useLocation();
@@ -23,6 +24,7 @@ const ExamClassEdit = () => {
 			id,
 			{
 				...value,
+				testId: selectedTestId,
 				examineTime: dayjs(value.examineTime).format(
 					"HH:mm DD/MM/YYYY"
 				),
@@ -62,6 +64,7 @@ const ExamClassEdit = () => {
 						code: examClassInfo ? examClassInfo.code : null,
 					}}
 					loading={loading}
+					onSelectTestId={(id) => setSelectedTestId(id)}
 				/>
 			</Skeleton>
 		</div>
