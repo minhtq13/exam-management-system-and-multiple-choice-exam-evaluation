@@ -34,7 +34,7 @@ import { appPath } from "./appPath";
 
 const publicRoutes = [
 	{ path: appPath.notFound, component: NotFound },
-	{ path: appPath.default, component: Home },
+	{ path: appPath.default, component: StudentList },
 	{ path: appPath.home, component: Home },
 	{ path: appPath.studentDashboard, component: StudentDashboard },
 	{ path: appPath.teacherDashboard, component: TeacherDashboard },

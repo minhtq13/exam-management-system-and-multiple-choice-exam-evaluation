@@ -106,6 +106,15 @@
       }
       
     }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      .button-submit-ai, .button-reset-table-result {
+        min-width: 120px;
+      }
+
+    }
     .block-1 {
       display: flex;
       height: 45px;

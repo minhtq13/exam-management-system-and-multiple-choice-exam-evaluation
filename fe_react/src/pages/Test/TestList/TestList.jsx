@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Button, List, Modal, Select, Space, Spin, Table } from "antd";
 import React, { useEffect, useState } from "react";
@@ -342,7 +343,7 @@ const TestList = () => {
 						open={openModalPreview}
 						okText="Tải xuống"
 						onOk={() => {
-							createTemporaryHtmlFile();
+							// createTemporaryHtmlFile();
 						}}
 						footer={[
 							<Button key="back" onClick={handleEdit}>

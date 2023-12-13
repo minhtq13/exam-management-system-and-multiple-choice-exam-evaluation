@@ -25,7 +25,7 @@ const Login = () => {
 				setLoading(false);
 				setAuthenticResult(true);
 				notify.success(`Đăng nhập thành công!`);
-				navigate(appPath.home);
+				navigate(appPath.studentList);
 				saveInfoToLocalStorage(accessToken, refreshToken, roles);
 			},
 			(error) => {
@@ -86,7 +86,7 @@ const Login = () => {
 				)}
 				<Form.Item>
 					<Button type="primary" htmlType="submit" loading={loading}>
-						Login
+						Đăng nhập
 					</Button>
 				</Form.Item>
 			</Form>

@@ -6,8 +6,7 @@ import { generateRandomSixDigitNumber } from "../../utils/tools";
 import ViewImage from "./ViewImage";
 
 const TableResult = ({ resultAI }) => {
- 
-
+  const [testCodeFilter, setTestCodeFilter] = useState([]);
   const numberAnswer = 60;
   const columnsAnswer = [];
   for (var i = 0; i < numberAnswer; i++) {
@@ -50,6 +49,11 @@ const TableResult = ({ resultAI }) => {
       dataIndex: "testCode",
       key: "testCode",
       fixed: "left",
+      filters: testCodeFilter,
+      filterSearch: true,
+      onFilter: (value, record) => {
+        return record.testCode === value;
+      },
     },
   ];
   const columnsMark = [
@@ -69,21 +73,27 @@ const TableResult = ({ resultAI }) => {
       align: "center",
       width: 150,
       render: (text, record) => {
-        return (
-          <ViewImage dataArray={dataArray} index={record.stt}/>
-        );
+        return <ViewImage dataArray={resultAI} index={record.stt} />;
       },
     },
   ];
   const columnsMerged = [...columnsInfo, ...columnsAnswer];
   const columns = [...columnsMerged, ...columnsMark];
 
-  const [dataArray, setDataArray] = useState([]);
+  const [dataTable, setDataTable] = useState([]);
 
   useEffect(() => {
     if (resultAI) {
-      const newDataArray = resultAI.map((item, key) => {
-        const formatObj = {
+      const listTestCode = resultAI.reduce((acc, item, index) => {
+        const existingIndex = acc.findIndex((el) => el.value === item.testCode);
+        if (existingIndex === -1) {
+          acc.push({ text: item.testCode, value: item.testCode });
+        }
+        return acc;
+      }, []);
+
+      const newDataTable = resultAI.map((item, key) => {
+        const formatDataTable = {
           stt: key + 1,
           examClassCode: item.examClassCode,
           studentCode: item.studentCode,
@@ -92,94 +102,46 @@ const TableResult = ({ resultAI }) => {
           totalScore: item.totalScore,
         };
         for (let j = 0; j < numberAnswer; j++) {
-          formatObj[`answer${j + 1}`] = item.details[j].selectedAnswers;
+          formatDataTable[`answer${j + 1}`] = item.details[j].selectedAnswers;
         }
-        return formatObj;
+        return formatDataTable;
       });
-      setDataArray(newDataArray);
+      setTestCodeFilter(listTestCode);
+      setDataTable(newDataTable);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resultAI]);
-  // const [tableParams, setTableParams] = useState({
-  //   pagination: {
-  //     current: 1,
-  //     pageSize: 10,
-  //   },
-  // });
-  // const handleTableChange = (pagination, filters, sorter) => {
-  //   setTableParams({
-  //     pagination,
-  //     filters,
-  //     ...sorter,
-  //   });
-
-  //   if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-  //     setDataArray([]);
-  //   }
-  // };
+  const [pageSize, setPageSize] = useState(10);
   const renderTable = useMemo(() => {
     return (
-      <div>
-        <Table
-          // expandable={{
-          //   expandedRowRender: (record) => (
-          //     <p
-          //       style={{
-          //         margin: 0,
-          //       }}
-          //     >
-          //       {record.description}
-          //     </p>
-          //   ),
-          //   rowExpandable: (record) => record.isExpandable !== "Not Expandable",
-          // }}
-          className="table-ai"
-          columns={columns}
-          dataSource={dataArray}
-          scroll={{
-            x: 1500,
-            y: 600,
-          }}
-          // pagination={tableParams.pagination}
-          // onChange={handleTableChange}
-        />
-      </div>
+      <Table
+        className="table-ai"
+        columns={columns}
+        dataSource={dataTable}
+        scroll={{ x: 1500, y: 600 }}
+        pagination={{
+          pageSize: pageSize,
+          total: dataTable.length,
+          showTotal: (total, range) => (
+            <span>
+              <strong>
+                {range[0]}-{range[1]}
+              </strong>{" "}
+              of <strong>{total}</strong> items
+            </span>
+          ),
+          showSizeChanger: true,
+          pageSizeOptions: ["10", "20", "50", "100"],
+          onChange: (page, pageSize) => {},
+          onShowSizeChange: (current, size) => {
+            setPageSize(size);
+          },
+        }}
+      />
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataArray]);
-  const [pageSize, setPageSize] = useState(10);
-
-  return (
-    <div className="table-result-component">
-      <Table
-          className="table-ai"
-          columns={columns}
-          dataSource={dataArray}
-          scroll={{
-            x: 1500,
-            y: 600,
-          }}
-          pagination = {{
-            // Thuộc tính của pagination
-            pageSize: pageSize,
-            total: dataArray.length,
-            showSizeChanger: true,
-            pageSizeOptions: ["10", "20", "50", "100"],
-						showQuickJumper: true,
-            onChange: (page, pageSize) => {
-              console.log('Page:', page, 'Page Size:', pageSize);
-            },
-            onShowSizeChange: (current, size) => {
-              setPageSize(size)
-              
-              console.log('Current Page:', current, 'Page Size:', size);
-            },
-          }}
-        />
-    </div>
-  );
+  }, [dataTable]);
+  return <div className="table-result-component">{renderTable}</div>;
 };
 
 export default TableResult;
-
-

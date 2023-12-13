@@ -233,8 +233,6 @@ const StudentList = () => {
 					})}
 				</>
 			),
-			onFilter: (value, record) => record.gender.indexOf(value) === 0,
-			filterSearch: true,
 		},
 		{
 			title: "Thao tác",

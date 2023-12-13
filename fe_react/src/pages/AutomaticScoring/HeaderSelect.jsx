@@ -37,7 +37,7 @@ const HeaderSelect = () => {
         <div className="name-school">Trường Điện - Điện Tử</div>
         <div className="block-button">
           <Space>
-            <div className="detail-button">CTDT: </div>
+            <div className="detail-button">Kỳ: </div>
             <Select
               optionLabelProp="label"
               suffixIcon={<img src={iconArrow} alt="" />}

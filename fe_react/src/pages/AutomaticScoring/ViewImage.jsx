@@ -32,13 +32,12 @@ const ViewImage = ({ dataArray, index }) => {
   return (
     <div className="view-image-component">
       <div className="view-image-button" onClick={showModal}>
-        Xem ảnh
+        Xem ảnh chấm
       </div>
       <Modal
         className="modal-view-image"
         title="Xem chi tiết"
         open={isModalOpen}
-        // onOk={handleNext}
         onCancel={handleCancel}
         footer={[
           <Button key="back" onClick={handleBack}>
@@ -55,7 +54,7 @@ const ViewImage = ({ dataArray, index }) => {
               <div className="modal-content-view-image" key={index}>
                 <div className="header">
                   <span>
-                    TT: <strong>{item.stt}/60</strong>
+                    TT: <strong>{currentSlide + 1}/60</strong>
                   </span>
                   <span>
                     Tên ảnh: <strong>a.jpg</strong>
@@ -73,20 +72,20 @@ const ViewImage = ({ dataArray, index }) => {
                     Tổng số câu hỏi: <strong>60</strong>
                   </span>
                   <span>
-                    Số câu khoanh: <strong>54</strong>
+                    Số câu khoanh: <strong>{item.numMarkedAnswers}</strong>
                   </span>
                   <span>
-                    Số câu trả lời đúng: <strong>50</strong>
+                    Số câu trả lời đúng: <strong>{item.numCorrectAnswers}</strong>
                   </span>
                   <span>
                     Số câu trả lời sai: <strong>4</strong>
                   </span>
                   <span>
-                    Điểm: <strong>10.0</strong>
+                    Điểm: <strong>{item.totalScore}</strong>
                   </span>
                 </div>
                 <div className="handle-img">
-                  <img src={testImge} alt="" width="500" height="600" />
+                  <img src={testImge} alt=""/>
                 </div>
               </div>
             );
