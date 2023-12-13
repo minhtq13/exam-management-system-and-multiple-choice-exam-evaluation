@@ -4,6 +4,7 @@ import {
 	getExamClassDetailService,
 	getPagingClassesService,
 	getParticipantServices,
+	getExamClassResultService,
 } from "../services/examClassServices";
 const useExamClasses = () => {
 	const notify = useNotify();
@@ -14,6 +15,8 @@ const useExamClasses = () => {
 	const [infoLoading, setInfoLoading] = useState(true);
 	const [participants, setParticipants] = useState([]);
 	const [partiLoading, setPartiLoading] = useState(true);
+	const [resultLoading, setResultLoading] = useState(false);
+	const [resultData, setResultData] = useState([]);
 
 	const getAllExamClasses = (payload) => {
 		setTableLoading(true);
@@ -75,6 +78,22 @@ const useExamClasses = () => {
 		);
 	};
 
+	const getResult = (examClassCode, param) => {
+		setResultLoading(true);
+		getExamClassResultService(
+			examClassCode,
+			param,
+			(res) => {
+				setResultData(res.data);
+				setResultLoading(false);
+			},
+			(error) => {
+				notify.error("Không thể lấy kết quả thi!");
+				setResultLoading(false);
+			}
+		);
+	};
+
 	return {
 		allExamClasses,
 		getAllExamClasses,
@@ -86,6 +105,9 @@ const useExamClasses = () => {
 		getParticipants,
 		participants,
 		partiLoading,
+		getResult,
+		resultLoading,
+		resultData,
 	};
 };
 

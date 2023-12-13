@@ -120,3 +120,17 @@ export const getParticipantServices = async (
 
 	await getRequest(apiUrl, null, successCallback, errorCallback);
 };
+
+export const getExamClassResultService = async (
+	examClassCode,
+	params,
+	successCallback,
+	errorCallback
+) => {
+	await getRequest(
+		`${apiPath.getExamClassResult}/${examClassCode}`,
+		params,
+		successCallback,
+		errorCallback
+	);
+};

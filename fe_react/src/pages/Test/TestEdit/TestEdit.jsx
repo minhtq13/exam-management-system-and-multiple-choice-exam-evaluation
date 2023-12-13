@@ -153,7 +153,6 @@ const TestEdit = () => {
 							<p>Hình thức tổ chức thi: Trắc nghiệm</p>
 							<p>{`Mã học phần: ${testDetail.subjectCode}`}</p>
 							<p>{`Tên học phần: ${testDetail.subjectTitle}`}</p>
-							<p>{`Lớp thi: `}</p>
 						</div>
 						<div className="test-header-content-right">
 							<p className="text-bold">{`Thời gian làm bài:  ${testDetail.duration} phút`}</p>

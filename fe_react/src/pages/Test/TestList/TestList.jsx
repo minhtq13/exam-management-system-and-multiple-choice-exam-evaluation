@@ -15,16 +15,12 @@ import useCombo from "../../../hooks/useCombo";
 import useImportExport from "../../../hooks/useImportExport";
 import useNotify from "../../../hooks/useNotify";
 import useTest from "../../../hooks/useTest";
-import ReactDOMServer from "react-dom/server";
 import { setSelectedItem } from "../../../redux/slices/appSlice";
-import html2pdf from "html2pdf.js";
 import {
 	deleteTestService,
 	testSetDetailService,
 } from "../../../services/testServices";
 import "./TestList.scss";
-import TestHeader from "../../../components/TestPreview/TestHeader";
-import TestFooter from "../../../components/TestPreview/TestFooter";
 import { downloadTestPdf } from "../../../utils/tools";
 const TestList = () => {
 	const [deleteDisable, setDeleteDisable] = useState(true);
@@ -343,7 +339,7 @@ const TestList = () => {
 						open={openModalPreview}
 						okText="Tải xuống"
 						onOk={() => {
-							// createTemporaryHtmlFile();
+							downloadTestPdf(questions, testDetail, testNo);
 						}}
 						footer={[
 							<Button key="back" onClick={handleEdit}>

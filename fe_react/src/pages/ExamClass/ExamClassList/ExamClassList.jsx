@@ -36,6 +36,9 @@ const ExamClassList = () => {
 		getParticipants,
 		partiLoading,
 		participants,
+		resultLoading,
+		getResult,
+		resultData,
 	} = useExamClasses();
 	const {
 		subLoading,
@@ -54,12 +57,19 @@ const ExamClassList = () => {
 	const [openModal, setOpenModal] = useState(false);
 	const [roleType, setRoleType] = useState("STUDENT");
 	const [classId, setClassId] = useState(null);
+	const [classCode, setClassCode] = useState(null);
 	useEffect(() => {
 		if (classId) {
 			getParticipants(classId, roleType);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [classId, roleType]);
+	useEffect(() => {
+		if (classCode) {
+			getResult(classCode, {});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [classCode, roleType]);
 	useEffect(() => {
 		getAllSubjects({ subjectCode: null, subjectTitle: null });
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -95,11 +105,35 @@ const ExamClassList = () => {
 			key: "code",
 		},
 	];
-	const tabsData = participants?.map((item, index) => ({
-		key: (index + 1).toString(),
-		name: item.name,
-		code: item.code,
-	}));
+	const addTabsColumn = [
+		{
+			title: "Mã đề",
+			dataIndex: "testSetCode",
+			key: "testSetCode",
+		},
+		{
+			title: "Điểm",
+			dataIndex: "totalPoints",
+			key: "totalPoint",
+		},
+	];
+
+	const tabsData = participants.map((itemA, index) => {
+		const correspondingItemB = resultData.find(
+			(itemB) => itemB.id === itemA.id
+		);
+		return {
+			key: (index + 1).toString(),
+			name: itemA.name,
+			code: itemA.code,
+			testSetCode: correspondingItemB
+				? correspondingItemB.testSetCode
+				: null,
+			totalPoints: correspondingItemB
+				? correspondingItemB.totalPoints
+				: null,
+		};
+	});
 	const handleExportStudent = () => {
 		const params = {
 			name: param.name,
@@ -107,6 +141,7 @@ const ExamClassList = () => {
 		};
 		exportExamClassStudent(params, "exam-class/participant", classId);
 	};
+	console.log(tabsData);
 	const renderTab = () => {
 		return (
 			<div className="exam-class-tabs">
@@ -136,9 +171,13 @@ const ExamClassList = () => {
 				)}
 				<Table
 					className="exam-class-participant"
-					columns={tabsColumn}
+					columns={
+						roleType === "STUDENT"
+							? [...tabsColumn, ...addTabsColumn]
+							: tabsColumn
+					}
 					dataSource={tabsData}
-					loading={partiLoading}
+					loading={partiLoading || resultLoading}
 				/>
 			</div>
 		);
@@ -334,6 +373,7 @@ const ExamClassList = () => {
 						danger
 						onClick={() => {
 							setClassId(record.id);
+							setClassCode(record.code);
 							setOpenModal(true);
 						}}
 					>
@@ -499,6 +539,7 @@ const ExamClassList = () => {
 					}}
 				/>
 				<Modal
+					className="exam-class-participants"
 					open={openModal}
 					title="Danh sách người tham gia"
 					onOk={() => setOpenModal(false)}
