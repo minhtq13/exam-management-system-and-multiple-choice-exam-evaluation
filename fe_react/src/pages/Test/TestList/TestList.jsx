@@ -285,6 +285,14 @@ const TestList = () => {
 						showSizeChanger: true,
 						pageSizeOptions: ["10", "20", "50", "100"],
 						showQuickJumper: true,
+						showTotal: (total, range) => (
+							<span>
+								<strong>
+									{range[0]}-{range[1]}
+								</strong>{" "}
+								of <strong>{total}</strong> items
+							</span>
+						),
 						onChange: (page, pageSize) => {
 							setParam({
 								...param,

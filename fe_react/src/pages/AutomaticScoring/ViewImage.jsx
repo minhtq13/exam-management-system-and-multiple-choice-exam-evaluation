@@ -53,39 +53,43 @@ const ViewImage = ({ dataArray, index }) => {
             return (
               <div className="modal-content-view-image" key={index}>
                 <div className="header">
-                  <span>
-                    TT: <strong>{currentSlide + 1}/60</strong>
-                  </span>
-                  <span>
-                    Tên ảnh: <strong>a.jpg</strong>
-                  </span>
-                  <span>
-                    MĐT: <strong>{item.testCode}</strong>
-                  </span>
-                  <span>
-                    MSSV: <strong>{item.studentCode}</strong>
-                  </span>
-                  <span>
-                    MLT: <strong>{item.examClassCode}</strong>
-                  </span>
-                  <span>
-                    Tổng số câu hỏi: <strong>60</strong>
-                  </span>
-                  <span>
-                    Số câu khoanh: <strong>{item.numMarkedAnswers}</strong>
-                  </span>
-                  <span>
-                    Số câu trả lời đúng: <strong>{item.numCorrectAnswers}</strong>
-                  </span>
-                  <span>
-                    Số câu trả lời sai: <strong>4</strong>
-                  </span>
-                  <span>
-                    Điểm: <strong>{item.totalScore}</strong>
-                  </span>
+                  <div className="block1">
+                    <div>
+                      TT: <strong>{currentSlide + 1}/60</strong>
+                    </div>
+                    <div>
+                      Tên ảnh: <strong>a.jpg</strong>
+                    </div>
+                    <div>
+                      MĐT: <strong>{item.testCode}</strong>
+                    </div>
+                    <div>
+                      MSSV: <strong>{item.studentCode}</strong>
+                    </div>
+                    <div>
+                      MLT: <strong>{item.examClassCode}</strong>
+                    </div>
+                  </div>
+                  <div className="block2">
+                    <div>
+                      Tổng số câu hỏi: <strong>60</strong>
+                    </div>
+                    <div>
+                      Số câu khoanh: <strong>{item.numMarkedAnswers}</strong>
+                    </div>
+                    <div>
+                      Số câu đúng: <strong>{item.numCorrectAnswers}</strong>
+                    </div>
+                    <div>
+                      Số câu sai: <strong>4</strong>
+                    </div>
+                    <div>
+                      Điểm: <strong>{item.totalScore}</strong>
+                    </div>
+                  </div>
                 </div>
                 <div className="handle-img">
-                  <img src={testImge} alt=""/>
+                  <img src={testImge} alt="" />
                 </div>
               </div>
             );

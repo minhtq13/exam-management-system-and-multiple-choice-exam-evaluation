@@ -29,6 +29,7 @@ const Login = () => {
 				saveInfoToLocalStorage(accessToken, refreshToken, roles);
 			},
 			(error) => {
+				notify.error(`Sai tên đăng nhập hoặc mật khẩu!`);
 				setLoading(false);
 				setAuthenticResult(false);
 			}
