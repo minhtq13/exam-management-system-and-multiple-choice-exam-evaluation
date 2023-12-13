@@ -311,7 +311,7 @@ const QuestionEdit = () => {
 							htmlType="submit"
 							style={{ width: 100, height: 40 }}
 						>
-							Submit
+							Lưu
 						</Button>
 					</Form.Item>
 				</Form>

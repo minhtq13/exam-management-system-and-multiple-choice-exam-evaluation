@@ -62,6 +62,12 @@ const ExamClassEdit = () => {
 							  )
 							: "",
 						code: examClassInfo ? examClassInfo.code : null,
+						lstStudentId: examClassInfo
+							? examClassInfo.lstStudentId
+							: [],
+						lstSupervisorId: examClassInfo
+							? examClassInfo.lstSupervisorId
+							: [],
 					}}
 					loading={loading}
 					onSelectTestId={(id) => setSelectedTestId(id)}

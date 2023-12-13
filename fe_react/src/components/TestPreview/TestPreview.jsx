@@ -11,7 +11,9 @@ const TestPreview = ({ questions, testDetail, testNo }) => {
 				</div>
 				<div className="test-semester">
 					<p className="text-bold">ĐỀ THI CUỐI KỲ</p>
-					<p className="text-bold">{`HỌC KỲ: ${testDetail.semester}`} </p>
+					<p className="text-bold">
+						{`HỌC KỲ: ${testDetail.semester}`}{" "}
+					</p>
 				</div>
 			</div>
 			<div className="test-header-content">
@@ -45,7 +47,11 @@ const TestPreview = ({ questions, testDetail, testNo }) => {
 							item.answers.map((ans, ansNo) => {
 								return (
 									<div
-										className="answer-items"
+										className={
+											ans.isCorrect
+												? "answer-items corrected"
+												: "answer-items"
+										}
 										key={`answer${ansNo}`}
 									>
 										<span>

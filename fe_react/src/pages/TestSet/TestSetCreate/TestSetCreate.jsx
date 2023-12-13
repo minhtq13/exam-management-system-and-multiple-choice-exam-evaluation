@@ -9,13 +9,12 @@ import {
 } from "../../../services/testServices";
 import useNotify from "../../../hooks/useNotify";
 import TestPreview from "../../../components/TestPreview/TestPreview";
-import useImportExport from "../../../hooks/useImportExport";
+import { downloadTestPdf } from "../../../utils/tools";
 
 const TestSetCreate = () => {
 	const location = useLocation();
 	const notify = useNotify();
 	const testId = location.pathname.split("/")[2];
-	const { loading, exportTestList } = useImportExport();
 	const [testSetNum, setTestSetNum] = useState(null);
 	const [isError, setIsError] = useState(false);
 	const [testNos, setTestNos] = useState([]);
@@ -43,15 +42,6 @@ const TestSetCreate = () => {
 			}
 		);
 	};
-	const handleExport = () => {
-		exportTestList(
-			{
-				testId: testDetail.testId,
-				code: testDetail.testSetCode,
-			},
-			`${testDetail.subjectCode}-${testDetail.semester}`
-		);
-	};
 	const onCreate = () => {
 		if (!testSetNum) {
 			setIsError(true);
@@ -77,7 +67,7 @@ const TestSetCreate = () => {
 	return (
 		<div className="test-set-create">
 			<div className="test-set-left">
-				<div className="test-set-header">Test set create</div>
+				<div className="test-set-header">Tạo bộ đề thi</div>
 				<div className="test-set-quantity">
 					<div className="test-set-input">
 						<span>Số lượng đề:</span>
@@ -148,7 +138,9 @@ const TestSetCreate = () => {
 							testNo={testNo}
 						/>
 					) : (
-						<div className="test-preview">Test Preview</div>
+						<div className="test-preview-test-set">
+							<div>Test Preview</div>
+						</div>
 					)}
 				</Spin>
 				<Button
@@ -156,8 +148,9 @@ const TestSetCreate = () => {
 					htmlType="submit"
 					disabled={buttonDisable}
 					icon={<AiOutlineDownload size={18} />}
-					onClick={() => handleExport()}
-					loading={loading}
+					onClick={() =>
+						downloadTestPdf(questions, testDetail, testNo)
+					}
 				>
 					Tải xuống
 				</Button>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+	deleteQuesionsService,
 	getQuestionDetailsService,
 	getQuestionService,
 } from "../services/questionServices";
@@ -10,6 +11,7 @@ const useQuestions = () => {
 	const [quesLoading, setQuesLoading] = useState(false);
 	const [questionInfo, setQuestionInfo] = useState({});
 	const [infoLoading, setInfoLoading] = useState(true);
+	const [deleteLoading, setDeleteLoading] = useState(false);
 	const notify = useNotify();
 	const getAllQuestions = (payload) => {
 		setQuesLoading(true);
@@ -47,6 +49,22 @@ const useQuestions = () => {
 			}
 		);
 	};
+
+	const deleteQuestion = (questionId, payload) => {
+		setDeleteLoading(true);
+		deleteQuesionsService(
+			questionId,
+			payload,
+			(res) => {
+				setDeleteLoading(false);
+				notify.success("Xóa câu hỏi thành công!");
+			},
+			(error) => {
+				setDeleteLoading(false);
+				notify.error("Lỗi xóa câu hỏi!");
+			}
+		);
+	};
 	return {
 		allQuestions,
 		getAllQuestions,
@@ -54,6 +72,8 @@ const useQuestions = () => {
 		getQuestionDetail,
 		questionInfo,
 		infoLoading,
+		deleteQuestion,
+		deleteLoading,
 	};
 };
 export default useQuestions;

@@ -10,6 +10,7 @@ export const TestFooter = () => {
 	const textNote = {
 		paddingLeft: "0px",
 		fontStyle: "normal",
+		textDecoration: "underline",
 	};
 
 	const textNoteP = {

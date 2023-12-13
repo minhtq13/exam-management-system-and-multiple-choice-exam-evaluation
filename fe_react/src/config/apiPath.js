@@ -36,7 +36,7 @@ export const apiPath = {
 	//Question:
 	addQuestion: BASE_URL + "/question",
 	getQuestionbyCode: BASE_URL + "/question",
-	deleteQuestion: BASE_URL + "/question/disable",
+	deleteQuestion: BASE_URL + "/question",
 	updateQuestion: BASE_URL + "/question",
 	getQuestionDetail: BASE_URL + "/question/detail",
 	//Test:
@@ -59,6 +59,8 @@ export const apiPath = {
 	comboQuestion: BASE_URL + "/combobox/subject",
 	comboChapter: BASE_URL + "/combobox/subject/chapter",
 	comboSemester: BASE_URL + "/combobox/semester",
+	comboStudent: BASE_URL + "/combobox/user/student",
+	comboTeacher: BASE_URL + "/combobox/user/teacher",
 	// user
 	createUser: BASE_URL + "/user",
 	updateUser: BASE_URL + "/user",

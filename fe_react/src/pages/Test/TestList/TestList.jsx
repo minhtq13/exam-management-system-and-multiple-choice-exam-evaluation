@@ -24,6 +24,7 @@ import {
 import "./TestList.scss";
 import TestHeader from "../../../components/TestPreview/TestHeader";
 import TestFooter from "../../../components/TestPreview/TestFooter";
+import { downloadTestPdf } from "../../../utils/tools";
 const TestList = () => {
 	const [deleteDisable, setDeleteDisable] = useState(true);
 	const { allTest, getAllTests, tableLoading, pagination } = useTest();
@@ -68,8 +69,8 @@ const TestList = () => {
 	const semesterOptions =
 		allSemester && allSemester.length > 0
 			? allSemester.map((item) => {
-				return { value: item.id, label: item.name };
-			})
+					return { value: item.id, label: item.name };
+			  })
 			: [];
 	const subjectOnChange = (value) => {
 		setParam({ ...param, subjectId: value });
@@ -210,60 +211,6 @@ const TestList = () => {
 		navigate(`${appPath.testEdit}/${testNo}/${testItem.id}`);
 	};
 
-	const createTemporaryHtmlFile = () => {
-		const testHeader = (
-			<TestHeader testDetail={testDetail} testNo={testNo} />
-		);
-		const testFooter = <TestFooter />;
-		let combinedString = "";
-		questions.length > 0 &&
-			questions.forEach((question, index) => {
-				// Nối chuỗi câu hỏi
-				combinedString += `<div style="display: flex; gap: 5px; margin-top: 5px;"><p style="flex-shrink:0; font-family: 'Times New Roman', Times, serif;">Câu ${index + 1
-					}: </p><p style="font-family: 'Times New Roman', Times, serif;">${question.content
-					}</p></div>`;
-
-				// Nối chuỗi câu trả lời
-				question.answers.forEach((answer) => {
-					combinedString += `<div style="display: flex; gap: 5px;"><p style="font-family: 'Times New Roman', Times, serif;">${answer.answerNoMask}. </p> <p style="font-family: 'Times New Roman', Times, serif;">${answer.content}</p></div>`;
-				});
-
-				// Thêm dòng trống giữa các câu hỏi
-			});
-		const htmlContent = `
-  <style>
-    p {
-      font-family: 'Times New Roman', Times, serif;
-      font-size: 16px;
-      color: #000;
-    }
-	img {
-		max-width: 500px;
-		object-fit: contain;
-	}
-  </style>
-  <div>
-  ${ReactDOMServer.renderToStaticMarkup(testHeader)}
-  ${combinedString}
-  ${ReactDOMServer.renderToStaticMarkup(testFooter)}
-  </div>
-`;
-		if (htmlContent) {
-			const pdfInstance = html2pdf(htmlContent, {
-				margin: 10,
-				filename: "document.pdf",
-				image: { type: "jpeg", quality: 0.98 },
-				html2canvas: { scale: 2 },
-				jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-				pagebreak: { mode: "avoid-all" }, //
-			});
-
-			pdfInstance.from().then(() => {
-				pdfInstance.save();
-			});
-		}
-	};
-
 	return (
 		<div className="test-list">
 			<div className="header-test-list">
@@ -401,10 +348,18 @@ const TestList = () => {
 							<Button key="back" onClick={handleEdit}>
 								Sửa
 							</Button>,
-							<Button key="submit" type="primary" onClick={() => {
-								createTemporaryHtmlFile();
-							}}>
-								Submit
+							<Button
+								key="submit"
+								type="primary"
+								onClick={() => {
+									downloadTestPdf(
+										questions,
+										testDetail,
+										testNo
+									);
+								}}
+							>
+								Tải xuống
 							</Button>,
 						]}
 						onCancel={() => setOpenModalPreview(false)}

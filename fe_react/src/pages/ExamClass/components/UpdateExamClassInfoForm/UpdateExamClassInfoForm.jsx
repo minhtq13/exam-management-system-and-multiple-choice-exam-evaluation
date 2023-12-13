@@ -8,6 +8,7 @@ import {
 	Space,
 	Table,
 	Spin,
+	Popover,
 } from "antd";
 import "./UpdateExamClassInfoForm.scss";
 import React, { useEffect, useState } from "react";
@@ -31,6 +32,12 @@ const UpdateExamClassInfoForm = ({
 		subLoading,
 		allSubjects,
 		getAllSubjects,
+		allTeacher,
+		allStudent,
+		studentLoading,
+		teacherLoading,
+		getAllStudent,
+		getAllTeacher,
 	} = useCombo();
 	const { allTest, getAllTests, tableLoading, pagination } = useTest();
 	const initialParam = {
@@ -58,6 +65,14 @@ const UpdateExamClassInfoForm = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	useEffect(() => {
+		getAllTeacher({ teacherName: null, teacherCode: null });
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+	useEffect(() => {
+		getAllStudent({ studentName: null, studentCode: null });
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+	useEffect(() => {
 		if (openModal) {
 			getAllTests(param);
 			// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -65,18 +80,19 @@ const UpdateExamClassInfoForm = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [param, openModal]);
 	// eslint-disable-next-line
-	const options =
-		allSemester && allSemester.length > 0
-			? allSemester.map((item) => {
-				return { value: item.id, label: item.name };
-			})
+	const getOptions = (array, codeShow) => {
+		return array && array.length > 0
+			? array.map((item) => {
+					return {
+						value: item.id,
+						label: codeShow
+							? `${item.name} - ${item.code} `
+							: item.name,
+					};
+			  })
 			: [];
-	const subjectOptions =
-		allSubjects && allSubjects.length > 0
-			? allSubjects.map((item) => {
-				return { value: item.id, label: item.name };
-			})
-			: [];
+	};
+
 	const columns = [
 		{
 			title: "Học phần",
@@ -108,7 +124,7 @@ const UpdateExamClassInfoForm = ({
 						<Button
 							onClick={() => {
 								setTestValue(
-									`${record.subjectName} - ${record.questionQuantity} (câu) - ${record.duration} (phút) - ${record.testSet} (mã đề)`
+									`${record.name} - ${record.questionQuantity} (câu) - ${record.duration} (phút) - ${record.testSet} (mã đề)`
 								);
 								setOpenModal(false);
 								onSelectTestId(record.id);
@@ -139,11 +155,10 @@ const UpdateExamClassInfoForm = ({
 		);
 	};
 	const dataFetch = allTest?.map((obj, index) => ({
+		name: obj.name,
 		key: (index + 1).toString(),
 		questionQuantity: obj.questionQuantity,
 		subjectName: obj.subjectName,
-		createdAt: obj.createdAt,
-		modifiedAt: obj.modifiedAt,
 		duration: obj.duration,
 		id: obj.id,
 		testSetNos: obj.testSetNos,
@@ -197,11 +212,43 @@ const UpdateExamClassInfoForm = ({
 					<Select
 						loading={semesterLoading}
 						placeholder="Chọn kỳ thi"
-						options={options}
+						options={getOptions(allSemester, false)}
 						style={{ height: 45 }}
 						onChange={(value) =>
 							setParam({ ...param, semesterId: value })
 						}
+					/>
+				</Form.Item>
+				<Form.Item name="lstStudentId" label="Học sinh">
+					<Select
+						className="exam-class-students"
+						mode="multiple"
+						showSearch
+						allowClear
+						loading={studentLoading}
+						placeholder="Chọn học sinh"
+						filterOption={(input, option) =>
+							(option?.label.toLowerCase() ?? "").includes(
+								input.toLowerCase()
+							)
+						}
+						options={getOptions(allStudent, true)}
+					/>
+				</Form.Item>
+				<Form.Item name="lstSupervisorId" label="Giám thị">
+					<Select
+						className="exam-class-teachers"
+						mode="multiple"
+						showSearch
+						allowClear
+						loading={teacherLoading}
+						filterOption={(input, option) =>
+							(option?.label.toLowerCase() ?? "").includes(
+								input.toLowerCase()
+							)
+						}
+						placeholder="Chọn giám thị"
+						options={getOptions(allTeacher, true)}
 					/>
 				</Form.Item>
 				<Form.Item
@@ -218,7 +265,7 @@ const UpdateExamClassInfoForm = ({
 					<Select
 						placeholder="Chọn môn thi"
 						loading={subLoading}
-						options={subjectOptions}
+						options={getOptions(allSubjects)}
 						style={{ height: 45 }}
 						onChange={(value) =>
 							setParam({ ...param, subjectId: value })
@@ -253,7 +300,17 @@ const UpdateExamClassInfoForm = ({
 					]}
 				>
 					<div className="test-select">
-						<Input placeholder="Chọn đề thi" value={testValue} />
+						<Popover
+							content={testValue}
+							placement="bottom"
+							trigger="hover"
+						>
+							<Input
+								placeholder="Chọn đề thi"
+								value={testValue}
+							/>
+						</Popover>
+
 						<Button onClick={() => setOpenModal(true)}>Chọn</Button>
 					</div>
 				</Form.Item>

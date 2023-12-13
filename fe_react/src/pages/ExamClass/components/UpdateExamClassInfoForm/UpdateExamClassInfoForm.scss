@@ -5,7 +5,6 @@
     color: var(--hust-color);
     padding: 20px 0px;
   }
-
 }
 
 .info-exam-class-form {
@@ -24,6 +23,28 @@
     font-size: 20px;
     font-weight: 600;
     color: var(--hust-color);
+  }
+
+  .ant-select-multiple {
+    .ant-select-selection-overflow {
+      padding-top: 10px;
+    }
+
+    .ant-select-selection-item {
+      position: static !important;
+    }
+
+    .ant-select-selection-placeholder {
+      position: absolute;
+      top: 22px !important;
+    }
+  }
+
+  .exam-class-students,
+  .exam-class-teachers {
+    .ant-select-selector {
+      height: auto !important;
+    }
   }
 
   .ant-form-item {
@@ -110,7 +131,6 @@
   .btn-info:active {
     background-color: #ffffff;
   }
-
 }
 
 .test-set-no-examclass,
@@ -124,7 +144,6 @@
 
 .test-set-no-label {
   font-weight: bold;
-
 }
 
 .exam-class-test-modal {

@@ -38,6 +38,8 @@ const TestEdit = () => {
 															ans.answerId
 														),
 														content: ans.content,
+														isCorrect:
+															ans.isCorrect,
 													};
 											  })
 											: [],
@@ -53,7 +55,7 @@ const TestEdit = () => {
 				setLoadingData(true);
 			}
 		);
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleDragAndDrop = (results) => {
@@ -277,7 +279,11 @@ function StoreList({ content, answers, id, index }) {
 							>
 								{(provided) => (
 									<div
-										className="item-container"
+										className={
+											ans.isCorrect
+												? "item-container corrected"
+												: "item-container"
+										}
 										{...provided.dragHandleProps}
 										{...provided.draggableProps}
 										ref={provided.innerRef}

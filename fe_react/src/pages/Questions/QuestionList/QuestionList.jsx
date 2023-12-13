@@ -5,8 +5,6 @@ import deletePopUpIcon from "../../../assets/images/svg/delete-popup-icon.svg";
 import "./QuestionList.scss";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ModalPopup from "../../../components/ModalPopup/ModalPopup";
-import { deleteQuesionsService } from "../../../services/questionServices";
-import useNotify from "../../../hooks/useNotify";
 import { useNavigate } from "react-router-dom";
 import { appPath } from "../../../config/appPath";
 import { setQuestionItem } from "../../../redux/slices/appSlice";
@@ -23,7 +21,13 @@ const QuestionList = () => {
 		chapterIds: [],
 		level: "ALL",
 	};
-	const { allQuestions, getAllQuestions, quesLoading } = useQuestions();
+	const {
+		allQuestions,
+		getAllQuestions,
+		quesLoading,
+		deleteQuestion,
+		deleteLoading,
+	} = useQuestions();
 	const {
 		chapterLoading,
 		subLoading,
@@ -35,13 +39,14 @@ const QuestionList = () => {
 	const [param, setParam] = useState(initialParam);
 	const [subjectId, setSubjectId] = useState(null);
 	const [chapterId, setChapterId] = useState([]);
-	const notify = useNotify();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	useEffect(() => {
-		getAllQuestions(param);
+		if (!deleteLoading) {
+			getAllQuestions(param);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [param]);
+	}, [param, deleteLoading]);
 	useEffect(() => {
 		getAllSubjects({ subjectCode: null, subjectTitle: null });
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -98,17 +103,7 @@ const QuestionList = () => {
 		setChapterId(values);
 	};
 	const onRemove = (id) => {
-		deleteQuesionsService(
-			id,
-			null,
-			(res) => {
-				notify.success("Xoá câu hỏi thành công!");
-				//getAllQuestions({}, subjectCode);
-			},
-			(error) => {
-				notify.error("Lỗi xoá câu hỏi!");
-			}
-		);
+		deleteQuestion(id, null);
 	};
 	const onEdit = (item) => {
 		navigate(`${appPath.questionEdit}/${item.id}`);
@@ -137,7 +132,9 @@ const QuestionList = () => {
 						placeholder="Chọn môn học"
 						optionFilterProp="children"
 						filterOption={(input, option) =>
-							(option?.label ?? "").includes(input)
+							(option?.label.toLowerCase() ?? "").includes(
+								input.toLowerCase()
+							)
 						}
 						optionLabelProp="label"
 						options={subjectOptions}
@@ -154,7 +151,9 @@ const QuestionList = () => {
 						placeholder="Chọn chương"
 						optionFilterProp="children"
 						filterOption={(input, option) =>
-							(option?.label ?? "").includes(input)
+							(option?.label.toLowerCase() ?? "").includes(
+								input.toLowerCase()
+							)
 						}
 						optionLabelProp="label"
 						options={chapterOptions}
@@ -211,6 +210,7 @@ const QuestionList = () => {
 										ok={"Ok"}
 										icon={deletePopUpIcon}
 										onAccept={() => onRemove(item.id)}
+										loading={deleteLoading}
 									/>
 									<Button
 										icon={<EditOutlined />}
