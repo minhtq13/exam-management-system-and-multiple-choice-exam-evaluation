@@ -2,7 +2,6 @@ import { Button, Modal } from "antd";
 import React, { useRef, useState } from "react";
 import Slider from "react-slick";
 import "./ViewImage.scss";
-import testImge from "./handle_j2.jpg";
 
 const ViewImage = ({ dataArray, index }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -89,7 +88,7 @@ const ViewImage = ({ dataArray, index }) => {
                   </div>
                 </div>
                 <div className="handle-img">
-                  <img src={testImge} alt="" />
+                  <img src={item.handledScoredImg} alt="" />
                 </div>
               </div>
             );

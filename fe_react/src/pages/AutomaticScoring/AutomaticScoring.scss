@@ -68,6 +68,13 @@
       }
 
       .custom-select-antd {
+        .ant-select-selection-search {
+          input {
+            height: 42px !important;
+            padding-left: 6px;
+            padding-right: 18px;
+          }
+        }
         .ant-select-selector {
           border: none;
           outline: none;

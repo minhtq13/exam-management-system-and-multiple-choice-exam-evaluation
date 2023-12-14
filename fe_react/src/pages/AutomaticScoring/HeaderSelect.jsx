@@ -2,15 +2,16 @@ import { Select, Space } from "antd";
 import React, { useEffect, useState } from "react";
 import iconArrow from "../../assets/images/svg/arrow-under-header.svg";
 import useCombo from "../../hooks/useCombo";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setExamClassCode } from "../../redux/slices/appSlice";
 const { Option } = Select;
 
 const HeaderSelect = () => {
   const { getAllSemesters, allSemester, allSubjects, getAllSubjects, getAllExamClass, examClass } = useCombo();
-	const [semesterSelected, setSemesterSelected] = useState();
-	const [subjectSelected, setSubjectSelected] = useState();
+	const [semesterSelected, setSemesterSelected] = useState(null);
+	const [subjectSelected, setSubjectSelected] = useState(null);
 	const dispatch = useDispatch();
+  const { examClassCode} = useSelector((state) => state.appReducer);
   useEffect(() => {
     getAllSemesters({});
 		getAllSubjects("", "");
@@ -25,14 +26,18 @@ const HeaderSelect = () => {
 	
 
   const handleChangeSemestersSelect = (value) => {
+		setSubjectSelected(null)
 		setSemesterSelected(value)
 	};
   const handleChangeSubjectSelect = (value) => {
+		dispatch(setExamClassCode(null))
 		setSubjectSelected(value)
 	};
   const handleChangeExamCodeSelect = (value) => {
 		dispatch(setExamClassCode(value))
 	};
+  const filterSubject = (input, option) =>
+  (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
   return (
     <div>
@@ -47,6 +52,7 @@ const HeaderSelect = () => {
               placeholder="Chọn học kỳ"
               onChange={handleChangeSemestersSelect}
               style={{ width: 200 }}
+              value={semesterSelected}
             >
               {allSemester.map((item, index) => {
                 return (
@@ -69,6 +75,9 @@ const HeaderSelect = () => {
               suffixIcon={<img src={iconArrow} alt="" />}
               style={{ width: 350 }}
               placeholder="Chọn học phần"
+              showSearch
+              filterOption={filterSubject}
+              value={subjectSelected}
             >
               {allSubjects.map((item, index) => {
                 return (
@@ -90,7 +99,9 @@ const HeaderSelect = () => {
               suffixIcon={<img src={iconArrow} alt="" />}
               style={{ width: 300 }}
               placeholder="Chọn mã lớp thi để chấm"
+              showSearch
 							disabled={!semesterSelected || !subjectSelected}
+              value={examClassCode}
             >
               {examClass.map((item, index) => {
                 return (

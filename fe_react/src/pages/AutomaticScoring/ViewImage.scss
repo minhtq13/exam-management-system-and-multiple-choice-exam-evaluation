@@ -13,16 +13,15 @@
 }
 
 .modal-view-image {
-  max-width: 65vw !important;
-  min-width: 65vw !important;
-  width: 65vw;
+  max-width: 60vw !important;
+  min-width: 60vw !important;
 
   .ant-modal-body {
-    min-height: 62vh;
+    height: 75vh !important;
   }
   .modal-content-view-image {
     .header {
-      margin: 32px 0px;
+      margin: 20px 0px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -39,17 +38,17 @@
 
     .handle-img {
       cursor: pointer;
-      margin-bottom: 24px;
       display: flex;
       justify-content: center;
       align-items: center;
       img {
-        max-height: 600px;
+        max-height: 62vh;
         object-fit: contain;
       }
     }
   }
   .ant-modal-footer {
+    margin: 0 !important;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -58,9 +57,11 @@
     }
   }
   .ant-modal-content {
+    height: 90vh;
     .ant-modal-header {
       display: flex;
       justify-content: center;
+      margin: 0 !important;
     }
     .ant-modal-title {
       font-size: 24px;
