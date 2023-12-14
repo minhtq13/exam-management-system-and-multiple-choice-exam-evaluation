@@ -1,16 +1,15 @@
-import { React } from "react";
+import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 import debounce from "lodash.debounce";
+import { React } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import logoDHBK from "../../../assets/images/png-jpg/logo-dhbk.png";
 import Searchbox from "../../../components/Search/Searchbox";
+import { setIsCollapse } from "../../../redux/slices/appSlice";
 import Account from "./Account/Account";
 import "./Header.scss";
 import Notifications from "./Notification/Notifications";
-import { useSelector, useDispatch } from "react-redux";
-import { Button } from "antd";
-import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
-import { setIsCollapse } from "../../../redux/slices/appSlice";
-import logo from "../../../assets/images/png-jpg/logo.png";
-import logoSmall from "../../../assets/images/png-jpg/logo-small.png";
-import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -26,7 +25,7 @@ const Header = () => {
     dispatch(setIsCollapse(!isCollapse));
   };
   const handleClick = () => {
-    navigate("/home");
+    navigate("/student-list");
   };
   return (
     <div className="header-layout">
@@ -35,7 +34,14 @@ const Header = () => {
         style={{ cursor: "pointer" }}
         className={isCollapse ? "header-logo logo-collapsed" : "header-logo"}
       >
-        {isCollapse ? <img src={logoSmall} alt="" /> : <img src={logo} alt="" />}
+        {isCollapse ? (
+          <img src={logoDHBK} alt="" />
+        ) : (
+          <div className="logo">
+            <img src={logoDHBK} alt="" />
+            <div>HUSTBrainwave</div>
+          </div>
+        )}
       </div>
       <div className="button-header">
         <Button type="primary" onClick={toggleCollapsed} style={{ marginBottom: 16 }}>

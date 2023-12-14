@@ -1,11 +1,12 @@
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Modal, Upload, message } from "antd";
+import { Button, Form, Modal, Upload, message } from "antd";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { BASE_URL } from "../../config/apiPath";
 import useAI from "../../hooks/useAI";
 import "./AutomaticScoring.scss";
 import HeaderSelect from "./HeaderSelect";
 import TableResult from "./TableResult";
-import { BASE_URL } from "../../config/apiPath";
 
 const formItemLayout = {
   labelCol: {
@@ -31,17 +32,17 @@ const AutomaticScoring = () => {
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
   const handleCancel = () => setPreviewOpen(false);
-  const examClassIdTest = "247103";
+  const { examClassCode } = useSelector((state) => state.appReducer);
   const uploadButton = (
     <div>
-      <Button icon={<UploadOutlined />}>Tải ảnh lên</Button>
+      <Button disabled={!examClassCode} icon={<UploadOutlined />}>Tải ảnh lên</Button>
     </div>
   );
   const props = {
     name: "files",
     listType: "picture",
     multiple: true,
-    action: `${BASE_URL}/test-set/handled-answers/upload/${examClassIdTest}`,
+    action: `${BASE_URL}/test-set/handled-answers/upload/${examClassCode}`,
     beforeUpload: (file) => {
       const isPNG =
         file.type === "image/png" || file.type === "image/jpg" || file.type === "image/jpeg";
@@ -71,7 +72,7 @@ const AutomaticScoring = () => {
   };
   const handleSubmit = () => {
     // if (urlImg) {
-    getModelAI(examClassIdTest);
+    getModelAI(examClassCode);
     // }
   };
   const onFinish = (values) => {};
@@ -108,24 +109,13 @@ const AutomaticScoring = () => {
       <HeaderSelect />
       <div className="content-exam-list">
         <Form name="validate_other" {...formItemLayout} onFinish={onFinish}>
-          <div className="block-1">
+          {/* <div className="block-1">
             <div className="number-answer">
               <Form.Item name="numberAnswer" label="Số lượng câu hỏi" rules={[{ required: false }]}>
                 <Input type="number" placeholder="Số lượng câu hỏi trong mỗi phiếu trả lời" />
               </Form.Item>
             </div>
-            <div className="exam-class-code">
-              <Form.Item name="examClassCode" label="Mã lớp thi" rules={[{ required: false }]}>
-                <Input type="text" placeholder="Mã lớp thi cần chấm" />
-                {/* Call API get examClassCodeOption */}
-                {/* <Select
-									placeholder="Chọn mã lớp thi"
-									options={examClassCodeOption}
-									onChange={examClassCodeOOnchange}
-								></Select> */}
-              </Form.Item>
-            </div>
-          </div>
+          </div> */}
           <div className="upload">
             <Form.Item name="pathImg">
               <div>{uploadBlock}</div>
@@ -137,6 +127,7 @@ const AutomaticScoring = () => {
               onClick={handleSubmit}
               loading={loading}
               className="button-submit-ai"
+              disabled={!examClassCode}
             >
               Chấm điểm
             </Button>
@@ -154,7 +145,7 @@ const AutomaticScoring = () => {
             )} */}
           </div>
           <div className="button-footer">
-            <Button type="primary" onClick={handleSaveResult} loading={loading} className="button-submit-ai">
+            <Button type="primary" onClick={handleSaveResult} loading={loading} disabled={resultAI.length === 0} className="button-submit-ai">
               Lưu kết quả
             </Button>
           </div>

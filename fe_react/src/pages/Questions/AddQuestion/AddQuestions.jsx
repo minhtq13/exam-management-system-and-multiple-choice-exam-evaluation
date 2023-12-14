@@ -233,7 +233,7 @@ const AddQuestions = () => {
 										<Form.Item
 											key={`level${parentField.key}`}
 											{...parentField}
-											label={"Level"}
+											label={"Mức độ"}
 											name={[parentField.name, `level`]}
 											rules={[
 												{

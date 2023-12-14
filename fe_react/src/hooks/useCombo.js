@@ -1,12 +1,14 @@
 import { useState } from "react";
-import useNotify from "./useNotify";
 import {
 	getComboChapService,
+	getComboExamClassService,
 	getComboSemesterServices,
 	getComboStudentServices,
 	getComboSubService,
 	getComboTeacherServices,
+	getComboTestService,
 } from "../services/comboServices";
+import useNotify from "./useNotify";
 const useCombo = () => {
 	const [allSubjects, setAllSubjects] = useState([]);
 	const [allChapters, setAllChapters] = useState([]);
@@ -18,6 +20,10 @@ const useCombo = () => {
 	const [studentLoading, setStudentLoading] = useState(false);
 	const [allTeacher, setAllTeacher] = useState([]);
 	const [teacherLoading, setTeacherLoading] = useState(false);
+	const [allTest, setAllTest] = useState([]);
+	const [testLoading, setTestLoading] = useState(false);
+	const [examClass, setExamClass] = useState([]);
+	const [examClassLoading, setExamClassLoading] = useState(false);
 	const notify = useNotify();
 	const getAllSubjects = (payload) => {
 		setSubLoading(true);
@@ -29,6 +35,7 @@ const useCombo = () => {
 				setSubLoading(false);
 			},
 			(error) => {
+				setSubLoading(false);
 				notify.error("Chưa chọn môn học để hiển thị câu hỏi!");
 			}
 		);
@@ -44,7 +51,8 @@ const useCombo = () => {
 				setChapterLoading(false);
 			},
 			(error) => {
-				notify.error("Chưa chọn môn học để hiển thị câu hỏi!");
+				setChapterLoading(false);
+				notify.error("Không thể lấy danh sách các chương!");
 			}
 		);
 	};
@@ -57,7 +65,8 @@ const useCombo = () => {
 				setSemesterLoading(false);
 			},
 			(error) => {
-				notify.error("Chưa chọn môn học để hiển thị câu hỏi!");
+				setSemesterLoading(false);
+				notify.error("Không thể lấy danh sách kỳ học!");
 			}
 		);
 	};
@@ -72,6 +81,7 @@ const useCombo = () => {
 				setStudentLoading(false);
 			},
 			(error) => {
+				setStudentLoading(false);
 				notify.error("Không thể lấy danh sách sinh viên!");
 			}
 		);
@@ -87,10 +97,41 @@ const useCombo = () => {
 				setTeacherLoading(false);
 			},
 			(error) => {
+				setTeacherLoading(false);
 				notify.error("Không thể lấy danh sách giảng viên!");
 			}
 		);
 	};
+	const getAllTest = (payload) => {
+		setTestLoading(true);
+		getComboTestService(
+			payload.testName,
+			payload.testCode,
+			(res) => {
+				setAllTest(res.data);
+				setTestLoading(false);
+			},
+			(error) => {
+				notify.error("Không thể lấy danh sách kỳ thi!");
+			}
+		);
+	};
+	const getAllExamClass = (semesterId, subjectId, payload) => {
+		setExamClassLoading(true);
+		getComboExamClassService(
+			semesterId,
+			subjectId,
+			payload,
+			(res) => {
+				setExamClass(res.data);
+				setExamClassLoading(false);
+			},
+			(error) => {
+				notify.error("Không thể lấy danh sách kỳ thi!");
+			}
+		);
+	};
+	
 	return {
 		subLoading,
 		chapterLoading,
@@ -107,6 +148,12 @@ const useCombo = () => {
 		allStudent,
 		allTeacher,
 		getAllTeacher,
+		getAllTest,
+		testLoading,
+		allTest,
+		getAllExamClass,
+		examClass,
+		examClassLoading
 	};
 };
 export default useCombo;

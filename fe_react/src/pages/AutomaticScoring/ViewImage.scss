@@ -8,9 +8,9 @@
     cursor: pointer;
   }
 }
-// .ant-modal-wrap {
-//   top: -40px !important; 
-// }
+.ant-modal-wrap {
+  top: -50px !important; 
+}
 
 .modal-view-image {
   max-width: 65vw !important;
@@ -65,16 +65,22 @@
     .ant-modal-title {
       font-size: 24px;
     }
+    svg {
+      font-size: 20px;
+    }
   }
 }
 
 .slick-next,
 .slick-prev {
   color: var(--hust-color) !important;
+  width: 32px !important;
+  height: 32px !important;
 }
 .slick-next:before,
 .slick-prev:before {
   color: var(--hust-color) !important;
+  font-size: 32px !important;
 }
 .slick-dots {
   bottom: 0px !important;

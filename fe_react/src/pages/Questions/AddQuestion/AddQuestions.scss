@@ -78,8 +78,8 @@
 
     .question-text {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      gap: 13px;
 
       .btn-remove {
         height: 100%;
@@ -111,8 +111,8 @@
 
       .answer-list-text-checkbox {
         display: flex;
-        gap: 15px;
-        width: 90%;
+        gap: 20px;
+        width: 96%;
         align-items: center;
         position: relative;
 

@@ -63,6 +63,8 @@ export const apiPath = {
 	comboSemester: BASE_URL + "/combobox/semester",
 	comboStudent: BASE_URL + "/combobox/user/student",
 	comboTeacher: BASE_URL + "/combobox/user/teacher",
+	comboTest: BASE_URL + "/combobox/test",
+	comboExamClass: BASE_URL + "/combobox/exam-class",
 	// user
 	createUser: BASE_URL + "/user",
 	updateUser: BASE_URL + "/user",

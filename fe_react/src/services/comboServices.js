@@ -120,3 +120,10 @@ export const getComboTeacherServices = async (
 
 	await getRequest(apiUrl, null, successCallback, errorCallback);
 };
+
+export const getComboTestService = async (params, successCallback, errorCallback) => {
+  await getRequest(`${apiPath.comboTest}`, params, successCallback, errorCallback);
+};
+export const getComboExamClassService = async (semesterId, subjectId, params, successCallback, errorCallback) => {
+  await getRequest(`${apiPath.comboExamClass}?semesterId=${semesterId}&subjectId=${subjectId}`, params, successCallback, errorCallback);
+};

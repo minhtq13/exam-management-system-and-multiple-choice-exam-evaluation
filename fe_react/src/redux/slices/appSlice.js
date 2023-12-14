@@ -4,7 +4,8 @@ const initialState = {
   isCollapse: false,
   selectedItem: null,
   chapters: [],
-  questionItem: null
+  questionItem: null,
+  examClassCode: null
 };
 
 const appReducer = createSlice({
@@ -22,9 +23,12 @@ const appReducer = createSlice({
     },
     setQuestionItem: (state, action) => {
       state.questionItem = action.payload
+    },
+    setExamClassCode: (state, action) => {
+      state.examClassCode = action.payload
     }
   },
 });
 
-export const { setIsCollapse, setSelectedItem, setChapters, setQuestionItem } = appReducer.actions;
+export const { setIsCollapse, setSelectedItem, setChapters, setQuestionItem, setExamClassCode } = appReducer.actions;
 export default appReducer.reducer;
