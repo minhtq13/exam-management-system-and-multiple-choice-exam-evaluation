@@ -31,7 +31,7 @@ public class FileAttachController {
         MediaType.IMAGE_PNG_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @Operation(summary = "Tải lên file ảnh")
     public FileUploadResDTO uploadImageFile(@RequestPart(name = "file") MultipartFile multipartFile) {
-        return fileAttachService.uploadImage(multipartFile, FileTypeEnum.IMAGE);
+        return fileAttachService.uploadMPImageToCloudinary(multipartFile, FileTypeEnum.IMAGE);
     }
 
 }

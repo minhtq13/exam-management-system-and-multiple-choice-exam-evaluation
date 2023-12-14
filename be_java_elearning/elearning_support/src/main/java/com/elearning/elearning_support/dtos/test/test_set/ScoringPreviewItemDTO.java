@@ -30,7 +30,7 @@ public class ScoringPreviewItemDTO {
     String testCode;
 
     @Schema(description = "Đường dẫn file chấm bài thi")
-    String handledScoringFile;
+    String handledScoredImg;
 
     @Schema(description = "Số câu hỏi đã khoanh")
     Integer numMarkedAnswers;

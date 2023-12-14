@@ -37,6 +37,7 @@ import com.elearning.elearning_support.constants.FileConstants.Extension.Image;
 import com.elearning.elearning_support.constants.SystemConstants;
 import com.elearning.elearning_support.dtos.CustomInputStreamResource;
 import com.elearning.elearning_support.dtos.common.ICommonIdCode;
+import com.elearning.elearning_support.dtos.fileAttach.FileUploadResDTO;
 import com.elearning.elearning_support.dtos.test.test_set.ITestSetScoringDTO;
 import com.elearning.elearning_support.dtos.test.test_set.ScoringPreviewItemDTO;
 import com.elearning.elearning_support.dtos.test.test_set.ScoringPreviewResDTO;
@@ -44,11 +45,13 @@ import com.elearning.elearning_support.dtos.test.test_set.TestSetPreviewDTO;
 import com.elearning.elearning_support.entities.exam_class.ExamClass;
 import com.elearning.elearning_support.entities.studentTest.StudentTestSet;
 import com.elearning.elearning_support.entities.studentTest.StudentTestSetDetail;
+import com.elearning.elearning_support.enums.file_attach.FileTypeEnum;
 import com.elearning.elearning_support.enums.users.UserTypeEnum;
 import com.elearning.elearning_support.exceptions.BadRequestException;
 import com.elearning.elearning_support.repositories.examClass.ExamClassRepository;
 import com.elearning.elearning_support.repositories.test.test_set.StudentTestSetRepository;
 import com.elearning.elearning_support.repositories.users.UserRepository;
+import com.elearning.elearning_support.services.fileAttach.FileAttachService;
 import com.elearning.elearning_support.utils.StringUtils;
 import com.elearning.elearning_support.utils.file.FileUtils;
 import com.elearning.elearning_support.utils.tests.TestUtils;
@@ -112,6 +115,8 @@ public class TestSetServiceImpl implements TestSetService {
     private final StudentTestSetRepository studentTestSetRepository;
 
     private final ExamClassRepository examClassRepository;
+
+    private final FileAttachService fileAttachService;
 
     @Transactional
     @Override
@@ -399,6 +404,16 @@ public class TestSetServiceImpl implements TestSetService {
                 }
                 lstDetails.add(studentAnswerDetail);
             }
+
+            // upload scored image
+            String handledImgPath = handledItem.getHandledScoredImg();
+            FileUploadResDTO handledUploadFile = new FileUploadResDTO();
+            if(Objects.nonNull(handledImgPath)){
+                handledUploadFile = fileAttachService.uploadFileToCloudinary(new File(handledItem.getHandledScoredImg()),
+                    FileTypeEnum.IMAGE);
+            }
+            // create student test set
+            studentTestSet.setHandedTestFile(handledUploadFile.getId());
             studentTestSet.setMarked(handledItem.getAnswers().size() - numNotMarkedQuestions);
             studentTestSet.setMarkerRate(((double) (studentTestSet.getMarked()) / (handledItem.getAnswers().size())) * 100.0);
             studentTestSet.setLstStudentTestSetDetail(lstDetails);
@@ -408,7 +423,8 @@ public class TestSetServiceImpl implements TestSetService {
             ScoringPreviewItemDTO scoringPreviewItem = new ScoringPreviewItemDTO(handledItem);
             scoringPreviewItem.setNumMarkedAnswers(handledItem.getAnswers().size() - numNotMarkedQuestions);
             scoringPreviewItem.setNumCorrectAnswers(numCorrectAns);
-            scoringPreviewItem.setTotalScore(totalScore); // temp questionMark = 0.5
+            scoringPreviewItem.setTotalScore(totalScore);
+            scoringPreviewItem.setHandledScoredImg(handledUploadFile.getFilePath());
             lstScoringPreview.add(scoringPreviewItem);
         }
 

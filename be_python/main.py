@@ -213,7 +213,9 @@ def mergeImages(filename, coord_array, array_img_graft, background_image, imgInf
         y_coord = coord_array[i][1]
         height, width, _ = array_img_graft[i].shape
         background_image[y_coord: y_coord + height, x_coord: x_coord + width] = array_img_graft[i] / 255
-    cv2.imwrite(f"{SHARED_DATA_DIR}/AnsweredSheets/{args.input}/HandledSheets//handled_{filename_cut}.jpg", background_image * 255)
+    handled_scored_img = f"{SHARED_DATA_DIR}/AnsweredSheets/{args.input}/HandledSheets//handled_{filename_cut}.jpg"
+    cv2.imwrite(handled_scored_img, background_image * 255)
+    return handled_scored_img
 
 
 if __name__ == "__main__":
@@ -301,13 +303,19 @@ if __name__ == "__main__":
                 array_result.append(item)
                 if key == (numberAnswer - 1):
                     break
+               
             if len(result_info) == 3:
                 result = {
                     "examClassCode": result_info["class_code"],
                     "studentCode": result_info["student_code"],
                     "testCode": result_info["exam_code"],
-                    "answers": array_result,
+                    "answers": array_result
                 }
+            
+            # ============================= Ghép ảnh =====================================
+            handled_scored_img = mergeImages(filename, coord_array, array_img_graft, background_image=document, imgInfo=imgResize)
+            result["handledScoredImg"] = handled_scored_img
+                
             # =============================== Ghi file json ==========================
 
             orig_file_name = filename.split(".")[0]
@@ -328,9 +336,6 @@ if __name__ == "__main__":
                     if len(maybe_wrong_answer_array) > 0:
                         for string in maybe_wrong_answer_array:
                             f.write(string + "\n")
-
-            # ============================= Ghép ảnh =====================================
-            mergeImages(filename, coord_array, array_img_graft, background_image=document, imgInfo=imgResize)
 
         # ========================================= Đo thời gian ==========================
         # print("Thời gian thực thi: ", time.time() - start_time, " giây")

@@ -40,7 +40,7 @@ public class FileAttachServiceImpl implements FileAttachService {
 
 
     @Override
-    public FileUploadResDTO uploadImage(MultipartFile multipartFile, FileTypeEnum fileType) {
+    public FileUploadResDTO uploadMPImageToCloudinary(MultipartFile multipartFile, FileTypeEnum fileType) {
         try {
             File uploadFile = FileUtils.covertMultipartToFile(SystemConstants.RESOURCE_PATH + FileUtils.IMAGES_STORED_LOCATION, multipartFile);
             // Map option upload file cloudinary
@@ -67,6 +67,44 @@ public class FileAttachServiceImpl implements FileAttachService {
             fileAttach = fileAttachRepository.save(fileAttach);
             // Delete file after upload cloudinary
             boolean isDeleted = uploadFile.delete();
+            return new FileUploadResDTO(fileAttach.getId(), fileAttach.getName(), fileAttach.getExternalLink(), fileAttach.getType());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public FileUploadResDTO uploadFileToCloudinary(File file, FileTypeEnum fileType) {
+        try {
+            if (Objects.isNull(file)) {
+                return new FileUploadResDTO();
+            }
+            // Map option upload file cloudinary
+            Map<String, Object> mapOptions = new HashMap<>();
+            mapOptions.put("use_filename", true);
+            mapOptions.put("resource_type", "auto");
+            Map<String, Object> uploadResponse = cloudinary.uploader().upload(file, mapOptions);
+            String location = (String) uploadResponse.get("secure_url");
+            if (Objects.isNull(location)) {
+                throw exceptionFactory.fileUploadException(MessageConst.FileAttach.UPLOAD_ERROR_CODE, Resources.FILE_ATTACHED,
+                    MessageConst.UPLOAD_FAILED);
+            }
+
+            // Creat file attach in db
+            FileAttach fileAttach = FileAttach.builder()
+                .extension(FileUtils.getFileExt(file))
+                .type(fileType.getType())
+                .name(file.getName())
+                .externalLink(location)
+                .storedType(FileStoredTypeEnum.EXTERNAL_SERVER.getType())
+                .size(file.getTotalSpace())
+                .createdAt(LocalDateTime.now())
+                .createdBy(AuthUtils.getCurrentUserId())
+                .build();
+            fileAttach = fileAttachRepository.save(fileAttach);
+            // Delete file after upload cloudinary (temp not delete file after uploading)
+            // boolean isDeleted = file.delete();
             return new FileUploadResDTO(fileAttach.getId(), fileAttach.getName(), fileAttach.getExternalLink(), fileAttach.getType());
         } catch (IOException ex) {
             ex.printStackTrace();
