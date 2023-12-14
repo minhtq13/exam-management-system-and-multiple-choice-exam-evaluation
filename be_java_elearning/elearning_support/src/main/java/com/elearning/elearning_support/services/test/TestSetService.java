@@ -42,7 +42,7 @@ public interface TestSetService {
     /**
      *  ======================== TEST SET SCORING SERVICES ====================
      */
-    ScoringPreviewResDTO scoreStudentTestSet(List<StudentHandledTestDTO> handledTestSets);
+    ScoringPreviewResDTO scoreStudentTestSet(String examClassCode, List<StudentHandledTestDTO> handledTestSets);
 
     /**
      * Process answered sheets and score by exClassCode

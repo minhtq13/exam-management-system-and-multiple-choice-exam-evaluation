@@ -85,7 +85,7 @@ public class TestSetController {
     @PostMapping("/scoring")
     @Operation(summary = "Chấm điểm bài thi chắc nghiệm (với dữ liệu có sẵn)")
     public ScoringPreviewResDTO scoringStudentTestSet(@RequestBody @Validated ScoringTestSetReqDTO scoringReqDTO) {
-        return testSetService.scoreStudentTestSet(scoringReqDTO.getHandledTestSets());
+        return testSetService.scoreStudentTestSet(scoringReqDTO.getClassCode(), scoringReqDTO.getHandledTestSets());
     }
 
     @GetMapping("/scoring/exam-class/{exClassCode}")

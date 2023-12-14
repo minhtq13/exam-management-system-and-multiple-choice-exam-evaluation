@@ -6,7 +6,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public interface IExamClassDetailDTO extends ICommonExamClassDTO {
 
-    @JsonFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YY_HH_MM_SS, timezone = DateUtils.TIME_ZONE)
+    @JsonFormat(pattern = DateUtils.FORMAT_DATE_HH_MM_YYYY_HH_MM, timezone = DateUtils.TIME_ZONE)
     Date getLastModifiedAt();
+
+    String getLstStudentId();
+
+    String getLstSupervisorId();
+
 
 }

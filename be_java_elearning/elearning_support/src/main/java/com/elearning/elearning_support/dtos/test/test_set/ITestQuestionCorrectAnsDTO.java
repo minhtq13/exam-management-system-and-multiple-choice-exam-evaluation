@@ -10,6 +10,8 @@ public interface ITestQuestionCorrectAnsDTO {
 
     Integer getQuestionNo();
 
+    Double getQuestionMark();
+
     String getCorrectAnswerNo();
 
 }

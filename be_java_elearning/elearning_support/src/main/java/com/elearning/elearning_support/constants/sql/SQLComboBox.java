@@ -27,16 +27,19 @@ public class SQLComboBox {
 
     public static final String GET_LIST_USER_WITH_TYPE_COMBO_BOX =
         "SELECT \n" +
-            "    id AS id, \n" +
-            "    CONCAT_WS(' ', last_name, first_name) AS name, \n" +
-            "    code AS code \n" +
+            "    users.id AS id, \n" +
+            "    CONCAT_WS(' ', users.last_name, users.first_name) AS name, \n" +
+            "    users.code AS code \n" +
             "FROM {h-schema}users \n" +
+            "   JOIN {h-schema}users_roles AS usrRole ON usrRole.user_id = users.id \n" +
+            "   JOIN {h-schema}role ON usrRole.role_id = role.id \n" +
             "WHERE \n" +
-            "    status = 1 AND \n" +
-            "    deleted_flag = 1 AND \n" +
-            "    user_type = :userType AND \n" +
-            "    (:name = '' OR CONCAT_WS(' ', last_name, first_name) ILIKE ('%' || :name || '%')) AND \n" +
-            "    (:code = '' OR code ILIKE ('%' || :code || '%'))";
+            "    users.status = 1 AND \n" +
+            "    users.deleted_flag = 1 AND \n" +
+            "    users.user_type = :userType AND \n" +
+            "    role.code = :roleBase AND \n" +
+            "    (:name = '' OR CONCAT_WS(' ', users.last_name, users.first_name) ILIKE ('%' || :name || '%')) AND \n" +
+            "    (:code = '' OR users.code ILIKE ('%' || :code || '%'))";
 
     public static final String GET_LIST_ROLE_WITHOUT_SUPER_ADMIN =
         "SELECT \n" +

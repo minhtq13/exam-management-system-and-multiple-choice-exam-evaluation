@@ -5,6 +5,8 @@ public class SQLExamClass {
     public static final String GET_COUNTER_EXAM_CLASS_PARTICIPANT =
         "SELECT \n" +
             "    exam_class_id AS examClassId, \n" +
+            "    string_agg(CAST(user_id AS TEXT), ',') FILTER (WHERE role_type = 0) AS lstStudentId, \n" +
+            "    string_agg(CAST(user_id AS TEXT), ',') FILTER (WHERE role_type = 1) AS lstSupervisorId, \n" +
             "    COUNT(user_id) FILTER (WHERE role_type = 1) AS numSupervisors, \n" +
             "    COUNT(user_id) FILTER (WHERE role_type = 0) AS numStudents \n" +
             "FROM {h-schema}user_exam_class \n" +
@@ -51,6 +53,8 @@ public class SQLExamClass {
             "    semester.code AS semester, \n" +
             "    subject.id AS subjectId, \n" +
             "    subject.title AS subjectTitle, \n" +
+            "    examClassParticipantCTE.lstStudentId AS lstStudentId, \n" +
+            "    examClassParticipantCTE.lstSupervisorId AS lstSupervisorId, \n" +
             "    examClassParticipantCTE.numStudents AS numberOfStudents, \n" +
             "    examClassParticipantCTE.numSupervisors AS numberOfSupervisors, \n" +
             "    COALESCE(exClass.modified_at, exClass.created_at) AS lastModifiedAt \n" +

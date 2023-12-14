@@ -8,6 +8,7 @@ public class SQLTestSet {
             "    testSetQuest.test_set_id AS testSetId, \n" +
             "    testSetQuest.question_id AS questionId, \n" +
             "    testSetQuest.question_no AS questionNo, \n" +
+            "    COALESCE(testSetQuest.question_mark, 0) AS questionMark, \n" +
             "    {h-schema}get_correct_in_lst_answer_json(testSetQuest.lst_answer_json) AS correctAnswerNo \n" +
             "FROM {h-schema}test_set_question AS testSetQuest \n" +
             "WHERE testSetQuest.test_set_id = :testSetId ";

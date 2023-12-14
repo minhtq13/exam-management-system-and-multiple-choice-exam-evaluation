@@ -316,23 +316,24 @@ public class TestSetServiceImpl implements TestSetService {
     @Override
     public ScoringPreviewResDTO scoreExamClassTestSet(String examClassCode) {
         callAIModelProcessing(examClassCode);
-        return scoreStudentTestSet(loadListStudentScoredSheets(examClassCode));
+        return scoreStudentTestSet(examClassCode, loadListStudentScoredSheets(examClassCode));
     }
 
 
     @Transactional
     @Override
-    public ScoringPreviewResDTO scoreStudentTestSet(List<StudentHandledTestDTO> handledTestSets) {
+    public ScoringPreviewResDTO scoreStudentTestSet(String examClassCode, List<StudentHandledTestDTO> handledTestSets) {
         long startTimeMillis = System.currentTimeMillis();
         log.info("============== STARTED SCORING HANDLED ANSWER SHEET AT {} =================", startTimeMillis);
         Long currentUserId = AuthUtils.getCurrentUserId();
         // find -> student, test-set
         // Map exam_class + testCode -> testSetId
         Map<Pair<String, String>, ITestSetScoringDTO> mapGeneralHandledData = new HashMap<>();
-        Set<String> examClassCodes = handledTestSets.stream().map(StudentHandledTestDTO::getExamClassCode).collect(Collectors.toSet());
+        //Sử dụng logic chấm thi theo lớp
+        //Set<String> examClassCodes = handledTestSets.stream().map(StudentHandledTestDTO::getExamClassCode).collect(Collectors.toSet());
         Set<String> testCodes = handledTestSets.stream().map(StudentHandledTestDTO::getTestCode).collect(Collectors.toSet());
-        List<ITestSetScoringDTO> generalScoringData = testSetRepository.getTestSetGeneralScoringData(examClassCodes, testCodes);
-        generalScoringData.forEach(item -> mapGeneralHandledData.put(Pair.create(item.getExamClassCode(), item.getTestCode()), item));
+        List<ITestSetScoringDTO> generalScoringData = testSetRepository.getTestSetGeneralScoringData(Collections.singleton(examClassCode), testCodes);
+        generalScoringData.forEach(item -> mapGeneralHandledData.put(Pair.create(examClassCode, item.getTestCode()), item));
 
         // map studentCode -> studentId
         Set<String> lstStudentCode = handledTestSets.stream().map(StudentHandledTestDTO::getStudentCode).collect(Collectors.toSet());
@@ -347,7 +348,7 @@ public class TestSetServiceImpl implements TestSetService {
         List<ScoringPreviewItemDTO> lstScoringPreview = new ArrayList<>();
         for (StudentHandledTestDTO handledItem : handledTestSets) {
             // init map
-            ITestSetScoringDTO handledData = mapGeneralHandledData.get(Pair.create(handledItem.getExamClassCode(), handledItem.getTestCode()));
+            ITestSetScoringDTO handledData = mapGeneralHandledData.get(Pair.create(examClassCode, handledItem.getTestCode()));
             Long testSetId = handledData.getTestSetId();
             Long studentId = mapUserCodeId.get(handledItem.getStudentCode());
 
@@ -391,6 +392,7 @@ public class TestSetServiceImpl implements TestSetService {
                 studentAnswerDetail.setCreatedBy(currentUserId);
                 if (!ObjectUtils.isEmpty(correctAnswerNo) && CollectionUtils.containsAll(correctAnswerNo, selectedAnsNo)) {
                     studentAnswerDetail.setIsCorrected(Boolean.TRUE);
+                    totalScore += correctAnswerDTO.getQuestionMark();
                     numCorrectAns++;
                 } else {
                     studentAnswerDetail.setIsCorrected(Boolean.FALSE);
@@ -406,7 +408,7 @@ public class TestSetServiceImpl implements TestSetService {
             ScoringPreviewItemDTO scoringPreviewItem = new ScoringPreviewItemDTO(handledItem);
             scoringPreviewItem.setNumMarkedAnswers(handledItem.getAnswers().size() - numNotMarkedQuestions);
             scoringPreviewItem.setNumCorrectAnswers(numCorrectAns);
-            scoringPreviewItem.setTotalScore(0.5 * numCorrectAns); // temp questionMark = 0.5
+            scoringPreviewItem.setTotalScore(totalScore); // temp questionMark = 0.5
             lstScoringPreview.add(scoringPreviewItem);
         }
 
