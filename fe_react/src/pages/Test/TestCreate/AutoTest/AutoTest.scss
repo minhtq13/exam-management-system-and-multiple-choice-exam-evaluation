@@ -6,9 +6,6 @@
 }
 
 .test-create-view {
-  .ant-modal-content {
-    margin-top: 30vh;
-  }
 
   .semester-test {
     .ant-select {
@@ -63,6 +60,18 @@
         font-size: 20px;
         color: #ffffff;
       }
+    }
+  }
+}
+
+.test-set-create-modal {
+  height: 180px;
+
+  .ant-modal-content {
+    height: 180px;
+
+    .ant-modal-body {
+      height: 60px;
     }
   }
 }

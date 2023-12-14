@@ -36,10 +36,10 @@ const TeacherList = () => {
 	const handleReset = (clearFilters) => {
 		clearFilters();
 	};
-  const handleUpload = async () => {
+	const handleUpload = async () => {
 		const formData = new FormData();
 		formData.append("file", fileList);
-		importList(formData, "teacher")
+		importList(formData, "teacher");
 	};
 	const handleChange = (e) => {
 		setFileList(e.target.files[0]);
@@ -143,9 +143,9 @@ const TeacherList = () => {
 		navigate(`${appPath.teacherEdit}/${record.id}`);
 	};
 	useEffect(() => {
-    if (!loadingImport) {
-      getAllTeachers(param);
-    }
+		if (!loadingImport) {
+			getAllTeachers(param);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [param, loadingImport]);
 	const notify = useNotify();
@@ -194,7 +194,9 @@ const TeacherList = () => {
 						else color = "red";
 						return (
 							<Tag color={color} key={gender}>
-								{gender ? convertGender(gender?.toUpperCase()) : "Không xác định"}
+								{gender
+									? convertGender(gender?.toUpperCase())
+									: "Không xác định"}
 							</Tag>
 						);
 					})}
@@ -240,7 +242,9 @@ const TeacherList = () => {
 	const onSelectChange = (newSelectedRowKeys) => {
 		setSelectedRowKeys(newSelectedRowKeys);
 		if (newSelectedRowKeys.length === 1) {
-			setDeleteKey(dataFetch.find((item) => item.key === newSelectedRowKeys[0]).id);
+			setDeleteKey(
+				dataFetch.find((item) => item.key === newSelectedRowKeys[0]).id
+			);
 			setDeleteDisable(false);
 		} else {
 			setDeleteDisable(true);
@@ -278,8 +282,8 @@ const TeacherList = () => {
 				<p>Danh sách giảng viên</p>
 				<div className="block-button">
 					<Button className="options" onClick={handleExport}>
-						<img src={exportIcon} alt="Export Icon" />
-						Export
+						<img src={exportIcon} alt="Tải xuống Icon" />
+						Tải xuống
 					</Button>
 					<ModalPopup
 						buttonOpenModal={
@@ -298,7 +302,7 @@ const TeacherList = () => {
 						}
 						confirmMessage={"Thao tác này không thể hoàn tác"}
 						icon={deletePopUpIcon}
-						ok={"Ok"}
+						ok={"Đồng ý"}
 						onAccept={handleDelete}
 					/>
 					<Input

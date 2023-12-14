@@ -390,7 +390,7 @@ const SubjectList = () => {
 						}
 						confirmMessage={"Thao tác này không thể hoàn tác"}
 						icon={deletePopUpIcon}
-						ok={"Ok"}
+						ok={"Đồng ý"}
 						onAccept={handleDelete}
 					/>
 					<Button className="options" onClick={handleClickAddSubject}>

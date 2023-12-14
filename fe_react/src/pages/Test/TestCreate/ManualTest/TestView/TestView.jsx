@@ -140,6 +140,7 @@ const TestView = ({
 				Tạo đề
 			</Button>
 			<Modal
+				className="test-set-create-modal"
 				open={openModal}
 				title="Tạo đề thi thành công!"
 				onOk={() => navigate(`${appPath.testSetCreate}/${testId}`)}

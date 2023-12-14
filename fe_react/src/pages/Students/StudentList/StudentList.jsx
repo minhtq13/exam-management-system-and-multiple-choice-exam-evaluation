@@ -193,8 +193,8 @@ const StudentList = () => {
 				},
 			],
 			onFilter: (value, record) => {
-        return record.courseNum === value;
-      },
+				return record.courseNum === value;
+			},
 		},
 		{
 			title: "Email",
@@ -305,8 +305,8 @@ const StudentList = () => {
 				<p>Danh sách sinh viên</p>
 				<div className="block-button">
 					<Button className="options" onClick={handleExport}>
-						<img src={exportIcon} alt="Export Icon" />
-						Export
+						<img src={exportIcon} alt="Tải xuống Icon" />
+						Tải xuống
 					</Button>
 					<ModalPopup
 						buttonOpenModal={
@@ -322,7 +322,7 @@ const StudentList = () => {
 						title="Delete Student"
 						message={"Bạn chắc chắn muốn xóa sinh viên này không? "}
 						confirmMessage={"Thao tác này không thể hoàn tác"}
-						ok={"Ok"}
+						ok={"Đồng ý"}
 						icon={deletePopUpIcon}
 						onAccept={handleDelete}
 					/>

@@ -207,7 +207,7 @@ const QuestionList = () => {
 										confirmMessage={
 											"Thao tác này không thể hoàn tác"
 										}
-										ok={"Ok"}
+										ok={"Đồng ý"}
 										icon={deletePopUpIcon}
 										onAccept={() => onRemove(item.id)}
 										loading={deleteLoading}

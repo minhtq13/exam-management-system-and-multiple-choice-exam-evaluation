@@ -95,7 +95,10 @@ const UpdateSubjectInfoForm = ({
 							<div className="subject-chapter-header">
 								Nội dung
 							</div>
-							<Form.List name="lstChapter" initialValue={editItems}>
+							<Form.List
+								name="lstChapter"
+								initialValue={editItems}
+							>
 								{(fields, { add, remove }) => {
 									return (
 										<>
@@ -162,7 +165,7 @@ const UpdateSubjectInfoForm = ({
 														}
 														title="Delete Chapter"
 														message="Bạn có chắc chắn muốn xóa học phần này không?"
-														ok="OK"
+														ok="Đồng ý"
 														onAccept={() => {
 															deleteChaptersService(
 																editItems[index]

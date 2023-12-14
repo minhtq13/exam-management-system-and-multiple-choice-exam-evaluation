@@ -102,3 +102,15 @@
     color: var(--hust-color);
   }
 }
+
+.test-set-create-modal {
+  height: 180px;
+
+  .ant-modal-content {
+    height: 180px;
+
+    .ant-modal-body {
+      height: 60px;
+    }
+  }
+}

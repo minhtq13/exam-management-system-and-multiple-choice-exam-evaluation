@@ -139,7 +139,10 @@ const TestSetCreate = () => {
 						/>
 					) : (
 						<div className="test-preview-test-set">
-							<div>Test Preview</div>
+							<div>
+								Nhập số lượng đề thi muốn tạo và xem trước đề
+								thi ở đây.
+							</div>
 						</div>
 					)}
 				</Spin>

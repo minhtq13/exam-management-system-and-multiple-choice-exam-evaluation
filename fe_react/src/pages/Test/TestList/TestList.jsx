@@ -227,7 +227,7 @@ const TestList = () => {
 						message={"Bạn chắc chắn muốn xóa đề thi này không? "}
 						confirmMessage={"Thao tác này không thể hoàn tác"}
 						icon={deletePopUpIcon}
-						ok={"Ok"}
+						ok={"Đồng ý"}
 						onAccept={handleDelete}
 					/>
 					<Button className="options" onClick={handleClickAddTest}>
@@ -314,7 +314,6 @@ const TestList = () => {
 					onOk={() => setOpenModal(false)}
 					onCancel={() => setOpenModal(false)}
 					maskClosable={true}
-					style={{ height: "50vh", overflowY: "scroll" }}
 					centered={true}
 				>
 					<List
@@ -373,7 +372,6 @@ const TestList = () => {
 						style={{
 							height: "80vh",
 							width: "70vw",
-							overflowY: "scroll",
 						}}
 						okButtonProps={{ loading: loadingExport }}
 					>

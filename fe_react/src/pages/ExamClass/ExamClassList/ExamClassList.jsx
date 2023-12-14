@@ -58,6 +58,7 @@ const ExamClassList = () => {
 	const [roleType, setRoleType] = useState("STUDENT");
 	const [classId, setClassId] = useState(null);
 	const [classCode, setClassCode] = useState(null);
+	const [record, setRecord] = useState({});
 	useEffect(() => {
 		if (classId) {
 			getParticipants(classId, roleType);
@@ -151,8 +152,8 @@ const ExamClassList = () => {
 							className="options"
 							onClick={handleExportStudent}
 						>
-							<img src={exportIcon} alt="Export Icon" />
-							Export
+							<img src={exportIcon} alt="Tải xuống Icon" />
+							Tải xuống
 						</Button>
 						<Input
 							type="file"
@@ -185,7 +186,7 @@ const ExamClassList = () => {
 	const tabsOptions = [
 		{
 			key: "STUDENT",
-			label: "Học sinh",
+			label: "Sinh viên",
 			children: renderTab(),
 		},
 		{
@@ -372,6 +373,7 @@ const ExamClassList = () => {
 					<Button
 						danger
 						onClick={() => {
+							setRecord(record);
 							setClassId(record.id);
 							setClassCode(record.code);
 							setOpenModal(true);
@@ -437,8 +439,8 @@ const ExamClassList = () => {
 				<p>Danh sách lớp thi</p>
 				<div className="block-button">
 					<Button className="options" onClick={handleExport}>
-						<img src={exportIcon} alt="Export Icon" />
-						Export
+						<img src={exportIcon} alt="Tải xuống Icon" />
+						Tải xuống
 					</Button>
 					<ModalPopup
 						buttonOpenModal={
@@ -454,7 +456,7 @@ const ExamClassList = () => {
 						title="Xóa lớp thi"
 						message={"Bạn chắc chắn muốn xóa lớp thi này không? "}
 						confirmMessage={"Thao tác này không thể hoàn tác"}
-						ok={"Ok"}
+						ok={"Đồng ý"}
 						icon={deletePopUpIcon}
 						onAccept={handleDelete}
 					/>
@@ -553,14 +555,27 @@ const ExamClassList = () => {
 					onOk={() => setOpenModal(false)}
 					onCancel={() => setOpenModal(false)}
 					maskClosable={true}
-					style={{ height: "80vh", overflowY: "scroll" }}
 					centered={true}
 				>
-					<Tabs
-						defaultActiveKey="STUDENT"
-						items={tabsOptions}
-						onChange={(key) => setRoleType(key)}
-					/>
+					<div className="exam-class-participant-details">
+						<div className="exam-class-info-details">
+							<div className="exam-class-participant-left">
+								<div>{`Môn thi: ${record.subjectTitle}`}</div>
+								<div>{`Mã lớp thi: ${record.code}`}</div>
+								<div>{`Học kỳ: ${record.semester}`}</div>
+							</div>
+							<div className="exam-class-participant-right">
+								<div>{`Phòng thi: ${record.roomName}`}</div>
+								<div>{`Ngày thi: ${record.examineDate}`}</div>
+								<div>{`Giờ thi: ${record.examineTime}`}</div>
+							</div>
+						</div>
+						<Tabs
+							defaultActiveKey="STUDENT"
+							items={tabsOptions}
+							onChange={(key) => setRoleType(key)}
+						/>
+					</div>
 				</Modal>
 			</div>
 		</div>

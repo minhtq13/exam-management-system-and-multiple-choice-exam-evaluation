@@ -100,6 +100,11 @@ const UpdateExamClassInfoForm = ({
 			key: "subjectName",
 		},
 		{
+			title: "Học kỳ",
+			dataIndex: "semester",
+			key: "semester",
+		},
+		{
 			title: "Số câu hỏi",
 			dataIndex: "questionQuantity",
 			key: "questionQuantity",
@@ -161,6 +166,7 @@ const UpdateExamClassInfoForm = ({
 		subjectName: obj.subjectName,
 		duration: obj.duration,
 		id: obj.id,
+		semester: obj.semester,
 		testSetNos: obj.testSetNos,
 		lstTestSetCode: obj.lstTestSetCode,
 		testSet:
@@ -406,7 +412,7 @@ const UpdateExamClassInfoForm = ({
 			</Modal>
 			<Modal
 				open={openModalPreview}
-				okText="OK"
+				okText="Đồng ý"
 				onOk={() => setOpenModalPreview(false)}
 				onCancel={() => setOpenModalPreview(false)}
 				maskClosable={true}

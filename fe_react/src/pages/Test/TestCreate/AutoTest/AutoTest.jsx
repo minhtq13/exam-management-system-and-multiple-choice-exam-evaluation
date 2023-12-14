@@ -45,6 +45,7 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
 					duration: Number(value.duration),
 					questionQuantity: Number(value.questionQuantity),
 					totalPoint: Number(value.totalPoint),
+					semesterId: Number(value.semesterId),
 					generateConfig: {
 						numEasyQuestion: Number(
 							value.generateConfig.numEasyQuestion
@@ -245,6 +246,7 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
 				</Form.Item>
 			</Form>
 			<Modal
+				className="test-set-create-modal"
 				open={openModal}
 				title="Tạo đề thi thành công!"
 				onOk={() => navigate(`${appPath.testSetCreate}/${testId}`)}

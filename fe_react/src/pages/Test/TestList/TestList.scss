@@ -82,4 +82,12 @@
 
 .test-list-preview {
   min-width: 45vw;
+
+  .ant-modal-content {
+    height: 80vh;
+
+    .ant-modal-body {
+      height: 70vh;
+    }
+  }
 }
