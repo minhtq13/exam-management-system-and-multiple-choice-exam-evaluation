@@ -18,6 +18,8 @@ public class TestSetQuestionMapDTO {
 
     Long testSetId;
 
+    Integer totalPoint;
+
     List<QuestionAnswerDTO> lstQuestionAnswer = new ArrayList<>();
 
 }

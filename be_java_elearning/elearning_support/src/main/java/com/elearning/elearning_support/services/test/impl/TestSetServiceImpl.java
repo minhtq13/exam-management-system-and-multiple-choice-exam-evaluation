@@ -152,6 +152,7 @@ public class TestSetServiceImpl implements TestSetService {
                 .testId(test.getId())
                 .testNo(String.valueOf(i + 1))
                 .code(lstTestCode.get(i))
+                .totalPoint(test.getTotalPoint())
                 .questionMark(calculateQuestionMark(test.getTotalPoint(), test.getQuestionQuantity()))
                 .isEnabled(Boolean.TRUE).build();
             newTestSet.setCreatedBy(currentUserId);
@@ -167,6 +168,7 @@ public class TestSetServiceImpl implements TestSetService {
         for (TestSet testSet : lstTestSet) {
             TestSetQuestionMapDTO mapDTO = new TestSetQuestionMapDTO();
             mapDTO.setTestSetId(testSet.getId());
+            mapDTO.setTotalPoint(test.getTotalPoint());
             // Trộn các câu hỏi ở mức độ dễ
             int numberEasyQuestion = Math.min(genTestConfig.getNumEasyQuestion(), lstEasyQuestion.size());
             if (numberEasyQuestion > 0) {
@@ -199,6 +201,7 @@ public class TestSetServiceImpl implements TestSetService {
                     .testSetId(mapDTO.getTestSetId())
                     .questionId(questionAnswer.getId())
                     .questionNo(i + 1)
+                    .questionMark(calculateQuestionMark(mapDTO.getTotalPoint(), mapDTO.getLstQuestionAnswer().size()))
                     .lstAnswer(randomTestQuestionAnswer(questionAnswer.getLstAnswerId()))
                     .build());
             }
@@ -257,16 +260,17 @@ public class TestSetServiceImpl implements TestSetService {
     @Transactional
     @Override
     public void updateTestSet(TestSetUpdateDTO updateDTO) {
-        if (!testSetRepository.existsByIdAndIsEnabled(updateDTO.getTestSetId(), Boolean.TRUE)) {
-            throw exceptionFactory.resourceNotFoundException(MessageConst.TestSet.NOT_FOUND, MessageConst.RESOURCE_NOT_FOUND, Resources.TEST_SET,
-                ErrorKey.TestSet.ID, String.valueOf(updateDTO.getTestSetId()));
-        }
+        TestSet testSet = testSetRepository.findByIdAndIsEnabled(updateDTO.getTestSetId(), Boolean.TRUE)
+            .orElseThrow(() -> exceptionFactory.resourceNotFoundException(MessageConst.TestSet.NOT_FOUND, MessageConst.RESOURCE_NOT_FOUND, Resources.TEST_SET,
+                ErrorKey.TestSet.ID, String.valueOf(updateDTO.getTestSetId())));
         // Xoá các bản ghi testSetQuestion hiện tại và lưu mới
         testSetQuestionRepository.deleteAllByTestSetId(updateDTO.getTestSetId());
 
         // Lưu các bản ghi mới
+        Integer numOfQuestion = updateDTO.getQuestions().size();
         List<TestSetQuestion> lstNewTestSetQuestion = updateDTO.getQuestions().stream()
-            .map(question -> new TestSetQuestion(updateDTO.getTestSetId(), question))
+            .map(question -> new TestSetQuestion(updateDTO.getTestSetId(), calculateQuestionMark(testSet.getTotalPoint(), numOfQuestion),
+                question))
             .collect(Collectors.toList());
         testSetQuestionRepository.saveAll(lstNewTestSetQuestion);
     }
@@ -378,7 +382,7 @@ public class TestSetServiceImpl implements TestSetService {
             double totalScore = 0.0;
             for (HandledAnswerDTO handledAnswer : handledItem.getAnswers()) {
                 // Get selected answers and check if not marked
-                Set<Integer> selectedAnsNo = TestUtils.getSelectedAnswer(handledAnswer.getSelectedAnswers());
+                Set<Integer> selectedAnsNo = TestUtils.getSelectedAnswerNo(handledAnswer.getSelectedAnswers());
                 if (ObjectUtils.isEmpty(selectedAnsNo)) {
                     numNotMarkedQuestions++;
                 }
@@ -388,6 +392,7 @@ public class TestSetServiceImpl implements TestSetService {
                     continue;
                 }
                 Set<Integer> correctAnswerNo = StringUtils.convertStrIntegerToSet(correctAnswerDTO.getCorrectAnswerNo());
+                handledAnswer.setCorrectAnswers(TestUtils.getSelectedAnswerChar(correctAnswerNo));
                 // Create new studentTestSetDetails
                 StudentTestSetDetail studentAnswerDetail = new StudentTestSetDetail();
                 studentAnswerDetail.setTestSetQuestionId(correctAnswerDTO.getId());
@@ -447,7 +452,7 @@ public class TestSetServiceImpl implements TestSetService {
     }
 
     @Override
-    public void uploadStudentHandledAnswerSheet(String examClassCode, MultipartFile[] handledFiles) {
+    public void uploadStudentHandledAnswerSheet(String examClassCode, MultipartFile[] handledFiles) throws IOException {
         // Check existed exam_class
         ExamClass examClass = examClassRepository.findByCodeAndIsEnabled(examClassCode, Boolean.TRUE)
             .orElseThrow(() -> exceptionFactory.resourceNotFoundException(MessageConst.ExamClass.NOT_FOUND, Resources.EXAM_CLASS,
@@ -471,7 +476,10 @@ public class TestSetServiceImpl implements TestSetService {
         // upload handled answer sheet's images
         String examClassStoredPath = String.format("%s/%s/%s/", sharedAppDataPath, ANSWERED_SHEETS, examClass.getCode());
         File examClassStoredDir = new File(examClassStoredPath);
-        if (!examClassStoredDir.exists()) {
+        if (examClassStoredDir.exists()) {
+            // Delete old data before upload
+            org.apache.commons.io.FileUtils.cleanDirectory(examClassStoredDir);
+        } else {
             log.info("Make examClassStoredDir {}", examClassStoredDir.mkdirs() ? "successfully" : "fail");
         }
         // Write file to storage directory

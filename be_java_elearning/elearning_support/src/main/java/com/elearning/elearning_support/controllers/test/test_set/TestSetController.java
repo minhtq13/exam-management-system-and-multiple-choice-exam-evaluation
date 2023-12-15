@@ -98,7 +98,7 @@ public class TestSetController {
     @Operation(summary = "Upload bài làm theo lớp")
     public void uploadStudentHandledTestSet(
         @PathVariable(name = "examClassCode") String examClassCode,
-        @RequestParam(name = "files") MultipartFile[] handledFiles) {
+        @RequestParam(name = "files") MultipartFile[] handledFiles) throws IOException {
         testSetService.uploadStudentHandledAnswerSheet(examClassCode, handledFiles);
     }
 

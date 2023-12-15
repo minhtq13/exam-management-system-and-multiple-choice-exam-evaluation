@@ -1,6 +1,7 @@
 package com.elearning.elearning_support.repositories.test.test_set;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,6 +26,8 @@ public interface TestSetRepository extends JpaRepository<TestSet, Long> {
     Boolean existsByIdAndIsEnabled(Long id, Boolean isEnabled);
 
     Boolean existsByTestIdAndCode(Long testId, String code);
+
+    Optional<TestSet> findByIdAndIsEnabled(Long id, Boolean isEnabled);
 
     @Query(nativeQuery = true, value = SQLTestSet.GET_LIST_TEST_QUESTION_CORRECT_ANSWER)
     Set<ITestQuestionCorrectAnsDTO> getListTestQuestionCorrectAns(Long testSetId);

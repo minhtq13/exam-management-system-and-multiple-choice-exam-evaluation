@@ -52,7 +52,7 @@ public interface TestSetService {
     /**
      * Upload handled answer sheet's images
      */
-    void uploadStudentHandledAnswerSheet(String examClassCode, MultipartFile[] handledFiles);
+    void uploadStudentHandledAnswerSheet(String examClassCode, MultipartFile[] handledFiles) throws IOException;
 
     /**
      * Save scored results

@@ -52,10 +52,11 @@ public class TestSetQuestion {
     @Type(type = "jsonb")
     List<TestQuestionAnswer> lstAnswer;
 
-    public TestSetQuestion(Long testSetId, TestQuestionAnswerUpdateDTO testSetQuestion) {
+    public TestSetQuestion(Long testSetId, Double questionMark, TestQuestionAnswerUpdateDTO testSetQuestion) {
         this.testSetId = testSetId;
         this.questionId = testSetQuestion.getQuestionId();
         this.questionNo = testSetQuestion.getQuestionNo();
         this.lstAnswer = testSetQuestion.getAnswers();
+        this.questionMark = questionMark;
     }
 }
