@@ -17,7 +17,6 @@ axios.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-
   // config.headers["Access-Control-Allow-Origin"] = "*";
   // config.headers["Access-Control-Allow-Methods"] = "*";
   // config.headers["Access-Control-Allow-Headers"] = "*";

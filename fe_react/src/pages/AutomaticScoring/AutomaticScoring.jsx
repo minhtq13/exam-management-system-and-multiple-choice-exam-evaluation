@@ -33,15 +33,11 @@ const AutomaticScoring = () => {
   const [previewTitle, setPreviewTitle] = useState("");
   const handleCancel = () => setPreviewOpen(false);
   const { examClassCode } = useSelector((state) => state.appReducer);
-  const uploadButton = (
-    <div>
-      <Button disabled={!examClassCode} icon={<UploadOutlined />}>Tải ảnh lên</Button>
-    </div>
-  );
   const props = {
     name: "files",
     listType: "picture",
     multiple: true,
+    // method: "POST",
     action: `${BASE_URL}/test-set/handled-answers/upload/${examClassCode}`,
     beforeUpload: (file) => {
       const isPNG =
@@ -81,13 +77,17 @@ const AutomaticScoring = () => {
     setResultAI([]);
   };
   const handleSaveResult = () => {
-    saveTableResult()
-  }
+    saveTableResult();
+  };
 
   const uploadBlock = (
     <div>
       <Upload {...props} onPreview={handlePreview}>
-        {uploadButton}
+        <div>
+          <Button disabled={!examClassCode} icon={<UploadOutlined />}>
+            Tải ảnh lên
+          </Button>
+        </div>
       </Upload>
       <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
         <img
@@ -131,7 +131,11 @@ const AutomaticScoring = () => {
             >
               Chấm điểm
             </Button>
-            <Button onClick={handleReset} className="button-reset-table-result" disabled={resultAI.length === 0}>
+            <Button
+              onClick={handleReset}
+              className="button-reset-table-result"
+              disabled={resultAI.length === 0}
+            >
               Đặt lại
             </Button>
           </div>
@@ -145,7 +149,13 @@ const AutomaticScoring = () => {
             )} */}
           </div>
           <div className="button-footer">
-            <Button type="primary" onClick={handleSaveResult} loading={loading} disabled={resultAI.length === 0} className="button-submit-ai">
+            <Button
+              type="primary"
+              onClick={handleSaveResult}
+              loading={loading}
+              disabled={resultAI.length === 0}
+              className="button-submit-ai"
+            >
               Lưu kết quả
             </Button>
           </div>

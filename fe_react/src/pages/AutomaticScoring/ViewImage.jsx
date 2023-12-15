@@ -28,6 +28,15 @@ const ViewImage = ({ dataArray, index }) => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+  const handleDownload = () => {
+    const downloadLink = document.createElement('a');
+    downloadLink.href = dataArray[currentSlide].handledScoredImg;
+    downloadLink.target = '_blank';
+    downloadLink.download = 'downloaded_image.jpg';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  }
   return (
     <div className="view-image-component">
       <div className="view-image-button" onClick={showModal}>
@@ -44,6 +53,9 @@ const ViewImage = ({ dataArray, index }) => {
           </Button>,
           <Button key="next" type="primary" onClick={handleNext}>
             Ảnh sau
+          </Button>,
+          <Button key="download" type="primary" onClick={handleDownload}>
+            Download
           </Button>,
         ]}
       >

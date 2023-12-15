@@ -7,41 +7,46 @@ import { setExamClassCode } from "../../redux/slices/appSlice";
 const { Option } = Select;
 
 const HeaderSelect = () => {
-  const { getAllSemesters, allSemester, allSubjects, getAllSubjects, getAllExamClass, examClass } = useCombo();
-	const [semesterSelected, setSemesterSelected] = useState(null);
-	const [subjectSelected, setSubjectSelected] = useState(null);
-	const dispatch = useDispatch();
-  const { examClassCode} = useSelector((state) => state.appReducer);
+  const { getAllSemesters, allSemester, allSubjects, getAllSubjects, getAllExamClass, examClass } =
+    useCombo();
+  const [semesterSelected, setSemesterSelected] = useState(null);
+  const [subjectSelected, setSubjectSelected] = useState(null);
+  const dispatch = useDispatch();
+  const { examClassCode } = useSelector((state) => state.appReducer);
   useEffect(() => {
     getAllSemesters({});
-		getAllSubjects("", "");
+    getAllSubjects("", "");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-	useEffect(() => {
-		if (semesterSelected && subjectSelected) {
-			getAllExamClass(semesterSelected, subjectSelected, {});
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [semesterSelected, subjectSelected]);
-	
+  useEffect(() => {
+    if (semesterSelected && subjectSelected) {
+      getAllExamClass(semesterSelected, subjectSelected, {});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [semesterSelected, subjectSelected]);
 
   const handleChangeSemestersSelect = (value) => {
-		setSubjectSelected(null)
-		setSemesterSelected(value)
-	};
+    setSubjectSelected(null);
+    setSemesterSelected(value);
+  };
   const handleChangeSubjectSelect = (value) => {
-		dispatch(setExamClassCode(null))
-		setSubjectSelected(value)
-	};
+    dispatch(setExamClassCode(null));
+    setSubjectSelected(value);
+  };
   const handleChangeExamCodeSelect = (value) => {
-		dispatch(setExamClassCode(value))
-	};
+    dispatch(setExamClassCode(value));
+  };
   const filterSubject = (input, option) =>
-  (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
+    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
   return (
     <div>
       <div className="block-select">
+        <div className="info">
+          {!semesterSelected || !subjectSelected || !examClassCode
+            ? `Vui lòng nhập thông tin lớp thi để chấm điểm!`
+            : ""}
+        </div>
         <div className="block-button">
           <Space>
             <div className="detail-button">Học kỳ: </div>
@@ -90,7 +95,7 @@ const HeaderSelect = () => {
               })}
             </Select>
           </Space>
-					<Space>
+          <Space>
             <div className="detail-button">Mã lớp thi: </div>
             <Select
               optionLabelProp="label"
@@ -100,7 +105,7 @@ const HeaderSelect = () => {
               style={{ width: 300 }}
               placeholder="Chọn mã lớp thi để chấm"
               showSearch
-							disabled={!semesterSelected || !subjectSelected}
+              disabled={!semesterSelected || !subjectSelected}
               value={examClassCode}
             >
               {examClass.map((item, index) => {

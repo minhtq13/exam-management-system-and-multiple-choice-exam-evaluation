@@ -24,6 +24,9 @@ const useAI = () => {
         if (err.response.status === 404) {
           notify.warning(err.response.data.message || "Không tìm thấy dữ liệu");
         }
+        if (err.response.status === 500) {
+          notify.warning("Không tìm thấy dữ liệu về mã đề thi!");
+        }
       }
     );
   };
