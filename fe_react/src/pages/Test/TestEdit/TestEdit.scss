@@ -25,11 +25,8 @@
   }
 
   .test-preview {
-    background-color: #ffffff;
-    padding: 0px 25px;
-    max-height: 75vh;
+    height: 78vh;
     width: 55vw;
-    overflow-y: scroll;
 
     div,
     p {
@@ -157,5 +154,64 @@
     .ql-editor {
       padding: 0px;
     }
+  }
+}
+
+#test-edit-form {
+  height: 95%;
+
+  .question-edit {
+    max-height: 100%;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;    
+    background-color: #ffffff;
+    padding: 10px 10px 10px 25px;
+    justify-content: flex-start;
+    margin-bottom: 15px;
+  }
+
+  .ant-form-item-explain-error {
+    width: 200px;
+  }
+
+  label {
+    font-family: "Times New Roman", serif;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .ql-container {
+    border: none;
+  }
+
+  .ql-editor {
+    padding: 0px !important;
+  }
+
+  .question-text {
+    display: flex;
+    width: 100%;
+  }
+
+  .topic-Text {
+    width: 15%;
+    margin-right: 10px;
+  }
+
+  .answer-list {
+    display: flex;
+    width: 100%;
+  }
+
+  .answer-item {
+    width: 5%;
+    margin-right: 10px;
+  }
+
+  .add-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

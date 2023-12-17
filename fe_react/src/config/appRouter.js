@@ -25,7 +25,7 @@ import TeacherEdit from "../pages/Teachers/TeacherEdit/TeacherEdit";
 import TeacherList from "../pages/Teachers/TeacherList/TeacherList";
 import TeacherView from "../pages/Teachers/TeacherView/TeacherView";
 import TestCreate from "../pages/Test/TestCreate/TestCreate";
-import TestEdit from "../pages/Test/TestEdit/TestEdit";
+import TestEdit from "../pages/Test/TestEdit/TestEditFill/TestEdit";
 import TestList from "../pages/Test/TestList/TestList";
 import TestSetCreate from "../pages/TestSet/TestSetCreate/TestSetCreate";
 import TimeTable from "../pages/TimeTable/TimeTable";
