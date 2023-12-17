@@ -6,6 +6,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.elearning.elearning_support.dtos.CustomInputStreamResource;
+import com.elearning.elearning_support.dtos.fileAttach.FileAttachDTO;
 import com.elearning.elearning_support.dtos.studentTestSet.StudentHandledTestDTO;
 import com.elearning.elearning_support.dtos.test.test_set.ScoringPreviewResDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
@@ -53,6 +54,12 @@ public interface TestSetService {
      * Upload handled answer sheet's images
      */
     void uploadStudentHandledAnswerSheet(String examClassCode, MultipartFile[] handledFiles) throws IOException;
+
+    /**
+     * Get list file uploaded in exam class folder
+     */
+    List<FileAttachDTO> getListFileInExClassFolder(String examClassCode);
+
 
     /**
      * Save scored results

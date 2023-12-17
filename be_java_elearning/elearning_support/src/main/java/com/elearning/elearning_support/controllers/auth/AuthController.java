@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.elearning.elearning_support.constants.SystemConstants;
 import com.elearning.elearning_support.constants.message.errorKey.ErrorKey;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst;
 import com.elearning.elearning_support.dtos.auth.login.LoginRequest;
@@ -72,6 +73,7 @@ public class AuthController {
             throw new CustomBadCredentialsException(MessageConst.AuthInfo.WRONG_USERNAME_PASSWORD, MessageConst.UNAUTHORIZED,
                 String.format("%s/%s", ErrorKey.AuthInfo.USERNAME, ErrorKey.AuthInfo.PASSWORD));
         }
+        System.out.println(SystemConstants.WINDOWS_SHARED_DIR);
         Set<String> roles = userDetails.getRoles();
         return ResponseEntity.ok(LoginResponse.builder()
             .issuedAt(new Date())

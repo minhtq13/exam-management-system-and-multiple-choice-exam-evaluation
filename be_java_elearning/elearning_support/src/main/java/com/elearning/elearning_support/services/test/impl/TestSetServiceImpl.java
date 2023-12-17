@@ -27,6 +27,7 @@ import org.apache.commons.compress.utils.FileNameUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.math3.util.Pair;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,7 @@ import com.elearning.elearning_support.constants.FileConstants.Extension.Image;
 import com.elearning.elearning_support.constants.SystemConstants;
 import com.elearning.elearning_support.dtos.CustomInputStreamResource;
 import com.elearning.elearning_support.dtos.common.ICommonIdCode;
+import com.elearning.elearning_support.dtos.fileAttach.FileAttachDTO;
 import com.elearning.elearning_support.dtos.fileAttach.FileUploadResDTO;
 import com.elearning.elearning_support.dtos.test.test_set.ITestSetScoringDTO;
 import com.elearning.elearning_support.dtos.test.test_set.ScoringPreviewItemDTO;
@@ -99,6 +101,9 @@ public class TestSetServiceImpl implements TestSetService {
     public static final String SCORED_SHEETS = "ScoredSheets";
 
     public static final String FILE_TEMP_SCORED_RESULTS_DATA = "temp_results_%s.json";
+
+    @Value("${app.root-domain}")
+    private String rootDomain;
 
     private static final int MAX_NUM_ANSWERS_PER_QUESTION = 6;
 
@@ -426,10 +431,13 @@ public class TestSetServiceImpl implements TestSetService {
 
             // create scoring preview for each handled answer-sheet
             ScoringPreviewItemDTO scoringPreviewItem = new ScoringPreviewItemDTO(handledItem);
+            scoringPreviewItem.setNumbTestSetQuestions(mapQueriedTestSetQuestions.size());
             scoringPreviewItem.setNumMarkedAnswers(handledItem.getAnswers().size() - numNotMarkedQuestions);
             scoringPreviewItem.setNumCorrectAnswers(numCorrectAns);
             scoringPreviewItem.setTotalScore(totalScore);
             scoringPreviewItem.setHandledScoredImg(handledUploadFile.getFilePath());
+            scoringPreviewItem.setOriginalImg(handledItem.getOriginalImg());
+            scoringPreviewItem.setOriginalImgFileName(handledItem.getOriginalImgFileName());
             lstScoringPreview.add(scoringPreviewItem);
         }
 
@@ -491,6 +499,35 @@ public class TestSetServiceImpl implements TestSetService {
         } catch (Exception exception) {
             log.error(MessageConst.EXCEPTION_LOG_FORMAT, exception.getMessage(), exception.getCause());
         }
+    }
+
+    @Override
+    public List<FileAttachDTO> getListFileInExClassFolder(String examClassCode) {
+        String sharedAppDataPath;
+        if (SystemConstants.IS_WINDOWS) {
+            sharedAppDataPath = SystemConstants.WINDOWS_SHARED_DIR + "/data";
+            log.info("Windows's shared app data {}", SystemConstants.WINDOWS_SHARED_DIR);
+        } else {
+            sharedAppDataPath = SystemConstants.LINUX_SHARED_DIR + "/data";
+            log.info("Linux's shared app data {}", SystemConstants.LINUX_SHARED_DIR);
+        }
+        File examClassStoredDir = new File(String.format("%s/%s/%s/", sharedAppDataPath, ANSWERED_SHEETS, examClassCode));
+        List<FileAttachDTO> lstFileInFolder = new ArrayList<>();
+        if (examClassStoredDir.exists()) {
+            String serverPath = String.format("%s%s/data/%s/%s", rootDomain, SystemConstants.SHARED_DIR_SERVER_PATH, ANSWERED_SHEETS,
+                examClassCode);
+            for (File item : Objects.requireNonNull(examClassStoredDir.listFiles())) {
+                if (item.isFile()) {
+                    FileAttachDTO fileDTO = FileAttachDTO.builder()
+                        .fileName(item.getName())
+                        .filePath(String.format("%s/%s", serverPath, item.getName()))
+                        .fileExt(FileNameUtils.getExtension(item.getName()))
+                        .build();
+                    lstFileInFolder.add(fileDTO);
+                }
+            }
+        }
+        return lstFileInFolder;
     }
 
     @Transactional

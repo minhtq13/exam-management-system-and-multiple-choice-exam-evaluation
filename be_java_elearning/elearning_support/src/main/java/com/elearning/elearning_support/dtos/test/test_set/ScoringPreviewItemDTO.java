@@ -32,6 +32,15 @@ public class ScoringPreviewItemDTO {
     @Schema(description = "Đường dẫn file chấm bài thi")
     String handledScoredImg;
 
+    @Schema(description = "Tên ảnh gốc")
+    String originalImgFileName;
+
+    @Schema(description = "Đường dẫn đến ảnh gốc")
+    String originalImg;
+
+    @Schema(description = "Số lượng câu hỏi trong đề")
+    Integer numbTestSetQuestions;
+
     @Schema(description = "Số câu hỏi đã khoanh")
     Integer numMarkedAnswers;
 

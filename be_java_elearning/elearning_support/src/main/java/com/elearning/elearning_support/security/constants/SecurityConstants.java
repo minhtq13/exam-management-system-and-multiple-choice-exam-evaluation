@@ -12,6 +12,6 @@ public class SecurityConstants {
 
     public static final String AUTH_HEADER = "Authorization";
 
-    public static final String[] WHITE_LIST = {"/api/auth/**", "/resources/upload/files/**", "/swagger-ui/**", "/v3/api-docs/**"};
+    public static final String[] WHITE_LIST = {"/api/auth/**", "/resources/upload/files/**", "/swagger-ui/**", "/v3/api-docs/**", "/public/**"};
 
 }

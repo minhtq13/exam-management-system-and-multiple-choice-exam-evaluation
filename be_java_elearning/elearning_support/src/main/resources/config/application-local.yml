@@ -6,10 +6,10 @@ server:
 
 # Cấu hình spring
 spring:
-  #Cấu hình datasource local
+  #Cấu hình datasource remote : AWS Neon
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/elearning_support_db
+    url: jdbc:postgresql://ep-broad-cloud-455155.ap-southeast-1.aws.neon.tech/elearning_support_db
     username: elearning_support_admin
     password: BLXx4wOCP7YJ
     hikari:
@@ -52,9 +52,9 @@ spring:
 
 # Cấu hình Json Web Token
 jwt:
-  secretKey: ELEARNINGSUPPORTKsu295JdkjKHJJHW2349gfbnaf23cheh34HIMAde24
+  secretKey: ELEARNINGKsu295JdkjKHJJHW2349gfbnaf23cheh34HIMAde24
   accessTokenExpiredMs: 100000000
-  refreshTokenExpiredMs: 1000000000
+  refreshTokenExpiredMs: 100000000000
 
 # Cấu hình Server Cloudinary
 cloudinary:
@@ -66,9 +66,10 @@ cloudinary:
 # Cấu hình file storage
 app:
   file-storage:
-    location-path: /resources/upload/files/
+    location-path: classpath:/upload/files/ #classpath: <=> ../resources/
     resource-path: /resources/upload/files/**
     detail-path: /elearning_support/src/main/resources/upload/files/
+  root-domain: http://127.0.0.1:8088/e-learning
 
 # Cấu hình firebase
 firebase:

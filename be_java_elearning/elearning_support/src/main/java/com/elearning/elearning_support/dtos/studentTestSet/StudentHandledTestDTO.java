@@ -23,8 +23,14 @@ public class StudentHandledTestDTO {
     @Schema(description = "Mã đề thi")
     String testCode;
 
-    @Schema(description = "Đường dâ tuyệt đối file ảnh đã chấm")
+    @Schema(description = "Đường dẫn tuyệt đối file ảnh đã chấm")
     String handledScoredImg;
+
+    @Schema(description = "Tên ảnh gốc")
+    String originalImgFileName;
+
+    @Schema(description = "Đường dẫn đến ảnh gốc")
+    String originalImg;
 
     @Schema(description = "Các câu trả lời của các câu hỏi")
     List<HandledAnswerDTO> answers;
