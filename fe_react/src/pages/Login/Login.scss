@@ -29,6 +29,7 @@
       border: 1px solid var(--hust-color);
       border-radius: 0.25rem;
       height: 40px;
+      cursor: pointer;
 
       span {
         font-size: 18px;
@@ -36,8 +37,8 @@
     }
 
     .ant-btn:hover {
-      background-color: #0084ff;
-      border: 1px solid #0084ff;
+      background-color: #976f6f;
+      border: 1px solid #976f6f;
     }
 
     input {

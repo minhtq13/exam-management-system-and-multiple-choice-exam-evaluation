@@ -32,7 +32,7 @@ const ViewImage = ({ dataArray, index }) => {
     const downloadLink = document.createElement('a');
     downloadLink.href = dataArray[currentSlide].handledScoredImg;
     downloadLink.target = '_blank';
-    downloadLink.download = 'downloaded_image.jpg';
+    // downloadLink.download = 'downloaded_image.jpg';
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);

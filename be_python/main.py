@@ -315,6 +315,8 @@ if __name__ == "__main__":
             # ============================= Ghép ảnh =====================================
             handled_scored_img = mergeImages(filename, coord_array, array_img_graft, background_image=document, imgInfo=imgResize)
             result["handledScoredImg"] = handled_scored_img
+            result["originalImg"] = image_path
+            result["originalImgFileName"] = filename
                 
             # =============================== Ghi file json ==========================
 
