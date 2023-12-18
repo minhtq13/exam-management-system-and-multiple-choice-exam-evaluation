@@ -1,7 +1,9 @@
-import { Button, Modal } from "antd";
+import { Button, Modal, Tooltip } from "antd";
 import React, { useRef, useState } from "react";
 import Slider from "react-slick";
+import { wordLimitImg } from "../../utils/tools";
 import "./ViewImage.scss";
+import { HUST_COLOR } from "../../utils/constant";
 
 const ViewImage = ({ dataArray, index }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -29,14 +31,14 @@ const ViewImage = ({ dataArray, index }) => {
     setIsModalOpen(false);
   };
   const handleDownload = () => {
-    const downloadLink = document.createElement('a');
+    const downloadLink = document.createElement("a");
     downloadLink.href = dataArray[currentSlide].handledScoredImg;
-    downloadLink.target = '_blank';
+    downloadLink.target = "_blank";
     // downloadLink.download = 'downloaded_image.jpg';
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
-  }
+  };
   return (
     <div className="view-image-component">
       <div className="view-image-button" onClick={showModal}>
@@ -66,36 +68,51 @@ const ViewImage = ({ dataArray, index }) => {
                 <div className="header">
                   <div className="block1">
                     <div>
-                      TT: <strong>{currentSlide + 1}/60</strong>
+                      TT: <strong className="value">{currentSlide + 1}/60</strong>
                     </div>
                     <div>
-                      Tên ảnh: <strong>a.jpg</strong>
+                      Ảnh gốc:{" "}
+                      <Tooltip title={item.originalImgFileName} color={HUST_COLOR} key={HUST_COLOR}>
+                        <a href={item.originalImg} target="blank" style={{ fontSize: "16px"}}>
+                            {wordLimitImg(item.originalImgFileName, 8)}
+                        </a>
+                      </Tooltip>
                     </div>
                     <div>
-                      MĐT: <strong>{item.testCode}</strong>
+                      Mã đề thi: <strong className="value">{item.testCode}</strong>
                     </div>
                     <div>
-                      MSSV: <strong>{item.studentCode}</strong>
+                      Mã số sinh viên: <strong className="value">{item.studentCode}</strong>
                     </div>
                     <div>
-                      MLT: <strong>{item.examClassCode}</strong>
+                      Mã lớp thi: <strong className="value">{item.examClassCode}</strong>
                     </div>
                   </div>
                   <div className="block2">
                     <div>
-                      Tổng số câu hỏi: <strong>60</strong>
+                      Tổng số câu hỏi:{" "}
+                      <strong className="value">{item.numbTestSetQuestions}</strong>
                     </div>
                     <div>
-                      Số câu khoanh: <strong>{item.numMarkedAnswers}</strong>
+                      Số câu khoanh: <strong className="value">{item.numMarkedAnswers}</strong>
                     </div>
                     <div>
-                      Số câu đúng: <strong>{item.numCorrectAnswers}</strong>
+                      Số câu đúng:{" "}
+                      <strong className="value" style={{ color: "#35bb35" }}>
+                        {item.numCorrectAnswers}
+                      </strong>
                     </div>
                     <div>
-                      Số câu sai: <strong>4</strong>
+                      Số câu sai:{" "}
+                      <strong className="value" style={{ color: "#cd4a4a" }}>
+                        4
+                      </strong>
                     </div>
                     <div>
-                      Điểm: <strong>{item.totalScore}</strong>
+                      Điểm:{" "}
+                      <strong className="value" style={{ color: "#e7e727" }}>
+                        {item.totalScore}
+                      </strong>
                     </div>
                   </div>
                 </div>

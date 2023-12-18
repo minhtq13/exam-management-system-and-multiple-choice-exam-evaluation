@@ -22,6 +22,7 @@ import {
 } from "../../../services/testServices";
 import "./TestList.scss";
 import { downloadTestPdf } from "../../../utils/tools";
+import { HUST_COLOR } from "../../../utils/constant";
 const TestList = () => {
 	const [deleteDisable, setDeleteDisable] = useState(true);
 	const { allTest, getAllTests, tableLoading, pagination } = useTest();
@@ -331,7 +332,7 @@ const TestList = () => {
 										<div className="preview-text">
 											Preview
 										</div>
-										<AiFillEye color="#8c1515" />
+										<AiFillEye color={HUST_COLOR} />
 									</div>,
 								]}
 							>

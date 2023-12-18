@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { getModelAIService, resetTableResultService, saveTableResultService } from "../services/aiServices";
+import { getImgInFolderService, getModelAIService, resetTableResultService, saveTableResultService } from "../services/aiServices";
 import useNotify from "./useNotify";
 
 const useAI = () => {
   const notify = useNotify();
   const [resultAI, setResultAI] = useState([]);
   const [tempFileCode, setTempFileCode] = useState();
+  const [imgInFolder, setImgInFolder] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const getModelAI = (examClassCode, payload) => {
@@ -54,6 +55,18 @@ const useAI = () => {
       }
     );
   }
+  const getImgInFolder = (examClassCode, payload) => {
+    getImgInFolderService(
+      examClassCode,
+      payload,
+      (res) => {
+        setImgInFolder(res.data)
+      },
+      (err) => {
+        notify.warning("Không tìm thấy ảnh trong folder!");
+      }
+    );
+  }
 
   return {
     resultAI,
@@ -62,7 +75,10 @@ const useAI = () => {
     getModelAI,
     resetTableResult,
     saveTableResult,
-    loading,
+    getImgInFolder,
+    imgInFolder,
+    setImgInFolder,
+    loading
   };
 };
 

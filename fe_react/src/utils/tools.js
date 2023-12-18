@@ -42,6 +42,19 @@ export const wordLimit = (message, wordCount) => {
 	}
 	return;
 };
+
+export function wordLimitImg(fileName, maxLength) {
+	var fileNameWithoutExtension = fileName.split('.')[0];
+	var fileExtension = fileName.split('.').pop();
+	if (fileNameWithoutExtension.length > maxLength) {
+			fileNameWithoutExtension = fileNameWithoutExtension.substring(0, maxLength);
+			if (fileNameWithoutExtension.length > 0) {
+					fileNameWithoutExtension += '...';
+			}
+	}
+	var truncatedFileName = fileNameWithoutExtension + '.' + fileExtension;
+	return truncatedFileName;
+}
 export function convertGender(gender) {
 	return gender === "MALE" ? "NAM" : "NỮ";
 }

@@ -11,3 +11,6 @@ export const resetTableResultService = async (tempFileCode, params, successCallb
 export const saveTableResultService = async (tempFileCode, params, successCallback, errorCallback) => {
   await postRequest(`${apiPath.saveTableResult}/save?tempFileCode=${tempFileCode}&option=SAVE`, params, successCallback, errorCallback);
 };
+export const getImgInFolderService = async (examClassCode, params, successCallback, errorCallback) => {
+  await getRequest(`${apiPath.imgInFolder}/${examClassCode}`, params, successCallback, errorCallback);
+};

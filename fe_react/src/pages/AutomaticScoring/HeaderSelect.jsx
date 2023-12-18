@@ -28,6 +28,7 @@ const HeaderSelect = () => {
   const handleChangeSemestersSelect = (value) => {
     setSubjectSelected(null);
     setSemesterSelected(value);
+    dispatch(setExamClassCode(null));
   };
   const handleChangeSubjectSelect = (value) => {
     dispatch(setExamClassCode(null));

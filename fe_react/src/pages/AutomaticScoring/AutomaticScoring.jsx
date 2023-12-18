@@ -1,12 +1,16 @@
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Form, Modal, Upload, message } from "antd";
+import { Button, Form, Modal, Select, Space, Upload, message } from "antd";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { BASE_URL } from "../../config/apiPath";
 import useAI from "../../hooks/useAI";
+import useNotify from "../../hooks/useNotify";
 import "./AutomaticScoring.scss";
 import HeaderSelect from "./HeaderSelect";
+import ModalSelectedImage from "./ModalSelectedImage";
 import TableResult from "./TableResult";
+import iconArrow from "../../assets/images/svg/arrow-under-header.svg";
+const { Option } = Select;
 
 const formItemLayout = {
   labelCol: {
@@ -25,9 +29,18 @@ const getBase64 = (file) =>
   });
 
 const AutomaticScoring = () => {
+  const notify = useNotify();
   // eslint-disable-next-line no-unused-vars
   const [urlImg, setUrlImg] = useState();
-  const { getModelAI, resultAI, loading, resetTableResult, setResultAI, saveTableResult } = useAI();
+  const {
+    getModelAI,
+    resultAI,
+    loading,
+    resetTableResult,
+    setResultAI,
+    saveTableResult,
+    imgInFolder,
+  } = useAI();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
@@ -67,9 +80,11 @@ const AutomaticScoring = () => {
     setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf("/") + 1));
   };
   const handleSubmit = () => {
-    // if (urlImg) {
-    getModelAI(examClassCode);
-    // }
+    if (imgInFolder) {
+      getModelAI(examClassCode);
+    } else {
+      notify.error("Vui lòng tải ảnh lên!");
+    }
   };
   const onFinish = (values) => {};
   const handleReset = () => {
@@ -79,13 +94,42 @@ const AutomaticScoring = () => {
   const handleSaveResult = () => {
     saveTableResult();
   };
+  const options = [
+    { label: "File", value: "file" },
+    { label: "Directory", value: "directory" },
+  ];
+  const [uploadType, setUploadType] = useState(options[0].value);
 
+  const handleChange = (value) => {
+    setUploadType(value)
+  };
   const uploadBlock = (
     <div>
-      <Upload {...props} onPreview={handlePreview}>
+      <Space>
+        <div className="detail-button">Upload theo: </div>
+        <Select
+          optionLabelProp="label"
+          onChange={handleChange}
+          className="custom-select-antd"
+          suffixIcon={<img src={iconArrow} alt="" />}
+          style={{ width: 350 }}
+          defaultValue={uploadType}
+        >
+          {options.map((item, index) => {
+            return (
+              <Option value={item.value} label={item.label} key={index}>
+                <div className="d-flex item_DropBar dropdown-option">
+                  <div className="dropdown-option-item text-14">{item.label}</div>
+                </div>
+              </Option>
+            );
+          })}
+        </Select>
+      </Space>
+      <Upload {...props} onPreview={handlePreview} directory={uploadType === "file" ? false : true}>
         <div>
-          <Button disabled={!examClassCode} icon={<UploadOutlined />}>
-            Tải ảnh lên
+          <Button icon={<UploadOutlined />}>
+            Tải {uploadType === "file" ? "file" : "thư mục"} ảnh lên
           </Button>
         </div>
       </Upload>
@@ -109,13 +153,6 @@ const AutomaticScoring = () => {
       <HeaderSelect />
       <div className="content-exam-list">
         <Form name="validate_other" {...formItemLayout} onFinish={onFinish}>
-          {/* <div className="block-1">
-            <div className="number-answer">
-              <Form.Item name="numberAnswer" label="Số lượng câu hỏi" rules={[{ required: false }]}>
-                <Input type="number" placeholder="Số lượng câu hỏi trong mỗi phiếu trả lời" />
-              </Form.Item>
-            </div>
-          </div> */}
           <div className="upload">
             <Form.Item name="pathImg">
               <div>{uploadBlock}</div>
@@ -138,15 +175,10 @@ const AutomaticScoring = () => {
             >
               Đặt lại
             </Button>
+            <ModalSelectedImage loading={loading}/>
           </div>
           <div className="result-ai">
             <TableResult resultAI={resultAI} />
-            {/* {resultAI.length > 0 && (
-              <div className="total-record">
-                Đã tìm thấy{" "}
-                <span style={{ fontWeight: 600, color: "#000" }}>{resultAI.length}</span> kết quả
-              </div>
-            )} */}
           </div>
           <div className="button-footer">
             <Button

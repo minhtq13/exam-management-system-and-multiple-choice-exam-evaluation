@@ -7,6 +7,7 @@ import App from "./App";
 import store from "./redux/store";
 import reportWebVitals from "./reportWebVitals";
 import { ConfigProvider } from "antd";
+import { HUST_COLOR } from "./utils/constant";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -14,7 +15,7 @@ root.render(
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: "#8c1515",
+          colorPrimary: HUST_COLOR,
         },
       }}
     >

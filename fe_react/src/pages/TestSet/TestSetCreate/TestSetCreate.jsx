@@ -10,6 +10,7 @@ import {
 import useNotify from "../../../hooks/useNotify";
 import TestPreview from "../../../components/TestPreview/TestPreview";
 import { downloadTestPdf } from "../../../utils/tools";
+import { HUST_COLOR } from "../../../utils/constant";
 
 const TestSetCreate = () => {
 	const location = useLocation();
@@ -118,7 +119,7 @@ const TestSetCreate = () => {
 									}}
 								>
 									<div className="preview-text">Preview</div>
-									<AiFillEye color="#8c1515" />
+									<AiFillEye color={HUST_COLOR} />
 								</div>,
 							]}
 						>

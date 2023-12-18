@@ -1,6 +1,7 @@
 import { Input, Space } from "antd";
 import "./Searchbox.scss";
 import { FaSearch } from "react-icons/fa";
+import { HUST_COLOR } from "../../utils/constant";
 const Searchbox = (props) => {
   return (
     <div className="search-wrapper">
@@ -13,7 +14,7 @@ const Searchbox = (props) => {
         />
         <FaSearch
           style={{
-            color: "#8c1515",
+            color: HUST_COLOR,
             position: "absolute",
             zIndex: 1000,
             top: 12,

@@ -15,6 +15,8 @@ export const apiPath = {
 	// AI
 	automaticScoring: BASE_URL + "/test-set/scoring",
 	resetTableResult: BASE_URL + "/test-set/scoring/result",
+	saveTableResult: BASE_URL + "/test-set/scoring/result",
+	imgInFolder: BASE_URL + "/test-set/handled-answers/uploaded",
 	//Teacher:
 	allTeachers: BASE_URL + "/user/teacher/list",
 	pageTeacher: BASE_URL + "/user/teacher/page",

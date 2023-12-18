@@ -1,0 +1,1 @@
+export const HUST_COLOR = "#8c1515";
