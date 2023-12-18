@@ -6,6 +6,7 @@ import useNotify from "../../hooks/useNotify";
 import { updateUser } from "../../services/userService";
 import { formatDateParam } from "../../utils/tools";
 import UpdateUserInfoForm from "./UpdateUserInfoForm";
+import { ROLE_ADMIN, ROLE_ID_ADMIN, ROLE_ID_TEACHER, ROLE_STUDENT, ROLE_TEACHER } from "../../utils/constant";
 
 const ProfileUser = () => {
 	const { userId } = useSelector((state) => state.userReducer);
@@ -24,7 +25,7 @@ const ProfileUser = () => {
 				{
 					...value,
 					birthDate: formatDateParam(value.birthDate),
-					lstRoleId: [value.role === 0 ? 3 : 2],
+					lstRoleId: [value.role === ROLE_ADMIN ? ROLE_ID_ADMIN : value.role === ROLE_TEACHER ? ROLE_ID_TEACHER : ROLE_STUDENT],
 					departmentId: -1,
 				},
 				(res) => {

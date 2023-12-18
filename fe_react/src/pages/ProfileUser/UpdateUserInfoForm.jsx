@@ -1,6 +1,7 @@
 import { Button, DatePicker, Form, Input, Select } from "antd";
 import React, { useEffect } from "react";
 import "./UpdateUserInfoForm.scss";
+import { ROLE_ADMIN, ROLE_STUDENT, ROLE_TEACHER } from "../../utils/constant";
 const UpdateUserInfoForm = ({
 	onFinish,
 	initialValues,
@@ -23,15 +24,15 @@ const UpdateUserInfoForm = ({
 	];
 	const roleOption = [
 		{
-			value: -1,
+			value: ROLE_ADMIN,
 			label: "Admin",
 		},
 		{
-			value: 0,
+			value: ROLE_TEACHER,
 			label: "Giảng viên",
 		},
 		{
-			value: 1,
+			value: ROLE_STUDENT,
 			label: "Sinh viên",
 		},
 	];

@@ -91,7 +91,7 @@ const ViewImage = ({ dataArray, index }) => {
                   <div className="block2">
                     <div>
                       Tổng số câu hỏi:{" "}
-                      <strong className="value">{item.numbTestSetQuestions}</strong>
+                      <strong className="value">{item.numTestSetQuestions}</strong>
                     </div>
                     <div>
                       Số câu khoanh: <strong className="value">{item.numMarkedAnswers}</strong>
@@ -105,7 +105,7 @@ const ViewImage = ({ dataArray, index }) => {
                     <div>
                       Số câu sai:{" "}
                       <strong className="value" style={{ color: "#cd4a4a" }}>
-                        4
+                        {item.numWrongAnswers}
                       </strong>
                     </div>
                     <div>
