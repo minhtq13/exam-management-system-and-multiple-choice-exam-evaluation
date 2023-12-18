@@ -482,7 +482,12 @@ public class TestSetServiceImpl implements TestSetService {
         File examClassStoredDir = new File(examClassStoredPath);
         if (examClassStoredDir.exists()) {
             // Delete old data before upload
-            org.apache.commons.io.FileUtils.cleanDirectory(examClassStoredDir);
+            for (File item : Objects.requireNonNull(examClassStoredDir.listFiles())) {
+                // Clear result folder only
+                if (item.isDirectory()) {
+                    org.apache.commons.io.FileUtils.cleanDirectory(item);
+                }
+            }
         } else {
             log.info("Make examClassStoredDir {}", examClassStoredDir.mkdirs() ? "successfully" : "fail");
         }
