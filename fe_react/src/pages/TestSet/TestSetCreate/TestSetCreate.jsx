@@ -3,16 +3,15 @@ import "./TestSetCreate.scss";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import { AiOutlineDownload, AiFillEye } from "react-icons/ai";
-import {
-	testSetCreateService,
-	testSetDetailService,
-} from "../../../services/testServices";
+import { testSetCreateService } from "../../../services/testServices";
 import useNotify from "../../../hooks/useNotify";
 import TestPreview from "../../../components/TestPreview/TestPreview";
 import { downloadTestPdf } from "../../../utils/tools";
+import useTest from "../../../hooks/useTest";
 import { HUST_COLOR } from "../../../utils/constant";
 
 const TestSetCreate = () => {
+	const { getTestSetDetail, testSetDetail, detailLoading } = useTest();
 	const location = useLocation();
 	const notify = useNotify();
 	const testId = location.pathname.split("/")[2];
@@ -21,27 +20,13 @@ const TestSetCreate = () => {
 	const [testNos, setTestNos] = useState([]);
 	const [btnLoading, setBtnLoading] = useState(false);
 	const [listLoading, setListLoading] = useState(false);
-	const [viewLoading, setViewLoading] = useState(false);
 	const [questions, setQuestions] = useState([]);
 	const [testDetail, setTestDetail] = useState({});
 	const [testNo, setTestNo] = useState(null);
-	const [buttonDisable, setButtonDisable] = useState(true);
 	const onView = (test) => {
-		setViewLoading(true);
-		testSetDetailService(
-			{ testId: testId, code: test.testSetCode },
-			(res) => {
-				setQuestions(res.data.lstQuestion);
-				setTestDetail(res.data.testSet);
-				setViewLoading(false);
-				setButtonDisable(false);
-			},
-			(error) => {
-				notify.error("Lỗi!");
-				setViewLoading(true);
-				setButtonDisable(true);
-			}
-		);
+		getTestSetDetail({ testId: testId, code: test.testSetCode });
+		setQuestions(testDetail.lstQuestion);
+		setTestDetail(testSetDetail.testSet);
 	};
 	const onCreate = () => {
 		if (!testSetNum) {
@@ -131,7 +116,7 @@ const TestSetCreate = () => {
 				/>
 			</div>
 			<div className="test-set-right">
-				<Spin tip="Loading preview..." spinning={viewLoading}>
+				<Spin tip="Loading preview..." spinning={detailLoading}>
 					{questions.length > 0 ? (
 						<TestPreview
 							questions={questions}
@@ -150,8 +135,8 @@ const TestSetCreate = () => {
 				<Button
 					type="primary"
 					htmlType="submit"
-					disabled={buttonDisable}
 					icon={<AiOutlineDownload size={18} />}
+					disabled={questions.length < 1}
 					onClick={() =>
 						downloadTestPdf(questions, testDetail, testNo)
 					}

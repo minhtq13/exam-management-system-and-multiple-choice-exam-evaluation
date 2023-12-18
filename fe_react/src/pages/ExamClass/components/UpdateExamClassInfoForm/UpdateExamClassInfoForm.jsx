@@ -10,13 +10,16 @@ import {
 	Spin,
 	Popover,
 } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import "./UpdateExamClassInfoForm.scss";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import useCombo from "../../../../hooks/useCombo";
 import useTest from "../../../../hooks/useTest";
 import useNotify from "../../../../hooks/useNotify";
 import { testSetDetailService } from "../../../../services/testServices";
 import TestPreview from "../../../../components/TestPreview/TestPreview";
+import useTeachers from "../../../../hooks/useTeachers";
+import useStudents from "../../../../hooks/useStudents";
 const UpdateExamClassInfoForm = ({
 	onFinish,
 	initialValues,
@@ -39,6 +42,33 @@ const UpdateExamClassInfoForm = ({
 		getAllStudent,
 		getAllTeacher,
 	} = useCombo();
+	const {
+		allTeachers,
+		getAllTeachers,
+		tableTeacherLoading,
+		paginationTeacher,
+	} = useTeachers();
+	const {
+		allStudents,
+		getAllStudents,
+		tableStudentLoading,
+		paginationStudent,
+	} = useStudents();
+	const studentParamInit = {
+		name: null,
+		code: null,
+		page: 0,
+		size: 10,
+		courseNum: null,
+		sort: "lastModifiedAt",
+	};
+	const teacherParamInit = {
+		name: null,
+		code: null,
+		page: 0,
+		size: 10,
+		sort: "lastModifiedAt",
+	};
 	const { allTest, getAllTests, tableLoading, pagination } = useTest();
 	const initialParam = {
 		subjectId: initialValues.subjectId ?? null,
@@ -46,6 +76,8 @@ const UpdateExamClassInfoForm = ({
 		page: 0,
 		size: 10,
 	};
+	const [studentParam, setStudentParam] = useState(studentParamInit);
+	const [teacherParam, setTeacherParam] = useState(teacherParam);
 	const [param, setParam] = useState(initialParam);
 	const [openModal, setOpenModal] = useState(false);
 	const [testValue, setTestValue] = useState("");
@@ -54,8 +86,21 @@ const UpdateExamClassInfoForm = ({
 	const [questions, setQuestions] = useState([]);
 	const [testDetail, setTestDetail] = useState({});
 	const [openModalPreview, setOpenModalPreview] = useState(false);
+	const [openStudentModal, setOpenStudentModal] = useState(false);
+	const [openTeacherModal, setOpenTeacherModal] = useState(false);
 	const notify = useNotify();
+	const searchInput = useRef(null);
 	const errorMessange = "Chưa điền đầy đủ thông tin";
+	useEffect(() => {
+		if (openTeacherModal) {
+			getAllTeacher(teacherParam);
+		}
+	}, [teacherParam, openTeacherModal]);
+	useEffect(() => {
+		if (openStudentModal) {
+			getAllStudent(studentParam);
+		}
+	}, [studentParam, openStudentModal]);
 	useEffect(() => {
 		getAllSemesters({ search: "" });
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -80,6 +125,9 @@ const UpdateExamClassInfoForm = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [param, openModal]);
 	// eslint-disable-next-line
+	const handleReset = (clearFilters) => {
+		clearFilters();
+	};
 	const getOptions = (array, codeShow) => {
 		return array && array.length > 0
 			? array.map((item) => {
@@ -92,6 +140,178 @@ const UpdateExamClassInfoForm = ({
 			  })
 			: [];
 	};
+	const getColumnSearchProps = (
+		dataIndex,
+		onPressEnter,
+		onSearch,
+		handleReset
+	) => ({
+		filterDropdown: ({
+			setSelectedKeys,
+			selectedKeys,
+			confirm,
+			clearFilters,
+			close,
+		}) => (
+			<div
+				style={{
+					padding: 8,
+				}}
+				onKeyDown={(e) => e.stopPropagation()}
+			>
+				<Input
+					ref={searchInput}
+					placeholder={`Search ${dataIndex}`}
+					value={selectedKeys[0]}
+					onChange={(e) => {
+						setSelectedKeys(e.target.value ? [e.target.value] : []);
+						setParam({
+							...param,
+							[dataIndex]: e.target.value,
+							page: 0,
+						});
+					}}
+					onPressEnter={onPressEnter}
+					style={{
+						marginBottom: 8,
+						display: "block",
+					}}
+				/>
+				<Space>
+					<Button
+						type="primary"
+						onClick={onSearch}
+						icon={<SearchOutlined />}
+						size="small"
+						style={{
+							width: 90,
+						}}
+					>
+						Tìm kiếm
+					</Button>
+					<Button
+						onClick={() => {
+							clearFilters && handleReset(clearFilters);
+							handleReset();
+						}}
+						size="small"
+						style={{
+							width: 90,
+						}}
+					>
+						Đặt lại
+					</Button>
+					<Button
+						type="link"
+						size="small"
+						onClick={() => {
+							close();
+						}}
+					>
+						Đóng
+					</Button>
+				</Space>
+			</div>
+		),
+		filterIcon: (filtered) => (
+			<SearchOutlined
+				style={{
+					color: filtered ? "#1677ff" : undefined,
+				}}
+			/>
+		),
+		onFilter: (value, record) =>
+			record[dataIndex]
+				.toString()
+				.toLowerCase()
+				.includes(value.toLowerCase()),
+		onFilterDropdownOpenChange: (visible) => {
+			if (visible) {
+				setTimeout(() => searchInput.current?.select(), 100);
+			}
+		},
+	});
+	const teacherColumns = [
+		{
+			title: "Mã cán bộ",
+			dataIndex: "code",
+			key: "code",
+			...getColumnSearchProps(
+				"code",
+				getAllTeachers(param),
+				getAllTeachers({ ...param, page: 0 }),
+				setTeacherParam(teacherParam)
+			),
+		},
+		{
+			title: "Họ tên",
+			dataIndex: "name",
+			key: "name",
+			...getColumnSearchProps(
+				"name",
+				getAllTeachers(param),
+				getAllTeachers({ ...param, page: 0 }),
+				setTeacherParam(teacherParam)
+			),
+		},
+		{
+			title: "Email",
+			dataIndex: "email",
+			key: "email",
+		},
+	];
+
+	const studentColumns = [
+		{
+			title: "MSSV",
+			dataIndex: "code",
+			key: "code",
+			...getColumnSearchProps("code"),
+		},
+		{
+			title: "Họ tên",
+			dataIndex: "name",
+			key: "name",
+			// eslint-disable-next-line jsx-a11y/anchor-is-valid
+			render: (text) => <a>{text}</a>,
+			...getColumnSearchProps("name"),
+		},
+		{
+			title: "Khóa",
+			dataIndex: "courseNum",
+			key: "courseNum",
+			filters: [
+				{
+					text: "64",
+					value: 64,
+				},
+				{
+					text: "65",
+					value: 65,
+				},
+				{
+					text: "66",
+					value: 66,
+				},
+				{
+					text: "67",
+					value: 67,
+				},
+				{
+					text: "68",
+					value: 68,
+				},
+			],
+			onFilter: (value, record) => {
+				return record.courseNum === value;
+			},
+		},
+		{
+			title: "Email",
+			dataIndex: "email",
+			key: "email",
+		},
+	];
 
 	const columns = [
 		{
@@ -173,6 +393,21 @@ const UpdateExamClassInfoForm = ({
 			obj.lstTestSetCode && obj.lstTestSetCode.length > 0
 				? obj.lstTestSetCode.split(",").length
 				: 0,
+	}));
+	const studentList = allStudents.map((obj, index) => ({
+		key: (index + 1).toString(),
+		name: obj.lastName + " " + obj.firstName,
+		email: obj.email,
+		code: obj.code,
+		id: obj.id,
+		courseNum: obj.courseNum,
+	}));
+	const teacherList = allTeachers.map((obj, index) => ({
+		key: (index + 1).toString(),
+		name: obj.lastName + " " + obj.firstName,
+		email: obj.email,
+		code: obj.code,
+		id: obj.id,
 	}));
 	return (
 		<div className="exam-class-info">

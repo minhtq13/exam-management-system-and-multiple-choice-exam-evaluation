@@ -27,8 +27,12 @@ const StudentList = () => {
 		sort: "lastModifiedAt",
 	};
 	const [deleteDisable, setDeleteDisable] = useState(true);
-	const { allStudents, getAllStudents, tableLoading, pagination } =
-		useStudents();
+	const {
+		allStudents,
+		getAllStudents,
+		tableStudentLoading,
+		paginationStudent,
+	} = useStudents();
 	const { importList, exportList, loadingImport } = useImportExport();
 	const [deleteKey, setDeleteKey] = useState(null);
 	const searchInput = useRef(null);
@@ -348,11 +352,11 @@ const StudentList = () => {
 					dataSource={dataFetch}
 					rowSelection={rowSelection}
 					onRow={onRow}
-					loading={tableLoading}
+					loading={tableStudentLoading}
 					pagination={{
-						current: pagination.current,
-						total: pagination.total,
-						pageSize: pagination.pageSize,
+						current: paginationStudent.current,
+						total: paginationStudent.total,
+						pageSize: paginationStudent.pageSize,
 						showSizeChanger: true,
 						pageSizeOptions: ["10", "20", "50", "100"],
 						showQuickJumper: true,

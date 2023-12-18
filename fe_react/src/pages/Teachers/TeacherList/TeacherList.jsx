@@ -29,8 +29,12 @@ const TeacherList = () => {
 	const [deleteDisable, setDeleteDisable] = useState(true);
 	const [deleteKey, setDeleteKey] = useState(null);
 	const [fileList, setFileList] = useState(null);
-	const { allTeachers, getAllTeachers, tableLoading, pagination } =
-		useTeachers();
+	const {
+		allTeachers,
+		getAllTeachers,
+		tableTeacherLoading,
+		paginationTeacher,
+	} = useTeachers();
 	const { exportList, importList, loadingImport } = useImportExport();
 	const searchInput = useRef(null);
 	const handleReset = (clearFilters) => {
@@ -327,11 +331,11 @@ const TeacherList = () => {
 					dataSource={dataFetch}
 					rowSelection={rowSelection}
 					onRow={onRow}
-					loading={tableLoading}
+					loading={tableTeacherLoading}
 					pagination={{
-						current: pagination.current,
-						total: pagination.total,
-						pageSize: pagination.pageSize,
+						current: paginationTeacher.current,
+						total: paginationTeacher.total,
+						pageSize: paginationTeacher.pageSize,
 						showSizeChanger: true,
 						pageSizeOptions: ["10", "20", "50", "100"],
 						showQuickJumper: true,

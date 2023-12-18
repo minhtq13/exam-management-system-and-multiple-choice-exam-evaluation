@@ -2,6 +2,7 @@ import { useState } from "react";
 import useNotify from "./useNotify";
 import {
 	getTestsService,
+	testSetDetailService,
 	updateTestSetService,
 } from "../services/testServices";
 
@@ -10,6 +11,8 @@ const useTest = () => {
 	const [allTest, setAllTest] = useState([]);
 	const [tableLoading, setTableLoading] = useState(true);
 	const [pagination, setPagination] = useState({});
+	const [testSetDetail, setTestSetDetail] = useState({});
+	const [detailLoading, setDetailLoading] = useState(true);
 
 	const getAllTests = (param) => {
 		setTableLoading(true);
@@ -50,6 +53,29 @@ const useTest = () => {
 			}
 		);
 	};
-	return { allTest, tableLoading, getAllTests, pagination, updateTestSet };
+
+	const getTestSetDetail = (param) => {
+		setDetailLoading(true);
+		testSetDetailService(
+			param,
+			(res) => {
+				setTestSetDetail(res.data);
+				setDetailLoading(false);
+			},
+			(error) => {
+				notify.error("Không thể lấy thông tin đề thi!");
+			}
+		);
+	};
+	return {
+		allTest,
+		tableLoading,
+		getAllTests,
+		pagination,
+		updateTestSet,
+		getTestSetDetail,
+		testSetDetail,
+		detailLoading,
+	};
 };
 export default useTest;

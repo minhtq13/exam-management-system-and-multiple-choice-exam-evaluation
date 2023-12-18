@@ -5,11 +5,11 @@ import useNotify from "./useNotify";
 const useStudents = () => {
 	const notify = useNotify();
 	const [allStudents, setAllStudents] = useState([]);
-	const [tableLoading, setTableLoading] = useState(true);
-	const [pagination, setPagination] = useState({});
+	const [tableStudentLoading, setTableStudentLoading] = useState(true);
+	const [paginationStudent, setPaginationStudent] = useState({});
 
 	const getAllStudents = (params) => {
-		setTableLoading(true);
+		setTableStudentLoading(true);
 		getPagingStudentsService(
 			params.name,
 			params.code,
@@ -18,11 +18,15 @@ const useStudents = () => {
 			params.sort,
 			(res) => {
 				setAllStudents(res.data.content);
-				setPagination({current: res.data.pageable.pageNumber + 1, pageSize: res.data.pageable.pageSize, total: res.data.totalElements})
-				setTableLoading(false);
+				setPaginationStudent({
+					current: res.data.pageable.pageNumber + 1,
+					pageSize: res.data.pageable.pageSize,
+					total: res.data.totalElements,
+				});
+				setTableStudentLoading(false);
 			},
-			(err)=> {
-				setTableLoading(false);
+			(err) => {
+				setTableStudentLoading(false);
 				if (err.response.status === 404) {
 					notify.warning(
 						err.response.data.message ||
@@ -36,8 +40,8 @@ const useStudents = () => {
 	return {
 		allStudents,
 		getAllStudents,
-		tableLoading,
-		pagination
+		tableStudentLoading,
+		paginationStudent,
 	};
 };
 
