@@ -431,9 +431,10 @@ public class TestSetServiceImpl implements TestSetService {
 
             // create scoring preview for each handled answer-sheet
             ScoringPreviewItemDTO scoringPreviewItem = new ScoringPreviewItemDTO(handledItem);
-            scoringPreviewItem.setNumbTestSetQuestions(mapQueriedTestSetQuestions.size());
+            scoringPreviewItem.setNumTestSetQuestions(mapQueriedTestSetQuestions.size());
             scoringPreviewItem.setNumMarkedAnswers(handledItem.getAnswers().size() - numNotMarkedQuestions);
             scoringPreviewItem.setNumCorrectAnswers(numCorrectAns);
+            scoringPreviewItem.setNumWrongAnswers(mapQueriedTestSetQuestions.size() - numCorrectAns);
             scoringPreviewItem.setTotalScore(totalScore);
             scoringPreviewItem.setHandledScoredImg(handledUploadFile.getFilePath());
             scoringPreviewItem.setOriginalImgFileName(handledItem.getOriginalImgFileName());

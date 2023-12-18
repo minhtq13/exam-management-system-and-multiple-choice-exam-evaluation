@@ -39,13 +39,16 @@ public class ScoringPreviewItemDTO {
     String originalImg;
 
     @Schema(description = "Số lượng câu hỏi trong đề")
-    Integer numbTestSetQuestions;
+    Integer numTestSetQuestions;
 
     @Schema(description = "Số câu hỏi đã khoanh")
     Integer numMarkedAnswers;
 
     @Schema(description = "Số câu trả lời đúng")
     Integer numCorrectAnswers;
+
+    @Schema(description = "Số câu trả lời sai")
+    Integer numWrongAnswers;
 
     @Schema(description = "Điểm tổng kết")
     Double totalScore;
