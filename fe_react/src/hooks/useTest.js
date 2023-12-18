@@ -12,7 +12,7 @@ const useTest = () => {
 	const [tableLoading, setTableLoading] = useState(true);
 	const [pagination, setPagination] = useState({});
 	const [testSetDetail, setTestSetDetail] = useState({});
-	const [detailLoading, setDetailLoading] = useState(true);
+	const [detailLoading, setDetailLoading] = useState(false);
 
 	const getAllTests = (param) => {
 		setTableLoading(true);

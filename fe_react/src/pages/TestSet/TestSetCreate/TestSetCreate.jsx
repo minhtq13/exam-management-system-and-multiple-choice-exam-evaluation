@@ -20,13 +20,9 @@ const TestSetCreate = () => {
 	const [testNos, setTestNos] = useState([]);
 	const [btnLoading, setBtnLoading] = useState(false);
 	const [listLoading, setListLoading] = useState(false);
-	const [questions, setQuestions] = useState([]);
-	const [testDetail, setTestDetail] = useState({});
 	const [testNo, setTestNo] = useState(null);
 	const onView = (test) => {
 		getTestSetDetail({ testId: testId, code: test.testSetCode });
-		setQuestions(testDetail.lstQuestion);
-		setTestDetail(testSetDetail.testSet);
 	};
 	const onCreate = () => {
 		if (!testSetNum) {
@@ -117,10 +113,10 @@ const TestSetCreate = () => {
 			</div>
 			<div className="test-set-right">
 				<Spin tip="Loading preview..." spinning={detailLoading}>
-					{questions.length > 0 ? (
+					{testSetDetail.lstQuestion && testSetDetail.lstQuestion.length > 0 ? (
 						<TestPreview
-							questions={questions}
-							testDetail={testDetail}
+							questions={testSetDetail.lstQuestion ? testSetDetail.lstQuestion : []}
+							testDetail={testSetDetail.testSet ? testSetDetail.testSet : {}}
 							testNo={testNo}
 						/>
 					) : (
@@ -136,9 +132,9 @@ const TestSetCreate = () => {
 					type="primary"
 					htmlType="submit"
 					icon={<AiOutlineDownload size={18} />}
-					disabled={questions.length < 1}
+					disabled={testSetDetail.lstQuestion && testSetDetail.lstQuestion.length < 1}
 					onClick={() =>
-						downloadTestPdf(questions, testDetail, testNo)
+						downloadTestPdf(testSetDetail.lstQuestion ? testSetDetail.lstQuestion : [], testSetDetail.testSet ? testSetDetail.testSet : {}, testNo)
 					}
 				>
 					Tải xuống

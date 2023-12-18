@@ -7,6 +7,8 @@ import "./ExamClassCreate.scss";
 const ExamClassAdd = () => {
 	const [loading, setLoading] = useState(false);
 	const [selectedTestId, setSelectedTestId] = useState(null);
+	const [lstStudentId, setLstStudentId] = useState([]);
+	const [lstSupervisorId, setLstSupervisorId] = useState([]);
 	const notify = useNotify();
 	const onFinish = (value) => {
 		setLoading(true);
@@ -17,6 +19,9 @@ const ExamClassAdd = () => {
 					"HH:mm DD/MM/YYYY"
 				),
 				testId: selectedTestId,
+				lstStudentId: lstStudentId,
+				lstSupervisorId: lstSupervisorId
+
 			},
 			(res) => {
 				setLoading(false);
@@ -37,6 +42,8 @@ const ExamClassAdd = () => {
 				initialValues={{ remember: false }}
 				loading={loading}
 				onSelectTestId={(id) => setSelectedTestId(id)}
+				onSelectStudents={(ids) => setLstStudentId(ids)}
+				onSelectTeachers={(ids) => setLstSupervisorId(ids)}
 			/>
 		</div>
 	);

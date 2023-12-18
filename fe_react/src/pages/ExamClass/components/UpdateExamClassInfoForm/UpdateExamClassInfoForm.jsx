@@ -27,6 +27,8 @@ const UpdateExamClassInfoForm = ({
 	btnText,
 	loading,
 	onSelectTestId,
+	onSelectStudents,
+	onSelectTeachers,
 }) => {
 	const {
 		allSemester,
@@ -77,7 +79,7 @@ const UpdateExamClassInfoForm = ({
 		size: 10,
 	};
 	const [studentParam, setStudentParam] = useState(studentParamInit);
-	const [teacherParam, setTeacherParam] = useState(teacherParam);
+	const [teacherParam, setTeacherParam] = useState(teacherParamInit);
 	const [param, setParam] = useState(initialParam);
 	const [openModal, setOpenModal] = useState(false);
 	const [testValue, setTestValue] = useState("");
@@ -88,17 +90,19 @@ const UpdateExamClassInfoForm = ({
 	const [openModalPreview, setOpenModalPreview] = useState(false);
 	const [openStudentModal, setOpenStudentModal] = useState(false);
 	const [openTeacherModal, setOpenTeacherModal] = useState(false);
+	const [studentSelected, setStudentSelected] = useState([]);
+	const [teacherSelected, setTeacherSelected] = useState([]);
 	const notify = useNotify();
 	const searchInput = useRef(null);
 	const errorMessange = "Chưa điền đầy đủ thông tin";
 	useEffect(() => {
 		if (openTeacherModal) {
-			getAllTeacher(teacherParam);
+			getAllTeachers(teacherParam);
 		}
 	}, [teacherParam, openTeacherModal]);
 	useEffect(() => {
 		if (openStudentModal) {
-			getAllStudent(studentParam);
+			getAllStudents(studentParam);
 		}
 	}, [studentParam, openStudentModal]);
 	useEffect(() => {
@@ -125,26 +129,27 @@ const UpdateExamClassInfoForm = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [param, openModal]);
 	// eslint-disable-next-line
-	const handleReset = (clearFilters) => {
-		clearFilters();
-	};
+	// const handleReset = (clearFilters) => {
+	// 	clearFilters();
+	// };
 	const getOptions = (array, codeShow) => {
 		return array && array.length > 0
 			? array.map((item) => {
-					return {
-						value: item.id,
-						label: codeShow
-							? `${item.name} - ${item.code} `
-							: item.name,
-					};
-			  })
+				return {
+					value: item.id,
+					label: codeShow
+						? `${item.name} - ${item.code} `
+						: item.name,
+				};
+			})
 			: [];
 	};
 	const getColumnSearchProps = (
 		dataIndex,
-		onPressEnter,
 		onSearch,
-		handleReset
+		handleReset,
+		param,
+		initParam
 	) => ({
 		filterDropdown: ({
 			setSelectedKeys,
@@ -165,13 +170,13 @@ const UpdateExamClassInfoForm = ({
 					value={selectedKeys[0]}
 					onChange={(e) => {
 						setSelectedKeys(e.target.value ? [e.target.value] : []);
-						setParam({
+						handleReset({
 							...param,
 							[dataIndex]: e.target.value,
 							page: 0,
 						});
 					}}
-					onPressEnter={onPressEnter}
+					onPressEnter={() => onSearch(param)}
 					style={{
 						marginBottom: 8,
 						display: "block",
@@ -180,7 +185,7 @@ const UpdateExamClassInfoForm = ({
 				<Space>
 					<Button
 						type="primary"
-						onClick={onSearch}
+						onClick={() => onSearch({ ...param, page: 0 })}
 						icon={<SearchOutlined />}
 						size="small"
 						style={{
@@ -192,7 +197,7 @@ const UpdateExamClassInfoForm = ({
 					<Button
 						onClick={() => {
 							clearFilters && handleReset(clearFilters);
-							handleReset();
+							handleReset(initParam);
 						}}
 						size="small"
 						style={{
@@ -238,9 +243,10 @@ const UpdateExamClassInfoForm = ({
 			key: "code",
 			...getColumnSearchProps(
 				"code",
-				getAllTeachers(param),
-				getAllTeachers({ ...param, page: 0 }),
-				setTeacherParam(teacherParam)
+				getAllTeachers,
+				setTeacherParam,
+				teacherParam,
+				teacherParamInit
 			),
 		},
 		{
@@ -249,9 +255,10 @@ const UpdateExamClassInfoForm = ({
 			key: "name",
 			...getColumnSearchProps(
 				"name",
-				getAllTeachers(param),
-				getAllTeachers({ ...param, page: 0 }),
-				setTeacherParam(teacherParam)
+				getAllTeachers,
+				setTeacherParam,
+				teacherParam,
+				teacherParamInit
 			),
 		},
 		{
@@ -266,7 +273,13 @@ const UpdateExamClassInfoForm = ({
 			title: "MSSV",
 			dataIndex: "code",
 			key: "code",
-			...getColumnSearchProps("code"),
+			...getColumnSearchProps(
+				"code",
+				getAllStudents,
+				setStudentParam,
+				studentParam,
+				studentParamInit
+			),
 		},
 		{
 			title: "Họ tên",
@@ -274,7 +287,13 @@ const UpdateExamClassInfoForm = ({
 			key: "name",
 			// eslint-disable-next-line jsx-a11y/anchor-is-valid
 			render: (text) => <a>{text}</a>,
-			...getColumnSearchProps("name"),
+			...getColumnSearchProps(
+				"name",
+				getAllStudents,
+				setStudentParam,
+				studentParam,
+				studentParamInit
+			),
 		},
 		{
 			title: "Khóa",
@@ -362,6 +381,26 @@ const UpdateExamClassInfoForm = ({
 			),
 		},
 	];
+	const studentSelectChange = (newSelectedRowKeys) => {
+		setStudentSelected(newSelectedRowKeys);
+		onSelectStudents(newSelectedRowKeys);
+		console.log(newSelectedRowKeys);
+		console.log(studentSelected);
+	}
+	const rowStudentSelection = {
+		studentSelected,
+		onChange: studentSelectChange,
+		selections: [Table.SELECTION_ALL],
+	};
+	const teacherSelectChange = (newSelectedRowKeys) => {
+		setTeacherSelected([...newSelectedRowKeys]);
+		onSelectTeachers([...newSelectedRowKeys]);
+	}
+	const rowTeacherSelection = {
+		teacherSelected,
+		onChange: teacherSelectChange,
+		selections: [Table.SELECTION_ALL],
+	};
 	const handleView = (record, code) => {
 		setTestNo(code);
 		setOpenModalPreview(true);
@@ -379,6 +418,14 @@ const UpdateExamClassInfoForm = ({
 			}
 		);
 	};
+	const studentOnchange = (values) => {
+		setStudentSelected(values)
+		onSelectStudents(values)
+	}
+	const teacherOnchange = (values) => {
+		setStudentSelected(values)
+		onSelectTeachers(values)
+	}
 	const dataFetch = allTest?.map((obj, index) => ({
 		name: obj.name,
 		key: (index + 1).toString(),
@@ -395,7 +442,7 @@ const UpdateExamClassInfoForm = ({
 				: 0,
 	}));
 	const studentList = allStudents.map((obj, index) => ({
-		key: (index + 1).toString(),
+		key: obj.id,
 		name: obj.lastName + " " + obj.firstName,
 		email: obj.email,
 		code: obj.code,
@@ -403,12 +450,14 @@ const UpdateExamClassInfoForm = ({
 		courseNum: obj.courseNum,
 	}));
 	const teacherList = allTeachers.map((obj, index) => ({
-		key: (index + 1).toString(),
+		key: obj.id,
 		name: obj.lastName + " " + obj.firstName,
 		email: obj.email,
 		code: obj.code,
 		id: obj.id,
 	}));
+	console.log("st", studentSelected);
+	console.log("te", teacherSelected);
 	return (
 		<div className="exam-class-info">
 			<p className="info-header">{infoHeader}</p>
@@ -462,32 +511,42 @@ const UpdateExamClassInfoForm = ({
 				</Form.Item>
 				<Form.Item name="lstStudentId" label="Học sinh">
 					<Select
+						key={JSON.stringify(studentSelected)}
+						open={false}
 						className="exam-class-students"
 						mode="multiple"
 						showSearch
 						allowClear
 						loading={studentLoading}
 						placeholder="Chọn học sinh"
+						onChange={studentOnchange}
+						onClick={() => setOpenStudentModal(true)}
 						filterOption={(input, option) =>
 							(option?.label.toLowerCase() ?? "").includes(
 								input.toLowerCase()
 							)
 						}
+						defaultValue={studentSelected}
 						options={getOptions(allStudent, true)}
 					/>
 				</Form.Item>
 				<Form.Item name="lstSupervisorId" label="Giám thị">
 					<Select
+						key={JSON.stringify(teacherSelected)}
+						open={false}
 						className="exam-class-teachers"
 						mode="multiple"
 						showSearch
 						allowClear
+						onChange={teacherOnchange}
 						loading={teacherLoading}
 						filterOption={(input, option) =>
 							(option?.label.toLowerCase() ?? "").includes(
 								input.toLowerCase()
 							)
 						}
+						onClick={() => setOpenTeacherModal(true)}
+						defaultValue={teacherSelected}
 						placeholder="Chọn giám thị"
 						options={getOptions(allTeacher, true)}
 					/>
@@ -639,6 +698,98 @@ const UpdateExamClassInfoForm = ({
 						onShowSizeChange: (current, size) => {
 							setParam({
 								...param,
+								size: size,
+							});
+						},
+					}}
+				/>
+			</Modal>
+			<Modal
+				className="exam-class-test-modal"
+				open={openStudentModal}
+				title="Danh sách học sinh"
+				onOk={() => setOpenStudentModal(false)}
+				onCancel={() => setOpenStudentModal(false)}
+				maskClosable={true}
+				centered={true}
+			>
+				<Table
+					className="student-list-table"
+					columns={studentColumns}
+					dataSource={studentList}
+					rowSelection={rowStudentSelection}
+					loading={tableStudentLoading}
+					pagination={{
+						current: paginationStudent.current,
+						total: paginationStudent.total,
+						pageSize: paginationStudent.pageSize,
+						showSizeChanger: true,
+						pageSizeOptions: ["10", "20", "50", "100"],
+						showQuickJumper: true,
+						showTotal: (total, range) => (
+							<span>
+								<strong>
+									{range[0]}-{range[1]}
+								</strong>{" "}
+								of <strong>{total}</strong> items
+							</span>
+						),
+						onChange: (page, pageSize) => {
+							setStudentParam({
+								...studentParam,
+								page: page - 1,
+								size: pageSize,
+							});
+						},
+						onShowSizeChange: (current, size) => {
+							setStudentParam({
+								...studentParam,
+								size: size,
+							});
+						},
+					}}
+				/>
+			</Modal>
+			<Modal
+				className="exam-class-test-modal"
+				open={openTeacherModal}
+				title="Danh sách giáo viên"
+				onOk={() => setOpenTeacherModal(false)}
+				onCancel={() => setOpenTeacherModal(false)}
+				maskClosable={true}
+				centered={true}
+			>
+				<Table
+					className="teacher-list-table"
+					columns={teacherColumns}
+					dataSource={teacherList}
+					rowSelection={rowTeacherSelection}
+					loading={tableTeacherLoading}
+					pagination={{
+						current: paginationTeacher.current,
+						total: paginationTeacher.total,
+						pageSize: paginationTeacher.pageSize,
+						showSizeChanger: true,
+						pageSizeOptions: ["10", "20", "50", "100"],
+						showQuickJumper: true,
+						showTotal: (total, range) => (
+							<span>
+								<strong>
+									{range[0]}-{range[1]}
+								</strong>{" "}
+								of <strong>{total}</strong> items
+							</span>
+						),
+						onChange: (page, pageSize) => {
+							setTeacherParam({
+								...teacherParam,
+								page: page - 1,
+								size: pageSize,
+							});
+						},
+						onShowSizeChange: (current, size) => {
+							setTeacherParam({
+								...teacherParam,
 								size: size,
 							});
 						},
