@@ -436,8 +436,10 @@ public class TestSetServiceImpl implements TestSetService {
             scoringPreviewItem.setNumCorrectAnswers(numCorrectAns);
             scoringPreviewItem.setTotalScore(totalScore);
             scoringPreviewItem.setHandledScoredImg(handledUploadFile.getFilePath());
-            scoringPreviewItem.setOriginalImg(handledItem.getOriginalImg());
             scoringPreviewItem.setOriginalImgFileName(handledItem.getOriginalImgFileName());
+            scoringPreviewItem.setOriginalImg(
+                String.format("%s%s/data/%s/%s/%s", rootDomain, SystemConstants.SHARED_DIR_SERVER_PATH, ANSWERED_SHEETS,
+                    examClassCode, handledItem.getOriginalImgFileName()));
             lstScoringPreview.add(scoringPreviewItem);
         }
 
@@ -468,14 +470,7 @@ public class TestSetServiceImpl implements TestSetService {
 
         // Check system os
         File sharedAppDataDir;
-        String sharedAppDataPath;
-        if (SystemConstants.IS_WINDOWS) {
-            sharedAppDataPath = SystemConstants.WINDOWS_SHARED_DIR + "/data";
-            log.info("Windows's shared app data {}", SystemConstants.WINDOWS_SHARED_DIR);
-        } else {
-            sharedAppDataPath = SystemConstants.LINUX_SHARED_DIR + "/data";
-            log.info("Linux's shared app data {}", SystemConstants.LINUX_SHARED_DIR);
-        }
+        String sharedAppDataPath = FileUtils.getSharedAppDirectoryPath();
         sharedAppDataDir = new File(sharedAppDataPath);
         if (!sharedAppDataDir.exists()) {
             log.info("Make sharedAppDataDir {}", sharedAppDataDir.mkdirs() ? "successfully" : "fail");
@@ -503,14 +498,7 @@ public class TestSetServiceImpl implements TestSetService {
 
     @Override
     public List<FileAttachDTO> getListFileInExClassFolder(String examClassCode) {
-        String sharedAppDataPath;
-        if (SystemConstants.IS_WINDOWS) {
-            sharedAppDataPath = SystemConstants.WINDOWS_SHARED_DIR + "/data";
-            log.info("Windows's shared app data {}", SystemConstants.WINDOWS_SHARED_DIR);
-        } else {
-            sharedAppDataPath = SystemConstants.LINUX_SHARED_DIR + "/data";
-            log.info("Linux's shared app data {}", SystemConstants.LINUX_SHARED_DIR);
-        }
+        String sharedAppDataPath = FileUtils.getSharedAppDirectoryPath();
         File examClassStoredDir = new File(String.format("%s/%s/%s/", sharedAppDataPath, ANSWERED_SHEETS, examClassCode));
         List<FileAttachDTO> lstFileInFolder = new ArrayList<>();
         if (examClassStoredDir.exists()) {
@@ -562,14 +550,7 @@ public class TestSetServiceImpl implements TestSetService {
     private List<StudentHandledTestDTO> loadListStudentScoredSheets(String exClassCode) {
         List<StudentHandledTestDTO> lstScoredData = new ArrayList<>();
         File scoredSheetsDir;
-        String sharedAppDataPath;
-        if (SystemConstants.IS_WINDOWS) {
-            sharedAppDataPath = SystemConstants.WINDOWS_SHARED_DIR + "/data";
-            log.info("Windows's shared app data {}", SystemConstants.WINDOWS_SHARED_DIR);
-        } else {
-            sharedAppDataPath = SystemConstants.LINUX_SHARED_DIR + "/data";
-            log.info("Linux's shared app data {}", SystemConstants.LINUX_SHARED_DIR);
-        }
+        String sharedAppDataPath = FileUtils.getSharedAppDirectoryPath();
         scoredSheetsDir = new File(String.format("%s/%s/%s/%s", sharedAppDataPath, ANSWERED_SHEETS, exClassCode, SCORED_SHEETS));
         if (scoredSheetsDir.exists() && scoredSheetsDir.isDirectory()) {
             for (File scoredDataFile : Objects.requireNonNull(scoredSheetsDir.listFiles())) {

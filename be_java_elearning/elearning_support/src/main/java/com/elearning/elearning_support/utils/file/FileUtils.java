@@ -11,12 +11,15 @@ import org.springframework.web.multipart.MultipartFile;
 import com.elearning.elearning_support.constants.FileConstants;
 import com.elearning.elearning_support.constants.FileConstants.Extension;
 import com.elearning.elearning_support.constants.FileConstants.Extension.Video;
+import com.elearning.elearning_support.constants.SystemConstants;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst.FileAttach;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst.Resources;
 import com.elearning.elearning_support.exceptions.FileUploadException;
 import com.elearning.elearning_support.utils.DateUtils;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class FileUtils {
 
     private final String IMAGES_RESOURCE_DIR = "/resources/upload/files/images/";
@@ -140,13 +143,26 @@ public class FileUtils {
         };
     }
 
-    public  static  class Word {
-        public static final String[] EXTENSIONS = new String[] {
+    public static class Word {
+
+        public static final String[] EXTENSIONS = new String[]{
             "docx", "doc"
         };
-        public static final String[] CONTENT_TYPES = new String[] {
+        public static final String[] CONTENT_TYPES = new String[]{
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/msword"
         };
+    }
+
+    public static String getSharedAppDirectoryPath(){
+        String sharedAppDataPath;
+        if (SystemConstants.IS_WINDOWS) {
+            sharedAppDataPath = SystemConstants.WINDOWS_SHARED_DIR + "/data";
+            log.info("Windows's shared app data {}", SystemConstants.WINDOWS_SHARED_DIR);
+        } else {
+            sharedAppDataPath = SystemConstants.LINUX_SHARED_DIR + "/data";
+            log.info("Linux's shared app data {}", SystemConstants.LINUX_SHARED_DIR);
+        }
+        return sharedAppDataPath;
     }
 
 
