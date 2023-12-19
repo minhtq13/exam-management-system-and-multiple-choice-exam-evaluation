@@ -149,7 +149,7 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
 				</Form.Item>
 				<Form.Item
 					name="duration"
-					label="Thời gian thi(phút):"
+					label="Thời gian thi (phút):"
 					rules={[
 						{
 							required: true,

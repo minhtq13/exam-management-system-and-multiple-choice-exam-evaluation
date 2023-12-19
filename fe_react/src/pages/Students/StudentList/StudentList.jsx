@@ -161,6 +161,8 @@ const StudentList = () => {
 			dataIndex: "code",
 			key: "code",
 			...getColumnSearchProps("code"),
+			width: 150,
+			textAlign: "center"
 		},
 		{
 			title: "Họ tên",
@@ -169,11 +171,13 @@ const StudentList = () => {
 			// eslint-disable-next-line jsx-a11y/anchor-is-valid
 			render: (text) => <a>{text}</a>,
 			...getColumnSearchProps("name"),
+			width: 300,
 		},
 		{
 			title: "Khóa",
 			dataIndex: "courseNum",
 			key: "courseNum",
+			width: 100,
 			filters: [
 				{
 					text: "64",
@@ -204,21 +208,25 @@ const StudentList = () => {
 			title: "Email",
 			dataIndex: "email",
 			key: "email",
+			width: 300,
 		},
 		{
 			title: "Số điện thoại",
 			dataIndex: "phoneNumber",
 			key: "phoneNumber",
+			width: 150,
 		},
 		{
 			title: "Ngày sinh",
 			dataIndex: "birthDate",
 			key: "birthDate",
+			width: 150,
 		},
 		{
 			title: "Giới tính",
 			key: "gender",
 			dataIndex: "gender",
+			width: 150,
 			render: (_, { gender }) => (
 				<>
 					{gender.map((gender) => {
@@ -347,7 +355,9 @@ const StudentList = () => {
 			</div>
 			<div className="student-list-wrapper">
 				<Table
+					scroll={{ y: 575 }}
 					className="student-list-table"
+					size="middle"
 					columns={columns}
 					dataSource={dataFetch}
 					rowSelection={rowSelection}

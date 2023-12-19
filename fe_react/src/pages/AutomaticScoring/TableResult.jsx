@@ -118,7 +118,8 @@ const TableResult = ({ resultAI }) => {
         className="table-ai"
         columns={columns}
         dataSource={dataTable}
-        scroll={{ x: 1500, y: 600 }}
+        scroll={{ x: 1500, y: 487 }}
+        size="middle"
         pagination={{
           pageSize: pageSize,
           total: dataTable.length,
@@ -140,7 +141,7 @@ const TableResult = ({ resultAI }) => {
       />
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataTable]);
+  }, [dataTable, pageSize]);
   return <div className="table-result-component">{renderTable}</div>;
 };
 
