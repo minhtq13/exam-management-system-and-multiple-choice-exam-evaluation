@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.elearning.elearning_support.dtos.CustomInputStreamResource;
 import com.elearning.elearning_support.dtos.fileAttach.FileAttachDTO;
+import com.elearning.elearning_support.dtos.test.studentTestSet.HandledImagesDeleteDTO;
 import com.elearning.elearning_support.dtos.test.test_set.ScoringPreviewResDTO;
 import com.elearning.elearning_support.dtos.test.test_set.ScoringTestSetReqDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
@@ -101,6 +102,12 @@ public class TestSetController {
         @PathVariable(name = "examClassCode") String examClassCode,
         @RequestParam(name = "files") MultipartFile[] handledFiles) throws IOException {
         testSetService.uploadStudentHandledAnswerSheet(examClassCode, handledFiles);
+    }
+
+    @PostMapping("/handled-answers/delete")
+    @Operation(summary = "Xóa các file đã upload trong folder của mã lớp thi")
+    public void deleteImagesInClassFolder(@RequestBody @Validated HandledImagesDeleteDTO deleteDTO) throws IOException {
+        testSetService.deleteImagesInClassFolder(deleteDTO);
     }
 
     @GetMapping("/handled-answers/uploaded/{examClassCode}")

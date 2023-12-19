@@ -40,6 +40,7 @@ import com.elearning.elearning_support.dtos.CustomInputStreamResource;
 import com.elearning.elearning_support.dtos.common.ICommonIdCode;
 import com.elearning.elearning_support.dtos.fileAttach.FileAttachDTO;
 import com.elearning.elearning_support.dtos.fileAttach.FileUploadResDTO;
+import com.elearning.elearning_support.dtos.test.studentTestSet.HandledImagesDeleteDTO;
 import com.elearning.elearning_support.dtos.test.test_set.ITestSetScoringDTO;
 import com.elearning.elearning_support.dtos.test.test_set.ScoringPreviewItemDTO;
 import com.elearning.elearning_support.dtos.test.test_set.ScoringPreviewResDTO;
@@ -499,6 +500,29 @@ public class TestSetServiceImpl implements TestSetService {
             }
         } catch (Exception exception) {
             log.error(MessageConst.EXCEPTION_LOG_FORMAT, exception.getMessage(), exception.getCause());
+        }
+    }
+
+    @Override
+    public void deleteImagesInClassFolder(HandledImagesDeleteDTO deleteDTO) throws IOException {
+        String sharedAppDataPath = FileUtils.getSharedAppDirectoryPath();
+        File examClassStoredDir = new File(String.format("%s/%s/%s/", sharedAppDataPath, ANSWERED_SHEETS, deleteDTO.getExamClassCode()));
+        int numFileDeleted = 0;
+        if (examClassStoredDir.exists()) {
+            for (File item : Objects.requireNonNull(examClassStoredDir.listFiles())) {
+                if (item.isFile() && deleteDTO.getLstFileName().contains(item.getName())) {
+                    boolean isDeleted = item.delete();
+                    numFileDeleted += (isDeleted ? 1 : 0);
+                }
+            }
+            // if any files deleted -> clean result folders -> scoring again
+            if(numFileDeleted > 0){
+                for (File item : Objects.requireNonNull(examClassStoredDir.listFiles())) {
+                    if (item.isDirectory()) {
+                        org.apache.commons.io.FileUtils.cleanDirectory(item);
+                    }
+                }
+            }
         }
     }
 

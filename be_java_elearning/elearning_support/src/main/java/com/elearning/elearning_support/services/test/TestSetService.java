@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.elearning.elearning_support.dtos.CustomInputStreamResource;
 import com.elearning.elearning_support.dtos.fileAttach.FileAttachDTO;
 import com.elearning.elearning_support.dtos.studentTestSet.StudentHandledTestDTO;
+import com.elearning.elearning_support.dtos.test.studentTestSet.HandledImagesDeleteDTO;
 import com.elearning.elearning_support.dtos.test.test_set.ScoringPreviewResDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetGenerateReqDTO;
@@ -54,6 +55,12 @@ public interface TestSetService {
      * Upload handled answer sheet's images
      */
     void uploadStudentHandledAnswerSheet(String examClassCode, MultipartFile[] handledFiles) throws IOException;
+
+
+    /**
+     * Delete handled answer sheet's images in exam class folder
+     */
+    void deleteImagesInClassFolder(HandledImagesDeleteDTO deleteDTO) throws IOException;
 
     /**
      * Get list file uploaded in exam class folder
