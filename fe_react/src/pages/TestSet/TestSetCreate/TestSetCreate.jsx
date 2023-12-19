@@ -69,7 +69,7 @@ const TestSetCreate = () => {
 					</div>
 					{isError && (
 						<span className="is-error">
-							Please enter the number of test set !
+							Chưa điền số lượng bộ đề thi !
 						</span>
 					)}
 				</div>
@@ -113,10 +113,19 @@ const TestSetCreate = () => {
 			</div>
 			<div className="test-set-right">
 				<Spin tip="Loading preview..." spinning={detailLoading}>
-					{testSetDetail.lstQuestion && testSetDetail.lstQuestion.length > 0 ? (
+					{testSetDetail.lstQuestion &&
+					testSetDetail.lstQuestion.length > 0 ? (
 						<TestPreview
-							questions={testSetDetail.lstQuestion ? testSetDetail.lstQuestion : []}
-							testDetail={testSetDetail.testSet ? testSetDetail.testSet : {}}
+							questions={
+								testSetDetail.lstQuestion
+									? testSetDetail.lstQuestion
+									: []
+							}
+							testDetail={
+								testSetDetail.testSet
+									? testSetDetail.testSet
+									: {}
+							}
 							testNo={testNo}
 						/>
 					) : (
@@ -132,9 +141,18 @@ const TestSetCreate = () => {
 					type="primary"
 					htmlType="submit"
 					icon={<AiOutlineDownload size={18} />}
-					disabled={testSetDetail.lstQuestion && testSetDetail.lstQuestion.length < 1}
+					disabled={
+						testSetDetail.lstQuestion &&
+						testSetDetail.lstQuestion.length < 1
+					}
 					onClick={() =>
-						downloadTestPdf(testSetDetail.lstQuestion ? testSetDetail.lstQuestion : [], testSetDetail.testSet ? testSetDetail.testSet : {}, testNo)
+						downloadTestPdf(
+							testSetDetail.lstQuestion
+								? testSetDetail.lstQuestion
+								: [],
+							testSetDetail.testSet ? testSetDetail.testSet : {},
+							testNo
+						)
 					}
 				>
 					Tải xuống

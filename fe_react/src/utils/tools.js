@@ -44,15 +44,18 @@ export const wordLimit = (message, wordCount) => {
 };
 
 export function wordLimitImg(fileName, maxLength) {
-	var fileNameWithoutExtension = fileName.split('.')[0];
-	var fileExtension = fileName.split('.').pop();
+	var fileNameWithoutExtension = fileName.split(".")[0];
+	var fileExtension = fileName.split(".").pop();
 	if (fileNameWithoutExtension.length > maxLength) {
-			fileNameWithoutExtension = fileNameWithoutExtension.substring(0, maxLength);
-			if (fileNameWithoutExtension.length > 0) {
-					fileNameWithoutExtension += '...';
-			}
+		fileNameWithoutExtension = fileNameWithoutExtension.substring(
+			0,
+			maxLength
+		);
+		if (fileNameWithoutExtension.length > 0) {
+			fileNameWithoutExtension += "...";
+		}
 	}
-	var truncatedFileName = fileNameWithoutExtension + '.' + fileExtension;
+	var truncatedFileName = fileNameWithoutExtension + "." + fileExtension;
 	return truncatedFileName;
 }
 export function convertGender(gender) {
@@ -114,4 +117,16 @@ export const downloadTestPdf = (questions, testDetail, testNo) => {
 			pdfInstance.save();
 		});
 	}
+};
+
+export const customPaginationText = {
+	items_per_page: "/ trang",
+	jump_to: "Đến",
+	page: "trang",
+	prev_page: "Trang trước",
+	next_page: "Trang sau",
+	prev_5: "5 trang trước",
+	next_5: "5 trang sau",
+	prev_3: "3 trang trước",
+	next_3: "3 trang sau",
 };

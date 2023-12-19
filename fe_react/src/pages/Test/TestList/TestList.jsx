@@ -21,7 +21,7 @@ import {
 	testSetDetailService,
 } from "../../../services/testServices";
 import "./TestList.scss";
-import { downloadTestPdf } from "../../../utils/tools";
+import { customPaginationText, downloadTestPdf } from "../../../utils/tools";
 import { HUST_COLOR } from "../../../utils/constant";
 const TestList = () => {
 	const [deleteDisable, setDeleteDisable] = useState(true);
@@ -93,6 +93,11 @@ const TestList = () => {
 			key: "subjectName",
 		},
 		{
+			title: "Học kỳ",
+			dataIndex: "semester",
+			key: "semester",
+		},
+		{
 			title: "Số câu hỏi",
 			dataIndex: "questionQuantity",
 			key: "questionQuantity",
@@ -149,6 +154,7 @@ const TestList = () => {
 		modifiedAt: obj.modifiedAt,
 		duration: obj.duration,
 		id: obj.id,
+		semester: obj.semester,
 		testSetNos: obj.testSetNos,
 		lstTestSetCode: obj.lstTestSetCode,
 	}));
@@ -285,13 +291,14 @@ const TestList = () => {
 						pageSize: pagination.pageSize,
 						showSizeChanger: true,
 						pageSizeOptions: ["10", "20", "50", "100"],
+						locale: customPaginationText,
 						showQuickJumper: true,
 						showTotal: (total, range) => (
 							<span>
 								<strong>
 									{range[0]}-{range[1]}
 								</strong>{" "}
-								of <strong>{total}</strong> items
+								trong <strong>{total}</strong> danh sách
 							</span>
 						),
 						onChange: (page, pageSize) => {
@@ -310,6 +317,7 @@ const TestList = () => {
 					}}
 				/>
 				<Modal
+					className="list-test-modal"
 					open={openModal}
 					title="Danh sách mã đề"
 					onOk={() => setOpenModal(false)}

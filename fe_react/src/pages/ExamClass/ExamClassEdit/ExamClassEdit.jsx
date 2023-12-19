@@ -10,6 +10,8 @@ import UpdateExamClassInfoForm from "../components/UpdateExamClassInfoForm/Updat
 const ExamClassEdit = () => {
 	const { getExamClassDetail, examClassInfo, infoLoading } = useExamClasses();
 	const [selectedTestId, setSelectedTestId] = useState(null);
+	const [lstStudentId, setLstStudentId] = useState([]);
+	const [lstSupervisorId, setLstSupervisorId] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const notify = useNotify();
 	const location = useLocation();
@@ -24,10 +26,16 @@ const ExamClassEdit = () => {
 			id,
 			{
 				...value,
-				testId: selectedTestId,
+				testId: examClassInfo.testId ?? selectedTestId,
 				examineTime: dayjs(value.examineTime).format(
 					"HH:mm DD/MM/YYYY"
 				),
+				lstStudentId: examClassInfo.lstStudentId
+					? examClassInfo.lstStudentId.split(",").map(Number)
+					: lstStudentId,
+				lstSupervisorId: examClassInfo.lstSupervisorId
+					? examClassInfo.lstSupervisorId.split(",").map(Number)
+					: lstSupervisorId,
 			},
 			(res) => {
 				setLoading(false);
@@ -62,15 +70,25 @@ const ExamClassEdit = () => {
 							  )
 							: "",
 						code: examClassInfo ? examClassInfo.code : null,
-						lstStudentId: examClassInfo
-							? examClassInfo.lstStudentId
-							: [],
-						lstSupervisorId: examClassInfo
-							? examClassInfo.lstSupervisorId
-							: [],
+						testId: examClassInfo ? examClassInfo.id : null,
 					}}
+					testDisplay={`${examClassInfo.testName} - ${examClassInfo.duration}(phút)`}
+					lstStudentId={
+						examClassInfo && examClassInfo.lstStudentId
+							? examClassInfo.lstStudentId.split(",").map(Number)
+							: []
+					}
+					lstSupervisorId={
+						examClassInfo && examClassInfo.lstSupervisorId
+							? examClassInfo.lstSupervisorId
+									.split(",")
+									.map(Number)
+							: []
+					}
 					loading={loading}
 					onSelectTestId={(id) => setSelectedTestId(id)}
+					onSelectStudents={(ids) => setLstStudentId(ids)}
+					onSelectTeachers={(ids) => setLstSupervisorId(ids)}
 				/>
 			</Skeleton>
 		</div>

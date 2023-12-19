@@ -20,6 +20,7 @@ import { testSetDetailService } from "../../../../services/testServices";
 import TestPreview from "../../../../components/TestPreview/TestPreview";
 import useTeachers from "../../../../hooks/useTeachers";
 import useStudents from "../../../../hooks/useStudents";
+import { customPaginationText } from "../../../../utils/tools";
 const UpdateExamClassInfoForm = ({
 	onFinish,
 	initialValues,
@@ -29,6 +30,9 @@ const UpdateExamClassInfoForm = ({
 	onSelectTestId,
 	onSelectStudents,
 	onSelectTeachers,
+	testDisplay,
+	lstStudentId,
+	lstSupervisorId,
 }) => {
 	const {
 		allSemester,
@@ -90,11 +94,14 @@ const UpdateExamClassInfoForm = ({
 	const [openModalPreview, setOpenModalPreview] = useState(false);
 	const [openStudentModal, setOpenStudentModal] = useState(false);
 	const [openTeacherModal, setOpenTeacherModal] = useState(false);
-	const [studentSelected, setStudentSelected] = useState([]);
-	const [teacherSelected, setTeacherSelected] = useState([]);
+	const [studentSelected, setStudentSelected] = useState(lstStudentId ?? []);
+	const [teacherSelected, setTeacherSelected] = useState(
+		lstSupervisorId ?? []
+	);
+	const [studentSelectedPerPage, setStudentSelectedPerPage] = useState({});
+	const [teacherSelectedPerPage, setTeacherSelectedPerPage] = useState({});
 	const notify = useNotify();
 	const searchInput = useRef(null);
-	const errorMessange = "Chưa điền đầy đủ thông tin";
 	useEffect(() => {
 		if (openTeacherModal) {
 			getAllTeachers(teacherParam);
@@ -135,13 +142,13 @@ const UpdateExamClassInfoForm = ({
 	const getOptions = (array, codeShow) => {
 		return array && array.length > 0
 			? array.map((item) => {
-				return {
-					value: item.id,
-					label: codeShow
-						? `${item.name} - ${item.code} `
-						: item.name,
-				};
-			})
+					return {
+						value: item.id,
+						label: codeShow
+							? `${item.name} - ${item.code} `
+							: item.name,
+					};
+			  })
 			: [];
 	};
 	const getColumnSearchProps = (
@@ -382,24 +389,50 @@ const UpdateExamClassInfoForm = ({
 		},
 	];
 	const studentSelectChange = (newSelectedRowKeys) => {
-		setStudentSelected(newSelectedRowKeys);
-		onSelectStudents(newSelectedRowKeys);
-		console.log(newSelectedRowKeys);
-		console.log(studentSelected);
-	}
+		setStudentSelectedPerPage({
+			...studentSelectedPerPage,
+			[paginationStudent.current]: newSelectedRowKeys,
+		});
+		setStudentSelected(
+			Object.values({
+				...studentSelectedPerPage,
+				[paginationStudent.current]: newSelectedRowKeys,
+			}).reduce((acc, arr) => acc.concat(arr), [])
+		);
+		onSelectStudents(
+			Object.values({
+				...studentSelectedPerPage,
+				[paginationStudent.current]: newSelectedRowKeys,
+			}).reduce((acc, arr) => acc.concat(arr), [])
+		);
+	};
 	const rowStudentSelection = {
-		studentSelected,
+		selectedRowKeys:
+			studentSelectedPerPage[paginationStudent.current] || [],
 		onChange: studentSelectChange,
-		selections: [Table.SELECTION_ALL],
 	};
 	const teacherSelectChange = (newSelectedRowKeys) => {
-		setTeacherSelected([...newSelectedRowKeys]);
-		onSelectTeachers([...newSelectedRowKeys]);
-	}
+		setTeacherSelectedPerPage({
+			...teacherSelectedPerPage,
+			[paginationTeacher.current]: newSelectedRowKeys,
+		});
+		setTeacherSelected(
+			Object.values({
+				...teacherSelectedPerPage,
+				[paginationTeacher.current]: newSelectedRowKeys,
+			}).reduce((acc, arr) => acc.concat(arr), [])
+		);
+		onSelectTeachers(
+			Object.values({
+				...teacherSelectedPerPage,
+				[paginationTeacher.current]: newSelectedRowKeys,
+			}).reduce((acc, arr) => acc.concat(arr), [])
+		);
+	};
 	const rowTeacherSelection = {
-		teacherSelected,
+		selectedRowKeys:
+			teacherSelectedPerPage[paginationTeacher.current] || [],
 		onChange: teacherSelectChange,
-		selections: [Table.SELECTION_ALL],
 	};
 	const handleView = (record, code) => {
 		setTestNo(code);
@@ -418,14 +451,6 @@ const UpdateExamClassInfoForm = ({
 			}
 		);
 	};
-	const studentOnchange = (values) => {
-		setStudentSelected(values)
-		onSelectStudents(values)
-	}
-	const teacherOnchange = (values) => {
-		setStudentSelected(values)
-		onSelectTeachers(values)
-	}
 	const dataFetch = allTest?.map((obj, index) => ({
 		name: obj.name,
 		key: (index + 1).toString(),
@@ -456,8 +481,6 @@ const UpdateExamClassInfoForm = ({
 		code: obj.code,
 		id: obj.id,
 	}));
-	console.log("st", studentSelected);
-	console.log("te", teacherSelected);
 	return (
 		<div className="exam-class-info">
 			<p className="info-header">{infoHeader}</p>
@@ -475,7 +498,7 @@ const UpdateExamClassInfoForm = ({
 					rules={[
 						{
 							required: true,
-							message: errorMessange,
+							message: "Chưa điền mã lớp thi",
 						},
 					]}
 				>
@@ -488,7 +511,7 @@ const UpdateExamClassInfoForm = ({
 					rules={[
 						{
 							required: true,
-							message: errorMessange,
+							message: "Chưa điền phòng thi",
 						},
 					]}
 				>
@@ -515,19 +538,13 @@ const UpdateExamClassInfoForm = ({
 						open={false}
 						className="exam-class-students"
 						mode="multiple"
-						showSearch
-						allowClear
 						loading={studentLoading}
 						placeholder="Chọn học sinh"
-						onChange={studentOnchange}
 						onClick={() => setOpenStudentModal(true)}
-						filterOption={(input, option) =>
-							(option?.label.toLowerCase() ?? "").includes(
-								input.toLowerCase()
-							)
-						}
 						defaultValue={studentSelected}
 						options={getOptions(allStudent, true)}
+						removeIcon={null}
+						suffixIcon={null}
 					/>
 				</Form.Item>
 				<Form.Item name="lstSupervisorId" label="Giám thị">
@@ -536,19 +553,13 @@ const UpdateExamClassInfoForm = ({
 						open={false}
 						className="exam-class-teachers"
 						mode="multiple"
-						showSearch
-						allowClear
-						onChange={teacherOnchange}
 						loading={teacherLoading}
-						filterOption={(input, option) =>
-							(option?.label.toLowerCase() ?? "").includes(
-								input.toLowerCase()
-							)
-						}
 						onClick={() => setOpenTeacherModal(true)}
 						defaultValue={teacherSelected}
 						placeholder="Chọn giám thị"
 						options={getOptions(allTeacher, true)}
+						removeIcon={null}
+						suffixIcon={null}
 					/>
 				</Form.Item>
 				<Form.Item
@@ -589,25 +600,25 @@ const UpdateExamClassInfoForm = ({
 					></DatePicker>
 				</Form.Item>
 				<Form.Item
-					name="code"
+					name="testId"
 					label="Đề thi"
 					colon={true}
 					rules={[
 						{
 							required: true,
-							message: errorMessange,
+							message: "Chưa chọn bộ đề thi",
 						},
 					]}
 				>
 					<div className="test-select">
 						<Popover
-							content={testValue}
+							content={testDisplay ?? testValue}
 							placement="bottom"
 							trigger="hover"
 						>
 							<Input
 								placeholder="Chọn đề thi"
-								value={testValue}
+								value={testDisplay ?? testValue}
 							/>
 						</Popover>
 
@@ -627,7 +638,7 @@ const UpdateExamClassInfoForm = ({
 				</Form.Item>
 			</Form>
 			<Modal
-				className="exam-class-test-modal"
+				className="exam-class-modal"
 				open={openModal}
 				title="Danh sách đề thi"
 				onOk={() => setOpenModal(false)}
@@ -679,13 +690,14 @@ const UpdateExamClassInfoForm = ({
 						pageSize: pagination.pageSize,
 						showSizeChanger: true,
 						pageSizeOptions: ["10", "20", "50", "100"],
+						locale: customPaginationText,
 						showQuickJumper: true,
 						showTotal: (total, range) => (
 							<span>
 								<strong>
 									{range[0]}-{range[1]}
 								</strong>{" "}
-								of <strong>{total}</strong> items
+								trong <strong>{total}</strong> danh sách
 							</span>
 						),
 						onChange: (page, pageSize) => {
@@ -705,7 +717,7 @@ const UpdateExamClassInfoForm = ({
 				/>
 			</Modal>
 			<Modal
-				className="exam-class-test-modal"
+				className="exam-class-modal"
 				open={openStudentModal}
 				title="Danh sách học sinh"
 				onOk={() => setOpenStudentModal(false)}
@@ -725,13 +737,14 @@ const UpdateExamClassInfoForm = ({
 						pageSize: paginationStudent.pageSize,
 						showSizeChanger: true,
 						pageSizeOptions: ["10", "20", "50", "100"],
+						locale: customPaginationText,
 						showQuickJumper: true,
 						showTotal: (total, range) => (
 							<span>
 								<strong>
 									{range[0]}-{range[1]}
 								</strong>{" "}
-								of <strong>{total}</strong> items
+								trong <strong>{total}</strong> danh sách
 							</span>
 						),
 						onChange: (page, pageSize) => {
@@ -751,7 +764,7 @@ const UpdateExamClassInfoForm = ({
 				/>
 			</Modal>
 			<Modal
-				className="exam-class-test-modal"
+				className="exam-class-modal"
 				open={openTeacherModal}
 				title="Danh sách giáo viên"
 				onOk={() => setOpenTeacherModal(false)}
@@ -771,13 +784,14 @@ const UpdateExamClassInfoForm = ({
 						pageSize: paginationTeacher.pageSize,
 						showSizeChanger: true,
 						pageSizeOptions: ["10", "20", "50", "100"],
+						locale: customPaginationText,
 						showQuickJumper: true,
 						showTotal: (total, range) => (
 							<span>
 								<strong>
 									{range[0]}-{range[1]}
 								</strong>{" "}
-								of <strong>{total}</strong> items
+								trong <strong>{total}</strong> danh sách
 							</span>
 						),
 						onChange: (page, pageSize) => {

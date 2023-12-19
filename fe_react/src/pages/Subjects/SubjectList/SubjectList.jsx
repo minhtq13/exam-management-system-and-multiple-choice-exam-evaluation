@@ -25,6 +25,7 @@ import "./SubjectList.scss";
 import ModalPopup from "../../../components/ModalPopup/ModalPopup";
 import { deleteSubjectsService } from "../../../services/subjectsService";
 import { updateChapterService } from "../../../services/chapterServices";
+import { customPaginationText } from "../../../utils/tools";
 
 const SubjectList = () => {
 	const initialParam = {
@@ -413,13 +414,14 @@ const SubjectList = () => {
 						pageSize: pagination.pageSize,
 						showSizeChanger: true,
 						pageSizeOptions: ["10", "20", "50", "100"],
+						locale: customPaginationText,
 						showQuickJumper: true,
 						showTotal: (total, range) => (
 							<span>
 								<strong>
 									{range[0]}-{range[1]}
 								</strong>{" "}
-								of <strong>{total}</strong> items
+								trong <strong>{total}</strong> danh sách
 							</span>
 						),
 						onChange: (page, pageSize) => {

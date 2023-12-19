@@ -17,6 +17,7 @@ import useExamClasses from "../../../hooks/useExamClass";
 import { deleteExamClassService } from "../../../services/examClassServices";
 import useImportExport from "../../../hooks/useImportExport";
 import useCombo from "../../../hooks/useCombo";
+import { customPaginationText } from "../../../utils/tools";
 
 const ExamClassList = () => {
 	const initialParam = {
@@ -524,13 +525,14 @@ const ExamClassList = () => {
 						pageSize: pagination.pageSize,
 						showSizeChanger: true,
 						pageSizeOptions: ["10", "20", "50", "100"],
+						locale: customPaginationText,
 						showQuickJumper: true,
 						showTotal: (total, range) => (
 							<span>
 								<strong>
 									{range[0]}-{range[1]}
 								</strong>{" "}
-								of <strong>{total}</strong> items
+								trong <strong>{total}</strong> danh sách
 							</span>
 						),
 						onChange: (page, pageSize) => {
@@ -572,7 +574,8 @@ const ExamClassList = () => {
 						</div>
 						<Tabs
 							defaultActiveKey="STUDENT"
-							items={tabsOptions}
+							danh
+							sách={tabsOptions}
 							onChange={(key) => setRoleType(key)}
 						/>
 					</div>

@@ -13,6 +13,7 @@ const useTest = () => {
 	const [pagination, setPagination] = useState({});
 	const [testSetDetail, setTestSetDetail] = useState({});
 	const [detailLoading, setDetailLoading] = useState(false);
+	const [editLoading, setEditLoading] = useState(false);
 
 	const getAllTests = (param) => {
 		setTableLoading(true);
@@ -43,12 +44,15 @@ const useTest = () => {
 	};
 
 	const updateTestSet = (param) => {
+		setEditLoading(true);
 		updateTestSetService(
 			param,
 			(res) => {
+				setEditLoading(false);
 				notify.success("Cập nhật đề thi thành công!");
 			},
 			(error) => {
+				setEditLoading(false);
 				notify.error("Lỗi cập nhật đề thi!");
 			}
 		);
@@ -76,6 +80,7 @@ const useTest = () => {
 		getTestSetDetail,
 		testSetDetail,
 		detailLoading,
+		editLoading,
 	};
 };
 export default useTest;

@@ -20,8 +20,7 @@ const ExamClassAdd = () => {
 				),
 				testId: selectedTestId,
 				lstStudentId: lstStudentId,
-				lstSupervisorId: lstSupervisorId
-
+				lstSupervisorId: lstSupervisorId,
 			},
 			(res) => {
 				setLoading(false);

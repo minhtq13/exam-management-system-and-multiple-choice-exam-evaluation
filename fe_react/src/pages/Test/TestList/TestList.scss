@@ -88,6 +88,20 @@
 
     .ant-modal-body {
       height: 70vh;
+      overflow-y: scroll;
+    }
+  }
+}
+
+.list-test-modal {
+  height: 70vh;
+
+  .ant-modal-content {
+    height: 70vh;
+
+    .ant-modal-body {
+      height: 55vh;
+      overflow-y: scroll;
     }
   }
 }

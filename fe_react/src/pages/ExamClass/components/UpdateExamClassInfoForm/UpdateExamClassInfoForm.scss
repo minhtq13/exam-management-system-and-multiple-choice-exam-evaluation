@@ -5,6 +5,18 @@
     color: var(--hust-color);
     padding: 20px 0px;
   }
+
+  .ant-select-selection-overflow {
+    max-height: 150px;
+    overflow-y: scroll;
+  }
+
+  .exam-class-students,
+  .exam-class-teachers {
+    .ant-select-selector {
+      padding-inline-end: 2px !important;
+    }
+  }
 }
 
 .info-exam-class-form {
@@ -146,6 +158,16 @@
   font-weight: bold;
 }
 
-.exam-class-test-modal {
+.exam-class-modal {
   min-width: 50vw;
+  height: 70vh;
+
+  .ant-modal-content {
+    height: 70vh;
+
+    .ant-modal-body {
+      height: 55vh;
+      overflow-y: scroll;
+    }
+  }
 }

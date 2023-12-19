@@ -1,5 +1,6 @@
 @import "normalize.css";
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;1,100;1,300;1,400&display=swap');
+
 :root {
   // Layout
   --margin-top-content: 75px;
@@ -91,17 +92,4 @@ button:focus {
 
 .btn-info:active {
   background-color: #ffffff !important;
-}
-
-.ant-modal {
-  height: 70vh;
-
-  .ant-modal-content {
-    height: 70vh;
-
-    .ant-modal-body {
-      height: 55vh;
-      overflow-y: scroll;
-    }
-  }
 }
