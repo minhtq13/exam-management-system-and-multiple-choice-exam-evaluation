@@ -205,6 +205,7 @@ const SubjectList = () => {
 			dataIndex: "code",
 			key: "code",
 			...getColumnSearchProps("code"),
+			width: 200,
 		},
 		{
 			title: "Tên học phần",
@@ -213,11 +214,13 @@ const SubjectList = () => {
 			// eslint-disable-next-line jsx-a11y/anchor-is-valid
 			render: (text) => <a>{text}</a>,
 			...getColumnSearchProps("title"),
+			width: 500,
 		},
 		{
 			title: "Số tín chỉ",
 			dataIndex: "credit",
 			key: "credit",
+			width: 150,
 		},
 		{
 			title: "Thao tác",
@@ -402,6 +405,8 @@ const SubjectList = () => {
 			</div>
 			<div className="subject-list-wrapper">
 				<Table
+					scroll={{ y: 575 }}
+					size="middle"
 					className="subject-list-table"
 					columns={columns}
 					dataSource={dataFetch}

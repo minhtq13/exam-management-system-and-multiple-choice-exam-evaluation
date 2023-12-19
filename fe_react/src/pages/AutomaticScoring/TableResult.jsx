@@ -97,58 +97,57 @@ const TableResult = ({ resultAI }) => {
 				return acc;
 			}, []);
 
-			const newDataTable = resultAI.map((item, key) => {
-				const formatDataTable = {
-					stt: key + 1,
-					examClassCode: item.examClassCode,
-					studentCode: item.studentCode,
-					testCode: item.testCode,
-					key: generateRandomSixDigitNumber(),
-					totalScore: item.totalScore,
-				};
-				for (let j = 0; j < numberAnswer; j++) {
-					formatDataTable[`answer${j + 1}`] =
-						item.details[j].selectedAnswers;
-				}
-				return formatDataTable;
-			});
-			setTestCodeFilter(listTestCode);
-			setDataTable(newDataTable);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [resultAI]);
-	const [pageSize, setPageSize] = useState(10);
-	const renderTable = useMemo(() => {
-		return (
-			<Table
-				className="table-ai"
-				columns={columns}
-				dataSource={dataTable}
-				scroll={{ x: 1500, y: 600 }}
-				pagination={{
-					pageSize: pageSize,
-					total: dataTable.length,
-					showTotal: (total, range) => (
-						<span>
-							<strong>
-								{range[0]}-{range[1]}
-							</strong>{" "}
-							trong <strong>{total}</strong> danh sách
-						</span>
-					),
-					showSizeChanger: true,
-					pageSizeOptions: ["10", "20", "50", "100"],
-					locale: customPaginationText,
-					onChange: (page, pageSize) => {},
-					onShowSizeChange: (current, size) => {
-						setPageSize(size);
-					},
-				}}
-			/>
-		);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dataTable]);
-	return <div className="table-result-component">{renderTable}</div>;
+      const newDataTable = resultAI.map((item, key) => {
+        const formatDataTable = {
+          stt: key + 1,
+          examClassCode: item.examClassCode,
+          studentCode: item.studentCode,
+          testCode: item.testCode,
+          key: generateRandomSixDigitNumber(),
+          totalScore: item.totalScore,
+        };
+        for (let j = 0; j < numberAnswer; j++) {
+          formatDataTable[`answer${j + 1}`] = item.details[j].selectedAnswers;
+        }
+        return formatDataTable;
+      });
+      setTestCodeFilter(listTestCode);
+      setDataTable(newDataTable);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resultAI]);
+  const [pageSize, setPageSize] = useState(10);
+  const renderTable = useMemo(() => {
+    return (
+      <Table
+        className="table-ai"
+        columns={columns}
+        dataSource={dataTable}
+        scroll={{ x: 1500, y: 487 }}
+        size="middle"
+        pagination={{
+          pageSize: pageSize,
+          total: dataTable.length,
+          showTotal: (total, range) => (
+            <span>
+              <strong>
+                {range[0]}-{range[1]}
+              </strong>{" "}
+              of <strong>{total}</strong> items
+            </span>
+          ),
+          showSizeChanger: true,
+          pageSizeOptions: ["10", "20", "50", "100"],
+          onChange: (page, pageSize) => {},
+          onShowSizeChange: (current, size) => {
+            setPageSize(size);
+          },
+        }}
+      />
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataTable, pageSize]);
+  return <div className="table-result-component">{renderTable}</div>;
 };
 
 export default TableResult;
