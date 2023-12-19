@@ -14,8 +14,8 @@ import useNotify from "../../../hooks/useNotify";
 import useTeachers from "../../../hooks/useTeachers";
 import { setSelectedItem } from "../../../redux/slices/appSlice";
 import { deleteTeachersService } from "../../../services/teachersServices";
+import { convertGender } from "../../../utils/tools";
 import "./TeacherList.scss";
-import { convertGender, customPaginationText } from "../../../utils/tools";
 
 const TeacherList = () => {
   const initialParam = {

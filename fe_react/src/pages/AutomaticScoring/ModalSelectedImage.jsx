@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Modal, Select, Space, Table, Upload, message } from "antd";
 import React, { useEffect, useState } from "react";
@@ -5,23 +6,42 @@ import { useSelector } from "react-redux";
 import iconArrow from "../../assets/images/svg/arrow-under-header.svg";
 import { BASE_URL } from "../../config/apiPath";
 import "./ModalSelectedImage.scss";
+import ImageUpload from "./ImageUpload";
+import { getToken } from "../../utils/storage";
 const { Option } = Select;
 const columns = [
   {
     title: "TT",
     dataIndex: "key",
-    width: 100,
+    width: "10%",
+    align: "center",
+  },
+  {
+    title: "Ảnh",
+    width: "20%",
+    key: "action",
+    align: "center",
+    render: (_, record) => {
+      return (
+        <Space size="middle" style={{ cursor: "pointer" }}>
+          <img src={record.filePath} alt="" style={{ width: 40, height: 40 }} />
+        </Space>
+      );
+    },
   },
   {
     title: "Tên ảnh",
     dataIndex: "fileName",
-    width: 400,
+    width: "30%",
   },
   {
     title: "Loại ảnh",
     dataIndex: "fileExt",
+    width: "10%",
+    align: "center",
   },
   {
+    align: "center",
     title: "Thao tác",
     key: "action",
     render: (_, record) => {
@@ -87,83 +107,89 @@ const ModalSelectedImage = ({ loading, imgInFolder }) => {
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
     });
-  const props = {
-    name: "files",
-    listType: "picture",
-    multiple: true,
-    // method: "POST",
-    action: `${BASE_URL}/test-set/handled-answers/upload/${examClassCode}`,
-    beforeUpload: (file) => {
-      const isPNG =
-        file.type === "image/png" || file.type === "image/jpg" || file.type === "image/jpeg";
-      if (!isPNG) {
-        message.error(`${file.name} không phải file ảnh!`);
-      }
-      return isPNG || Upload.LIST_IGNORE;
-    },
-    onChange(info) {
-      if (info.file.status !== "uploading") {
-        setUrlImg(info.file.name);
-      }
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} tải lên thành công`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file đã tồn tại hoặc kết nối bị gián đoạn`);
-      }
-    },
-  };
-  const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage(file.url || file.preview);
-    setPreviewOpen(true);
-    setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf("/") + 1));
-  };
-  const options = [
-    { label: "File", value: "file" },
-    { label: "Directory", value: "directory" },
-  ];
+  // const token = getToken()
+  // const props = {
+  //   name: "files",
+  //   listType: "picture",
+  //   // multiple: true,
+  //   // method: "POST",
+  //   action: `${BASE_URL}/e-learning/api/test-set/handled-answers/upload/${examClassCode}`,
+  //   headers: {
+  //     Authorization: `Bearer ${token}`
+  //   },
+  //   beforeUpload: (file) => {
+  //     const isPNG =
+  //       file.type === "image/png" || file.type === "image/jpg" || file.type === "image/jpeg";
+  //     if (!isPNG) {
+  //       message.error(`${file.name} không phải file ảnh!`);
+  //     }
+  //     return isPNG || Upload.LIST_IGNORE;
+  //   },
+  //   onChange(info) {
+  //     if (info.file.status !== "uploading") {
+  //       setUrlImg(info.file.name);
+  //     }
+  //     if (info.file.status === "done") {
+  //       message.success(`${info.file.name} tải lên thành công`);
+  //     } else if (info.file.status === "error") {
+  //       message.error(`${info.file.name} file đã tồn tại hoặc kết nối bị gián đoạn`);
+  //     }
+  //   },
+  // };
+  // const handlePreview = async (file) => {
+  //   if (!file.url && !file.preview) {
+  //     file.preview = await getBase64(file.originFileObj);
+  //   }
+  //   setPreviewImage(file.url || file.preview);
+  //   setPreviewOpen(true);
+  //   setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf("/") + 1));
+  // };
+  // const options = [
+  //   { label: "File", value: "file" },
+  //   { label: "Directory", value: "directory" },
+  // ];
 
-  const [uploadType, setUploadType] = useState(options[0].value);
+  // const [uploadType, setUploadType] = useState(options[0].value);
 
-  const handleChange = (value) => {
-    setUploadType(value);
-  };
+  // const handleChange = (value) => {
+  //   setUploadType(value);
+  // };
 
-  const uploadBlock = (
-    <div>
-      <Space>
-        <div className="detail-button">Upload theo: </div>
-        <Select
-          optionLabelProp="label"
-          onChange={handleChange}
-          className="custom-select-antd"
-          suffixIcon={<img src={iconArrow} alt="" />}
-          style={{ width: 150, marginRight: 20 }}
-          defaultValue={uploadType}
-        >
-          {options.map((item, index) => {
-            return (
-              <Option value={item.value} label={item.label} key={index}>
-                <div className="d-flex item_DropBar dropdown-option">
-                  <div className="dropdown-option-item text-14">{item.label}</div>
-                </div>
-              </Option>
-            );
-          })}
-        </Select>
-      </Space>
-      <Upload {...props} onPreview={handlePreview} directory={uploadType === "file" ? false : true}>
-        <Button icon={<UploadOutlined />} style={{ minWidth: 180 }}>
-          Tải {uploadType === "file" ? "file" : "thư mục"} ảnh lên
-        </Button>
-      </Upload>
-      <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancelPreview}>
-        <img alt="example" style={{ width: "100%" }} src={previewImage} />
-      </Modal>
-    </div>
-  );
+  // const uploadBlock = (
+  //   <div>
+  //     <Space>
+  //       <div className="detail-button">Upload theo: </div>
+  //       <Select
+  //         optionLabelProp="label"
+  //         onChange={handleChange}
+  //         className="custom-select-antd"
+  //         suffixIcon={<img src={iconArrow} alt="" />}
+  //         style={{ width: 150, marginRight: 20 }}
+  //         defaultValue={uploadType}
+  //       >
+  //         {options.map((item, index) => {
+  //           return (
+  //             <Option value={item.value} label={item.label} key={index}>
+  //               <div className="d-flex item_DropBar dropdown-option">
+  //                 <div className="dropdown-option-item text-14">{item.label}</div>
+  //               </div>
+  //             </Option>
+  //           );
+  //         })}
+  //       </Select>
+  //     </Space>
+  //     <Upload {...props} onPreview={handlePreview} directory={uploadType === "file" ? false : true}>
+  //       <Button icon={<UploadOutlined />} style={{ minWidth: 180 }}>
+  //         Tải {uploadType === "file" ? "file" : "thư mục"} ảnh lên
+  //       </Button>
+  //     </Upload>
+
+  //     <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancelPreview}>
+  //       <img alt="example" style={{ width: "100%" }} src={previewImage} />
+  //     </Modal>
+  //     <ImageUpload/>
+  //   </div>
+  // );
 
   return (
     <div className="modal-selected-image-component">
@@ -190,7 +216,7 @@ const ModalSelectedImage = ({ loading, imgInFolder }) => {
       >
         <div>
           <div style={{ marginBottom: 16 }} className="header-table-selected-image">
-            <div className="block-upload">{uploadBlock}</div>
+            <div className="block-upload"><ImageUpload/></div>
           </div>
           <Table
             scroll={{

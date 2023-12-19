@@ -106,11 +106,13 @@ const UpdateExamClassInfoForm = ({
 		if (openTeacherModal) {
 			getAllTeachers(teacherParam);
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [teacherParam, openTeacherModal]);
 	useEffect(() => {
 		if (openStudentModal) {
 			getAllStudents(studentParam);
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [studentParam, openStudentModal]);
 	useEffect(() => {
 		getAllSemesters({ search: "" });

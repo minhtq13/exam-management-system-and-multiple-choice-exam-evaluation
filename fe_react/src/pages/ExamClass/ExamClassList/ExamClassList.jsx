@@ -1,23 +1,22 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
+import { SearchOutlined } from "@ant-design/icons";
+import { Button, Input, Modal, Select, Space, Table, Tabs } from "antd";
+import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import "./ExamClassList.scss";
-import { Button, Input, Modal, Space, Table, Tabs, Select } from "antd";
-import exportIcon from "../../../assets/images/svg/export-icon.svg";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import deleteIcon from "../../../assets/images/svg/delete-icon.svg";
 import deletePopUpIcon from "../../../assets/images/svg/delete-popup-icon.svg";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import useNotify from "../../../hooks/useNotify";
-import { appPath } from "../../../config/appPath";
-import { useDispatch } from "react-redux";
-import { setSelectedItem } from "../../../redux/slices/appSlice";
+import exportIcon from "../../../assets/images/svg/export-icon.svg";
 import ModalPopup from "../../../components/ModalPopup/ModalPopup";
-import { SearchOutlined } from "@ant-design/icons";
-import useExamClasses from "../../../hooks/useExamClass";
-import { deleteExamClassService } from "../../../services/examClassServices";
-import useImportExport from "../../../hooks/useImportExport";
+import { appPath } from "../../../config/appPath";
 import useCombo from "../../../hooks/useCombo";
-import { customPaginationText } from "../../../utils/tools";
+import useExamClasses from "../../../hooks/useExamClass";
+import useImportExport from "../../../hooks/useImportExport";
+import useNotify from "../../../hooks/useNotify";
+import { setSelectedItem } from "../../../redux/slices/appSlice";
+import { deleteExamClassService } from "../../../services/examClassServices";
+import "./ExamClassList.scss";
 
 const ExamClassList = () => {
   const initialParam = {
