@@ -1,9 +1,40 @@
 .modal-selected-image {
   width: 55vw !important;
+  .ant-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .ant-modal-title {
+      font-size: 20px;
+    }
+  }
   .ant-modal-content {
-    height: 84vh !important;
+    height: 83vh !important;
   }
   .ant-modal-body {
-    height: 72vh !important;
+    height: 70vh !important;
+  }
+  .header-table-selected-image {
+    margin-bottom: 16px;
+    min-height: 150px;
+    .block-upload {
+      max-width: 100%;
+      overflow: auto;
+      padding-bottom: 8px;
+    }
+  }
+  .ant-pagination {
+    margin: 24px 0 !important;
+  }
+  .ant-modal-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    button {
+      min-width: 150px;
+      span {
+        font-size: 16px;
+      }
+    }
   }
 }

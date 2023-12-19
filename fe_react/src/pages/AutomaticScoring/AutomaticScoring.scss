@@ -162,12 +162,8 @@
             border-radius: 6px;
             outline: 1px solid #ccc;
           }
-          .ant-table-body {
-            min-height: 567px !important;
-            max-height: 567px !important;
-          }
           .ant-table-expanded-row-fixed {
-            min-height: 400px;
+            min-height: 460px;
           }
         }
       }
