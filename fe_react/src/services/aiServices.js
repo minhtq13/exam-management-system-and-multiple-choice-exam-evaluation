@@ -14,3 +14,6 @@ export const saveTableResultService = async (tempFileCode, params, successCallba
 export const getImgInFolderService = async (examClassCode, params, successCallback, errorCallback) => {
   await getRequest(`${apiPath.imgInFolder}/${examClassCode}`, params, successCallback, errorCallback);
 };
+export const deleteImgInFolderService = async (params, successCallback, errorCallback) => {
+  await postRequest(`${apiPath.deleteImgInFolder}`, params, successCallback, errorCallback);
+};

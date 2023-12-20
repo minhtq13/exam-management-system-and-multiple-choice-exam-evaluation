@@ -299,13 +299,15 @@ const ExamClassList = () => {
       dataIndex: "code",
       key: "code",
       ...getColumnSearchProps("code"),
-      width: 130,
+      width: "10%",
+      align: "center",
     },
     {
       title: "Kỳ thi",
       dataIndex: "semester",
       key: "semester",
-      width: 130,
+      width: "8%",
+      align: "center",
     },
     {
       title: "Phòng thi",
@@ -314,38 +316,44 @@ const ExamClassList = () => {
       // eslint-disable-next-line jsx-a11y/anchor-is-valid
       render: (text) => <a>{text}</a>,
       ...getColumnSearchProps("fullName"),
-      width: 130,
+      width: "10%",
+      align: "center",
     },
     {
       title: "Kỳ học",
       dataIndex: "semester",
       key: "semester",
-      width: 130,
+      width: "8%",
+      align: "center",
     },
     {
       title: "Môn thi",
       dataIndex: "subjectTitle",
       key: "subjectTitle",
-      width: 350,
+      width: "28%",
     },
     {
       title: "Ngày thi",
       dataIndex: "examineDate",
       key: "examineDate",
-      width: 130,
+      width: "10%",
+      align: "center",
     },
     {
       title: "Giờ thi",
       dataIndex: "examineTime",
       key: "examineTime",
-      width: 130,
+      width: "8%",
+      align: "center",
     },
     {
       title: "Thao tác",
       key: "action",
+      align: "center",
       render: (_, record) => (
         <Space size="middle" style={{ cursor: "pointer" }}>
           <Button
+            size="small"
             onClick={() => {
               setRecord(record);
               setClassId(record.id);
@@ -355,7 +363,7 @@ const ExamClassList = () => {
           >
             Xem chi tiết
           </Button>
-          <Button danger onClick={() => handleEdit(record)}>
+          <Button size="small" danger onClick={() => handleEdit(record)}>
             Sửa
           </Button>
         </Space>
@@ -473,7 +481,7 @@ const ExamClassList = () => {
       </div>
       <div className="exam-class-list-wrapper">
         <Table
-          scroll={{ y: 575 }}
+          scroll={{ y: 488 }}
           size="middle"
           className="exam-class-list-table"
           columns={columns}

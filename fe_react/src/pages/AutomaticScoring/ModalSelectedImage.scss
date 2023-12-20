@@ -17,6 +17,11 @@
   .header-table-selected-image {
     margin-bottom: 16px;
     min-height: 50px;
+    .delete-button {
+      justify-content: flex-end;
+      display: flex;
+      margin-right: 24px;  
+    }
     .block-upload {
       max-width: 100%;
       overflow: auto;

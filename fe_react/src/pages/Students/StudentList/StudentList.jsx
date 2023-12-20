@@ -161,7 +161,8 @@ const StudentList = () => {
 			dataIndex: "code",
 			key: "code",
 			...getColumnSearchProps("code"),
-			width: "13%",
+			width: "12%",
+      align: "center",
 		},
 		{
 			title: "Họ tên",
@@ -177,6 +178,7 @@ const StudentList = () => {
 			dataIndex: "courseNum",
 			key: "courseNum",
 			width: "10%",
+      align: "center",
 			filters: [
 				{
 					text: "64",
@@ -207,13 +209,14 @@ const StudentList = () => {
 			title: "Email",
 			dataIndex: "email",
 			key: "email",
-			width: "25%",
+			width: "22%",
 		},
 		{
 			title: "Giới tính",
 			key: "gender",
 			dataIndex: "gender",
-			width: "13%",
+			width: "12%",
+      align: "center",
 			render: (_, { gender }) => (
 				<>
 					{gender.map((gender) => {
@@ -236,9 +239,10 @@ const StudentList = () => {
 		{
 			title: "Thao tác",
 			key: "action",
+      align: "center",
 			render: (_, record) => (
 				<Space size="middle" style={{ cursor: "pointer" }}>
-					<Button danger onClick={() => handleEdit(record)}>
+					<Button size="small" danger onClick={() => handleEdit(record)}>
 						Sửa
 					</Button>
 				</Space>
@@ -340,7 +344,7 @@ const StudentList = () => {
 			</div>
 			<div className="student-list-wrapper">
 				<Table
-					scroll={{ y: 575 }}
+					scroll={{ y: 488 }}
 					className="student-list-table"
 					size="middle"
 					columns={columns}

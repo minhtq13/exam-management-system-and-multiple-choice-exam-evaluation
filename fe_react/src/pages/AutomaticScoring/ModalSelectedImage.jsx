@@ -4,8 +4,11 @@ import { useSelector } from "react-redux";
 import ImageUpload from "./ImageUpload";
 import "./ModalSelectedImage.scss";
 import PreviewImageInFolder from "./PreviewImageInFolder";
+import deleteIcon from "../../assets/images/svg/delete-icon.svg";
+import useAI from "../../hooks/useAI";
 
 const ModalSelectedImage = ({ loading, imgInFolder }) => {
+  const { deleteImgInFolder } = useAI();
   const { examClassCode } = useSelector((state) => state.appReducer);
   const [dataTable, setDataTable] = useState([]);
   const [open, setOpen] = useState(false);
@@ -58,7 +61,7 @@ const ModalSelectedImage = ({ loading, imgInFolder }) => {
       render: (_, record, index) => {
         return (
           <Space size="middle" style={{ cursor: "pointer" }}>
-              <PreviewImageInFolder  srcImage={record.filePath} imageName={record.fileName} />
+            <PreviewImageInFolder srcImage={record.filePath} imageName={record.fileName} />
           </Space>
         );
       },
@@ -66,29 +69,41 @@ const ModalSelectedImage = ({ loading, imgInFolder }) => {
     {
       title: "Tên ảnh",
       dataIndex: "fileName",
-      width: "30%",
+      width: "50%",
     },
     {
       title: "Loại ảnh",
       dataIndex: "fileExt",
-      width: "10%",
+      width: "20%",
       align: "center",
-    },
-    {
-      align: "center",
-      title: "Thao tác",
-      key: "action",
-      render: (_, record) => {
-        return (
-          <Space size="middle" style={{ cursor: "pointer" }}>
-            <Button size="small" danger>
-              Xoá ảnh
-            </Button>
-          </Space>
-        );
-      },
     },
   ];
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [lstFileName, setLstFileName] = useState([]);
+  const onSelectChange = (newSelectedRowKeys) => {
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+    selections: [Table.SELECTION_ALL, Table.SELECTION_NONE],
+    onSelect: (record, selected, selectedRows, nativeEvent) => {
+      if (selected) {
+        setLstFileName(selectedRows.map((item) => item.fileName));
+      } else {
+        setLstFileName([]);
+      }
+    },
+  };
+  const handleDeleteImage = () => {
+    const params = {
+      examClassCode: examClassCode,
+      lstFileName: lstFileName,
+    };
+    deleteImgInFolder(params)
+    setSelectedRowKeys([])
+  };
 
   return (
     <div className="modal-selected-image-component">
@@ -118,10 +133,22 @@ const ModalSelectedImage = ({ loading, imgInFolder }) => {
             <div className="block-upload">
               <ImageUpload />
             </div>
+            <div className="delete-button">
+              <Button
+                danger
+                style={{ display: "flex", alignItems: "center" }}
+                disabled={!selectedRowKeys.length}
+                onClick={handleDeleteImage}
+              >
+                <img src={deleteIcon} alt="Delete Icon" />
+                Delete
+              </Button>
+            </div>
           </div>
           <Table
+            rowSelection={rowSelection}
             scroll={{
-              y: 450,
+              y: 350,
             }}
             size="small"
             columns={columns}

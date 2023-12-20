@@ -146,7 +146,8 @@ const TeacherList = () => {
       dataIndex: "code",
       key: "code",
       ...getColumnSearchProps("code"),
-			width: 150,
+			width: "15%",
+      align: "center",
     },
     {
       title: "Họ và tên",
@@ -155,31 +156,27 @@ const TeacherList = () => {
       // eslint-disable-next-line jsx-a11y/anchor-is-valid
       render: (text) => <a>{text}</a>,
       ...getColumnSearchProps("name"),
-			width: 300,
+			width: "25%",
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
-			width: 300,
+			width: "22%",
     },
     {
       title: "Số điện thoại",
       dataIndex: "phoneNumber",
       key: "phoneNumber",
-			width: 150,
-    },
-    {
-      title: "Ngày sinh",
-      dataIndex: "birthDate",
-      key: "birthDate",
-			width: 150,
+      align: "center",
+			width: "10%",
     },
     {
       title: "Giới tính",
       key: "gender",
-			width: 150,
+      width: "10%",
       dataIndex: "gender",
+      align: "center",
       render: (_, { gender }) => (
         <>
           {gender.map((gender) => {
@@ -212,9 +209,10 @@ const TeacherList = () => {
     {
       title: "Thao tác",
       key: "action",
+      align: "center",
       render: (_, record) => (
         <Space size="middle" style={{ cursor: "pointer" }}>
-          <Button danger onClick={() => handleEdit(record)}>
+          <Button size="small" danger onClick={() => handleEdit(record)}>
             Sửa
           </Button>
         </Space>
@@ -227,7 +225,6 @@ const TeacherList = () => {
     name: obj.lastName + " " + obj.firstName,
     email: obj.email,
     phoneNumber: obj.phoneNumber,
-    birthDate: obj.birthDate,
     gender: [obj.gender],
     code: obj.code,
     id: obj.id,
@@ -305,7 +302,7 @@ const TeacherList = () => {
       </div>
       <div className="teacher-list-wrapper">
         <Table
-					scroll={{ y: 575 }}
+					scroll={{ y: 488 }}
 					size="middle"
           className="teacher-list-table"
           columns={columns}

@@ -205,7 +205,8 @@ const SubjectList = () => {
 			dataIndex: "code",
 			key: "code",
 			...getColumnSearchProps("code"),
-			width: 200,
+			width: "15%",
+      align: "center",
 		},
 		{
 			title: "Tên học phần",
@@ -214,17 +215,19 @@ const SubjectList = () => {
 			// eslint-disable-next-line jsx-a11y/anchor-is-valid
 			render: (text) => <a>{text}</a>,
 			...getColumnSearchProps("title"),
-			width: 500,
+			width: "30%",
 		},
 		{
 			title: "Số tín chỉ",
 			dataIndex: "credit",
 			key: "credit",
-			width: 150,
+			width: "10%",
+			align: "center"
 		},
 		{
 			title: "Thao tác",
 			key: "action",
+			align: "center",
 			render: (_, record) => (
 				<Space size="middle" style={{ cursor: "pointer" }}>
 					<Button danger onClick={() => handleEdit(record)}>
@@ -274,8 +277,9 @@ const SubjectList = () => {
 		{
 			title: "Chương",
 			dataIndex: "orders",
-			width: "10%",
+			width: "20%",
 			editable: true,
+			align: "center"
 		},
 		{
 			title: "Nội dung",
@@ -286,6 +290,7 @@ const SubjectList = () => {
 		{
 			title: "Thao tác",
 			dataIndex: "action",
+			align: "center",
 			render: (_, record) => {
 				const editable = isEditing(record);
 				return editable ? (
@@ -445,6 +450,7 @@ const SubjectList = () => {
 					}}
 				/>
 				<Modal
+					className="subject-list-content-modal"
 					open={openModal}
 					title="Nội dung"
 					onOk={() => navigate(`${appPath.subjectView}/${subjectId}`)}
@@ -461,6 +467,7 @@ const SubjectList = () => {
 				>
 					<Form form={form} component={false}>
 						<Table
+							scroll={{ y: 467 }}
 							loading={infoLoading}
 							components={{
 								body: {

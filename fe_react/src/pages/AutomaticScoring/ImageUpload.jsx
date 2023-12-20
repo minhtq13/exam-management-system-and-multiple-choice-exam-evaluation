@@ -52,7 +52,7 @@ const ImageUpload = () => {
   }
   return (
     <div className='image-upload-component'>
-      <div>Upload file ảnh:</div>
+      <div style={{marginRight: 12}}>Upload file ảnh:</div>
       <input type="file" onChange={handleImageChange} accept="image/*" multiple className='input-upload'/>
       {selectedImages.length > 0 && (
         <div>

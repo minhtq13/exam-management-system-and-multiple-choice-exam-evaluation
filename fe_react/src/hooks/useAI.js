@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { getImgInFolderService, getModelAIService, resetTableResultService, saveTableResultService } from "../services/aiServices";
+import { deleteImgInFolderService, getImgInFolderService, getModelAIService, resetTableResultService, saveTableResultService } from "../services/aiServices";
 import useNotify from "./useNotify";
+import { useDispatch } from "react-redux";
+import { setRefreshTableImage } from "../redux/slices/refreshSlice";
 
 const useAI = () => {
   const notify = useNotify();
+  const dispatch = useDispatch()
   const [resultAI, setResultAI] = useState([]);
   const [tempFileCode, setTempFileCode] = useState();
   const [imgInFolder, setImgInFolder] = useState([]);
@@ -67,6 +70,18 @@ const useAI = () => {
       }
     );
   }
+  const deleteImgInFolder = (payload) => {
+    deleteImgInFolderService(
+      payload,
+      (res) => {
+        notify.success("Xoá thành công!");
+        dispatch(setRefreshTableImage(Date.now()))
+      },
+      (err) => {
+        notify.warning("Xoá không thành công!");
+      }
+    );
+  }
 
   return {
     resultAI,
@@ -78,6 +93,7 @@ const useAI = () => {
     getImgInFolder,
     imgInFolder,
     setImgInFolder,
+    deleteImgInFolder,
     loading
   };
 };

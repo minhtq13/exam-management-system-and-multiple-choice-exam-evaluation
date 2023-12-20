@@ -17,6 +17,7 @@ export const apiPath = {
 	resetTableResult: BASE_URL + "/test-set/scoring/result",
 	saveTableResult: BASE_URL + "/test-set/scoring/result",
 	imgInFolder: BASE_URL + "/test-set/handled-answers/uploaded",
+	deleteImgInFolder: BASE_URL + "/test-set/handled-answers/delete",
 	//Teacher:
 	allTeachers: BASE_URL + "/user/teacher/list",
 	pageTeacher: BASE_URL + "/user/teacher/page",

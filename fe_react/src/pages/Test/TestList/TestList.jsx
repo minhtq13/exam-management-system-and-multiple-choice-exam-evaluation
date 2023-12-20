@@ -82,39 +82,43 @@ const TestList = () => {
       title: "Học phần",
       dataIndex: "subjectName",
       key: "subjectName",
-			width: 400,
+			width: "30%",
     },
     {
       title: "Số câu hỏi",
       dataIndex: "questionQuantity",
       key: "questionQuantity",
-			width: 100,
+			width: "8%",
+      align: "center"
     },
     {
       title: "Thời gian làm bài (phút)",
       dataIndex: "duration",
       key: "duration",
-			width: 200,
+			width: "10%",
+      align: "center"
     },
     {
       title: "Ngày tạo",
       dataIndex: "createdAt",
       key: "createdAt",
-			width: 200,
+      width: "15%",
     },
     {
       title: "Ngày sửa đổi",
       dataIndex: "modifiedAt",
       key: "modifiedAt",
-			width: 200,
+      width: "15%",
     },
     {
       title: "Thao tác",
       key: "action",
+      align: "center",
       render: (_, record) => (
         <>
           <Space size="middle" style={{ cursor: "pointer" }}>
             <Button
+            size="small"
               danger
               onClick={() => {
                 setTestItem(record);
@@ -128,7 +132,7 @@ const TestList = () => {
             >
               Xem bộ đề
             </Button>
-            <Button onClick={() => handleCreate(record)}>Tạo bộ đề</Button>
+            <Button size="small" onClick={() => handleCreate(record)}>Tạo bộ đề</Button>
           </Space>
         </>
       ),
@@ -257,7 +261,7 @@ const TestList = () => {
           </div>
         </div>
         <Table
-					scroll={{ y: 575 }}
+					scroll={{ y: 488 }}
 					size="middle"
           className="test-list-table"
           columns={columns}
