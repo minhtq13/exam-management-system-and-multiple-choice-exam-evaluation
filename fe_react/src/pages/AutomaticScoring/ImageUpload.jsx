@@ -1,50 +1,69 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { BASE_URL } from '../../config/apiPath';
+import { setRefreshTableImage } from '../../redux/slices/refreshSlice';
+import { useDispatch } from 'react-redux';
+import "./ImageUpload.scss"
+import useNotify from '../../hooks/useNotify';
 
 const ImageUpload = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const dispatch = useDispatch();
+  const notify = useNotify()
+  const [selectedImages, setSelectedImages] = useState([]);
+  const isImage = (file) => {
+    return file.type.startsWith('image/');
+  };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
+    const files = e.target.files;
 
-    if (file) {
-      setSelectedImage(file);
+    if (files) {
+      const imageFiles = Array.from(files).filter(isImage);
+      setSelectedImages(imageFiles);
     } else {
-      setSelectedImage(null);
+      setSelectedImages([]);
     }
   };
 
   const handleImageUpload = async () => {
-    if (!selectedImage) {
-      console.error('No image selected');
+    if (selectedImages.length === 0) {
+      console.error('No images selected');
       return;
     }
-
     try {
       const formData = new FormData();
-      formData.append('files', selectedImage);
+      selectedImages.forEach((image, index) => {
+        formData.append("files", image);
+      });
+      // eslint-disable-next-line no-unused-vars
       const response = await axios.post(`${BASE_URL}/test-set/handled-answers/upload/128244`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('Upload success:', response.data);
+      notify.success('Upload thành công!')
+      dispatch(setRefreshTableImage(Date.now()))
     } catch (error) {
-      console.error('Error uploading image:', error);
+      notify.error('Upload thất bại!')
     }
   };
-
+  const handleClear = () => {
+    setSelectedImages([]);
+  }
   return (
-    <div>
-      <input type="file" onChange={handleImageChange} />
-      {selectedImage && (
+    <div className='image-upload-component'>
+      <div>Upload file ảnh:</div>
+      <input type="file" onChange={handleImageChange} accept="image/*" multiple className='input-upload'/>
+      {selectedImages.length > 0 && (
         <div>
-          {/* <h2>Ảnh đã chọn:</h2> */}
-          {/* <img src={URL.createObjectURL(selectedImage)} alt="Selected" style={{ maxWidth: '100%', maxHeight: '200px' }} /> */}
-          <button onClick={handleImageUpload}>Tải lên ảnh</button>
+          <button className="upload-btn" onClick={handleImageUpload}>Tải lên ảnh</button>
         </div>
       )}
+      {/* {selectedImages.length > 0 && (
+        <div>
+          <button className="clear-btn" onClick={handleClear}>Clear</button>
+        </div>
+      )} */}
     </div>
   );
 };

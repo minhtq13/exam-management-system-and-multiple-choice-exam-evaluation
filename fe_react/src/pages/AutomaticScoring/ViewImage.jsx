@@ -1,9 +1,9 @@
-import { Button, Modal, Tooltip } from "antd";
+import { Button, Modal } from "antd";
 import React, { useRef, useState } from "react";
 import Slider from "react-slick";
-import { wordLimitImg } from "../../utils/tools";
+import PreviewImage from "./PreviewImage";
+import PreviewOriginalImage from "./PreviewOriginalImage";
 import "./ViewImage.scss";
-import { HUST_COLOR } from "../../utils/constant";
 
 const ViewImage = ({ dataArray, index }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -31,13 +31,18 @@ const ViewImage = ({ dataArray, index }) => {
     setIsModalOpen(false);
   };
   const handleDownload = () => {
-    const downloadLink = document.createElement("a");
-    downloadLink.href = dataArray[currentSlide].handledScoredImg;
-    downloadLink.target = "_blank";
-    // downloadLink.download = 'downloaded_image.jpg';
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
+    fetch(dataArray[currentSlide].handledScoredImg)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const url = URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `handle-${dataArray[currentSlide].originalImgFileName}`;
+        document.body.appendChild(link);
+        link.click();
+        URL.revokeObjectURL(url);
+        link.remove();
+      });
   };
   return (
     <div className="view-image-component">
@@ -71,12 +76,10 @@ const ViewImage = ({ dataArray, index }) => {
                       TT: <strong className="value">{currentSlide + 1}/60</strong>
                     </div>
                     <div>
-                      Ảnh gốc:{" "}
-                      <Tooltip title={item.originalImgFileName} color={HUST_COLOR} key={HUST_COLOR}>
-                        <a href={item.originalImg} target="blank" style={{ fontSize: "16px"}}>
-                            {wordLimitImg(item.originalImgFileName, 8)}
-                        </a>
-                      </Tooltip>
+                      <PreviewOriginalImage
+                        srcImage={item.originalImg}
+                        imageName={item.originalImgFileName}
+                      />
                     </div>
                     <div>
                       Mã đề thi: <strong className="value">{item.testCode}</strong>
@@ -90,8 +93,7 @@ const ViewImage = ({ dataArray, index }) => {
                   </div>
                   <div className="block2">
                     <div>
-                      Tổng số câu hỏi:{" "}
-                      <strong className="value">{item.numTestSetQuestions}</strong>
+                      Tổng số câu hỏi: <strong className="value">{item.numTestSetQuestions}</strong>
                     </div>
                     <div>
                       Số câu khoanh: <strong className="value">{item.numMarkedAnswers}</strong>
@@ -117,7 +119,10 @@ const ViewImage = ({ dataArray, index }) => {
                   </div>
                 </div>
                 <div className="handle-img">
-                  <img src={item.handledScoredImg} alt="" />
+                  <PreviewImage
+                    srcImage={item.handledScoredImg}
+                    imageName={item.originalImgFileName}
+                  />
                 </div>
               </div>
             );

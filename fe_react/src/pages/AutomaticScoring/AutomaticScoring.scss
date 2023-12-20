@@ -1,4 +1,4 @@
-.exam-list-wrapper {
+.automatic-scoring-wrapper {
   .ant-upload-list-item-name {
     width: 120px;
   }
@@ -7,7 +7,7 @@
     width: 1096px;
     overflow: auto;
   }
-  .header-exam-list {
+  .header-automatic-scoring {
     padding: 12px;
     display: flex;
     align-items: center;
@@ -16,18 +16,6 @@
       font-size: 32px;
       font-weight: 600;
       color: var(--hust-color);
-    }
-    .block-button {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      .options {
-        color: var(--hust-color);
-        display: flex;
-        align-items: center;
-        border-radius: 6px;
-        gap: 6px;
-      }
     }
   }
   .block-select {
@@ -76,7 +64,7 @@
       .custom-select-antd {
         .ant-select-selection-search {
           input {
-            height: 42px !important;
+            height: 32px !important;
             padding-left: 6px;
             padding-right: 18px;
           }
@@ -85,7 +73,7 @@
           border: none;
           outline: none;
           padding: 7px 17px;
-          height: 42px;
+          height: 32px;
           background: #ffffff;
           border-radius: 6px;
           .ant-select-selection-item {
@@ -104,7 +92,7 @@
       }
     }
   }
-  .content-exam-list {
+  .content-automatic-scoring {
     min-height: 70vh;
     background-color: #ffffff;
     border-radius: 15px;

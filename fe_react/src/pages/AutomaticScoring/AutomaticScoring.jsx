@@ -19,6 +19,7 @@ const formItemLayout = {
 
 const AutomaticScoring = () => {
   const notify = useNotify();
+  const { refreshTableImage } = useSelector((state) => state.refreshReducer);
   const {
     getModelAI,
     resultAI,
@@ -37,7 +38,7 @@ const AutomaticScoring = () => {
       setImgInFolder([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [examClassCode]);
+  }, [examClassCode, refreshTableImage]);
   const handleSubmit = () => {
     if (imgInFolder.length > 0) {
       getModelAI(examClassCode);
@@ -55,12 +56,12 @@ const AutomaticScoring = () => {
   };
 
   return (
-    <div className="exam-list-wrapper">
-      <div className="header-exam-list">
+    <div className="automatic-scoring-wrapper">
+      <div className="header-automatic-scoring">
         <h2>Chấm điểm tự động</h2>
       </div>
       <HeaderSelect />
-      <div className="content-exam-list">
+      <div className="content-automatic-scoring">
         <Form name="validate_other" {...formItemLayout} onFinish={onFinish}>
           <div className="option">
             <ModalSelectedImage loading={loading} imgInFolder={imgInFolder} />
