@@ -406,7 +406,8 @@ public class TestSetServiceImpl implements TestSetService {
                 studentAnswerDetail.setIsEnabled(Boolean.TRUE);
                 studentAnswerDetail.setCreatedAt(new Date());
                 studentAnswerDetail.setCreatedBy(currentUserId);
-                if (!ObjectUtils.isEmpty(correctAnswerNo) && CollectionUtils.containsAll(correctAnswerNo, selectedAnsNo)) {
+                if (!ObjectUtils.isEmpty(correctAnswerNo) && !ObjectUtils.isEmpty(selectedAnsNo) &&
+                    CollectionUtils.containsAll(correctAnswerNo, selectedAnsNo)) {
                     studentAnswerDetail.setIsCorrected(Boolean.TRUE);
                     totalScore += correctAnswerDTO.getQuestionMark();
                     numCorrectAns++;
