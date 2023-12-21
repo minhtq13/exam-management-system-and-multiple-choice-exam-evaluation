@@ -21,6 +21,12 @@
       justify-content: flex-end;
       display: flex;
       margin-right: 24px;  
+      align-items: center;
+      button {
+        display: flex;
+        align-items: center;
+        padding: 0px 16px;
+      }
     }
     .block-upload {
       max-width: 100%;
@@ -40,6 +46,14 @@
       span {
         font-size: 16px;
       }
+    }
+  }
+}
+@media (min-width: 1600px) and (min-height: 830px)  { 
+  .table-select-image-in-folder {
+    .ant-table-body, .ant-table-tbody {
+      overflow-y: scroll !important;
+      max-height: 436px !important;
     }
   }
 }

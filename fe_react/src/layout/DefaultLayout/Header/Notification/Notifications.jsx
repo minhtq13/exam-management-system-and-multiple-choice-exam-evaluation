@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FaBell } from "react-icons/fa";
 import moment from "moment";
 import "./Notifications.scss";
+import AvatarMinhTQ from "../../../../assets/images/png-jpg/TaQuangMinh20193021.jpg"
 const notifications = [
 	{
 		id: 1,
@@ -193,9 +194,7 @@ const Notifications = () => {
 						}
 						avatar={
 							<Avatar
-								src={
-									"https://static1.dienanh.net/upload/202203/db8fd584-5830-40b0-b5e8-c42885d676b4.jpeg"
-								}
+								src={AvatarMinhTQ}
 							/>
 						}
 					/>

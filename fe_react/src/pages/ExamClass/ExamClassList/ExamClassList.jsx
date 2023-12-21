@@ -481,7 +481,7 @@ const ExamClassList = () => {
       </div>
       <div className="exam-class-list-wrapper">
         <Table
-          scroll={{ y: 488 }}
+          scroll={{ y: 490 }}
           size="middle"
           className="exam-class-list-table"
           columns={columns}

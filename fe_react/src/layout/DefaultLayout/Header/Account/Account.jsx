@@ -9,10 +9,11 @@ import { useNavigate } from "react-router-dom";
 import useAccount from "../../../../hooks/useAccount";
 import { clearInfoLocalStorage, getToken } from "../../../../utils/storage";
 import "./Account.scss";
+import AvatarMinhTQ from "../../../../assets/images/png-jpg/TaQuangMinh20193021.jpg"
+
 
 
 const Account = () => {
-	const pathAvatarSample = "https://static1.dienanh.net/upload/202203/db8fd584-5830-40b0-b5e8-c42885d676b4.jpeg"
 	const navigate = useNavigate();
 	const token = getToken()
 	const {getProfileUser, profileUser} = useAccount();
@@ -26,7 +27,7 @@ const Account = () => {
 			label: (
 				<div className="account-role menu-item">
 					<div>
-						<Avatar size={40} src={pathAvatarSample} />
+						<Avatar size={40} src={AvatarMinhTQ} />
 					</div>
 					<div className="name-role">
 						<span>{profileUser.name}</span>
@@ -82,7 +83,7 @@ const Account = () => {
 				trigger={["click"]}
 			>
 				<div>
-					<Avatar size={35} src={pathAvatarSample} />
+					<Avatar size={35} src={AvatarMinhTQ} />
 				</div>
 			</Dropdown>
 		</div>

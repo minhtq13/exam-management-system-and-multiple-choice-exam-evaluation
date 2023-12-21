@@ -45,7 +45,7 @@ const ModalSelectedImage = ({ loading, imgInFolder }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imgInFolder]);
 
-  const [pageSize, setPageSize] = useState(8);
+  const [pageSize, setPageSize] = useState(10);
   const columns = [
     {
       title: "TT",
@@ -110,7 +110,6 @@ const ModalSelectedImage = ({ loading, imgInFolder }) => {
       <Button
         type="primary"
         onClick={showModal}
-        loading={loading}
         disabled={!examClassCode}
         style={{ minWidth: 200 }}
       >
@@ -140,16 +139,15 @@ const ModalSelectedImage = ({ loading, imgInFolder }) => {
                 disabled={!selectedRowKeys.length}
                 onClick={handleDeleteImage}
               >
-                <img src={deleteIcon} alt="Delete Icon" />
-                Delete
+                <img src={deleteIcon} alt="Delete Icon" style={{marginRight: 8}} />
+                Xoá ảnh
               </Button>
             </div>
           </div>
           <Table
+            className="table-select-image-in-folder"
+            scroll={{ y: 330 }}
             rowSelection={rowSelection}
-            scroll={{
-              y: 350,
-            }}
             size="small"
             columns={columns}
             dataSource={dataTable}
@@ -165,7 +163,7 @@ const ModalSelectedImage = ({ loading, imgInFolder }) => {
                 </span>
               ),
               showSizeChanger: true,
-              pageSizeOptions: ["8", "15", "20", "50"],
+              pageSizeOptions: ["10", "20", "50", "100"],
               onChange: (page, pageSize) => {},
               onShowSizeChange: (current, size) => {
                 setPageSize(size);

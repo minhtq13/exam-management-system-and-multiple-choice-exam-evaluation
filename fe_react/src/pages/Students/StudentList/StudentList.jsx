@@ -344,7 +344,7 @@ const StudentList = () => {
 			</div>
 			<div className="student-list-wrapper">
 				<Table
-					scroll={{ y: 488 }}
+					scroll={{ y: 490 }}
 					className="student-list-table"
 					size="middle"
 					columns={columns}

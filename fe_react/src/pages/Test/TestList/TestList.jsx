@@ -261,7 +261,7 @@ const TestList = () => {
           </div>
         </div>
         <Table
-					scroll={{ y: 488 }}
+					scroll={{ y: 490 }}
 					size="middle"
           className="test-list-table"
           columns={columns}

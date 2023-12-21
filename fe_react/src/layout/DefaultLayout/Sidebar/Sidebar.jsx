@@ -7,10 +7,9 @@ import { Menu } from "antd";
 import { useEffect, useState } from "react";
 import { AiFillCopy, AiFillEdit } from "react-icons/ai";
 import { BsQuestionCircleFill } from "react-icons/bs";
-import { FaBookOpen, FaGraduationCap, FaRegCalendarAlt } from "react-icons/fa";
+import { FaBookOpen, FaGraduationCap } from "react-icons/fa";
 import { GiTeacher } from "react-icons/gi";
 import { MdOutlineSubject } from "react-icons/md";
-import { VscLibrary } from "react-icons/vsc";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Sidebar.scss";
@@ -129,16 +128,16 @@ const Sidebar = () => {
 					key: "automatic-scoring",
 					icon: <SearchOutlined style={{ color: "#ffff" }} />,
 				},
-				{
-					label: "Thời khóa biểu",
-					key: "time-table",
-					icon: <FaRegCalendarAlt style={{ color: "#ffff" }} />,
-				},
-				{
-					label: "Thư viện",
-					key: "library",
-					icon: <VscLibrary style={{ color: "#ffff" }} />,
-				},
+				// {
+				// 	label: "Thời khóa biểu",
+				// 	key: "time-table",
+				// 	icon: <FaRegCalendarAlt style={{ color: "#ffff" }} />,
+				// },
+				// {
+				// 	label: "Thư viện",
+				// 	key: "library",
+				// 	icon: <VscLibrary style={{ color: "#ffff" }} />,
+				// },
 			],
 		},
 		{

@@ -47,6 +47,7 @@ const ImageUpload = () => {
       notify.error('Upload thất bại!')
     }
   };
+  // eslint-disable-next-line no-unused-vars
   const handleClear = () => {
     setSelectedImages([]);
   }
