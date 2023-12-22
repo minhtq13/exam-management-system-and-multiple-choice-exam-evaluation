@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { BASE_URL } from '../../config/apiPath';
 import { setRefreshTableImage } from '../../redux/slices/refreshSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import "./ImageUpload.scss"
 import useNotify from '../../hooks/useNotify';
 
@@ -10,6 +10,7 @@ const ImageUpload = () => {
   const dispatch = useDispatch();
   const notify = useNotify()
   const [selectedImages, setSelectedImages] = useState([]);
+  const { examClassCode } = useSelector((state) => state.appReducer);
   const isImage = (file) => {
     return file.type.startsWith('image/');
   };
@@ -36,7 +37,7 @@ const ImageUpload = () => {
         formData.append("files", image);
       });
       // eslint-disable-next-line no-unused-vars
-      const response = await axios.post(`${BASE_URL}/test-set/handled-answers/upload/128244`, formData, {
+      const response = await axios.post(`${BASE_URL}/test-set/handled-answers/upload/${examClassCode}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

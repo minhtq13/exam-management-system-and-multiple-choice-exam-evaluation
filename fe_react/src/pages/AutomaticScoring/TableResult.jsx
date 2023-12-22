@@ -7,6 +7,7 @@ import ViewImage from "./ViewImage";
 
 const TableResult = ({ resultAI }) => {
   const [testCodeFilter, setTestCodeFilter] = useState([]);
+  const [studentCodeFilter, setStudentCodeFilter] = useState([]);
   const numberAnswer = 60;
   const columnsAnswer = [];
   for (var i = 0; i < numberAnswer; i++) {
@@ -49,6 +50,11 @@ const TableResult = ({ resultAI }) => {
       dataIndex: "studentCode",
       key: "studentCode",
       fixed: "left",
+      filters: studentCodeFilter,
+      filterSearch: true,
+      onFilter: (value, record) => {
+        return record.studentCode === value;
+      },
     },
     {
       title: "MĐT",
@@ -98,6 +104,14 @@ const TableResult = ({ resultAI }) => {
         return acc;
       }, []);
 
+      const listStudentCode = resultAI.reduce((acc, item, index) => {
+        const existingIndex = acc.findIndex((el) => el.value === item.studentCode);
+        if (existingIndex === -1) {
+          acc.push({ text: item.studentCode, value: item.studentCode });
+        }
+        return acc;
+      }, []);
+
       const newDataTable = resultAI.map((item, key) => {
         const formatDataTable = {
           stt: key + 1,
@@ -115,6 +129,7 @@ const TableResult = ({ resultAI }) => {
         return formatDataTable;
       });
       setTestCodeFilter(listTestCode);
+      setStudentCodeFilter(listStudentCode)
       setDataTable(newDataTable);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

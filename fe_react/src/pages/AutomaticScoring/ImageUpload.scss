@@ -16,6 +16,7 @@
     width: 340px;
     overflow: hidden;
     text-overflow: ellipsis;
+    border-radius: 5px;
   }
   
   input[type="file"]::file-selector-button:hover {
