@@ -66,7 +66,7 @@ const ExamClassEdit = () => {
 						examineTime: examClassInfo.examineTime
 							? dayjs(
 									examClassInfo.examineTime,
-									"YYYY-MM-DD HH:mm:ss"
+									"YYYY-MM-DD HH:mm"
 							  )
 							: "",
 						code: examClassInfo ? examClassInfo.code : null,
@@ -86,6 +86,8 @@ const ExamClassEdit = () => {
 							: []
 					}
 					loading={loading}
+
+					
 					onSelectTestId={(id) => setSelectedTestId(id)}
 					onSelectStudents={(ids) => setLstStudentId(ids)}
 					onSelectTeachers={(ids) => setLstSupervisorId(ids)}

@@ -223,6 +223,7 @@ const AddQuestions = () => {
 											]}
 										>
 											<ReactQuill
+												className="question-content-text"
 												theme="snow"
 												modules={modules}
 												formats={formats}

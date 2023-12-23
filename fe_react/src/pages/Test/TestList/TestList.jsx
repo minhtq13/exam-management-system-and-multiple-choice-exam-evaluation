@@ -82,7 +82,13 @@ const TestList = () => {
       title: "Học phần",
       dataIndex: "subjectName",
       key: "subjectName",
-			width: "30%",
+			width: "25%",
+    },
+    {
+      title: "Học kỳ",
+      dataIndex: "semester",
+      key: "semester",
+      align: "center"
     },
     {
       title: "Số câu hỏi",
@@ -102,13 +108,13 @@ const TestList = () => {
       title: "Ngày tạo",
       dataIndex: "createdAt",
       key: "createdAt",
-      width: "15%",
+      width: "10%",
     },
     {
       title: "Ngày sửa đổi",
       dataIndex: "modifiedAt",
       key: "modifiedAt",
-      width: "15%",
+      width: "10%",
     },
     {
       title: "Thao tác",
@@ -141,9 +147,10 @@ const TestList = () => {
   const dataFetch = allTest?.map((obj, index) => ({
     key: (index + 1).toString(),
     questionQuantity: obj.questionQuantity,
+    semester: obj.semester,
     subjectName: obj.subjectName,
-    createdAt: obj.createdAt,
-    modifiedAt: obj.modifiedAt,
+    createdAt: obj.createdAt.split(" ")[0],
+    modifiedAt: obj.modifiedAt.split(" ")[0],
     duration: obj.duration,
     id: obj.id,
     testSetNos: obj.testSetNos,
@@ -281,7 +288,7 @@ const TestList = () => {
                 <strong>
                   {range[0]}-{range[1]}
                 </strong>{" "}
-                of <strong>{total}</strong> items
+                trong <strong>{total}</strong> đề thi
               </span>
             ),
             onChange: (page, pageSize) => {

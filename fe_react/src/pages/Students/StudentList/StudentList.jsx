@@ -365,7 +365,7 @@ const StudentList = () => {
 								<strong>
 									{range[0]}-{range[1]}
 								</strong>{" "}
-								trong <strong>{total}</strong> danh sách
+								trong <strong>{total}</strong> học sinh
 							</span>
 						),
 						onChange: (page, pageSize) => {

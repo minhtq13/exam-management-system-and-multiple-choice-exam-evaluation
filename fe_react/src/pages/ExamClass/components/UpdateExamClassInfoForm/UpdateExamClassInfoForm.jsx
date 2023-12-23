@@ -597,8 +597,8 @@ const UpdateExamClassInfoForm = ({
 					]}
 				>
 					<DatePicker
-						format={"YYYY-MM-DD HH:mm:ss"}
-						showTime={{ format: "HH:mm:ss" }}
+						format={"YYYY-MM-DD HH:mm"}
+						showTime={{ format: "HH:mm" }}
 					></DatePicker>
 				</Form.Item>
 				<Form.Item
@@ -699,7 +699,7 @@ const UpdateExamClassInfoForm = ({
 								<strong>
 									{range[0]}-{range[1]}
 								</strong>{" "}
-								trong <strong>{total}</strong> danh sách
+								trong <strong>{total}</strong> lớp thi
 							</span>
 						),
 						onChange: (page, pageSize) => {
@@ -746,7 +746,7 @@ const UpdateExamClassInfoForm = ({
 								<strong>
 									{range[0]}-{range[1]}
 								</strong>{" "}
-								trong <strong>{total}</strong> danh sách
+								trong <strong>{total}</strong> học sinh
 							</span>
 						),
 						onChange: (page, pageSize) => {
@@ -793,7 +793,7 @@ const UpdateExamClassInfoForm = ({
 								<strong>
 									{range[0]}-{range[1]}
 								</strong>{" "}
-								trong <strong>{total}</strong> danh sách
+								trong <strong>{total}</strong> giáo viên
 							</span>
 						),
 						onChange: (page, pageSize) => {

@@ -431,7 +431,7 @@ const SubjectList = () => {
 								<strong>
 									{range[0]}-{range[1]}
 								</strong>{" "}
-								trong <strong>{total}</strong> danh sách
+								trong <strong>{total}</strong> môn học
 							</span>
 						),
 						onChange: (page, pageSize) => {

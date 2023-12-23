@@ -17,6 +17,7 @@ import useNotify from "../../../hooks/useNotify";
 import { setSelectedItem } from "../../../redux/slices/appSlice";
 import { deleteExamClassService } from "../../../services/examClassServices";
 import "./ExamClassList.scss";
+import { customPaginationText } from "../../../utils/tools";
 
 const ExamClassList = () => {
   const initialParam = {
@@ -496,12 +497,13 @@ const ExamClassList = () => {
             showSizeChanger: true,
             pageSizeOptions: ["10", "20", "50", "100"],
             showQuickJumper: true,
+            locale: customPaginationText,
             showTotal: (total, range) => (
               <span>
                 <strong>
                   {range[0]}-{range[1]}
                 </strong>{" "}
-                of <strong>{total}</strong> items
+                trong <strong>{total}</strong> lớp thi
               </span>
             ),
             onChange: (page, pageSize) => {
