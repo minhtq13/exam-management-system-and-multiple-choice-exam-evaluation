@@ -58,8 +58,8 @@ const TestList = () => {
   const semesterOptions =
     allSemester && allSemester.length > 0
       ? allSemester.map((item) => {
-          return { value: item.id, label: item.name };
-        })
+        return { value: item.id, label: item.name };
+      })
       : [];
   const subjectOnChange = (value) => {
     setParam({ ...param, subjectId: value });
@@ -82,7 +82,7 @@ const TestList = () => {
       title: "Học phần",
       dataIndex: "subjectName",
       key: "subjectName",
-			width: "25%",
+      width: "25%",
     },
     {
       title: "Học kỳ",
@@ -94,14 +94,14 @@ const TestList = () => {
       title: "Số câu hỏi",
       dataIndex: "questionQuantity",
       key: "questionQuantity",
-			width: "8%",
+      width: "8%",
       align: "center"
     },
     {
       title: "Thời gian làm bài (phút)",
       dataIndex: "duration",
       key: "duration",
-			width: "10%",
+      width: "10%",
       align: "center"
     },
     {
@@ -124,7 +124,7 @@ const TestList = () => {
         <>
           <Space size="middle" style={{ cursor: "pointer" }}>
             <Button
-            size="small"
+              size="small"
               danger
               onClick={() => {
                 setTestItem(record);
@@ -268,8 +268,8 @@ const TestList = () => {
           </div>
         </div>
         <Table
-					scroll={{ y: 490 }}
-					size="middle"
+          scroll={{ y: 490 }}
+          size="middle"
           className="test-list-table"
           columns={columns}
           dataSource={dataFetch}
@@ -282,6 +282,7 @@ const TestList = () => {
             pageSize: pagination.pageSize,
             showSizeChanger: true,
             pageSizeOptions: ["10", "20", "50", "100"],
+            locale: customPaginationText,
             showQuickJumper: true,
             showTotal: (total, range) => (
               <span>
@@ -307,6 +308,7 @@ const TestList = () => {
           }}
         />
         <Modal
+          className="list-test-modal"
           open={openModal}
           title="Danh sách mã đề"
           onOk={() => setOpenModal(false)}

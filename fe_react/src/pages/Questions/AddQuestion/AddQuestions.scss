@@ -88,7 +88,12 @@
 
       .topic-Text {
         width: 75%;
-        margin-right: 20px;
+
+        .ant-row {
+          .ant-form-item-control {
+            width: 88%;
+          }
+        }      
       }
     }
 
@@ -111,19 +116,27 @@
 
       .answer-list-text-checkbox {
         display: flex;
-        gap: 20px;
-        width: 96%;
-        align-items: center;
+        gap: 18px;
+        width: 100%;
+        align-items: flex-start;
         position: relative;
+        justify-content: space-between;
 
-        .ant-btn {
-          position: absolute;
-          top: 3px;
-          right: 40px;
+        .remove-answer {
+          height: calc(100% - 24px);
+          display: flex;
+          align-items: center;
+        }
+
+        .answer-checkbox{
+          display: flex;
+          align-items: center;
+          gap: 18px;
+          width: 75%;
         }
 
         .answers-item {
-          width: 75%;
+          width: 93%;
         }
       }
 
@@ -161,6 +174,7 @@
         height: 40px;
         cursor: pointer;
       }
+
       .ant-btn-default:disabled {
         background-color: #d9d9d9 !important;
         border: none;
@@ -191,6 +205,7 @@
     }
   }
 }
+
 .question-content-text {
   .ql-editor {
     min-height: 100px;

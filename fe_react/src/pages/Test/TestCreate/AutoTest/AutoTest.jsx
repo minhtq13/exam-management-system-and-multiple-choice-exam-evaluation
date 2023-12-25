@@ -16,9 +16,20 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
 	const [easyNumber, setEasyNumber] = useState(0);
 	const [mediumNumber, setMediumNumber] = useState(0);
 	const [hardNumber, setHardNumber] = useState(0);
+	const [disable, setDisable] = useState(true);
 	const [form] = Form.useForm();
 	const { allSemester, semesterLoading, getAllSemesters } = useCombo();
 	const notify = useNotify();
+	const minDate = new Date();
+	const disabledDate = current => {
+		return current && current < minDate;
+	};
+	const nextDay = new Date(minDate); 
+	nextDay.setDate(minDate.getDate() + 1);
+	const [selectedDate, setSelectedDate] = useState(nextDay);
+  const handleDateChange = date => {
+    setSelectedDate(date);
+  };
 	useEffect(() => {
 		getAllSemesters({ search: "" });
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -26,8 +37,8 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
 	const options =
 		allSemester && allSemester.length > 0
 			? allSemester.map((item) => {
-					return { value: item.id, label: item.name };
-			  })
+				return { value: item.id, label: item.name };
+			})
 			: [];
 	const navigate = useNavigate();
 	const onFinish = (value) => {
@@ -41,7 +52,6 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
 					startTime: dayjs(value.startTime).format(
 						"DD/MM/YYYY HH:mm"
 					),
-					endTime: dayjs(value.endTime).format("DD/MM/YYYY HH:mm"),
 					duration: Number(value.duration),
 					questionQuantity: Number(value.questionQuantity),
 					totalPoint: Number(value.totalPoint),
@@ -76,18 +86,25 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
 			Number(easyNumber) + Number(mediumNumber) + Number(hardNumber);
 		return total !== Number(totalQuestion)
 			? Promise.reject(
-					"Tổng số câu dễ, trung bình, khó phải bằng tổng số câu hỏi."
-			  )
+				"Tổng số câu dễ, trung bình, khó phải bằng tổng số câu hỏi."
+			)
 			: Promise.resolve();
 	};
 
 	const questionNumOnchange = (e) => {
 		setTotalQuestion(e.target.value);
+		if (e.target.value.trim().length > 0) {
+			setDisable(false);
+		} else {
+			setDisable(true);
+		}
 	};
+	console.log(disable);
 	return (
 		<div className="test-create-view">
 			<Form
 				onFinish={onFinish}
+				initialValues={{ totalPoint: "10" }}
 				name="test-create"
 				key={formKey}
 				form={form}
@@ -130,7 +147,7 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
 						},
 					]}
 				>
-					<Input type="number" placeholder="Nhập tổng điểm bài thi" />
+					<Input disabled type="number" placeholder="Nhập tổng điểm bài thi" />
 				</Form.Item>
 				<Form.Item
 					name="startTime"
@@ -145,6 +162,9 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
 					<DatePicker
 						format={"YYYY-MM-DD HH:mm"}
 						showTime={{ format: "HH:mm" }}
+						disabledDate={disabledDate}
+						value={selectedDate}
+						onChange={handleDateChange}
 					></DatePicker>
 				</Form.Item>
 				<Form.Item
@@ -198,6 +218,7 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
 								<Input
 									placeholder="Dễ"
 									type="number"
+									disabled={disable}
 									onChange={(e) =>
 										setEasyNumber(e.target.value)
 									}
@@ -214,6 +235,7 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
 									onChange={(e) =>
 										setMediumNumber(e.target.value)
 									}
+									disabled={disable}
 								/>
 							</Form.Item>
 						</Col>
@@ -227,6 +249,7 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
 									onChange={(e) =>
 										setHardNumber(e.target.value)
 									}
+									disabled={disable}
 								/>
 							</Form.Item>
 						</Col>

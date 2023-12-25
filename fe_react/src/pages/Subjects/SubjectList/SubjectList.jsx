@@ -456,7 +456,10 @@ const SubjectList = () => {
 					onOk={() => navigate(`${appPath.subjectView}/${subjectId}`)}
 					cancelText="Đóng"
 					okText="Thêm"
-					onCancel={() => setOpenModal(false)}
+					onCancel={() => {
+						setOpenModal(false);
+						setEditingKey("");
+					}}
 					maskClosable={true}
 					centered={true}
 					style={{
@@ -467,7 +470,6 @@ const SubjectList = () => {
 				>
 					<Form form={form} component={false}>
 						<Table
-							scroll={{ y: 467 }}
 							loading={infoLoading}
 							components={{
 								body: {

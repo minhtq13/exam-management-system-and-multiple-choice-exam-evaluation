@@ -77,9 +77,9 @@ export const downloadTestPdf = (questions, testDetail, testNo) => {
 			// Nối chuỗi câu hỏi
 			combinedString += `<div style="display: flex; gap: 5px; margin-top: 8px;"><p style="flex-shrink:0; font-family: 'Times New Roman', Times, serif;">Câu ${
 				index + 1
-			}: </p><p style="font-family: 'Times New Roman', Times, serif;">${
+			}: </p><div style="display: flex; flex-direction: column">${
 				question.content
-			}</p></div>`;
+			}</div></div>`;
 			// Nối chuỗi câu trả lời
 			question.answers.forEach((answer) => {
 				combinedString += `<div style="display: flex; gap: 5px;"><p style="font-family: 'Times New Roman', Times, serif;">${answer.answerNoMask}. </p> <p style="font-family: 'Times New Roman', Times, serif;">${answer.content}</p></div>`;
@@ -92,9 +92,13 @@ export const downloadTestPdf = (questions, testDetail, testNo) => {
       font-size: 16px;
       color: #000;
     }
-	  img {
+	img {
 		  max-width: 500px;
 		  object-fit: contain;
+		  display: block;
+	}
+	span {
+		display: block;
 	}
   </style>
   <div>
