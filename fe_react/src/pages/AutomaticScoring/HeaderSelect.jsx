@@ -37,9 +37,7 @@ const HeaderSelect = () => {
   const handleChangeExamCodeSelect = (value) => {
     dispatch(setExamClassCode(value));
   };
-  const filterSubject = (input, option) =>
-    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
-
+  const filterSubject = (input, option) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   return (
     <div>
       <div className="block-select">
@@ -107,7 +105,7 @@ const HeaderSelect = () => {
               placeholder="Chọn mã lớp thi để chấm"
               showSearch
               disabled={!semesterSelected || !subjectSelected}
-              value={examClassCode}
+              // value={examClassCode}
             >
               {examClass.map((item, index) => {
                 return (

@@ -16,20 +16,12 @@ const TableResult = ({ resultAI }) => {
       dataIndex: `answer${i + 1}`,
       width: 100,
       align: "center",
-      chilren: [
-        {
-          title: "",
-          dataIndex: `correct${i + 1}`,
-          width: 100,
-          align: "center",
-        },
-      ],
     });
   }
   const columnsInfo = [
     {
       title: "TT",
-      width: 50,
+      width: 70,
       align: "center",
       dataIndex: "stt",
       key: "stt",
@@ -87,7 +79,11 @@ const TableResult = ({ resultAI }) => {
       align: "center",
       width: 150,
       render: (text, record) => {
-        return <ViewImage dataArray={resultAI} index={record.stt} />;
+        return (
+          <div>
+            {record.imgHandle ? (<ViewImage dataArray={resultAI} index={record.stt} />) : ""}
+          </div>
+        );
       },
     },
   ];
@@ -120,12 +116,15 @@ const TableResult = ({ resultAI }) => {
           testCode: item.testCode,
           key: generateRandomSixDigitNumber(),
           totalScore: item.totalScore,
+          imgHandle: true,
           children: [{}],
         };
         for (let j = 0; j < numberAnswer; j++) {
           formatDataTable[`answer${j + 1}`] = item.details[j].selectedAnswers;
           formatDataTable.children[0][`answer${j + 1}`] = item.details[j].correctAnswers;
         }
+        formatDataTable.children[0][`studentCode`] = "Đáp án đúng:";
+        formatDataTable.children[0][`imgHandle`] = false;
         return formatDataTable;
       });
       setTestCodeFilter(listTestCode);
@@ -134,7 +133,6 @@ const TableResult = ({ resultAI }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resultAI]);
-
   const [pageSize, setPageSize] = useState(10);
   const renderTable = useMemo(() => {
     return (

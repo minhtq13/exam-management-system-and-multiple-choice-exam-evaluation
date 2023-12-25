@@ -217,8 +217,11 @@ const StudentList = () => {
 			dataIndex: "gender",
 			width: "12%",
       align: "center",
-			render: (_, { gender }) => (
-				<>
+			render: (_, { gender }) => 
+			{
+				console.log(gender)
+				return (
+					<>
 					{gender.map((gender) => {
 						let color = "geekblue";
 						if (gender === "MALE") {
@@ -234,7 +237,9 @@ const StudentList = () => {
 						);
 					})}
 				</>
-			),
+				)
+				}
+			
 		},
 		{
 			title: "Thao tác",
