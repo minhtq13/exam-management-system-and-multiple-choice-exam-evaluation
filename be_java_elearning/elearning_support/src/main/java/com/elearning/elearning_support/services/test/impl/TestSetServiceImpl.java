@@ -347,9 +347,9 @@ public class TestSetServiceImpl implements TestSetService {
         Map<Pair<String, String>, ITestSetScoringDTO> mapGeneralHandledData = new HashMap<>();
         //Sử dụng logic chấm thi theo lớp
         //Set<String> examClassCodes = handledTestSets.stream().map(StudentHandledTestDTO::getExamClassCode).collect(Collectors.toSet());
-        Set<String> testCodes = handledTestSets.stream().map(StudentHandledTestDTO::getTestCode).collect(Collectors.toSet());
+        Set<String> testCodes = handledTestSets.stream().map(StudentHandledTestDTO::getTestSetCode).collect(Collectors.toSet());
         List<ITestSetScoringDTO> generalScoringData = testSetRepository.getTestSetGeneralScoringData(Collections.singleton(examClassCode), testCodes);
-        generalScoringData.forEach(item -> mapGeneralHandledData.put(Pair.create(examClassCode, item.getTestCode()), item));
+        generalScoringData.forEach(item -> mapGeneralHandledData.put(Pair.create(examClassCode, item.getTestSetCode()), item));
 
         // map studentCode -> studentId
         Set<String> lstStudentCode = handledTestSets.stream().map(StudentHandledTestDTO::getStudentCode).collect(Collectors.toSet());
@@ -364,7 +364,7 @@ public class TestSetServiceImpl implements TestSetService {
         List<ScoringPreviewItemDTO> lstScoringPreview = new ArrayList<>();
         for (StudentHandledTestDTO handledItem : handledTestSets) {
             // init map
-            ITestSetScoringDTO handledData = mapGeneralHandledData.get(Pair.create(examClassCode, handledItem.getTestCode()));
+            ITestSetScoringDTO handledData = mapGeneralHandledData.get(Pair.create(examClassCode, handledItem.getTestSetCode()));
             Long testSetId = handledData.getTestSetId();
             Long studentId = mapUserCodeId.get(handledItem.getStudentCode());
 

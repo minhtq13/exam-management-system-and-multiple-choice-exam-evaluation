@@ -289,7 +289,8 @@ public class UserServiceImpl implements UserService {
         mapStructure.put(4, Pair.create("Ngày sinh", "getBirthDate"));
         mapStructure.put(5, Pair.create("Email", "getEmail"));
         mapStructure.put(6, Pair.create("Số điện thoại", "getPhoneNumber"));
-        mapStructure.put(7, Pair.create("Khóa", "getCourseNum"));
+        mapStructure.put(7, Pair.create("MSSV", "getCode"));
+        mapStructure.put(8, Pair.create("Khóa", "getCourseNum"));
         return excelFileUtils.createWorkbook(lstStudent, mapStructure, "students");
     }
 
@@ -407,7 +408,8 @@ public class UserServiceImpl implements UserService {
         mapStructure.put(4, Pair.create("Ngày sinh", "getBirthDate"));
         mapStructure.put(5, Pair.create("Email", "getEmail"));
         mapStructure.put(6, Pair.create("Số điện thoại", "getPhoneNumber"));
-        mapStructure.put(7, Pair.create("Phòng ban", "getDepartmentName"));
+        mapStructure.put(7, Pair.create("Mã cán bộ", "getCode"));
+        mapStructure.put(8, Pair.create("Phòng ban", "getDepartmentName"));
         return excelFileUtils.createWorkbook(lstTeacher, mapStructure, "teacher");
     }
 

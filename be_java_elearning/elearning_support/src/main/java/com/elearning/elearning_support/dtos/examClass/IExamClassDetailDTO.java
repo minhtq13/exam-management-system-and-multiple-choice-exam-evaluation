@@ -13,5 +13,9 @@ public interface IExamClassDetailDTO extends ICommonExamClassDTO {
 
     String getLstSupervisorId();
 
+    String getLstTestSetCode();
+
+    String getLstTestSetId();
+
 
 }

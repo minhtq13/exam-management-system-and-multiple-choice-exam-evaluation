@@ -21,7 +21,7 @@ public class StudentHandledTestDTO {
     String studentCode;
 
     @Schema(description = "Mã đề thi")
-    String testCode;
+    String testSetCode;
 
     @Schema(description = "Đường dẫn tuyệt đối file ảnh đã chấm")
     String handledScoredImg;

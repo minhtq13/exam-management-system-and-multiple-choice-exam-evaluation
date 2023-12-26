@@ -308,7 +308,7 @@ if __name__ == "__main__":
                 result = {
                     "examClassCode": result_info["class_code"],
                     "studentCode": result_info["student_code"],
-                    "testCode": result_info["exam_code"],
+                    "testSetCode": result_info["exam_code"],
                     "answers": array_result
                 }
             

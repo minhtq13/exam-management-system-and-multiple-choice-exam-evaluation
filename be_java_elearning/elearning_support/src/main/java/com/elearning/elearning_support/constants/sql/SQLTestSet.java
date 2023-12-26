@@ -16,7 +16,7 @@ public class SQLTestSet {
     public static final String GET_LIST_TEST_SET_GENERAL_SCORING_DATA =
         "SELECT  \n" +
             "    testSet.id AS testSetId, \n" +
-            "    testSet.code AS testCode, \n" +
+            "    testSet.code AS testSetCode, \n" +
             "    exClass.code AS examClassCode, \n" +
             "    testSet.question_mark AS questionMark \n" +
             "FROM {h-schema}test_set AS testSet \n" +

@@ -41,7 +41,15 @@ public class SQLExamClass {
             "    (-1 = :subjectId OR subject.id = :subjectId)";
 
     public static final String GET_DETAILS_EXAM_CLASS =
-        "WITH examClassParticipantCTE AS ( " + GET_COUNTER_EXAM_CLASS_PARTICIPANT + " ) \n" +
+        "WITH examClassParticipantCTE AS ( " + GET_COUNTER_EXAM_CLASS_PARTICIPANT + " ), \n" +
+        "WITH testSetCTE AS (" +
+            "   SELECT \n" +
+            "           test_id, \n" +
+            "           STRING_AGG(TEXT(id), ',') AS lst_test_set_id, \n" +
+            "           STRING_AGG(test_code, ',') AS lst_test_set_code \n" +
+            "      FROM {h-schema}test_set \n" +
+            "      GROUP BY test_id \n" +
+            ") \n"    +
             "SELECT \n" +
             "    exClass.id AS id, \n" +
             "    exClass.code AS code, \n" +
@@ -57,12 +65,15 @@ public class SQLExamClass {
             "    examClassParticipantCTE.lstSupervisorId AS lstSupervisorId, \n" +
             "    examClassParticipantCTE.numStudents AS numberOfStudents, \n" +
             "    examClassParticipantCTE.numSupervisors AS numberOfSupervisors, \n" +
-            "    COALESCE(exClass.modified_at, exClass.created_at) AS lastModifiedAt \n" +
+            "    COALESCE(exClass.modified_at, exClass.created_at) AS lastModifiedAt, \n" +
+            "    testSetCTE.lst_test_set_id AS lstTestSetId, \n" +
+            "    testSetCTE.lst_test_set_code AS lstTestSetCode \n" +
             "FROM {h-schema}exam_class AS exClass \n" +
             "    JOIN {h-schema}test ON exClass.test_id = test.id \n" +
             "    LEFT JOIN {h-schema}subject ON test.subject_id = subject.id \n" +
             "    LEFT JOIN {h-schema}semester ON test.semester_id = semester.id \n" +
             "    LEFT JOIN examClassParticipantCTE ON exClass.id = examClassParticipantCTE.examClassId \n" +
+            "    LEFT JOIN testSetCTE ON testSetCTE.test_id = exClass.test_id \n" +
             "WHERE \n" +
             "    exClass.is_enabled = true AND \n" +
             "    exClass.deleted_flag = 1 AND \n" +

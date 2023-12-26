@@ -4,7 +4,7 @@ public interface ITestSetScoringDTO {
 
     Long getTestSetId();
 
-    String getTestCode();
+    String getTestSetCode();
 
     String getExamClassCode();
 

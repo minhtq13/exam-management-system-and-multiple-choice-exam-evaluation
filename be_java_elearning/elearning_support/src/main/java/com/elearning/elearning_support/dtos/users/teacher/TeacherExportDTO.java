@@ -20,7 +20,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TeacherExportDTO {
 
-    @Schema(description = "Mã GV/HSSV ứng với loại người dùng")
+    @Schema(description = "Mã GV")
     String code;
 
     @Schema(description = "Họ và tên đệm")
