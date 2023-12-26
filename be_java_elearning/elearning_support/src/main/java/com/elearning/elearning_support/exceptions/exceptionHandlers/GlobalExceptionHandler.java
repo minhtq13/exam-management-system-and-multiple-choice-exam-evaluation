@@ -23,7 +23,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({BadRequestException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ExceptionResponse handlerBadRequestException(BadRequestException exception) {
-        return new ExceptionResponse(exception.getCode(), HttpStatus.BAD_REQUEST.value(), exception.getMessage(), exception.getFieldError());
+        return new ExceptionResponse(exception.getCode(), HttpStatus.BAD_REQUEST.value(), exception.getMessage(), exception.getFieldError(),
+            exception.getValues());
     }
 
     /**
@@ -32,7 +33,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({PermissionDeniedException.class})
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
     public ExceptionResponse handlerPermissionDeniedException(PermissionDeniedException exception) {
-        return new ExceptionResponse(exception.getCode(), HttpStatus.FORBIDDEN.value(), exception.getMessage());
+        return new ExceptionResponse(exception.getCode(), HttpStatus.FORBIDDEN.value(), exception.getMessage(), exception.getValues());
     }
 
     /**
@@ -41,7 +42,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({FileUploadException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ExceptionResponse handlerFileUploadException(FileUploadException exception) {
-        return new ExceptionResponse(exception.getCode(), HttpStatus.BAD_REQUEST.value(), exception.getMessage());
+        return new ExceptionResponse(exception.getCode(), HttpStatus.BAD_REQUEST.value(), exception.getMessage(), exception.getValues());
     }
 
     @ExceptionHandler({BadCredentialsException.class})

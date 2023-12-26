@@ -18,16 +18,20 @@ public class ExceptionResponse {
 
     private Long timestamp = DateUtils.getCurrentDateTime().getTime();
 
-    public ExceptionResponse(String code,Integer status, String message, String fieldError) {
+    private String values;
+
+    public ExceptionResponse(String code,Integer status, String message, String fieldError, String values) {
         this.code = code;
         this.status = status;
         this.message = message;
         this.fieldError = fieldError;
+        this.values = values;
     }
 
-    public ExceptionResponse(String code, Integer status, String message) {
+    public ExceptionResponse(String code, Integer status, String message, String values) {
         this.code = code;
         this.status = status;
         this.message = message;
+        this.values = values;
     }
 }
