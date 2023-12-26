@@ -250,7 +250,7 @@ const UpdateExamClassInfoForm = ({
 			title: "Mã cán bộ",
 			dataIndex: "code",
 			key: "code",
-			width: "15%",
+			width: "20%",
 			...getColumnSearchProps(
 				"code",
 				getAllTeachers,
@@ -291,7 +291,7 @@ const UpdateExamClassInfoForm = ({
 			title: "MSSV",
 			dataIndex: "code",
 			key: "code",
-			width: "10%",
+			width: "12%",
 			...getColumnSearchProps(
 				"code",
 				getAllStudents,
@@ -672,17 +672,14 @@ const UpdateExamClassInfoForm = ({
 				onOk={() => setOpenModal(false)}
 				onCancel={() => setOpenModal(false)}
 				maskClosable={true}
-				style={{ height: "80vh", overflowY: "scroll", width: "80vw" }}
 				centered={true}
 			>
 				<div className="filter-testlit-options-exam-class-modal">
 					{/* Thêm các select filter vào đây */}
-					{/* Hiển thị đã chọn bao nhiêu item */}
-					<span>Đã chọn</span>
 				</div>
 				<Table
 					size="small"
-					scroll={{ y: 410 }}
+					scroll={{ y: 326 }}
 					className="test-list-table"
 					columns={columns}
 					dataSource={dataFetch}
@@ -767,7 +764,7 @@ const UpdateExamClassInfoForm = ({
 				</div>
 				<Table
 					size="small"
-					scroll={{ y: 400 }}
+					scroll={{ y: 320 }}
 					className="student-list-table"
 					columns={studentColumns}
 					dataSource={studentList}
@@ -821,7 +818,7 @@ const UpdateExamClassInfoForm = ({
 				</div>
 				<Table
 					size="small"
-					scroll={{ y: 400 }}
+					scroll={{ y: 320 }}
 					className="teacher-list-table"
 					columns={teacherColumns}
 					dataSource={teacherList}

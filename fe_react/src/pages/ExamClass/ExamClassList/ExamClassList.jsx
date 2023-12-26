@@ -330,7 +330,7 @@ const ExamClassList = () => {
       title: "Môn thi",
       dataIndex: "subjectTitle",
       key: "subjectTitle",
-      width: "28%",
+      width: "25%",
     },
     {
       title: "Ngày thi",

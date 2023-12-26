@@ -125,8 +125,8 @@ export const downloadTestPdf = (questions, testDetail, testNo) => {
 
 export const customPaginationText = {
 	items_per_page: "/ trang",
-	jump_to: "Đến",
-	page: "trang",
+	jump_to: "Đến trang",
+	page: "",
 	prev_page: "Trang trước",
 	next_page: "Trang sau",
 	prev_5: "5 trang trước",

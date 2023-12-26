@@ -115,7 +115,7 @@ const TestCreate = () => {
 	];
 	return (
 		<div className="test-create">
-			<div className="test-create-header">Test Create</div>
+			<div className="test-create-header">Thêm đề thi</div>
 			<div className="test-subject-chapters">
 				<div className="test-subject">
 					<span className="select-label">Học phần:</span>

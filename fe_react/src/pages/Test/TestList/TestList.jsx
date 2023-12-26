@@ -82,7 +82,7 @@ const TestList = () => {
       title: "Học phần",
       dataIndex: "subjectName",
       key: "subjectName",
-      width: "25%",
+      width: "23%",
     },
     {
       title: "Học kỳ",
@@ -101,7 +101,7 @@ const TestList = () => {
       title: "Thời gian làm bài",
       dataIndex: "duration",
       key: "duration",
-      width: "10%",
+      width: "12%",
       align: "center",
       render: (text) => (text ? `${text} phút` : ""),
     },
