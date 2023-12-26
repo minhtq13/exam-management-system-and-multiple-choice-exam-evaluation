@@ -219,7 +219,6 @@ const StudentList = () => {
       align: "center",
 			render: (_, { gender }) => 
 			{
-				console.log(gender)
 				return (
 					<>
 					{gender.map((gender) => {
@@ -248,7 +247,7 @@ const StudentList = () => {
 			render: (_, record) => (
 				<Space size="middle" style={{ cursor: "pointer" }}>
 					<Button size="small" danger onClick={() => handleEdit(record)}>
-						Sửa
+						Cập nhật
 					</Button>
 				</Space>
 			),

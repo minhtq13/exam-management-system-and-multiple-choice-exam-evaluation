@@ -250,6 +250,7 @@ const UpdateExamClassInfoForm = ({
 			title: "Mã cán bộ",
 			dataIndex: "code",
 			key: "code",
+			width: "15%",
 			...getColumnSearchProps(
 				"code",
 				getAllTeachers,
@@ -259,9 +260,10 @@ const UpdateExamClassInfoForm = ({
 			),
 		},
 		{
-			title: "Họ tên",
+			title: "Họ và tên",
 			dataIndex: "name",
 			key: "name",
+			width: "35%",
 			...getColumnSearchProps(
 				"name",
 				getAllTeachers,
@@ -274,6 +276,13 @@ const UpdateExamClassInfoForm = ({
 			title: "Email",
 			dataIndex: "email",
 			key: "email",
+			width: "35%",
+		},
+		{
+			title: "Số điện thoại",
+			dataIndex: "phoneNumber",
+			key: "phoneNumber",
+			width: "20%",
 		},
 	];
 
@@ -282,6 +291,7 @@ const UpdateExamClassInfoForm = ({
 			title: "MSSV",
 			dataIndex: "code",
 			key: "code",
+			width: "10%",
 			...getColumnSearchProps(
 				"code",
 				getAllStudents,
@@ -294,6 +304,7 @@ const UpdateExamClassInfoForm = ({
 			title: "Họ tên",
 			dataIndex: "name",
 			key: "name",
+			width: "33%",
 			// eslint-disable-next-line jsx-a11y/anchor-is-valid
 			render: (text) => <a>{text}</a>,
 			...getColumnSearchProps(
@@ -308,6 +319,8 @@ const UpdateExamClassInfoForm = ({
 			title: "Khóa",
 			dataIndex: "courseNum",
 			key: "courseNum",
+			width: "15%",
+			align: "center",
 			filters: [
 				{
 					text: "64",
@@ -338,6 +351,7 @@ const UpdateExamClassInfoForm = ({
 			title: "Email",
 			dataIndex: "email",
 			key: "email",
+			width: "32%",
 		},
 	];
 
@@ -346,38 +360,49 @@ const UpdateExamClassInfoForm = ({
 			title: "Học phần",
 			dataIndex: "subjectName",
 			key: "subjectName",
+			width: "35%",
 		},
 		{
 			title: "Học kỳ",
 			dataIndex: "semester",
 			key: "semester",
+			width: "10%",
+			align: "center"
 		},
 		{
 			title: "Số câu hỏi",
 			dataIndex: "questionQuantity",
 			key: "questionQuantity",
+			width: "10%",
+			align: "center"
 		},
 		Table.EXPAND_COLUMN,
 		{
 			title: "Số bộ đề",
 			dataIndex: "testSet",
 			key: "testSet",
+			width: "10%",
 		},
 		{
 			title: "Thời gian làm bài",
 			dataIndex: "duration",
 			key: "duration",
+			width: "15%",
+			align: "center",
+			render: (text) => <span>{text} phút</span>,
 		},
 		{
 			title: "Thao tác",
 			key: "action",
+			align: "center",
 			render: (_, record) => (
 				<>
-					<Space size="middle" style={{ cursor: "pointer" }}>
+					<Space size="small" style={{ cursor: "pointer" }}>
 						<Button
+							size="small"
 							onClick={() => {
 								setTestValue(
-									`${record.name} - ${record.questionQuantity} (câu) - ${record.duration} (phút) - ${record.testSet} (mã đề)`
+									`${record.subjectName} - ${record.name} - ${record.questionQuantity} câu - ${record.duration} phút - ${record.testSet} mã đề`
 								);
 								setOpenModal(false);
 								onSelectTestId(record.id);
@@ -480,6 +505,7 @@ const UpdateExamClassInfoForm = ({
 		key: obj.id,
 		name: obj.lastName + " " + obj.firstName,
 		email: obj.email,
+		phoneNumber: obj.phoneNumber,
 		code: obj.code,
 		id: obj.id,
 	}));
@@ -649,7 +675,14 @@ const UpdateExamClassInfoForm = ({
 				style={{ height: "80vh", overflowY: "scroll", width: "80vw" }}
 				centered={true}
 			>
+				<div className="filter-testlit-options-exam-class-modal">
+					{/* Thêm các select filter vào đây */}
+					{/* Hiển thị đã chọn bao nhiêu item */}
+					<span>Đã chọn</span>
+				</div>
 				<Table
+					size="small"
+					scroll={{ y: 410 }}
 					className="test-list-table"
 					columns={columns}
 					dataSource={dataFetch}

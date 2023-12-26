@@ -231,7 +231,7 @@ const SubjectList = () => {
 			render: (_, record) => (
 				<Space size="middle" style={{ cursor: "pointer" }}>
 					<Button danger onClick={() => handleEdit(record)}>
-						Sửa
+					Cập nhật
 					</Button>
 					<Button onClick={() => handleView(record)}>Nội dung</Button>
 					<Button
@@ -315,7 +315,7 @@ const SubjectList = () => {
 						disabled={editingKey !== ""}
 						onClick={() => edit(record)}
 					>
-						Sửa
+						Cập nhật
 					</Button>
 				);
 			},

@@ -37,7 +37,7 @@ const ModalSelectedImage = ({ loading, imgInFolder }) => {
         };
       });
       const newArrayImage = [];
-      imgInFolder.map((item, index) => {
+      imgInFolder.map((item) => {
         newArrayImage.push(item.filePath);
         return null;
       });

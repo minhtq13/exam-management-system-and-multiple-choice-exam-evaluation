@@ -99,7 +99,6 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
 			setDisable(true);
 		}
 	};
-	console.log(disable);
 	return (
 		<div className="test-create-view">
 			<Form

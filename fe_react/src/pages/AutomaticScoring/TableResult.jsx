@@ -92,7 +92,7 @@ const TableResult = ({ resultAI }) => {
   const [dataTable, setDataTable] = useState([]);
   useEffect(() => {
     if (resultAI) {
-      const listTestCode = resultAI.reduce((acc, item, index) => {
+      const listTestCode = resultAI.reduce((acc, item) => {
         const existingIndex = acc.findIndex((el) => el.value === item.testCode);
         if (existingIndex === -1) {
           acc.push({ text: item.testCode, value: item.testCode });
@@ -100,7 +100,7 @@ const TableResult = ({ resultAI }) => {
         return acc;
       }, []);
 
-      const listStudentCode = resultAI.reduce((acc, item, index) => {
+      const listStudentCode = resultAI.reduce((acc, item) => {
         const existingIndex = acc.findIndex((el) => el.value === item.studentCode);
         if (existingIndex === -1) {
           acc.push({ text: item.studentCode, value: item.studentCode });
@@ -108,9 +108,9 @@ const TableResult = ({ resultAI }) => {
         return acc;
       }, []);
 
-      const newDataTable = resultAI.map((item, key) => {
+      const newDataTable = resultAI.map((item, index) => {
         const formatDataTable = {
-          stt: key + 1,
+          stt: index + 1,
           examClassCode: item.examClassCode,
           studentCode: item.studentCode,
           testCode: item.testCode,
@@ -140,7 +140,7 @@ const TableResult = ({ resultAI }) => {
         className="table-ai"
         columns={columns}
         dataSource={dataTable}
-        scroll={{ x: 1500, y: 407 }}
+        scroll={{ x: 1500, y: 408 }}
         size="small"
         pagination={{
           pageSize: pageSize,

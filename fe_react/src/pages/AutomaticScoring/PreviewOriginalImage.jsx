@@ -49,6 +49,7 @@ const PreviewOriginalImage = ({ srcImage, imageName }) => {
           alt="Preview original image"
           src={srcImage}
           preview={{
+            scaleStep: 0.2,
             visible,
             onVisibleChange: (visible) => {
               if (!visible) {

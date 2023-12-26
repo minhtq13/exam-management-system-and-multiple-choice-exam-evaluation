@@ -33,6 +33,7 @@ const PreviewImageInFolder = ({srcImage, imageName }) => {
           src={srcImage}
           alt="Preview image in folder"
           preview={{
+            scaleStep: 0.2,
             toolbarRender: (
               _,
               {

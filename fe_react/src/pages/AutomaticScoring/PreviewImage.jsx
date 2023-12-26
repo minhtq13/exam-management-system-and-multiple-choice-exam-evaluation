@@ -31,6 +31,7 @@ const PreviewImage = ({ srcImage, imageName }) => {
         src={srcImage}
         alt="Preview image"
         preview={{
+          scaleStep: 0.2,
           toolbarRender: (
             _,
             {

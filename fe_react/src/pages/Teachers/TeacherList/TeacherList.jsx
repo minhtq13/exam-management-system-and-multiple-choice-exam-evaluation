@@ -213,7 +213,7 @@ const TeacherList = () => {
       render: (_, record) => (
         <Space size="middle" style={{ cursor: "pointer" }}>
           <Button size="small" danger onClick={() => handleEdit(record)}>
-            Sửa
+            Cập nhật
           </Button>
         </Space>
       ),

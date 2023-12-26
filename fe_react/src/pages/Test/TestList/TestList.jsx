@@ -98,11 +98,12 @@ const TestList = () => {
       align: "center"
     },
     {
-      title: "Thời gian làm bài (phút)",
+      title: "Thời gian làm bài",
       dataIndex: "duration",
       key: "duration",
       width: "10%",
-      align: "center"
+      align: "center",
+      render: (text) => (text ? `${text} phút` : ""),
     },
     {
       title: "Ngày tạo",
@@ -343,7 +344,7 @@ const TestList = () => {
             }}
             footer={[
               <Button key="back" onClick={handleEdit}>
-                Sửa
+                Cập nhật
               </Button>,
               <Button
                 key="submit"

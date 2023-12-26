@@ -131,7 +131,6 @@ const ExamClassList = () => {
     };
     exportExamClassStudent(params, "exam-class/participant", classId);
   };
-  console.log(tabsData);
   const renderTab = () => {
     return (
       <div className="exam-class-tabs">
@@ -365,7 +364,7 @@ const ExamClassList = () => {
             Xem chi tiết
           </Button>
           <Button size="small" danger onClick={() => handleEdit(record)}>
-            Sửa
+            Cập nhật
           </Button>
         </Space>
       ),
