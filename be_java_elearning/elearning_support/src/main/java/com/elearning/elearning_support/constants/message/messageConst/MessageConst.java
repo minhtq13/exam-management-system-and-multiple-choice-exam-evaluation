@@ -19,6 +19,8 @@ public class MessageConst {
 
         public static final String EXAM_CLASS = "exam_class";
 
+        public static final String USER_EXAM_CLASS = "user_exam_class";
+
         public static final String AUTH_INFORMATION = "auth_information";
 
     }
@@ -110,6 +112,12 @@ public class MessageConst {
         public static final String NOT_FOUND = "error.exam.class.not.found";
 
         public static final String EXISTED_BY_CODE = "error.exam.class.existed.code";
+    }
+
+    public static class UserExamClass {
+        public static final String STUDENT_NOT_FOUND = "error.student.exam.class.not_found";
+
+        public static final String SUPERVISOR_NOT_FOUND = "error.supervisor.exam.class.not_found";
     }
 
     public static class AuthInfo {

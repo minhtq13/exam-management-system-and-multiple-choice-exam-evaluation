@@ -17,6 +17,7 @@ public class SQLTestSet {
         "SELECT  \n" +
             "    testSet.id AS testSetId, \n" +
             "    testSet.code AS testSetCode, \n" +
+            "    exClass.id AS examClassId, \n" +
             "    exClass.code AS examClassCode, \n" +
             "    testSet.question_mark AS questionMark \n" +
             "FROM {h-schema}test_set AS testSet \n" +

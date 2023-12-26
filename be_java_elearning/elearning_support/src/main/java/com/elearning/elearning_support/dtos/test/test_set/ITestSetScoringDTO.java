@@ -6,6 +6,8 @@ public interface ITestSetScoringDTO {
 
     String getTestSetCode();
 
+    Long getExamClassId();
+
     String getExamClassCode();
 
     String getQuestionMark();

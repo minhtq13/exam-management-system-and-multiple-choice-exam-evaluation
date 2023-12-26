@@ -37,8 +37,10 @@ import com.aspose.words.Document;
 import com.aspose.words.SaveFormat;
 import com.elearning.elearning_support.constants.FileConstants.Extension.Image;
 import com.elearning.elearning_support.constants.SystemConstants;
+import com.elearning.elearning_support.constants.message.errorKey.ErrorKey.User;
+import com.elearning.elearning_support.constants.message.messageConst.MessageConst.UserExamClass;
 import com.elearning.elearning_support.dtos.CustomInputStreamResource;
-import com.elearning.elearning_support.dtos.common.ICommonIdCode;
+import com.elearning.elearning_support.dtos.examClass.IExamClassParticipantDTO;
 import com.elearning.elearning_support.dtos.fileAttach.FileAttachDTO;
 import com.elearning.elearning_support.dtos.fileAttach.FileUploadResDTO;
 import com.elearning.elearning_support.dtos.test.studentTestSet.HandledImagesDeleteDTO;
@@ -49,8 +51,8 @@ import com.elearning.elearning_support.dtos.test.test_set.TestSetPreviewDTO;
 import com.elearning.elearning_support.entities.exam_class.ExamClass;
 import com.elearning.elearning_support.entities.studentTest.StudentTestSet;
 import com.elearning.elearning_support.entities.studentTest.StudentTestSetDetail;
+import com.elearning.elearning_support.enums.examClass.UserExamClassRoleEnum;
 import com.elearning.elearning_support.enums.file_attach.FileTypeEnum;
-import com.elearning.elearning_support.enums.users.UserTypeEnum;
 import com.elearning.elearning_support.exceptions.BadRequestException;
 import com.elearning.elearning_support.repositories.examClass.ExamClassRepository;
 import com.elearning.elearning_support.repositories.test.test_set.StudentTestSetRepository;
@@ -352,11 +354,12 @@ public class TestSetServiceImpl implements TestSetService {
         generalScoringData.forEach(item -> mapGeneralHandledData.put(Pair.create(examClassCode, item.getTestSetCode()), item));
 
         // map studentCode -> studentId
-        Set<String> lstStudentCode = handledTestSets.stream().map(StudentHandledTestDTO::getStudentCode).collect(Collectors.toSet());
-        Map<String, Long> mapUserCodeId = userRepository.getListIdCodeByCodeAndUserType(lstStudentCode, UserTypeEnum.STUDENT.getType()).stream()
-            .collect(Collectors.toMap(ICommonIdCode::getCode, ICommonIdCode::getId));
+        // get list student in exam class
+        Long examClassId = ObjectUtils.isEmpty(generalScoringData) ? -1L : generalScoringData.get(0).getExamClassId();
+        Map<String, Long> mapUserCodeId = examClassRepository.getListExamClassParticipant(examClassId, UserExamClassRoleEnum.STUDENT.getType())
+            .stream().collect(Collectors.toMap(IExamClassParticipantDTO::getCode, IExamClassParticipantDTO::getId));
 
-//         list student - test set
+        //list student - test set
         List<StudentTestSet> lstStudentTestSet = new ArrayList<>();
 
         // map testSetId -> query test_set_question
@@ -365,8 +368,18 @@ public class TestSetServiceImpl implements TestSetService {
         for (StudentHandledTestDTO handledItem : handledTestSets) {
             // init map
             ITestSetScoringDTO handledData = mapGeneralHandledData.get(Pair.create(examClassCode, handledItem.getTestSetCode()));
-            Long testSetId = handledData.getTestSetId();
+            // if test_set_code not used in this test or ex_class
+            if (Objects.isNull(handledData)) {
+                throw exceptionFactory.resourceNotFoundException(MessageConst.TestSet.NOT_FOUND, MessageConst.RESOURCE_NOT_FOUND,
+                    Resources.TEST_SET, ErrorKey.TestSet.CODE, handledItem.getTestSetCode());
+            }
+            // if the student_code is not in the exam_class
             Long studentId = mapUserCodeId.get(handledItem.getStudentCode());
+            if (Objects.isNull(studentId)) {
+                throw exceptionFactory.resourceNotFoundException(UserExamClass.STUDENT_NOT_FOUND, MessageConst.RESOURCE_NOT_FOUND,
+                    Resources.USER_EXAM_CLASS, User.CODE, handledItem.getStudentCode());
+            }
+            Long testSetId = handledData.getTestSetId();
 
             // create a studentTestSet row
             StudentTestSet studentTestSet = new StudentTestSet(studentId, testSetId);
