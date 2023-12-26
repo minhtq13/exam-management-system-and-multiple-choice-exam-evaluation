@@ -154,23 +154,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<IGetUserListDTO> getPageStudent(String studentName, String studentCode, Integer courseNum, Pageable pageable) {
-        return userRepository.getPageStudent(studentName, studentCode, courseNum, pageable);
+    public Page<IGetUserListDTO> getPageStudent(String search, Integer courseNum, Pageable pageable) {
+        return userRepository.getPageStudent(search, courseNum, pageable);
     }
 
     @Override
-    public List<IGetUserListDTO> getListStudent(String studentName, String studentCode, Integer courseNum) {
-        return userRepository.getListStudent(studentName, studentCode, courseNum);
+    public List<IGetUserListDTO> getListStudent(String search, Integer courseNum) {
+        return userRepository.getListStudent(search, courseNum);
     }
 
     @Override
-    public Page<IGetUserListDTO> getPageTeacher(String teacherName, String teacherCode, Pageable pageable) {
-        return userRepository.getPageTeacher(teacherName, teacherCode, pageable);
+    public Page<IGetUserListDTO> getPageTeacher(String search, Pageable pageable) {
+        return userRepository.getPageTeacher(search, pageable);
     }
 
     @Override
-    public List<IGetUserListDTO> getListTeacher(String teacherName, String teacherCode) {
-        return userRepository.getListTeacher(teacherName, teacherCode);
+    public List<IGetUserListDTO> getListTeacher(String search) {
+        return userRepository.getListTeacher(search);
     }
 
     @Transactional
@@ -278,8 +278,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public InputStreamResource exportStudent(String studentName, String studentCode, Integer courseNum) throws IOException {
-        List<StudentExportDTO> lstStudent = userRepository.getListStudent(studentName, studentCode, courseNum).stream().map(StudentExportDTO::new).collect(
+    public InputStreamResource exportStudent(String search, Integer courseNum) throws IOException {
+        List<StudentExportDTO> lstStudent = userRepository.getListStudent(search, courseNum).stream().map(StudentExportDTO::new).collect(
             Collectors.toList());
         // Tạo map cấu trúc file excel
         Map<Integer, Pair<String, String>> mapStructure = new LinkedHashMap<>();
@@ -397,8 +397,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public InputStreamResource exportTeacher(String teacherName, String teacherCode) throws IOException {
-        List<TeacherExportDTO> lstTeacher = userRepository.getListTeacher(teacherName, teacherCode).stream().map(TeacherExportDTO::new).collect(
+    public InputStreamResource exportTeacher(String search) throws IOException {
+        List<TeacherExportDTO> lstTeacher = userRepository.getListTeacher(search).stream().map(TeacherExportDTO::new).collect(
             Collectors.toList());
         // Tạo map cấu trúc file excel
         Map<Integer, Pair<String, String>> mapStructure = new LinkedHashMap<>();

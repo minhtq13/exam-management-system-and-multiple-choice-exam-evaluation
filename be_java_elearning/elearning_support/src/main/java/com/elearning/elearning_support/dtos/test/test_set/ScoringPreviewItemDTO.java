@@ -27,7 +27,7 @@ public class ScoringPreviewItemDTO {
     String examClassCode;
 
     @Schema(description = "Mã đề thi")
-    String testCode;
+    String testSetCode;
 
     @Schema(description = "Đường dẫn file chấm bài thi")
     String handledScoredImg;

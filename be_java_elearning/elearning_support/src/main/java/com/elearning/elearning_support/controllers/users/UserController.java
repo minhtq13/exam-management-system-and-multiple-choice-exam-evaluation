@@ -77,24 +77,22 @@ public class UserController {
     @GetMapping("/student/page")
     @Operation(summary = "Danh sách học sinh / sinh viên dạng phân trang")
     public Page<IGetUserListDTO> getPageStudent(
-        @RequestParam(name = "name", required = false, defaultValue = "") String studentName,
-        @RequestParam(name = "code", required = false, defaultValue = "") String studentCode,
+        @RequestParam(name = "search", required = false, defaultValue = "") String search,
         @RequestParam(name = "courseNum", required = false, defaultValue = "-1") Integer courseNum,
         @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
         @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
         @RequestParam(name = "sort", required = false, defaultValue = "lastModifiedAt") String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
-        return userService.getPageStudent(studentName, studentCode, courseNum, pageable);
+        return userService.getPageStudent(search, courseNum, pageable);
     }
 
     @GetMapping("/student/list")
     @Operation(summary = "Danh sách học sinh / sinh viên danh sách toàn bộ")
     public List<IGetUserListDTO> getListStudent(
-        @RequestParam(name = "name", required = false, defaultValue = "") String studentName,
-        @RequestParam(name = "code", required = false, defaultValue = "") String studentCode,
+        @RequestParam(name = "search", required = false, defaultValue = "") String search,
         @RequestParam(name = "courseNum", required = false, defaultValue = "-1") Integer courseNum
     ) {
-        return userService.getListStudent(studentName, studentCode, courseNum);
+        return userService.getListStudent(search, courseNum);
     }
 
     @PostMapping(value = "/student/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -106,8 +104,7 @@ public class UserController {
     @GetMapping(value = "/student/export", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Operation(summary = "Export danh sách HSSV")
     public ResponseEntity<InputStreamResource> exportStudent(
-        @RequestParam(name = "name", required = false, defaultValue = "") String name,
-        @RequestParam(name = "code", required = false, defaultValue = "") String code,
+        @RequestParam(name = "search", required = false, defaultValue = "") String search,
         @RequestParam(name = "courseNum", required = false, defaultValue = "-1") Integer courseNum
     ) throws IOException {
 
@@ -115,7 +112,7 @@ public class UserController {
         String fileName = String.format("StudentExport_%s_.xlsx", LocalDateTime.now());
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.parseMediaType(String.join(";", Arrays.asList(Excel.CONTENT_TYPES))).toString());
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
-        return ResponseEntity.ok().headers(headers).body(userService.exportStudent(name, code, courseNum));
+        return ResponseEntity.ok().headers(headers).body(userService.exportStudent(search, courseNum));
     }
 
     /*
@@ -130,23 +127,21 @@ public class UserController {
     @GetMapping("/teacher/page")
     @Operation(summary = "Danh sách giáo viên / giảng viên dạng phân trang")
     public Page<IGetUserListDTO> getPageTeacher(
-        @RequestParam(name = "name", required = false, defaultValue = "") String teacherName,
-        @RequestParam(name = "code", required = false, defaultValue = "") String teacherCode,
+        @RequestParam(name = "search", required = false, defaultValue = "") String search,
         @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
         @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
         @RequestParam(name = "sort", required = false, defaultValue = "lastModifiedAt") String sort
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
-        return userService.getPageTeacher(teacherName, teacherCode, pageable);
+        return userService.getPageTeacher(search, pageable);
     }
 
     @GetMapping("/teacher/list")
     @Operation(summary = "Danh sách giáo viên / giảng viên danh sách toàn bộ")
     public List<IGetUserListDTO> getListTeacher(
-        @RequestParam(name = "name", required = false, defaultValue = "") String teacherName,
-        @RequestParam(name = "code", required = false, defaultValue = "") String teacherCode
+        @RequestParam(name = "search", required = false, defaultValue = "") String search
     ) {
-        return userService.getListTeacher(teacherName, teacherCode);
+        return userService.getListTeacher(search);
     }
 
     @PostMapping(value = "/teacher/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -158,14 +153,13 @@ public class UserController {
     @GetMapping(value = "/teacher/export", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Operation(summary = "Export danh sách GV")
     public ResponseEntity<?> exportTeacher(
-        @RequestParam(name = "name", required = false, defaultValue = "") String name,
-        @RequestParam(name = "code", required = false, defaultValue = "") String code
+        @RequestParam(name = "search", required = false, defaultValue = "") String search
     ) throws IOException {
         HttpHeaders headers = new HttpHeaders();
         String fileName = String.format("TeacherExport_%s_.xlsx", LocalDateTime.now());
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.parseMediaType(String.join(";", Arrays.asList(Excel.CONTENT_TYPES))).toString());
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
-        return ResponseEntity.ok().headers(headers).body(userService.exportTeacher(name, code));
+        return ResponseEntity.ok().headers(headers).body(userService.exportTeacher(search));
     }
 
     /*

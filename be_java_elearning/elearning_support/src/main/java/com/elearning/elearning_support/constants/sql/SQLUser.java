@@ -67,8 +67,7 @@ public class SQLUser {
             "    student.status = 1 AND \n" +
             "    student.deleted_flag = 1 AND \n" +
             "    student.user_type = 1 AND \n" +
-            "    ('' = :name OR CONCAT_WS(' ', student.last_name, student.first_name) ILIKE ('%' || :name || '%')) AND \n" +
-            "    ('' = :code OR student.code ILIKE ('%' || :code || '%')) AND \n" +
+            "    ('' = :search OR CONCAT_WS(' ', student.last_name, student.first_name) ILIKE ('%' || :search || '%') OR student.code ILIKE ('%' || :search || '%')) AND \n" +
             "    (-1 = :courseNum OR COALESCE(student.meta_data->>'courseNum', '-1')::::int4 = :courseNum) ";
 
     public static final String GET_LIST_TEACHER =
@@ -97,8 +96,7 @@ public class SQLUser {
             "  teacher.status = 1 AND \n" +
             "  teacher.deleted_flag = 1 AND \n" +
             "  teacher.user_type = 0 AND \n" +
-            "  ('' = :name OR CONCAT_WS(' ', teacher.last_name, teacher.first_name) ILIKE ('%' || :name || '%')) AND \n" +
-            "  ('' = :code OR teacher.code ILIKE ('%' || :code || '%')) ";
+            "  ('' = :search OR CONCAT_WS(' ', teacher.last_name, teacher.first_name) ILIKE ('%' || :search || '%') OR teacher.code ILIKE ('%' || :search || '%'))\n";
 
     public static final String GET_LIST_CURRENT_USERNAME =
         "SELECT username FROM {h-schema}users";
