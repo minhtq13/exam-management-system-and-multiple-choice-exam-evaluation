@@ -23,6 +23,9 @@ public class StudentTestSetResultDTO {
     @Schema(description = "Tên thí sinh")
     String studentName;
 
+    @Schema(description = "MSSV")
+    String studentCode;
+
     @Schema(description = "Id đề thi")
     Long testSetId;
 

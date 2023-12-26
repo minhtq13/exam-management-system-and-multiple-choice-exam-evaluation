@@ -576,8 +576,19 @@ public class TestSetServiceImpl implements TestSetService {
             }
             if (Objects.equals(option, "SAVE")) {
                 String json = org.apache.commons.io.FileUtils.readFileToString(tempDataFile, StandardCharsets.UTF_8);
-                List<StudentTestSet> results = ObjectMapperUtil.listMapper(json, StudentTestSet.class);
-                studentTestSetRepository.saveAll(results);
+                List<StudentTestSet> saveResults = ObjectMapperUtil.listMapper(json, StudentTestSet.class);
+                // check if student_test_set_exists -> overwrite
+                List<StudentTestSet> existedStudentTestSet = studentTestSetRepository.findAllByStudentIdInAndTestSetIdIn(
+                    saveResults.stream().map(StudentTestSet::getStudentId).collect(Collectors.toSet()),
+                    saveResults.stream().map(StudentTestSet::getTestSetId).collect(Collectors.toSet()));
+                // remove if not contained both student_id and test_set_id
+                for (StudentTestSet saveItem : saveResults) {
+                    existedStudentTestSet.removeIf(item -> !(Objects.equals(item.getTestSetId(), saveItem.getTestSetId()) &&
+                        Objects.equals(item.getStudentId(), saveItem.getStudentId())));
+                }
+                studentTestSetRepository.deleteAllInBatch(existedStudentTestSet);
+                // save new results
+                studentTestSetRepository.saveAll(saveResults);
                 boolean deletedFile = tempDataFile.delete();
             } else if (Objects.equals(option, "DELETE")) {
                 boolean deletedFile = tempDataFile.delete();

@@ -15,4 +15,6 @@ public interface StudentTestSetRepository extends JpaRepository<StudentTestSet, 
     @Query(nativeQuery = true, value = SQLStudentTestSet.GET_LIST_STUDENT_TEST_SET_RESULT)
     List<IStudentTestSetResultDTO> getStudentTestSetResult(Set<Long> studentIds, Set<Long> testSetIds);
 
+    List<StudentTestSet> findAllByStudentIdInAndTestSetIdIn(Set<Long> studentIds, Set<Long> testSetIds);
+
 }

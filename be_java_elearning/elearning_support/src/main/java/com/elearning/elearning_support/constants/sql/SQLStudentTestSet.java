@@ -24,6 +24,7 @@ public class SQLStudentTestSet {
             "    studentTestSetCTE.id AS id, \n" +
             "    studentTestSetCTE.student_id AS studentId, \n" +
             "    CONCAT_WS(' ', users.last_name, users.first_name) AS studentName, \n" +
+            "    users.code AS studentCode, \n" +
             "    studentTestSetCTE.test_set_id AS testSetId, \n" +
             "    testSet.code AS testSetCode, \n" +
             "    studentTestSetCTE.num_marked_answers AS numMarkedAnswers, \n" +
