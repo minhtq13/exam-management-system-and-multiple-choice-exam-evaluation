@@ -42,11 +42,11 @@ public class SQLExamClass {
 
     public static final String GET_DETAILS_EXAM_CLASS =
         "WITH examClassParticipantCTE AS ( " + GET_COUNTER_EXAM_CLASS_PARTICIPANT + " ), \n" +
-        "WITH testSetCTE AS (" +
+            "testSetCTE AS ( \n" +
             "   SELECT \n" +
             "           test_id, \n" +
             "           STRING_AGG(TEXT(id), ',') AS lst_test_set_id, \n" +
-            "           STRING_AGG(test_code, ',') AS lst_test_set_code \n" +
+            "           STRING_AGG(code, ',') AS lst_test_set_code \n" +
             "      FROM {h-schema}test_set \n" +
             "      GROUP BY test_id \n" +
             ") \n"    +
