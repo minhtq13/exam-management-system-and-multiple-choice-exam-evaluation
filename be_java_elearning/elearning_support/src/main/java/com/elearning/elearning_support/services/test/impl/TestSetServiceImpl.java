@@ -182,14 +182,14 @@ public class TestSetServiceImpl implements TestSetService {
             int numberEasyQuestion = Math.min(genTestConfig.getNumEasyQuestion(), lstEasyQuestion.size());
             if (numberEasyQuestion > 0) {
                 Collections.shuffle(lstEasyQuestion);
-                mapDTO.getLstQuestionAnswer().addAll(lstEasyQuestion.subList(0, numberEasyQuestion > 1 ? numberEasyQuestion - 1 : 1));
+                mapDTO.getLstQuestionAnswer().addAll(lstEasyQuestion.subList(0, numberEasyQuestion));
             }
             // Trộn các câu hỏi mức trung bình
             Collections.shuffle(lstEasyQuestion);
             int numberMediumQuestion = Math.min(genTestConfig.getNumMediumQuestion(), lstMediumQuestion.size());
             if (numberMediumQuestion > 0) {
                 Collections.shuffle(lstMediumQuestion);
-                mapDTO.getLstQuestionAnswer().addAll(lstMediumQuestion.subList(0, numberMediumQuestion > 1 ? numberMediumQuestion - 1 : 1));
+                mapDTO.getLstQuestionAnswer().addAll(lstMediumQuestion.subList(0, numberMediumQuestion));
             }
 
             // Trộn các câu hỏi mức trung bình
@@ -197,7 +197,7 @@ public class TestSetServiceImpl implements TestSetService {
             int numberHardQuestion = Math.min(genTestConfig.getNumHardQuestion(), lstHardQuestion.size());
             if (numberHardQuestion > 0) {
                 Collections.shuffle(lstHardQuestion);
-                mapDTO.getLstQuestionAnswer().addAll(lstHardQuestion.subList(0, numberHardQuestion > 1 ? numberHardQuestion - 1 : 1));
+                mapDTO.getLstQuestionAnswer().addAll(lstHardQuestion.subList(0, numberHardQuestion));
             }
             lstMapTestQuestionDTO.add(mapDTO);
         }
