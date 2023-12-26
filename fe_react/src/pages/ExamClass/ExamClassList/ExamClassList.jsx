@@ -103,7 +103,7 @@ const ExamClassList = () => {
   ];
   const addTabsColumn = [
     {
-      title: "Mã đề",
+      title: "Mã đề thi",
       dataIndex: "testSetCode",
       key: "testSetCode",
     },
@@ -152,6 +152,7 @@ const ExamClassList = () => {
           </div>
         )}
         <Table
+          size="small"
           className="exam-class-participant"
           columns={roleType === "STUDENT" ? [...tabsColumn, ...addTabsColumn] : tabsColumn}
           dataSource={tabsData}
