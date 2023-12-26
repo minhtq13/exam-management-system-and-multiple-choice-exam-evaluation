@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Table } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
-import { generateRandomSixDigitNumber } from "../../utils/tools";
+import { customPaginationText, generateRandomSixDigitNumber } from "../../utils/tools";
 import ViewImage from "./ViewImage";
 
 const TableResult = ({ resultAI }) => {
@@ -140,20 +140,22 @@ const TableResult = ({ resultAI }) => {
         className="table-ai"
         columns={columns}
         dataSource={dataTable}
-        scroll={{ x: 1500, y: 487 }}
-        size="middle"
+        scroll={{ x: 1500, y: 407 }}
+        size="small"
         pagination={{
           pageSize: pageSize,
           total: dataTable.length,
+          locale: customPaginationText,
+          showQuickJumper: true,
+          showSizeChanger: true,
           showTotal: (total, range) => (
             <span>
               <strong>
                 {range[0]}-{range[1]}
               </strong>{" "}
-              of <strong>{total}</strong> items
+                trong <strong>{total}</strong> bản ghi
             </span>
           ),
-          showSizeChanger: true,
           pageSizeOptions: ["10", "20", "50", "100"],
           onChange: (page, pageSize) => {},
           onShowSizeChange: (current, size) => {

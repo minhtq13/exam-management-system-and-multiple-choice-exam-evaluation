@@ -160,14 +160,15 @@
 
 .exam-class-modal {
   min-width: 50vw;
-  height: 70vh;
-
-  .ant-modal-content {
-    height: 70vh;
-
-    .ant-modal-body {
-      height: 55vh;
-      overflow-y: scroll;
-    }
+  height: 75vh;
+  .ant-modal-header {
+    margin-bottom: 12px;
   }
+  .ant-modal-content {
+    height: 75vh;
+  }
+}
+.filter-student-options-exam-class-modal {
+  min-height: 70px;
+  margin: 12px 0px;
 }

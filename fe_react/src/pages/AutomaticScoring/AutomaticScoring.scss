@@ -151,7 +151,10 @@
             outline: 1px solid #ccc;
           }
           .ant-table-expanded-row-fixed {
-            min-height: 460px;
+            min-height: 390px;
+            align-items: center;
+            justify-content: center;
+            display: flex;
           }
         }
       }

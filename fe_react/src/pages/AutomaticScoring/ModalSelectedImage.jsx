@@ -6,6 +6,8 @@ import "./ModalSelectedImage.scss";
 import PreviewImageInFolder from "./PreviewImageInFolder";
 import deleteIcon from "../../assets/images/svg/delete-icon.svg";
 import useAI from "../../hooks/useAI";
+import { customPaginationText } from "../../utils/tools";
+
 
 const ModalSelectedImage = ({ loading, imgInFolder }) => {
   const { deleteImgInFolder } = useAI();
@@ -154,15 +156,17 @@ const ModalSelectedImage = ({ loading, imgInFolder }) => {
             pagination={{
               pageSize: pageSize,
               total: imgInFolder.length,
+              locale: customPaginationText,
+              showQuickJumper: true,
+              showSizeChanger: true,
               showTotal: (total, range) => (
                 <span>
                   <strong>
                     {range[0]}-{range[1]}
                   </strong>{" "}
-                  of <strong>{total}</strong> items
+                  trong <strong>{total}</strong> bản ghi
                 </span>
               ),
-              showSizeChanger: true,
               pageSizeOptions: ["10", "20", "50", "100"],
               onChange: (page, pageSize) => {},
               onShowSizeChange: (current, size) => {

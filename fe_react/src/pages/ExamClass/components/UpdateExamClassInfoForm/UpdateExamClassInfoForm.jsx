@@ -727,7 +727,14 @@ const UpdateExamClassInfoForm = ({
 				maskClosable={true}
 				centered={true}
 			>
+				<div className="filter-student-options-exam-class-modal">
+					{/* Thêm các select filter vào đây */}
+					{/* Hiển thị đã chọn bao nhiêu item */}
+					<span>Đã chọn</span>
+				</div>
 				<Table
+					size="small"
+					scroll={{ y: 400 }}
 					className="student-list-table"
 					columns={studentColumns}
 					dataSource={studentList}
@@ -774,7 +781,14 @@ const UpdateExamClassInfoForm = ({
 				maskClosable={true}
 				centered={true}
 			>
+				<div className="filter-student-options-exam-class-modal">
+					{/* Thêm các select filter vào đây */}
+					{/* Hiển thị đã chọn bao nhiêu item */}
+					<span>Đã chọn</span>
+				</div>
 				<Table
+					size="small"
+					scroll={{ y: 400 }}
 					className="teacher-list-table"
 					columns={teacherColumns}
 					dataSource={teacherList}

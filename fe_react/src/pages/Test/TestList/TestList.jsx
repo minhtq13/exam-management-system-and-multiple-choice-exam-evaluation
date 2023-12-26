@@ -238,20 +238,6 @@ const TestList = () => {
       </div>
       <div className="test-list-wrapper">
         <div className="test-subject-semester">
-          <div className="test-select">
-            <span className="select-label">Học phần:</span>
-            <Select
-              allowClear
-              showSearch
-              placeholder="Chọn môn học để hiển thị danh sách đề thi"
-              optionFilterProp="children"
-              filterOption={(input, option) => (option?.label ?? "").includes(input)}
-              optionLabelProp="label"
-              options={subjectOptions}
-              onChange={subjectOnChange}
-              loading={subLoading}
-            />
-          </div>
           <div className="test-select test-select-semester">
             <span className="select-label">Học kỳ:</span>
             <Select
@@ -266,6 +252,21 @@ const TestList = () => {
               loading={semesterLoading}
             />
           </div>
+          <div className="test-select">
+            <span className="select-label">Học phần:</span>
+            <Select
+              allowClear
+              showSearch
+              placeholder="Chọn môn học để hiển thị danh sách đề thi"
+              optionFilterProp="children"
+              filterOption={(input, option) => (option?.label ?? "").includes(input)}
+              optionLabelProp="label"
+              options={subjectOptions}
+              onChange={subjectOnChange}
+              loading={subLoading}
+            />
+          </div>
+       
         </div>
         <Table
           scroll={{ y: 490 }}
