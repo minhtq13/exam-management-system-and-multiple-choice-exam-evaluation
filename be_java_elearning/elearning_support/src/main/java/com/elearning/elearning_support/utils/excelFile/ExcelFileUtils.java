@@ -40,6 +40,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst;
 import com.elearning.elearning_support.utils.DateUtils;
+import com.elearning.elearning_support.utils.object.ObjectUtil;
 import com.elearning.elearning_support.utils.springCustom.SpringContextUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -93,10 +94,11 @@ public class ExcelFileUtils {
      */
     public <T> void fillDataToSheet(SXSSFSheet sheet, List<T> lstObject, Map<Integer, Pair<String, String>> structure) {
         int columnSize = structure.size();
+        sheet.trackAllColumnsForAutoSizing();
         // create a map between columnIdx and methodName
         Map<Integer, String> mapFieldIdx = new HashMap<>();
         SXSSFRow headerRow = sheet.createRow(0);
-        headerRow.createCell(0).setCellValue("No");
+        headerRow.createCell(0).setCellValue("STT");
         // Init mapFieldIdx and create other columns of the header
         for (int i = 1; i <= columnSize; i++) {
             Pair<String, String> colStructure = structure.get(i);
@@ -115,10 +117,11 @@ public class ExcelFileUtils {
                 try {
                     Method invokeMethod = clazzT.getDeclaredMethod(mapFieldIdx.get(i));
                     String cellValue = Objects.toString(invokeMethod.invoke(item), Strings.EMPTY);
-                    row.createCell(i, CellType.STRING).setCellValue(cellValue);
+                    row.createCell(i, CellType.STRING).setCellValue(ObjectUtil.getOrDefault(cellValue, ""));
                 } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException exception) {
                     log.error(MessageConst.EXCEPTION_LOG_FORMAT, exception.getMessage(), exception.getCause());
                 }
+                sheet.autoSizeColumn(i);
             }
             rowIdx++;
         }

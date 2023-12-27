@@ -10,6 +10,7 @@ public class SQLStudentTestSet {
             "        stdTestSet.test_set_id AS test_set_id, \n" +
             "        stdTestSet.marked AS num_marked_answers, \n" +
             "        stdTestSet.handed_test_file as handed_img_id, \n" +
+            "        COUNT(testSetQuest.id) AS num_test_set_questions, \n" +
             "        COUNT(stdTestSetDetail.id) FILTER ( WHERE stdTestSetDetail.is_corrected is TRUE) AS num_correct_answers, \n" +
             "        COALESCE(SUM(testSetQuest.question_mark) FILTER ( WHERE stdTestSetDetail.is_corrected is TRUE), 0) AS total_points \n" +
             "    FROM {h-schema}student_test_set AS stdTestSet \n" +
@@ -27,6 +28,7 @@ public class SQLStudentTestSet {
             "    users.code AS studentCode, \n" +
             "    studentTestSetCTE.test_set_id AS testSetId, \n" +
             "    testSet.code AS testSetCode, \n" +
+            "    studentTestSetCTE.num_test_set_questions numTestSetQuestions, \n" +
             "    studentTestSetCTE.num_marked_answers AS numMarkedAnswers, \n" +
             "    studentTestSetCTE.num_correct_answers AS numCorrectAnswers, \n" +
             "    studentTestSetCTE.total_points AS totalPoints, \n" +

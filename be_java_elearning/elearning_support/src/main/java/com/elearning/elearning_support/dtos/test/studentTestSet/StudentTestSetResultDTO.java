@@ -39,9 +39,11 @@ public class StudentTestSetResultDTO {
     String examClassCode;
 
     // result
+    @Schema(description = "Số câu hỏi trong đề")
+    Integer numTestSetQuestions = 0;
 
     @Schema(description = "Số câu đã tô phương án trả lời")
-    Integer numMarkedAnswers;
+    Integer numMarkedAnswers = 0;
 
     @Schema(description = "Số câu trả lời đúng")
     Integer numCorrectAnswers = 0;
@@ -56,5 +58,11 @@ public class StudentTestSetResultDTO {
         BeanUtils.copyProperties(iStudentTestSetResultDTO, this);
         this.examClassId = examClassId;
         this.examClassCode = examClassCode;
+    }
+
+    public StudentTestSetResultDTO(Long studentId, String studentName, String studentCode) {
+        this.studentId = studentId;
+        this.studentName = studentName;
+        this.studentCode = studentCode;
     }
 }

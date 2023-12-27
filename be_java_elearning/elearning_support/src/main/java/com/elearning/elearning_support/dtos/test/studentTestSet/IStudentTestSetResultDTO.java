@@ -8,6 +8,8 @@ public interface IStudentTestSetResultDTO {
 
     String getStudentName();
 
+    String getStudentCode();
+
     Long getTestSetId();
 
     String getTestSetCode();
@@ -15,6 +17,8 @@ public interface IStudentTestSetResultDTO {
     Long getExamClassId();
 
     String getExamClassCode();
+
+    Integer getNumTestSetQuestions();
 
     Integer getNumMarkedAnswers();
 
