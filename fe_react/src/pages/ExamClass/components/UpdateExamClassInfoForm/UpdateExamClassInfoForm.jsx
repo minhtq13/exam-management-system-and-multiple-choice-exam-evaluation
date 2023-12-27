@@ -765,7 +765,7 @@ const UpdateExamClassInfoForm = ({
 				<Table
 					size="small"
 					scroll={{ y: 320 }}
-					className="student-list-table"
+					className="student-exam-class-table"
 					columns={studentColumns}
 					dataSource={studentList}
 					rowSelection={rowStudentSelection}
@@ -819,7 +819,7 @@ const UpdateExamClassInfoForm = ({
 				<Table
 					size="small"
 					scroll={{ y: 320 }}
-					className="teacher-list-table"
+					className="teacher-exam-class-table"
 					columns={teacherColumns}
 					dataSource={teacherList}
 					rowSelection={rowTeacherSelection}

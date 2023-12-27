@@ -79,15 +79,13 @@
     color: #007BFF;
   }
 }
-
 .test-list-preview {
-  min-width: 45vw;
-
+  width: 55vw !important;
+  height: 85vh;
   .ant-modal-content {
-    height: 80vh;
-
+    height: 85vh;
     .ant-modal-body {
-      height: 70vh;
+      height: 74vh;
       overflow-y: scroll;
     }
   }
@@ -95,6 +93,7 @@
 
 .list-test-modal {
   height: 70vh;
+  min-width: 40vw;
 
   .ant-modal-content {
     height: 70vh;

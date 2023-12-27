@@ -162,8 +162,15 @@
   min-width: 60vw;
   height: 80vh;
   .ant-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 12px;
+    .ant-modal-title {
+      font-size: 18px;
+    }
   }
+
   .ant-modal-content {
     height: 86vh;
   }
@@ -176,9 +183,10 @@
   .exam-class-modal {
     .ant-modal-content {
       height: 80vh;
+      padding: 32px;
     }
   }
-  .teacher-list-table, .student-list-table {
+  .teacher-exam-class-table, .student-exam-class-table {
     .ant-table-body, .ant-table-tbody {
       overflow-y: scroll !important;
       max-height: 436px !important;

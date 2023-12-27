@@ -101,7 +101,7 @@ const HeaderSelect = () => {
               onChange={handleChangeExamCodeSelect}
               className="custom-select-antd"
               suffixIcon={<img src={iconArrow} alt="" />}
-              style={{ width: 300 }}
+              style={{ width: 250 }}
               placeholder="Chọn mã lớp thi để chấm"
               showSearch
               disabled={!semesterSelected || !subjectSelected}

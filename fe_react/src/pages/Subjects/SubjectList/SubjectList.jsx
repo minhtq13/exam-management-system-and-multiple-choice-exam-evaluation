@@ -230,11 +230,11 @@ const SubjectList = () => {
 			align: "center",
 			render: (_, record) => (
 				<Space size="middle" style={{ cursor: "pointer" }}>
-					<Button danger onClick={() => handleEdit(record)}>
+					<Button size="small" danger onClick={() => handleEdit(record)}>
 					Cập nhật
 					</Button>
-					<Button onClick={() => handleView(record)}>Nội dung</Button>
-					<Button
+					<Button size="small" onClick={() => handleView(record)}>Nội dung</Button>
+					<Button size="small"
 						onClick={() =>
 							navigate(`${appPath.subjectView}/${record.id}`)
 						}
@@ -410,8 +410,8 @@ const SubjectList = () => {
 			</div>
 			<div className="subject-list-wrapper">
 				<Table
-					scroll={{ y: 575 }}
-					size="middle"
+					scroll={{ y: 490 }}
+					size="small"
 					className="subject-list-table"
 					columns={columns}
 					dataSource={dataFetch}
@@ -470,6 +470,7 @@ const SubjectList = () => {
 				>
 					<Form form={form} component={false}>
 						<Table
+							size="small"
 							loading={infoLoading}
 							components={{
 								body: {

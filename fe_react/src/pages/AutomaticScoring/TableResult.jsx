@@ -16,6 +16,7 @@ const TableResult = ({ resultAI }) => {
       dataIndex: `answer${i + 1}`,
       width: 100,
       align: "center",
+      key: `${i + 1}`,
     });
   }
   const columnsInfo = [
@@ -52,13 +53,13 @@ const TableResult = ({ resultAI }) => {
       title: "MĐT",
       width: 80,
       align: "center",
-      dataIndex: "testCode",
-      key: "testCode",
+      dataIndex: "testSetCode",
+      key: "testSetCode",
       fixed: "left",
       filters: testCodeFilter,
       filterSearch: true,
       onFilter: (value, record) => {
-        return record.testCode === value;
+        return record.testSetCode === value;
       },
     },
   ];
@@ -93,9 +94,9 @@ const TableResult = ({ resultAI }) => {
   useEffect(() => {
     if (resultAI) {
       const listTestCode = resultAI.reduce((acc, item) => {
-        const existingIndex = acc.findIndex((el) => el.value === item.testCode);
+        const existingIndex = acc.findIndex((el) => el.value === item.testSetCode);
         if (existingIndex === -1) {
-          acc.push({ text: item.testCode, value: item.testCode });
+          acc.push({ text: item.testSetCode, value: item.testSetCode });
         }
         return acc;
       }, []);
@@ -110,11 +111,11 @@ const TableResult = ({ resultAI }) => {
 
       const newDataTable = resultAI.map((item, index) => {
         const formatDataTable = {
+          key: `row-${index}`,
           stt: index + 1,
           examClassCode: item.examClassCode,
           studentCode: item.studentCode,
-          testCode: item.testCode,
-          key: generateRandomSixDigitNumber(),
+          testSetCode: item.testSetCode,
           totalScore: item.totalScore,
           imgHandle: true,
           children: [{}],
@@ -123,10 +124,12 @@ const TableResult = ({ resultAI }) => {
           formatDataTable[`answer${j + 1}`] = item.details[j].selectedAnswers;
           formatDataTable.children[0][`answer${j + 1}`] = item.details[j].correctAnswers;
         }
+        formatDataTable.children[0][`key`] = `child-${index}`;
         formatDataTable.children[0][`studentCode`] = "Đáp án đúng:";
         formatDataTable.children[0][`imgHandle`] = false;
         return formatDataTable;
       });
+      
       setTestCodeFilter(listTestCode);
       setStudentCodeFilter(listStudentCode)
       setDataTable(newDataTable);
