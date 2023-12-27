@@ -3,6 +3,7 @@ package com.elearning.elearning_support.services.question.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -120,12 +121,39 @@ public class QuestionServiceImpl implements QuestionService {
             question.setImageIds(updateDTO.getLstImageId());
         }
 
-        //xoá tất cả các answer của question hiện tại
-        answerRepository.deleteAllByQuestionId(questionId);
-        // Lưu list answer mới
-        List<Answer> lstUpdatedAnswer = updateDTO.getLstAnswer().stream().map(Answer::new).collect(Collectors.toList());
-        question.setLstAnswer(lstUpdatedAnswer);
+        // update question logic
+        List<Long> currentAnswerIds = question.getLstAnswer().stream().sorted(Comparator.comparing(Answer::getId)).map(Answer::getId).collect(
+            Collectors.toList());
+        List<Answer> lstNewAnswer = new ArrayList<>();
+        List<Answer> lstRemovedAnswer = new ArrayList<>();
+        int numCurrentAnswer = currentAnswerIds.size();
+        int numUpdatedAnswer = updateDTO.getLstAnswer().size();
+        if (numCurrentAnswer <= numUpdatedAnswer) {
+            int numNewAnswer = numUpdatedAnswer - numCurrentAnswer;
+            // update current answer
+            for (int i = 0; i < numCurrentAnswer; i++) {
+                org.springframework.beans.BeanUtils.copyProperties(question.getLstAnswer().get(i), updateDTO.getLstAnswer().get(i));
+            }
+            // add new answer
+            if (numNewAnswer > 0) {
+                for (int i = numCurrentAnswer; i < numUpdatedAnswer; i++) {
+                    lstNewAnswer.add(new Answer(question.getId(), updateDTO.getLstAnswer().get(i)));
+                }
+            }
+        } else {
+            // update current answer
+            for (int i = 0; i < numUpdatedAnswer; i++) {
+                org.springframework.beans.BeanUtils.copyProperties(question.getLstAnswer().get(i), updateDTO.getLstAnswer().get(i));
+            }
+            // remove answer
+            for (int i = numUpdatedAnswer; i < numCurrentAnswer; i++) {
+                lstRemovedAnswer.add(question.getLstAnswer().remove(i));
+            }
+        }
+        // save to db
         questionRepository.save(question);
+        answerRepository.deleteAll(lstRemovedAnswer);
+        answerRepository.saveAll(lstNewAnswer);
     }
 
     @Override

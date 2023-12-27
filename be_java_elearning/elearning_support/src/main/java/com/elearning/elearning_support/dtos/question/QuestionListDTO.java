@@ -2,6 +2,7 @@ package com.elearning.elearning_support.dtos.question;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import org.springframework.beans.BeanUtils;
 import com.elearning.elearning_support.dtos.answer.AnswerResDTO;
@@ -42,6 +43,7 @@ public class QuestionListDTO {
         BeanUtils.copyProperties(iListQuestionDTO, this);
         this.lstImage = ObjectMapperUtil.listMapper(iListQuestionDTO.getLstImageJson(), FileAttachDTO.class);
         this.lstAnswer = ObjectMapperUtil.listMapper(iListQuestionDTO.getLstAnswerJson(), AnswerResDTO.class);
+        this.lstAnswer.sort(Comparator.comparing(AnswerResDTO::getId));
     }
 
 }

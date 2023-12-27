@@ -47,4 +47,13 @@ public class Answer extends BaseEntity {
         this.setCreatedAt(new Date());
     }
 
+    public Answer(Long questionId, AnswerReqDTO createDTO){
+        BeanUtils.copyProperties(createDTO, this);
+        this.questionId = questionId;
+        this.setCreatedBy(AuthUtils.getCurrentUserId());
+        this.setCreatedAt(new Date());
+    }
+
+
+
 }
