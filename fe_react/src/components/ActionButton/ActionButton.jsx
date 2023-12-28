@@ -1,4 +1,4 @@
-import { AppstoreAddOutlined, EditOutlined, FileSearchOutlined, FormOutlined, SearchOutlined, SelectOutlined, UnorderedListOutlined } from "@ant-design/icons";
+import { AppstoreAddOutlined, DownloadOutlined, EditOutlined, EyeOutlined, FileSearchOutlined, FormOutlined, SearchOutlined, SelectOutlined, UnorderedListOutlined } from "@ant-design/icons";
 import { Tooltip } from "antd";
 import React from "react";
 import { HUST_COLOR } from "../../utils/constant";
@@ -49,6 +49,16 @@ const ActionButton = ({ icon, handleClick, color = HUST_COLOR }) => {
         return {
           icon: <SearchOutlined style={{ color: color }} />,
           toolTip: "Xem chi tiết ảnh chấm"
+        }
+      case "preview-img-in-folder":
+        return {
+          icon: <EyeOutlined style={{ color: color }} />,
+          toolTip: "Xem chi tiết ảnh"
+        }
+      case "download":
+        return {
+          icon: <DownloadOutlined style={{ color: color }} />,
+          toolTip: "Download"
         }
       default:
         return {

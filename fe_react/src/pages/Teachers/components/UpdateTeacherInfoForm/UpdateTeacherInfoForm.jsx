@@ -36,7 +36,7 @@ const UpdateTeacherInfoForm = ({
           colon={true}
           rules={[{ required: true, message: errorMessange }]}
         >
-          <Input placeholder="Nhập họ và tên đệm giáo viên" />
+          <Input placeholder="Nhập họ và tên đệm giảng viên" />
         </Form.Item>
         <Form.Item
           name="lastName"
@@ -44,7 +44,7 @@ const UpdateTeacherInfoForm = ({
           colon={true}
           rules={[{ required: true, message: errorMessange }]}
         >
-          <Input placeholder="Nhập tên giáo viên" />
+          <Input placeholder="Nhập tên giảng viên" />
         </Form.Item>
         <Form.Item
           name="identificationNumber"

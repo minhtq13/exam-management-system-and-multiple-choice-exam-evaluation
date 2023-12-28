@@ -7,6 +7,7 @@ import PreviewImageInFolder from "./PreviewImageInFolder";
 import deleteIcon from "../../assets/images/svg/delete-icon.svg";
 import useAI from "../../hooks/useAI";
 import { customPaginationText } from "../../utils/tools";
+import ActionButton from "../../components/ActionButton/ActionButton";
 
 
 const ModalSelectedImage = ({ loading, imgInFolder }) => {
@@ -24,6 +25,20 @@ const ModalSelectedImage = ({ loading, imgInFolder }) => {
   };
   const handleCancel = () => {
     setOpen(false);
+  };
+  const handleDownload = (srcImage, imageName) => {
+    fetch(srcImage)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const url = URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${imageName}`;
+        document.body.appendChild(link);
+        link.click();
+        URL.revokeObjectURL(url);
+        link.remove();
+      });
   };
 
   useEffect(() => {
@@ -71,13 +86,23 @@ const ModalSelectedImage = ({ loading, imgInFolder }) => {
     {
       title: "Tên ảnh",
       dataIndex: "fileName",
-      width: "50%",
+      width: "30%",
     },
     {
       title: "Loại ảnh",
       dataIndex: "fileExt",
       width: "20%",
       align: "center",
+    },
+    {
+      title: "Thao tác",
+      key: "action",
+      align: "center",
+      render: (_, record) => (
+        <Space size="middle" style={{ cursor: "pointer" }}>
+          <ActionButton icon="download" handleClick={() => handleDownload(record.filePath, record.fileName)}  />
+        </Space>
+      ),
     },
   ];
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);

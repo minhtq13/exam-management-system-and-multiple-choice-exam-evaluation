@@ -527,6 +527,42 @@ const UpdateExamClassInfoForm = ({
       >
         <div className="info-exam-class-header">Thông tin lớp thi</div>
         <Form.Item
+          name="semesterId"
+          label="Kỳ thi"
+          rules={[{ required: true, message: "Chưa chọn kỳ thi" }]}
+        >
+          <Select
+            loading={semesterLoading}
+            placeholder="Chọn kỳ thi"
+            options={getOptions(allSemester, false)}
+            style={{ height: 45 }}
+            onChange={(value) =>
+              setParam({ ...param, semesterId: value })
+            }
+          />
+        </Form.Item>
+        <Form.Item
+          name="subjectId"
+          colon={true}
+          label="Môn thi"
+          rules={[
+            {
+              required: true,
+              message: "Chưa chọn môn thi",
+            },
+          ]}
+        >
+          <Select
+            placeholder="Chọn môn thi"
+            loading={subLoading}
+            options={getOptions(allSubjects)}
+            style={{ height: 45 }}
+            onChange={(value) =>
+              setParam({ ...param, subjectId: value })
+            }
+          ></Select>
+        </Form.Item>
+        <Form.Item
           name="code"
           label="Mã lớp thi"
           colon={true}
@@ -553,25 +589,29 @@ const UpdateExamClassInfoForm = ({
           <Input placeholder="Vui lòng nhập phòng thi" />
         </Form.Item>
         <Form.Item
-          name="semesterId"
-          label="Kỳ thi"
-          rules={[{ required: true, message: "Chưa chọn kỳ thi" }]}
+          name="examineTime"
+          colon={true}
+          label="Thời gian thi"
+          rules={[
+            {
+              required: true,
+              message: "Chưa chọn thời gian thi",
+            },
+          ]}
         >
-          <Select
-            loading={semesterLoading}
-            placeholder="Chọn kỳ thi"
-            options={getOptions(allSemester, false)}
-            style={{ height: 45 }}
-            onChange={(value) =>
-              setParam({ ...param, semesterId: value })
-            }
-          />
+          <DatePicker
+            placeholder="Chọn thời gian thi"
+            format={"YYYY-MM-DD HH:mm"}
+            showTime={{ format: "HH:mm" }}
+            disabledDate={disabledDate}
+          ></DatePicker>
         </Form.Item>
-        <Form.Item name="lstStudentId" label="Học sinh">
+
+        <Form.Item name="lstStudentId" label="Sinh viên">
           <div className="test-select">
             <Input
-              placeholder="Chọn học sinh"
-              value={studentSelected.length > 0 ? `${studentSelected.length} học sinh` : ""}
+              placeholder="Chọn sinh viên"
+              value={studentSelected.length > 0 ? `${studentSelected.length} sinh viên` : ""}
             />
             <Button onClick={() => setOpenStudentModal(true)}>Chọn</Button>
           </div>
@@ -589,66 +629,9 @@ const UpdateExamClassInfoForm = ({
 						suffixIcon={null} > 0 ?
 					/> */}
         </Form.Item>
-        <Form.Item name="lstSupervisorId" label="Giám thị">
-          <div className="test-select">
-            <Input
-              placeholder="Chọn giảng viên"
-              value={teacherSelected.length > 0 ? `${teacherSelected.length} giảng viên` : ""}
-            />
-            <Button onClick={() => setOpenTeacherModal(true)}>Chọn</Button>
-          </div>
-          {/* <Select
-						key={JSON.stringify(teacherSelected)}
-						open={false}
-						className="exam-class-teachers"
-						mode="multiple"
-						loading={teacherLoading}
-						onClick={() => setOpenTeacherModal(true)}
-						defaultValue={teacherSelected}
-						placeholder="Chọn giám thị"
-						options={getOptions(allTeacher, true)}
-						removeIcon={null}
-						suffixIcon={null}
-					/> */}
-        </Form.Item>
-        <Form.Item
-          name="subjectId"
-          colon={true}
-          label="Môn thi"
-          rules={[
-            {
-              required: true,
-              message: "Chưa chọn môn thi",
-            },
-          ]}
-        >
-          <Select
-            placeholder="Chọn môn thi"
-            loading={subLoading}
-            options={getOptions(allSubjects)}
-            style={{ height: 45 }}
-            onChange={(value) =>
-              setParam({ ...param, subjectId: value })
-            }
-          ></Select>
-        </Form.Item>
-        <Form.Item
-          name="examineTime"
-          colon={true}
-          label="Thời gian thi"
-          rules={[
-            {
-              required: true,
-              message: "Chưa chọn thời gian thi",
-            },
-          ]}
-        >
-          <DatePicker
-            format={"YYYY-MM-DD HH:mm"}
-            showTime={{ format: "HH:mm" }}
-            disabledDate={disabledDate}
-          ></DatePicker>
-        </Form.Item>
+
+
+   
         <Form.Item
           name="testId"
           label="Đề thi"
@@ -674,6 +657,28 @@ const UpdateExamClassInfoForm = ({
 
             <Button onClick={() => setOpenModal(true)}>Chọn</Button>
           </div>
+        </Form.Item>
+        <Form.Item name="lstSupervisorId" label="Giám thị">
+          <div className="test-select">
+            <Input
+              placeholder="Chọn giảng viên"
+              value={teacherSelected.length > 0 ? `${teacherSelected.length} giảng viên` : ""}
+            />
+            <Button onClick={() => setOpenTeacherModal(true)}>Chọn</Button>
+          </div>
+          {/* <Select
+						key={JSON.stringify(teacherSelected)}
+						open={false}
+						className="exam-class-teachers"
+						mode="multiple"
+						loading={teacherLoading}
+						onClick={() => setOpenTeacherModal(true)}
+						defaultValue={teacherSelected}
+						placeholder="Chọn giám thị"
+						options={getOptions(allTeacher, true)}
+						removeIcon={null}
+						suffixIcon={null}
+					/> */}
         </Form.Item>
         <Form.Item className="btn-info">
           <Button
@@ -775,13 +780,13 @@ const UpdateExamClassInfoForm = ({
         open={openStudentModal}
         okText="Đồng ý"
         cancelText="Đóng"
-        title="Danh sách học sinh"
+        title="Danh sách sinh viên"
         onOk={() => setOpenStudentModal(false)}
         onCancel={() => setOpenStudentModal(false)}
         maskClosable={true}
         centered={true}
       >
-        <div className="selected-number-text">{`Đã chọn: ${studentSelected.length} học sinh`}</div>
+        <div className="selected-number-text">{`Đã chọn: ${studentSelected.length} sinh viên`}</div>
         <SearchFilter displayFilter placeholder="Nhập tên hoặc MSSV" />
         <Table
           size="small"
@@ -804,7 +809,7 @@ const UpdateExamClassInfoForm = ({
                 <strong>
                   {range[0]}-{range[1]}
                 </strong>{" "}
-                trong <strong>{total}</strong> học sinh
+                trong <strong>{total}</strong> sinh viên
               </span>
             ),
             onChange: (page, pageSize) => {
@@ -828,13 +833,13 @@ const UpdateExamClassInfoForm = ({
         okText="Đồng ý"
         cancelText="Đóng"
         open={openTeacherModal}
-        title="Danh sách giáo viên"
+        title="Danh sách giảng viên"
         onOk={() => setOpenTeacherModal(false)}
         onCancel={() => setOpenTeacherModal(false)}
         maskClosable={true}
         centered={true}
       >
-        <div className="selected-number-text">{`Đã chọn: ${teacherSelected.length} học sinh`}</div>
+        <div className="selected-number-text">{`Đã chọn: ${teacherSelected.length} giảng viên`}</div>
         <SearchFilter displayFilter={false} placeholder="Nhập tên hoặc mã cán bộ" />
         <Table
           size="small"
@@ -857,7 +862,7 @@ const UpdateExamClassInfoForm = ({
                 <strong>
                   {range[0]}-{range[1]}
                 </strong>{" "}
-                trong <strong>{total}</strong> giáo viên
+                trong <strong>{total}</strong> giảng viên
               </span>
             ),
             onChange: (page, pageSize) => {

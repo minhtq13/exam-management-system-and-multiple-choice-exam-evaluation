@@ -401,7 +401,7 @@ const SubjectList = () => {
           />
           <Button className="options" onClick={handleClickAddSubject}>
             <img src={addIcon} alt="Add Icon" />
-            Thêm
+            Thêm chương
           </Button>
         </div>
       </div>

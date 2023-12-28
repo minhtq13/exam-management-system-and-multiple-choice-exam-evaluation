@@ -323,7 +323,7 @@ const TeacherList = () => {
                 <strong>
                   {range[0]}-{range[1]}
                 </strong>{" "}
-                trong <strong>{total}</strong> giáo viên
+                trong <strong>{total}</strong> giảng viên
               </span>
             ),
             onChange: (page, pageSize) => {

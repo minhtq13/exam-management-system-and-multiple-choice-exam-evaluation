@@ -223,7 +223,7 @@ const TestList = () => {
         <div className="block-button">
           <ModalPopup
             buttonOpenModal={
-              <Button className="options" disabled={deleteDisable}>
+              <Button className="options" disabled={!deleteDisable}>
                 <img src={deleteIcon} alt="Delete Icon" />
                 Xóa
               </Button>

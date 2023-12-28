@@ -297,7 +297,7 @@ const ExamClassList = () => {
       dataIndex: "code",
       key: "code",
       ...getColumnSearchProps("code"),
-      width: "8%",
+      width: "10%",
       align: "center",
     },
     {
@@ -314,7 +314,7 @@ const ExamClassList = () => {
       // eslint-disable-next-line jsx-a11y/anchor-is-valid
       render: (text) => <a>{text}</a>,
       ...getColumnSearchProps("fullName"),
-      width: "8%",
+      width: "10%",
       align: "center",
     },
     {
@@ -328,10 +328,10 @@ const ExamClassList = () => {
       title: "Môn thi",
       dataIndex: "subjectTitle",
       key: "subjectTitle",
-      width: "20%",
+      width: "22%",
     },
     {
-      title: "Số học sinh",
+      title: "Số SV",
       dataIndex: "numberOfStudents",
       key: "numberOfStudents",
       width: "8%",
@@ -345,7 +345,7 @@ const ExamClassList = () => {
       align: "center",
     },
     {
-      title: "Giờ thi",
+      title: "Thời gian thi",
       dataIndex: "examineTime",
       key: "examineTime",
       width: "15%",
