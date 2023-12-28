@@ -106,14 +106,13 @@ const useImportExport = () => {
 				setLoadingExport(false);
 			});
 	};
-	const exportExamClassStudent = (params, object, classId) => {
+	const exportExamClassStudent = (classCode) => {
 		// object = "exam-class"
 		setLoadingExport(true);
 		axios({
-			url: `${BASE_URL}/${object}/export/${classId}?roleType=STUDENT`,
+			url: `${BASE_URL}/std-test-set/result/export/${classCode}`,
 			method: "GET",
 			responseType: "blob",
-			data: params,
 		})
 			.then((response) => {
 				const url = window.URL.createObjectURL(
@@ -121,7 +120,10 @@ const useImportExport = () => {
 				);
 				const link = document.createElement("a");
 				link.href = url;
-				link.setAttribute("download", `${object}-${Date.now()}.xlsx`);
+				link.setAttribute(
+					"download",
+					`${classCode}-${Date.now()}.xlsx`
+				);
 				document.body.appendChild(link);
 				link.click();
 				setLoadingExport(false);

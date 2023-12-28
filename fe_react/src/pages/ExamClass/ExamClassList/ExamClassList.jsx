@@ -80,8 +80,8 @@ const ExamClassList = () => {
   const semesterOptions =
     allSemester && allSemester.length > 0
       ? allSemester.map((item) => {
-          return { value: item.id, label: item.name };
-        })
+        return { value: item.id, label: item.name };
+      })
       : [];
   const subjectOnChange = (value) => {
     setParam({ ...param, subjectId: value });
@@ -125,11 +125,7 @@ const ExamClassList = () => {
     };
   });
   const handleExportStudent = () => {
-    const params = {
-      name: param.name,
-      code: param.code,
-    };
-    exportExamClassStudent(params, "exam-class/participant", classId);
+    exportExamClassStudent(classCode);
   };
   const renderTab = () => {
     return (
@@ -145,7 +141,7 @@ const ExamClassList = () => {
               type="primary"
               //onClick={handleUpload}
               disabled={!fileList}
-              //loading={loadingImport}
+            //loading={loadingImport}
             >
               Import
             </Button>

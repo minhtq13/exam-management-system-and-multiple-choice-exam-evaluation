@@ -161,24 +161,39 @@
 .exam-class-modal {
   min-width: 60vw;
   height: 80vh;
+
   .ant-modal-header {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 12px;
+
     .ant-modal-title {
       font-size: 18px;
     }
   }
 
   .ant-modal-content {
-    height: 86vh;
+    height: 85côngvh;
   }
 }
-.filter-student-options-exam-class-modal, .filter-testlit-options-exam-class-modal, .filter-teacher-options-exam-class-modal {
+
+.selected-number-text {
+  color: var(--hust-color);
+  text-align: right;
+  width: 100%;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.filter-student-options-exam-class-modal,
+.filter-testlit-options-exam-class-modal,
+.filter-teacher-options-exam-class-modal {
   min-height: 70px;
   margin: 12px 0px;
 }
+
 @media (min-width: 1600px) {
   .exam-class-modal {
     .ant-modal-content {
@@ -186,17 +201,23 @@
       padding: 32px;
     }
   }
-  .teacher-exam-class-table, .student-exam-class-table {
-    .ant-table-body, .ant-table-tbody {
+
+  .teacher-exam-class-table,
+  .student-exam-class-table {
+
+    .ant-table-body,
+    .ant-table-tbody {
       overflow-y: scroll !important;
       max-height: 436px !important;
     }
   }
+
   .test-list-table {
-    .ant-table-body, .ant-table-tbody {
+
+    .ant-table-body,
+    .ant-table-tbody {
       overflow-y: scroll !important;
       max-height: 410px !important;
     }
   }
 }
-

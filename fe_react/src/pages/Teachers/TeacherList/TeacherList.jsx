@@ -16,6 +16,7 @@ import { setSelectedItem } from "../../../redux/slices/appSlice";
 import { deleteTeachersService } from "../../../services/teachersServices";
 import { convertGender } from "../../../utils/tools";
 import "./TeacherList.scss";
+import SearchFilter from "../../../components/SearchFilter/SearchFilter";
 
 const TeacherList = () => {
   const initialParam = {
@@ -146,7 +147,7 @@ const TeacherList = () => {
       dataIndex: "code",
       key: "code",
       ...getColumnSearchProps("code"),
-			width: "15%",
+      width: "15%",
       align: "center",
     },
     {
@@ -156,20 +157,20 @@ const TeacherList = () => {
       // eslint-disable-next-line jsx-a11y/anchor-is-valid
       render: (text) => <a>{text}</a>,
       ...getColumnSearchProps("name"),
-			width: "25%",
+      width: "25%",
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
-			width: "22%",
+      width: "22%",
     },
     {
       title: "Số điện thoại",
       dataIndex: "phoneNumber",
       key: "phoneNumber",
       align: "center",
-			width: "10%",
+      width: "10%",
     },
     {
       title: "Giới tính",
@@ -300,10 +301,11 @@ const TeacherList = () => {
           </Button>
         </div>
       </div>
+      <SearchFilter displayFilter={false} placeholder="Nhập tên hoặc mã cán bộ" />
       <div className="teacher-list-wrapper">
         <Table
-					scroll={{ y: 490 }}
-					size="middle"
+          scroll={{ y: 490 }}
+          size="middle"
           className="teacher-list-table"
           columns={columns}
           dataSource={dataFetch}

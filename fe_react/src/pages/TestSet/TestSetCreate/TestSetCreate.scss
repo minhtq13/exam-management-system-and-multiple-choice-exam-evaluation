@@ -47,14 +47,14 @@
 }
 
 .test-set-left {
-  width: 40%;
+  width: 32%;
   display: flex;
   flex-direction: column;
   align-items: center;
 
   .ant-list {
     width: 100%;
-    margin-top: 20px;
+    margin-top: 10px;
 
     .ant-list-item-meta-title {
       font-size: 16px !important;
@@ -85,7 +85,7 @@
 }
 
 .test-set-right {
-  width: 50%;
+  width: 65%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -135,5 +135,29 @@
 
   div {
     font-size: 18px;
+  }
+}
+
+.test-create-info {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  justify-content: flex-start;
+
+  .test-create-info-row {
+    display: flex;
+    gap: 10px;
+
+    span:nth-child(1) {
+      font-weight: 600;
+      width: 100px;
+    }
+  }
+
+  span {
+    font-size: 16px;
+    display: block;
   }
 }

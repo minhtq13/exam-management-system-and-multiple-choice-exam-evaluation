@@ -1,0 +1,28 @@
+.list-search-filter {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  margin-bottom: 20px;
+
+  .list-filter,
+  .list-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .list-search-filter-label {
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+  }
+
+  .ant-select-selector {
+    width: 120px;
+  }
+
+  .ant-input-wrapper {
+    input {
+      width: 200px !important;
+    }
+  }
+}

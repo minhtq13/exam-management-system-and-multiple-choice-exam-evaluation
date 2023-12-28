@@ -3,6 +3,8 @@ import TestHeader from "../components/TestPreview/TestHeader";
 import ReactDOMServer from "react-dom/server";
 import html2pdf from "html2pdf.js";
 
+const minDate = new Date();
+const nextDay = new Date(minDate);
 export const formatDate = (str) => {
 	const date = new Date(str);
 	let day, month, year;
@@ -134,3 +136,9 @@ export const customPaginationText = {
 	prev_3: "3 trang trước",
 	next_3: "3 trang sau",
 };
+
+export const disabledDate = (current) => {
+	return current && current < minDate;
+};
+
+export const nextday = nextDay.setDate(minDate.getDate() + 1);

@@ -15,7 +15,7 @@ import useCombo from "../../../hooks/useCombo";
 import useImportExport from "../../../hooks/useImportExport";
 import useNotify from "../../../hooks/useNotify";
 import useTest from "../../../hooks/useTest";
-import { setSelectedItem } from "../../../redux/slices/appSlice";
+import { setSelectedItem, setTestInfo } from "../../../redux/slices/appSlice";
 import { deleteTestService, testSetDetailService } from "../../../services/testServices";
 import "./TestList.scss";
 import { customPaginationText, downloadTestPdf } from "../../../utils/tools";
@@ -38,6 +38,7 @@ const TestList = () => {
   const [testSetNos, setTestSetNos] = useState([]);
   const [param, setParam] = useState(initialParam);
   const handleCreate = (record) => {
+    dispatch(setTestInfo(record));
     navigate(`${appPath.testSetCreate}/${record.id}`);
   };
   useEffect(() => {
@@ -267,7 +268,6 @@ const TestList = () => {
               loading={subLoading}
             />
           </div>
-       
         </div>
         <Table
           scroll={{ y: 490 }}
@@ -326,7 +326,7 @@ const TestList = () => {
               <List.Item
                 actions={[
                   <div key="list-view" className="preview" onClick={() => handleView(item)}>
-                    <div className="preview-text">Preview</div>
+                    <div className="preview-text">Xem</div>
                     <AiFillEye color={HUST_COLOR} />
                   </div>,
                 ]}
@@ -365,7 +365,7 @@ const TestList = () => {
             }}
             okButtonProps={{ loading: loadingExport }}
           >
-            <Spin tip="Loading..." spinning={viewLoading}>
+            <Spin tip="Đang tải..." spinning={viewLoading}>
               <TestPreview questions={questions} testDetail={testDetail} testNo={testNo} />
             </Spin>
           </Modal>

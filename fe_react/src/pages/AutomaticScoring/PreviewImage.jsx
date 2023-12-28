@@ -10,7 +10,7 @@ import { Image, Space } from "antd";
 import React from "react";
 import "./PreviewImage.scss";
 const PreviewImage = ({ srcImage, imageName }) => {
-  const imgHandleName =  `handle-${imageName}`
+  const imgHandleName = `handle-${imageName}`
   const onDownload = () => {
     fetch(srcImage)
       .then((response) => response.blob())
@@ -29,7 +29,7 @@ const PreviewImage = ({ srcImage, imageName }) => {
     <div>
       <Image
         src={srcImage}
-        alt="Preview image"
+        alt="Xem image"
         preview={{
           scaleStep: 0.2,
           toolbarRender: (

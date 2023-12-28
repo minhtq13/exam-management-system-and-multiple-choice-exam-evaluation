@@ -46,7 +46,7 @@ const PreviewOriginalImage = ({ srcImage, imageName }) => {
       <div className="wrapper-preview-original-image">
         <Image
           className="preview-original-image"
-          alt="Preview original image"
+          alt="Xem original image"
           src={srcImage}
           preview={{
             scaleStep: 0.2,
