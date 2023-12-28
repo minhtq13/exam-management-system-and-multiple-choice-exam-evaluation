@@ -883,11 +883,6 @@ const UpdateExamClassInfoForm = ({
         onCancel={() => setOpenModalPreview(false)}
         maskClosable={true}
         centered={true}
-        style={{
-          height: "80vh",
-          width: "70vw",
-          overflowY: "scroll",
-        }}
         width={"40vw"}
       >
         <Spin tip="Đang tải..." spinning={viewLoading}>
