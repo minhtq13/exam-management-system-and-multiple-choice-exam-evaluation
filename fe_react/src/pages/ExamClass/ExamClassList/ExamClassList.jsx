@@ -18,6 +18,7 @@ import { setSelectedItem } from "../../../redux/slices/appSlice";
 import { deleteExamClassService } from "../../../services/examClassServices";
 import "./ExamClassList.scss";
 import { customPaginationText } from "../../../utils/tools";
+import ActionButton from "../../../components/ActionButton/ActionButton";
 
 const ExamClassList = () => {
   const initialParam = {
@@ -296,7 +297,7 @@ const ExamClassList = () => {
       dataIndex: "code",
       key: "code",
       ...getColumnSearchProps("code"),
-      width: "10%",
+      width: "8%",
       align: "center",
     },
     {
@@ -313,7 +314,7 @@ const ExamClassList = () => {
       // eslint-disable-next-line jsx-a11y/anchor-is-valid
       render: (text) => <a>{text}</a>,
       ...getColumnSearchProps("fullName"),
-      width: "10%",
+      width: "8%",
       align: "center",
     },
     {
@@ -327,20 +328,27 @@ const ExamClassList = () => {
       title: "Môn thi",
       dataIndex: "subjectTitle",
       key: "subjectTitle",
-      width: "25%",
+      width: "20%",
     },
     {
-      title: "Ngày thi",
-      dataIndex: "examineDate",
-      key: "examineDate",
-      width: "10%",
+      title: "Số học sinh",
+      dataIndex: "numberOfStudents",
+      key: "numberOfStudents",
+      width: "8%",
+      align: "center",
+    },
+    {
+      title: "Số giám thị",
+      dataIndex: "numberOfSupervisors",
+      key: "numberOfSupervisors",
+      width: "8%",
       align: "center",
     },
     {
       title: "Giờ thi",
       dataIndex: "examineTime",
       key: "examineTime",
-      width: "8%",
+      width: "15%",
       align: "center",
     },
     {
@@ -349,20 +357,13 @@ const ExamClassList = () => {
       align: "center",
       render: (_, record) => (
         <Space size="middle" style={{ cursor: "pointer" }}>
-          <Button
-            size="small"
-            onClick={() => {
+          <ActionButton icon="detail" handleClick={() => {
               setRecord(record);
               setClassId(record.id);
               setClassCode(record.code);
               setOpenModal(true);
-            }}
-          >
-            Xem chi tiết
-          </Button>
-          <Button size="small" danger onClick={() => handleEdit(record)}>
-            Cập nhật
-          </Button>
+            }}/>
+          <ActionButton  icon="edit" handleClick={() => handleEdit(record)} />
         </Space>
       ),
     },
@@ -374,8 +375,9 @@ const ExamClassList = () => {
     classCode: obj.classCode,
     semester: obj.semester,
     subjectTitle: obj.subjectTitle,
-    examineDate: obj.examineDate,
-    examineTime: obj.examineTime,
+    examineTime: obj.examineTime === null && obj.examineDate === null ? "" : `${obj.examineTime} - ${obj.examineDate}`,
+    numberOfStudents: obj.numberOfStudents ?? 0,
+    numberOfSupervisors: obj.numberOfSupervisors ?? 0,
     id: obj.id,
   }));
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);

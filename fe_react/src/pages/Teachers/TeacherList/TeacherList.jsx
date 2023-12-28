@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import deleteIcon from "../../../assets/images/svg/delete-icon.svg";
 import deletePopUpIcon from "../../../assets/images/svg/delete-popup-icon.svg";
 import exportIcon from "../../../assets/images/svg/export-icon.svg";
+import ActionButton from "../../../components/ActionButton/ActionButton";
 import ModalPopup from "../../../components/ModalPopup/ModalPopup";
 import { appPath } from "../../../config/appPath";
 import useImportExport from "../../../hooks/useImportExport";
@@ -213,9 +214,7 @@ const TeacherList = () => {
       align: "center",
       render: (_, record) => (
         <Space size="middle" style={{ cursor: "pointer" }}>
-          <Button size="small" danger onClick={() => handleEdit(record)}>
-            Cập nhật
-          </Button>
+          <ActionButton icon="edit" handleClick={() => handleEdit(record)} />
         </Space>
       ),
     },

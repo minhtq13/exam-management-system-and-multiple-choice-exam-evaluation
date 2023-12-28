@@ -20,6 +20,7 @@ import { deleteTestService, testSetDetailService } from "../../../services/testS
 import "./TestList.scss";
 import { customPaginationText, downloadTestPdf } from "../../../utils/tools";
 import { HUST_COLOR } from "../../../utils/constant";
+import ActionButton from "../../../components/ActionButton/ActionButton";
 const TestList = () => {
   const [deleteDisable, setDeleteDisable] = useState(true);
   const { allTest, getAllTests, tableLoading, pagination } = useTest();
@@ -83,7 +84,7 @@ const TestList = () => {
       title: "Học phần",
       dataIndex: "subjectName",
       key: "subjectName",
-      width: "23%",
+      width: "22%",
     },
     {
       title: "Học kỳ",
@@ -107,6 +108,13 @@ const TestList = () => {
       render: (text) => (text ? `${text} phút` : ""),
     },
     {
+      title: "Số bộ đề",
+      dataIndex: "numberOfTestSet",
+      key: "numberOfTestSet",
+      width: "10%",
+      align: "center",
+    },
+    {
       title: "Ngày tạo",
       dataIndex: "createdAt",
       key: "createdAt",
@@ -124,11 +132,8 @@ const TestList = () => {
       align: "center",
       render: (_, record) => (
         <>
-          <Space size="middle" style={{ cursor: "pointer" }}>
-            <Button
-              size="small"
-              danger
-              onClick={() => {
+          <Space size="middle" style={{ display: "flex", alignItems:"center",cursor: "pointer", justifyContent: "center" }}>
+            <ActionButton icon="view-test-set" handleClick={() => {
                 setTestItem(record);
                 setTestSetNos(
                   record.lstTestSetCode && record.lstTestSetCode.length > 0
@@ -136,11 +141,8 @@ const TestList = () => {
                     : []
                 );
                 setOpenModal(true);
-              }}
-            >
-              Xem bộ đề
-            </Button>
-            <Button size="small" onClick={() => handleCreate(record)}>Tạo bộ đề</Button>
+              }} />
+            <ActionButton icon="create-test-set"  handleClick={() => handleCreate(record)} />
           </Space>
         </>
       ),
@@ -157,6 +159,7 @@ const TestList = () => {
     id: obj.id,
     testSetNos: obj.testSetNos,
     lstTestSetCode: obj.lstTestSetCode,
+    numberOfTestSet: obj.lstTestSetCode !== null ? obj.lstTestSetCode.split(",").length : 0,
   }));
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const onSelectChange = (newSelectedRowKeys) => {
@@ -270,8 +273,8 @@ const TestList = () => {
           </div>
         </div>
         <Table
-          scroll={{ y: 490 }}
-          size="middle"
+          scroll={{ y: 400 }}
+          size="small"
           className="test-list-table"
           columns={columns}
           dataSource={dataFetch}

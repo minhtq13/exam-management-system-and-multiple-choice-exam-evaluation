@@ -3,6 +3,8 @@
 }
 .view-image-component {
   .view-image-button {
+    display: flex;
+    justify-content: center;
     text-decoration: underline;
     color: #007bff;
     cursor: pointer;

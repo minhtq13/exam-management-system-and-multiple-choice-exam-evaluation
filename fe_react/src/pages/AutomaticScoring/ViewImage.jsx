@@ -4,6 +4,7 @@ import Slider from "react-slick";
 import PreviewImage from "./PreviewImage";
 import PreviewOriginalImage from "./PreviewOriginalImage";
 import "./ViewImage.scss";
+import ActionButton from "../../components/ActionButton/ActionButton";
 
 const ViewImage = ({ dataArray, index }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -46,8 +47,8 @@ const ViewImage = ({ dataArray, index }) => {
   };
   return (
     <div className="view-image-component">
-      <div className="view-image-button" onClick={showModal}>
-        Xem ảnh chấm
+      <div className="view-image-button">
+        <ActionButton icon="view-img-handle" handleClick={showModal} />
       </div>
       <Modal
         className="modal-view-image"

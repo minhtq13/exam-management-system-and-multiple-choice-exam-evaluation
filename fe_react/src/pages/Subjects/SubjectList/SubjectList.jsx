@@ -26,6 +26,7 @@ import ModalPopup from "../../../components/ModalPopup/ModalPopup";
 import { deleteSubjectsService } from "../../../services/subjectsService";
 import { updateChapterService } from "../../../services/chapterServices";
 import { customPaginationText } from "../../../utils/tools";
+import ActionButton from "../../../components/ActionButton/ActionButton";
 
 const SubjectList = () => {
   const initialParam = {
@@ -230,17 +231,11 @@ const SubjectList = () => {
       align: "center",
       render: (_, record) => (
         <Space size="middle" style={{ cursor: "pointer" }}>
-          <Button size="small" danger onClick={() => handleEdit(record)}>
-            Cập nhật
-          </Button>
-          <Button size="small" onClick={() => handleView(record)}>Nội dung</Button>
-          <Button size="small"
-            onClick={() =>
-              navigate(`${appPath.subjectView}/${record.id}`)
-            }
-          >
-            Thêm chương
-          </Button>
+          <ActionButton  icon="edit" handleClick={() => handleEdit(record)} />
+					<ActionButton  icon="content" handleClick={() => handleView(record)} />
+					<ActionButton  icon="add-chapter" handleClick={() =>
+							navigate(`${appPath.subjectView}/${record.id}`)
+						} />
         </Space>
       ),
     },

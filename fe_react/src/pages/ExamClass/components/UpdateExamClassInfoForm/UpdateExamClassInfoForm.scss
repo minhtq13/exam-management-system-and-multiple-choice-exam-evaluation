@@ -162,19 +162,8 @@
   min-width: 60vw;
   height: 80vh;
 
-  .ant-modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 12px;
-
-    .ant-modal-title {
-      font-size: 18px;
-    }
-  }
-
   .ant-modal-content {
-    height: 85côngvh;
+    height: 85vh;
   }
 }
 
@@ -193,8 +182,24 @@
   min-height: 70px;
   margin: 12px 0px;
 }
-
+.preview-test-modal {
+  min-width: 60vw;
+  height: 80vh;
+  .test-preview {
+    overflow: auto;
+    height: 75vh;
+  }
+  .ant-modal-content {
+    height: 86vh;
+  }
+}
 @media (min-width: 1600px) {
+  .preview-test-modal {
+    .test-preview {
+      overflow: auto;
+      height: 77vh !important;
+    }
+  }
   .exam-class-modal {
     .ant-modal-content {
       height: 80vh;
