@@ -307,6 +307,9 @@ const StudentList = () => {
     <div className="student-list">
       <div className="header-student-list">
         <p>Danh sách sinh viên</p>
+      </div>
+      <div className="search-filter-button">
+        <SearchFilter displayFilter placeholder="Nhập tên hoặc MSSV" />
         <div className="block-button">
           <Button className="options" onClick={handleExport}>
             <img src={exportIcon} alt="Tải xuống Icon" />
@@ -345,7 +348,6 @@ const StudentList = () => {
           </Button>
         </div>
       </div>
-      <SearchFilter displayFilter placeholder="Nhập tên hoặc MSSV" />
       <div className="student-list-wrapper">
         <Table
           scroll={{ y: 490 }}

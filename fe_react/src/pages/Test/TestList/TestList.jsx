@@ -132,17 +132,17 @@ const TestList = () => {
       align: "center",
       render: (_, record) => (
         <>
-          <Space size="middle" style={{ display: "flex", alignItems:"center",cursor: "pointer", justifyContent: "center" }}>
+          <Space size="middle" style={{ display: "flex", alignItems: "center", cursor: "pointer", justifyContent: "center" }}>
             <ActionButton icon="view-test-set" handleClick={() => {
-                setTestItem(record);
-                setTestSetNos(
-                  record.lstTestSetCode && record.lstTestSetCode.length > 0
-                    ? record.lstTestSetCode.split(",")
-                    : []
-                );
-                setOpenModal(true);
-              }} />
-            <ActionButton icon="create-test-set"  handleClick={() => handleCreate(record)} />
+              setTestItem(record);
+              setTestSetNos(
+                record.lstTestSetCode && record.lstTestSetCode.length > 0
+                  ? record.lstTestSetCode.split(",")
+                  : []
+              );
+              setOpenModal(true);
+            }} />
+            <ActionButton icon="create-test-set" handleClick={() => handleCreate(record)} />
           </Space>
         </>
       ),
@@ -220,58 +220,61 @@ const TestList = () => {
     <div className="test-list">
       <div className="header-test-list">
         <p>Danh sách đề thi</p>
-        <div className="block-button">
-          <ModalPopup
-            buttonOpenModal={
-              <Button className="options" disabled={!deleteDisable}>
-                <img src={deleteIcon} alt="Delete Icon" />
-                Xóa
-              </Button>
-            }
-            title="Xóa đề thi"
-            message={"Bạn chắc chắn muốn xóa đề thi này không? "}
-            confirmMessage={"Thao tác này không thể hoàn tác"}
-            icon={deletePopUpIcon}
-            ok={"Đồng ý"}
-            onAccept={handleDelete}
-          />
-          <Button className="options" onClick={handleClickAddTest}>
-            <img src={addIcon} alt="Add Icon" />
-            Thêm
-          </Button>
-        </div>
       </div>
       <div className="test-list-wrapper">
-        <div className="test-subject-semester">
-          <div className="test-select test-select-semester">
-            <span className="select-label">Học kỳ:</span>
-            <Select
-              allowClear
-              showSearch
-              placeholder="Kỳ thi"
-              optionFilterProp="children"
-              filterOption={(input, option) => (option?.label ?? "").includes(input)}
-              optionLabelProp="label"
-              options={semesterOptions}
-              onChange={semsOnChange}
-              loading={semesterLoading}
-            />
+        <div className="search-filter-button">
+          <div className="test-subject-semester">
+            <div className="test-select test-select-semester">
+              <span className="select-label">Học kỳ:</span>
+              <Select
+                allowClear
+                showSearch
+                placeholder="Kỳ thi"
+                optionFilterProp="children"
+                filterOption={(input, option) => (option?.label ?? "").includes(input)}
+                optionLabelProp="label"
+                options={semesterOptions}
+                onChange={semsOnChange}
+                loading={semesterLoading}
+              />
+            </div>
+            <div className="test-select">
+              <span className="select-label">Học phần:</span>
+              <Select
+                allowClear
+                showSearch
+                placeholder="Chọn môn học để hiển thị danh sách đề thi"
+                optionFilterProp="children"
+                filterOption={(input, option) => (option?.label ?? "").includes(input)}
+                optionLabelProp="label"
+                options={subjectOptions}
+                onChange={subjectOnChange}
+                loading={subLoading}
+              />
+            </div>
           </div>
-          <div className="test-select">
-            <span className="select-label">Học phần:</span>
-            <Select
-              allowClear
-              showSearch
-              placeholder="Chọn môn học để hiển thị danh sách đề thi"
-              optionFilterProp="children"
-              filterOption={(input, option) => (option?.label ?? "").includes(input)}
-              optionLabelProp="label"
-              options={subjectOptions}
-              onChange={subjectOnChange}
-              loading={subLoading}
+          <div className="block-button">
+            <ModalPopup
+              buttonOpenModal={
+                <Button className="options" disabled={!deleteDisable}>
+                  <img src={deleteIcon} alt="Delete Icon" />
+                  Xóa
+                </Button>
+              }
+              title="Xóa đề thi"
+              message={"Bạn chắc chắn muốn xóa đề thi này không? "}
+              confirmMessage={"Thao tác này không thể hoàn tác"}
+              icon={deletePopUpIcon}
+              ok={"Đồng ý"}
+              onAccept={handleDelete}
             />
+            <Button className="options" onClick={handleClickAddTest}>
+              <img src={addIcon} alt="Add Icon" />
+              Thêm
+            </Button>
           </div>
         </div>
+
         <Table
           scroll={{ y: 400 }}
           size="small"

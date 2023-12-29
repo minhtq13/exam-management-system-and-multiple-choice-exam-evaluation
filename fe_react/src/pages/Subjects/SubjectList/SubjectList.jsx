@@ -231,11 +231,11 @@ const SubjectList = () => {
       align: "center",
       render: (_, record) => (
         <Space size="middle" style={{ cursor: "pointer" }}>
-          <ActionButton  icon="edit" handleClick={() => handleEdit(record)} />
-					<ActionButton  icon="content" handleClick={() => handleView(record)} />
-					<ActionButton  icon="add-chapter" handleClick={() =>
-							navigate(`${appPath.subjectView}/${record.id}`)
-						} />
+          <ActionButton icon="edit" handleClick={() => handleEdit(record)} />
+          <ActionButton icon="content" handleClick={() => handleView(record)} />
+          <ActionButton icon="add-chapter" handleClick={() =>
+            navigate(`${appPath.subjectView}/${record.id}`)
+          } />
         </Space>
       ),
     },

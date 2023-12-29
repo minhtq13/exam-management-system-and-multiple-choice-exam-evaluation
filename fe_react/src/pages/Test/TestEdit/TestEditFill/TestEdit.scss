@@ -2,13 +2,97 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
 
   .test-edit-header {
     font-size: 28px;
     font-weight: 600;
     color: var(--hust-color);
-    margin-bottom: 15px;
+    margin-bottom: 18px;
+  }
+
+  .test-edit-body {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    .ant-spin-container {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .test-edit-left {
+      width: 40%;
+      display: flex;
+      flex-direction: column;
+      background-color: #ffffff;
+      padding: 20px;
+
+      .left-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .check-loading {
+        border: none !important;
+      }
+
+      .check-ques-table {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        width: 80%;
+        margin-top: 25px;
+        border: 1px solid black;
+
+        .ques-num {
+          width: 50%;
+          border: 1px solid black;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 40px;
+          font-size: 16px;
+          font-weight: bold;
+          gap: 5px;
+
+          .ques-change {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            .ques-change-value {
+              color: var(--hust-color);
+            }
+          }
+        }
+      }
+
+      .left-header {
+        font-size: 20px;
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: var(--hust-color);
+      }
+
+      .left-content-item {
+        display: flex;
+        margin-bottom: 8px;
+        justify-content: flex-start;
+        width: 100%;
+
+        span {
+          font-size: 16px;
+        }
+
+        span:nth-child(1) {
+          font-weight: bold;
+          width: 50%;
+        }
+      }
+    }
   }
 
   .test-edit-button {
@@ -26,13 +110,7 @@
 
   .test-preview {
     height: 78vh;
-    width: 55vw;
-
-    div,
-    p {
-      font-family: "Times New Roman", serif;
-      font-size: 16px;
-    }
+    width: 95%;
 
     .question-topic,
     .text-bold {
@@ -53,6 +131,26 @@
 
     .question-items {
       margin-bottom: 10px;
+
+      .ql-container {
+        border: none;
+      }
+
+      .ql-editor {
+        padding: 0px;
+        border: none;
+      }
+    }
+
+    .answer-items {
+      display: flex;
+      gap: 5px;
+    }
+
+    .corrected {
+      display: flex;
+      font-weight: bold;
+      gap: 5p;
     }
 
     .test-header-content {
@@ -157,6 +255,8 @@
   button {
     span {
       font-size: 18px;
+      font-weight: bold;
+      font-family: "Poppins", sans-serif;
     }
   }
 
@@ -169,6 +269,18 @@
     padding: 10px 10px 10px 25px;
     justify-content: flex-start;
     margin-bottom: 15px;
+
+    p,
+    label,
+    span,
+    input {
+      font-size: 17px !important;
+      font-family: "Times New Roman", serif;
+    }
+
+    input {
+      color: var(--hust-color);
+    }
   }
 
   .ant-form-item-explain-error {
@@ -176,7 +288,6 @@
   }
 
   label {
-    font-family: "Times New Roman", serif;
     font-weight: bold;
     font-size: 16px;
   }
@@ -197,16 +308,22 @@
   .topic-Text {
     width: 15%;
     margin-right: 10px;
+    flex-shrink: 0;
   }
 
   .answer-list {
     display: flex;
+    align-items: center;
     width: 100%;
   }
 
+  .answer-no,
   .answer-item {
+    margin: 0px 10px 15px 0px;
+  }
+
+  .answer-no {
     width: 5%;
-    margin-right: 10px;
   }
 
   .add-btn {

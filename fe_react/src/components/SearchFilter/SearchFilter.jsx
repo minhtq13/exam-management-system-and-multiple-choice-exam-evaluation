@@ -10,10 +10,10 @@ const SearchFilter = ({ placeholder, displayFilter, onSearch, options }) => {
       </div>
       {displayFilter && (
         <div className="list-filter">
-          <span className="list-search-filter-label">MSSV:</span>
+          <span className="list-search-filter-label">Khóa:</span>
           <Select
             mode="multiple"
-            placeholder="Chọn MSSV"
+            placeholder="Chọn khóa"
             showSearch
             allowClear
             onSearch={onSearch}

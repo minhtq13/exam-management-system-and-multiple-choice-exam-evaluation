@@ -269,6 +269,9 @@ const TeacherList = () => {
     <div className="teacher-list">
       <div className="header-teacher-list">
         <p>Danh sách giảng viên</p>
+      </div>
+      <div className="search-filter-button">
+        <SearchFilter displayFilter={false} placeholder="Nhập tên hoặc mã cán bộ" />
         <div className="block-button">
           <Button className="options" onClick={handleExport}>
             <img src={exportIcon} alt="Tải xuống Icon" />
@@ -300,7 +303,6 @@ const TeacherList = () => {
           </Button>
         </div>
       </div>
-      <SearchFilter displayFilter={false} placeholder="Nhập tên hoặc mã cán bộ" />
       <div className="teacher-list-wrapper">
         <Table
           scroll={{ y: 490 }}

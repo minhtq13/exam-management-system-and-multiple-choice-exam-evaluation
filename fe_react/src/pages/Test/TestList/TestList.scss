@@ -11,19 +11,26 @@
       font-weight: 600;
       color: var(--hust-color);
     }
+  }
 
-    .block-button {
+  .search-filter-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .block-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .options {
+      color: var(--hust-color);
       display: flex;
       align-items: center;
-      gap: 10px;
-
-      .options {
-        color: var(--hust-color);
-        display: flex;
-        align-items: center;
-        border-radius: 6px;
-        gap: 6px;
-      }
+      border-radius: 6px;
+      gap: 6px;
     }
   }
 
@@ -49,7 +56,6 @@
   .test-subject-semester {
     display: flex;
     gap: 40px;
-    margin-bottom: 15px;
 
     .test-select-semester {
       .ant-select {
@@ -79,11 +85,14 @@
     color: #007BFF;
   }
 }
+
 .test-list-preview {
   width: 55vw !important;
   height: 85vh;
+
   .ant-modal-content {
     height: 85vh;
+
     .ant-modal-body {
       height: 74vh;
       overflow-y: scroll;

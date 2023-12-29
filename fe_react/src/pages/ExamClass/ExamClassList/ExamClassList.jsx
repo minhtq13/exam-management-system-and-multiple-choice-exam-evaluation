@@ -358,12 +358,12 @@ const ExamClassList = () => {
       render: (_, record) => (
         <Space size="middle" style={{ cursor: "pointer" }}>
           <ActionButton icon="detail" handleClick={() => {
-              setRecord(record);
-              setClassId(record.id);
-              setClassCode(record.code);
-              setOpenModal(true);
-            }}/>
-          <ActionButton  icon="edit" handleClick={() => handleEdit(record)} />
+            setRecord(record);
+            setClassId(record.id);
+            setClassCode(record.code);
+            setOpenModal(true);
+          }} />
+          <ActionButton icon="edit" handleClick={() => handleEdit(record)} />
         </Space>
       ),
     },
@@ -416,6 +416,40 @@ const ExamClassList = () => {
     <div className="exam-class-list">
       <div className="header-exam-class-list">
         <p>Danh sách lớp thi</p>
+
+      </div>
+      <div className="search-filter-button">
+        <div className="examclass-subject-semester">
+          <div className="examclass-select examclass-select-semester">
+            <span className="select-label">Kỳ thi:</span>
+            <Select
+              allowClear
+              showSearch
+              placeholder="Học kỳ"
+              optionFilterProp="children"
+              filterOption={(input, option) => (option?.label ?? "").includes(input)}
+              optionLabelProp="label"
+              options={semesterOptions}
+              onChange={semsOnChange}
+              loading={semesterLoading}
+            />
+          </div>
+          <div className="examclass-select">
+            <span className="select-label">Học phần:</span>
+            <Select
+              allowClear
+              showSearch
+              placeholder="Chọn môn học để hiển thị danh sách đề thi"
+              optionFilterProp="children"
+              filterOption={(input, option) => (option?.label ?? "").includes(input)}
+              optionLabelProp="label"
+              options={subjectOptions}
+              onChange={subjectOnChange}
+              loading={subLoading}
+              className="examclass-select-subject"
+            />
+          </div>
+        </div>
         <div className="block-button">
           <Button className="options" onClick={handleExport}>
             <img src={exportIcon} alt="Tải xuống Icon" />
@@ -447,37 +481,7 @@ const ExamClassList = () => {
           </Button>
         </div>
       </div>
-      <div className="examclass-subject-semester">
-        <div className="examclass-select examclass-select-semester">
-          <span className="select-label">Kỳ thi:</span>
-          <Select
-            allowClear
-            showSearch
-            placeholder="Học kỳ"
-            optionFilterProp="children"
-            filterOption={(input, option) => (option?.label ?? "").includes(input)}
-            optionLabelProp="label"
-            options={semesterOptions}
-            onChange={semsOnChange}
-            loading={semesterLoading}
-          />
-        </div>
-        <div className="examclass-select">
-          <span className="select-label">Học phần:</span>
-          <Select
-            allowClear
-            showSearch
-            placeholder="Chọn môn học để hiển thị danh sách đề thi"
-            optionFilterProp="children"
-            filterOption={(input, option) => (option?.label ?? "").includes(input)}
-            optionLabelProp="label"
-            options={subjectOptions}
-            onChange={subjectOnChange}
-            loading={subLoading}
-            className="examclass-select-subject"
-          />
-        </div>
-      </div>
+
       <div className="exam-class-list-wrapper">
         <Table
           scroll={{ y: 490 }}

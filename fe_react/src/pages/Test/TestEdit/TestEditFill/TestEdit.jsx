@@ -1,4 +1,5 @@
 import ReactQuill from "react-quill";
+import { ArrowRightOutlined } from "@ant-design/icons";
 import "react-quill/dist/quill.snow.css";
 import { useEffect, useState } from "react";
 import "./TestEdit.scss";
@@ -20,6 +21,7 @@ const TestEdit = () => {
   const [idValues, setIdValues] = useState([]);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
   const [openPreModal, setOpenPreModal] = useState(false);
+  const [checkQues, setCheckQues] = useState([]);
   const notify = useNotify();
   const location = useLocation();
   const code = location.pathname.split("/")[3];
@@ -31,6 +33,8 @@ const TestEdit = () => {
         { testId: testId, code: code },
         (res) => {
           setLoadingData(false);
+          setCheckQues(res.data.lstQuestion.length > 0
+            ? res.data.lstQuestion.map((item, index) => index + 1) : [])
           setInitialValues(
             res.data.lstQuestion.length > 0
               ? res.data.lstQuestion.map((item, index) => {
@@ -143,171 +147,215 @@ const TestEdit = () => {
     );
   };
 
-  console.log(initialValues);
+  const handleQuestionNumberChange = (index, value) => {
+    const newCheckQues = [...checkQues];
+    newCheckQues[index] = parseInt(value, 10) || null; // Chuyển giá trị thành số nguyên, hoặc 0 nếu không hợp lệ
+    setCheckQues(newCheckQues);
+  };
 
+  console.log(checkQues)
+  const getQuesValue = (value, length) => {
+    let result = "";
+    if (!value || value < 0 || value > length) {
+      result = "?";
+    } else {
+      result = value;
+    }
+    return result;
+  }
   return (
     <div className="test-edit">
       <div className="test-edit-header">Cập nhật đề thi</div>
-      <Spin tip="Đang tải..." spinning={loadingData}>
-        <div className="test-preview">
-          {!loadingData && (
-            <Form
-              initialValues={{
-                lstQuestion: initialValues,
-              }}
-              onFinish={onFinish}
-              name="test-edit-form"
-            >
-              <Form.List name="lstQuestion">
-                {(parentFields, parentListOperations) => (
-                  <div className="question-edit">
-                    {parentFields.map(
-                      (parentField, parentIndex) => (
-                        <div
-                          key={`fragQuestions${parentField.key}`}
-                          className="question-list"
-                          name={[
-                            parentField.name,
-                            `fragQuetion${parentField.key}`,
-                          ]}
-                        >
-                          <div className="question-text">
-                            <Form.Item
-                              className="topic-Text"
-                              label="Câu số:"
-                              key={`questionNo${parentField.key}`}
-                              {...parentField}
-                              name={[
-                                parentField.name,
-                                `questionNo`,
-                              ]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message:
-                                    "Chưa nhập thứ tự câu hỏi!",
-                                },
-                              ]}
-                            >
-                              <Input />
-                            </Form.Item>
-                            <Form.Item
-                              className="content"
-                              key={`content${parentField.key}`}
-                              {...parentField}
-                              name={[
-                                parentField.name,
-                                `content`,
-                              ]}
-                            >
-                              <ReactQuill
-                                key={
-                                  parentIndex
-                                }
-                                readOnly={true}
-                                theme="snow"
-                                modules={{
-                                  toolbar: false,
-                                }}
-                              />
-                            </Form.Item>
-                          </div>
-                          <Form.List
-                            key={`answers${parentField.key}`}
-                            {...parentField}
-                            name={[
-                              parentField.name,
-                              `answers`,
-                            ]}
-                          >
-                            {(
-                              childFields,
-                              childListOperations
-                            ) => (
-                              <div className="answers">
-                                {childFields.map(
-                                  (
-                                    childField,
-                                    childIndex
-                                  ) => {
-                                    return (
-                                      <div
-                                        key={`frAnswers${childField.key}-${parentIndex}`}
-                                        name={[
-                                          childField.name,
-                                          `frAnswers${childField.key}`,
-                                        ]}
-                                        className="answer-list"
-                                      >
-                                        <div className="answer-list">
-                                          <Form.Item
-                                            {...childField}
-                                            name={[
-                                              childField.name,
-                                              `answerNo`,
-                                            ]}
-                                            key={`answerNo${childField.key}-${parentField.key}`}
-                                            rules={[
-                                              {
-                                                required: true,
-                                                message:
-                                                  "Chưa nhập thứ tự câu trả lời!",
-                                              },
-                                            ]}
-                                            className="answer-item"
-                                          >
-                                            <Input></Input>
-                                          </Form.Item>
-                                          <Form.Item
-                                            {...childField}
-                                            name={[
-                                              childField.name,
-                                              `content`,
-                                            ]}
-                                            key={`content${childField.key}-${parentField.key}`}
-                                            className="answers-item"
-                                          >
-                                            <ReactQuill
-                                              key={
-                                                childIndex
-                                              }
-                                              readOnly={
-                                                true
-                                              }
-                                              theme="snow"
-                                              modules={{
-                                                toolbar: false,
-                                              }}
-                                            />
-                                          </Form.Item>
-                                        </div>
-                                      </div>
-                                    );
-                                  }
-                                )}
-                              </div>
-                            )}
-                          </Form.List>
-                        </div>
-                      )
+      <div className="test-edit-body">
+        <div className="test-edit-left">
+          <div className="left-header">Thông tin</div>
+          <div className="left-content">
+            <div className="left-content-item">
+              <span>Mã đề thi:</span>
+              <span>{code}</span>
+            </div>
+            <div className="left-content-item">
+              <span>Số câu hỏi:</span>
+              <span>{initialValues.length}</span>
+            </div>
+            <div className={!loadingData ? "check-ques-table" : "check-ques-table check-loading"}>
+              {!loadingData && checkQues.map((item, index) => {
+                return (
+                  <div className="ques-num" key={index}>
+                    <div>{index + 1}</div>
+                    {item !== index + 1 && (
+                      <div className="ques-change">
+                        <ArrowRightOutlined />
+                        <div className="ques-change-value">{getQuesValue(item, checkQues.length)}</div>
+                      </div>
                     )}
                   </div>
-                )}
-              </Form.List>
-              <Form.Item className="add-btn">
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  loading={editLoading}
-                  style={{ width: 80, height: 40 }}
-                >
-                  Lưu
-                </Button>
-              </Form.Item>
-            </Form>
-          )}
+                )
+              })}
+            </div>
+          </div>
         </div>
-      </Spin>
+        <Spin tip="Đang tải..." spinning={loadingData}>
+          <div className="test-preview">
+            {!loadingData && (
+              <Form
+                initialValues={{
+                  lstQuestion: initialValues,
+                }}
+                onFinish={onFinish}
+                name="test-edit-form"
+              >
+                <Form.List name="lstQuestion">
+                  {(parentFields, parentListOperations) => (
+                    <div className="question-edit">
+                      {parentFields.map(
+                        (parentField, parentIndex) => (
+                          <div
+                            key={`fragQuestions${parentField.key}`}
+                            className="question-list"
+                            name={[
+                              parentField.name,
+                              `fragQuetion${parentField.key}`,
+                            ]}
+                          >
+                            <div className="question-text">
+                              <Form.Item
+                                className="topic-Text"
+                                label="Câu số:"
+                                key={`questionNo${parentField.key}`}
+                                {...parentField}
+                                name={[
+                                  parentField.name,
+                                  `questionNo`,
+                                ]}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message:
+                                      "Chưa nhập thứ tự câu hỏi!",
+                                  },
+                                ]}
+                              >
+                                <Input onChange={(e) => handleQuestionNumberChange(parentIndex, e.target.value)} />
+                              </Form.Item>
+                              <Form.Item
+                                className="content"
+                                key={`content${parentField.key}`}
+                                {...parentField}
+                                name={[
+                                  parentField.name,
+                                  `content`,
+                                ]}
+                              >
+                                <ReactQuill
+                                  key={
+                                    parentIndex
+                                  }
+                                  readOnly={true}
+                                  theme="snow"
+                                  modules={{
+                                    toolbar: false,
+                                  }}
+                                />
+                              </Form.Item>
+                            </div>
+                            <Form.List
+                              key={`answers${parentField.key}`}
+                              {...parentField}
+                              name={[
+                                parentField.name,
+                                `answers`,
+                              ]}
+                            >
+                              {(
+                                childFields,
+                                childListOperations
+                              ) => (
+                                <div className="answers">
+                                  {childFields.map(
+                                    (
+                                      childField,
+                                      childIndex
+                                    ) => {
+                                      return (
+                                        <div
+                                          key={`frAnswers${childField.key}-${parentIndex}`}
+                                          name={[
+                                            childField.name,
+                                            `frAnswers${childField.key}`,
+                                          ]}
+                                          className="answer-list"
+                                        >
+                                          <div className="answer-list">
+                                            <Form.Item
+                                              {...childField}
+                                              name={[
+                                                childField.name,
+                                                `answerNo`,
+                                              ]}
+                                              key={`answerNo${childField.key}-${parentField.key}`}
+                                              rules={[
+                                                {
+                                                  required: true,
+                                                  message:
+                                                    "Chưa nhập thứ tự câu trả lời!",
+                                                },
+                                              ]}
+                                              className="answer-no"
+                                            >
+                                              <Input></Input>
+                                            </Form.Item>
+                                            <Form.Item
+                                              {...childField}
+                                              name={[
+                                                childField.name,
+                                                `content`,
+                                              ]}
+                                              key={`content${childField.key}-${parentField.key}`}
+                                              className="answer-item"
+                                            >
+                                              <ReactQuill
+                                                key={
+                                                  childIndex
+                                                }
+                                                readOnly={
+                                                  true
+                                                }
+                                                theme="snow"
+                                                modules={{
+                                                  toolbar: false,
+                                                }}
+                                              />
+                                            </Form.Item>
+                                          </div>
+                                        </div>
+                                      );
+                                    }
+                                  )}
+                                </div>
+                              )}
+                            </Form.List>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  )}
+                </Form.List>
+                <Form.Item className="add-btn">
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    loading={editLoading}
+                    style={{ width: 80, height: 40 }}
+                  >
+                    Lưu
+                  </Button>
+                </Form.Item>
+              </Form>
+            )}
+          </div>
+        </Spin>
+      </div>
       <Modal
         open={openModal}
         title="Hướng dẫn"
@@ -330,7 +378,7 @@ const TestEdit = () => {
         cancelText="Đóng"
         centered={true}
       >
-        <p>Bạn đã sửa đề thi thành công!</p>
+        <p>Bạn đã chỉnh sửa đề thi thành công!</p>
       </Modal>
       <Modal
         className="test-edit-preview"

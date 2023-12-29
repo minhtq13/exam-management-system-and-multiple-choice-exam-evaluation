@@ -11,30 +11,42 @@
       font-weight: 600;
       color: var(--hust-color);
     }
+  }
 
-    .block-button {
+  .search-filter-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .block-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .options {
+      color: var(--hust-color);
       display: flex;
       align-items: center;
-      gap: 10px;
-
-      .options {
-        color: var(--hust-color);
-        display: flex;
-        align-items: center;
-        border-radius: 6px;
-        gap: 6px;
-      }
+      border-radius: 6px;
+      gap: 6px;
     }
   }
 
   .examclass-subject-semester {
     display: flex;
-    gap: 40px;
-    margin-bottom: 15px;
+    gap: 20px;
 
     .examclass-select-semester {
       .ant-select {
         width: 100px;
+      }
+    }
+
+    .examclass-select-subject {
+      .ant-select {
+        width: 300px;
       }
     }
   }
@@ -74,9 +86,6 @@
   }
 }
 
-.examclass-select-subject {
-  min-width: 350px;
-}
 
 .exam-class-participants {
   min-width: 50vw;
