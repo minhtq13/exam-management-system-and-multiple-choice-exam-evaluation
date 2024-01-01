@@ -95,11 +95,14 @@ const ExamClassList = () => {
       title: "Họ tên",
       dataIndex: "name",
       key: "name",
+      width: "25%",
     },
     {
       title: roleType === "STUDENT" ? "MSSV" : "Mã cán bộ",
       dataIndex: "code",
       key: "code",
+      width: "12%",
+      align: "center",
     },
   ];
   const addTabsColumn = [
@@ -107,11 +110,15 @@ const ExamClassList = () => {
       title: "Mã đề thi",
       dataIndex: "testSetCode",
       key: "testSetCode",
+      width: "12%",
+      align: "center",
     },
     {
       title: "Điểm",
       dataIndex: "totalPoints",
       key: "totalPoint",
+      width: "12%",
+      align: "center",
     },
   ];
 
@@ -149,6 +156,7 @@ const ExamClassList = () => {
           </div>
         )}
         <Table
+          scroll={{ y: 300 }}
           size="small"
           className="exam-class-participant"
           columns={roleType === "STUDENT" ? [...tabsColumn, ...addTabsColumn] : tabsColumn}

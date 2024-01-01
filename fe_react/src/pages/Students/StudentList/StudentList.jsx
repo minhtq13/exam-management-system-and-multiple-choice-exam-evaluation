@@ -311,10 +311,7 @@ const StudentList = () => {
       <div className="search-filter-button">
         <SearchFilter displayFilter placeholder="Nhập tên hoặc MSSV" />
         <div className="block-button">
-          <Button className="options" onClick={handleExport}>
-            <img src={exportIcon} alt="Tải xuống Icon" />
-            Tải xuống
-          </Button>
+         
           <ModalPopup
             buttonOpenModal={
               <Button
@@ -333,6 +330,10 @@ const StudentList = () => {
             icon={deletePopUpIcon}
             onAccept={handleDelete}
           />
+          <Button className="options" onClick={handleExport}>
+            <img src={exportIcon} alt="Tải xuống Icon" />
+            Tải xuống
+          </Button>
           <Input
             type="file"
             name="file"

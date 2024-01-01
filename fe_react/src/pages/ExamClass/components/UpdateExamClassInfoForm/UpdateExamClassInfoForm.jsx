@@ -391,7 +391,7 @@ const UpdateExamClassInfoForm = ({
       width: "10%",
     },
     {
-      title: "Thời gian thi",
+      title: "TG thi",
       dataIndex: "duration",
       key: "duration",
       width: "10%",
@@ -611,7 +611,7 @@ const UpdateExamClassInfoForm = ({
           <div className="test-select">
             <Input
               placeholder="Chọn sinh viên"
-              value={studentSelected.length > 0 ? `${studentSelected.length} sinh viên` : ""}
+              value={studentSelected.length > 0 ? `Đã chọn ${studentSelected.length} sinh viên` : ""}
             />
             <Button onClick={() => setOpenStudentModal(true)}>Chọn</Button>
           </div>
@@ -662,7 +662,7 @@ const UpdateExamClassInfoForm = ({
           <div className="test-select">
             <Input
               placeholder="Chọn giảng viên"
-              value={teacherSelected.length > 0 ? `${teacherSelected.length} giảng viên` : ""}
+              value={teacherSelected.length > 0 ? `Đã chọn ${teacherSelected.length} giảng viên` : ""}
             />
             <Button onClick={() => setOpenTeacherModal(true)}>Chọn</Button>
           </div>

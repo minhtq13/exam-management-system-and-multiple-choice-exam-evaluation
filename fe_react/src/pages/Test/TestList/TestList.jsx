@@ -81,16 +81,17 @@ const TestList = () => {
   };
   const columns = [
     {
+      title: "Học kỳ",
+      dataIndex: "semester",
+      key: "semester",
+      align: "center",
+      width: "12%",
+    },
+    {
       title: "Học phần",
       dataIndex: "subjectName",
       key: "subjectName",
       width: "22%",
-    },
-    {
-      title: "Học kỳ",
-      dataIndex: "semester",
-      key: "semester",
-      align: "center"
     },
     {
       title: "Số câu hỏi",
@@ -174,7 +175,7 @@ const TestList = () => {
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
-    selections: [Table.SELECTION_ALL],
+    selections: [Table.SELECTION_ALL, Table.SELECTION_NONE],
   };
   const handleClickAddTest = () => {
     navigate("/test-create");
@@ -270,7 +271,7 @@ const TestList = () => {
             />
             <Button className="options" onClick={handleClickAddTest}>
               <img src={addIcon} alt="Add Icon" />
-              Thêm
+              Thêm đề thi
             </Button>
           </div>
         </div>
