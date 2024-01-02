@@ -91,7 +91,7 @@ const TestCreate = () => {
   const items = [
     {
       key: "auto",
-      label: "Tự động",
+      label: <h3>Tự động</h3>,
       children: (
         <AutoTest
           chapterIds={chapterIds}
@@ -102,10 +102,9 @@ const TestCreate = () => {
     },
     {
       key: "manual",
-      label: "Thủ công",
+      label: <h3>Thủ công</h3>,
       children: (
         <ManualTest
-          //loading={loading}
           chapterIds={chapterIds}
           questionList={allQuestions}
           subjectId={subjectId}

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import useNotify from "../../../../hooks/useNotify";
 import { appPath } from "../../../../config/appPath";
 import useCombo from "../../../../hooks/useCombo";
-import { disabledDate, nextday } from "../../../../utils/tools";
+import { disabledDate } from "../../../../utils/tools";
 
 const AutoTest = ({ chapterIds, formKey, subjectId }) => {
   const [loading, setLoading] = useState(false);
@@ -21,12 +21,6 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
   const [form] = Form.useForm();
   const { allSemester, semesterLoading, getAllSemesters } = useCombo();
   const notify = useNotify();
-  // const nextDay = new Date(minDate);
-  // nextDay.setDate(minDate.getDate() + 1);
-  //const [selectedDate, setSelectedDate] = useState(nextDay);
-  // const handleDateChange = date => {
-  //   setSelectedDate(date);
-  // };
   useEffect(() => {
     getAllSemesters({ search: "" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -188,7 +182,6 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
             loading={semesterLoading}
             placeholder="Chọn kỳ thi"
             options={options}
-            style={{ height: 45 }}
           />
         </Form.Item>
         <Form.Item
@@ -205,11 +198,12 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
           ]}
         >
           <Row gutter={5}>
-            <Col span={15}>
+            <Col >
               <Form.Item
                 name={["generateConfig", "numEasyQuestion"]}
               >
                 <Input
+                  style={{ minWidth: 150}}
                   placeholder="Dễ"
                   type="number"
                   disabled={disable}
@@ -219,11 +213,12 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
                 />
               </Form.Item>
             </Col>
-            <Col span={15}>
+            <Col>
               <Form.Item
                 name={["generateConfig", "numMediumQuestion"]}
               >
                 <Input
+                  style={{ minWidth: 150}}
                   placeholder="Trung bình"
                   type="number"
                   onChange={(e) =>
@@ -233,11 +228,12 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
                 />
               </Form.Item>
             </Col>
-            <Col span={15}>
+            <Col>
               <Form.Item
                 name={["generateConfig", "numHardQuestion"]}
               >
                 <Input
+                  style={{ minWidth: 150}}
                   placeholder="Khó"
                   type="number"
                   onChange={(e) =>
