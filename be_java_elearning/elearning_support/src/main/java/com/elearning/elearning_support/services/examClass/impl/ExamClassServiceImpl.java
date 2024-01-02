@@ -113,7 +113,7 @@ public class ExamClassServiceImpl implements ExamClassService {
         userExamClassRepository.deleteAllByExamClassId(id);
         List<UserExamClass> lstUserExamClass = new ArrayList<>();
         updateDTO.getLstStudentId().forEach(item -> lstUserExamClass.add(new UserExamClass(item, id, UserExamClassRoleEnum.STUDENT.getType())));
-        updateDTO.getLstSupervisorId().forEach(item -> lstUserExamClass.add(new UserExamClass(item, id, UserExamClassRoleEnum.STUDENT.getType())));
+        updateDTO.getLstSupervisorId().forEach(item -> lstUserExamClass.add(new UserExamClass(item, id, UserExamClassRoleEnum.SUPERVISOR.getType())));
         userExamClassRepository.saveAll(lstUserExamClass);
     }
 
