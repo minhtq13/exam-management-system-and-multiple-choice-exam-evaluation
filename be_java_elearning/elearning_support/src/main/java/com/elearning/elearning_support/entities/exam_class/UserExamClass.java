@@ -27,7 +27,7 @@ public class UserExamClass {
 
     @NotNull
     @Column(name = "user_id", nullable = false)
-    private Long studentId;
+    private Long userId;
 
     @Column(name = "exam_class_id", nullable = false)
     private Long examClassId;
@@ -36,7 +36,7 @@ public class UserExamClass {
     private Integer roleType;
 
     public UserExamClass(Long studentId, Long examClassId, Integer roleType) {
-        this.studentId = studentId;
+        this.userId = studentId;
         this.examClassId = examClassId;
         this.roleType = roleType;
     }

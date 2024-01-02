@@ -108,6 +108,13 @@ public class ExamClassServiceImpl implements ExamClassService {
         examClass.setModifiedAt(new Date());
         examClass.setModifiedBy(AuthUtils.getCurrentUserId());
         examClassRepository.save(examClass);
+
+        // delete current user-exam class
+        userExamClassRepository.deleteAllByExamClassId(id);
+        List<UserExamClass> lstUserExamClass = new ArrayList<>();
+        updateDTO.getLstStudentId().forEach(item -> lstUserExamClass.add(new UserExamClass(item, id, UserExamClassRoleEnum.STUDENT.getType())));
+        updateDTO.getLstSupervisorId().forEach(item -> lstUserExamClass.add(new UserExamClass(item, id, UserExamClassRoleEnum.STUDENT.getType())));
+        userExamClassRepository.saveAll(lstUserExamClass);
     }
 
     @Override

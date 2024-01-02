@@ -158,10 +158,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public List<QuestionListDTO> getListQuestion(Long subjectId, String subjectCode, Set<Long> chapterIds, String chapterCode,
-        QuestionLevelEnum level) {
-        return questionRepository.getListQuestion(subjectId, subjectCode, chapterIds, chapterCode, level.getLevel()).stream()
-            .map(QuestionListDTO::new).collect(
-                Collectors.toList());
+        QuestionLevelEnum level, String search) {
+        return questionRepository.getListQuestion(subjectId, subjectCode, chapterIds, chapterCode, level.getLevel(), search).stream()
+            .map(QuestionListDTO::new).collect(Collectors.toList());
     }
 
     @Override

@@ -17,7 +17,8 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     Boolean existsByCode(String code);
 
     @Query(nativeQuery = true, value = SQLQuestion.GET_LIST_QUESTION)
-    List<IListQuestionDTO> getListQuestion(Long subjectId, String subjectCode, Set<Long> chapterIds, String chapterCode, Integer questionLevel);
+    List<IListQuestionDTO> getListQuestion(Long subjectId, String subjectCode, Set<Long> chapterIds, String chapterCode, Integer questionLevel,
+        String search);
 
     @Query(nativeQuery = true, value = SQLQuestion.GET_LIST_QUESTION_ID_BY_CHAPTER_ID_IN)
     Set<Long> getListQuestionIdByChapterIn(Set<Long> lstChapterId);
