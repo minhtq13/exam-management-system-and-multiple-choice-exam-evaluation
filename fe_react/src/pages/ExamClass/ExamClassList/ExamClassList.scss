@@ -59,6 +59,9 @@
   .exam-class-list-table {
     border: 1px solid #ccc;
     padding: 12px;
+    .ant-table-body {
+      min-height: 396px;
+    }
 
     .ant-table-content {
       min-height: 500px;
@@ -90,7 +93,9 @@
 .exam-class-participants {
   min-width: 50vw;
   height: 90vh;
-
+  .ant-table-body {
+    min-height: 265px;
+  }
   .ant-modal-content {
     height: 90vh;
 

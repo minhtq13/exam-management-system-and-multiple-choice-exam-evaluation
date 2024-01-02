@@ -257,7 +257,7 @@ const TestList = () => {
           <div className="block-button">
             <ModalPopup
               buttonOpenModal={
-                <Button className="options" disabled={!deleteDisable}>
+                <Button className="options" disabled={deleteDisable}>
                   <img src={deleteIcon} alt="Delete Icon" />
                   Xóa
                 </Button>
@@ -277,7 +277,7 @@ const TestList = () => {
         </div>
 
         <Table
-          scroll={{ y: 400 }}
+          scroll={{ y: 396 }}
           size="small"
           className="test-list-table"
           columns={columns}

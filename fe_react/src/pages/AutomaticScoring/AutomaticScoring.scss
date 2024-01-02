@@ -107,13 +107,25 @@
       
     }
     .option {
+      // position: relative;
       display: flex;
       align-items: center;
       gap: 24px;
       .button-submit-ai, .button-reset-table-result {
         min-width: 120px;
       }
-
+    }
+    .filter-table-ai {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-top: 20px;
+    }
+    .hint {
+      // position: absolute;
+      font-size: 14px;
+      color: #a19898;
+      font-style: italic;
     }
     .block-1 {
       display: flex;
@@ -145,6 +157,9 @@
         min-height: 300px;
         .table-ai {
           margin-top: 24px;
+          .ant-table-body {
+            min-height: 408px;
+          }
           .ant-table-container {
             border-radius: 6px;
             outline: 1px solid #ccc;

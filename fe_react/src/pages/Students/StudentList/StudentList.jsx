@@ -167,7 +167,7 @@ const StudentList = () => {
       align: "center",
     },
     {
-      title: "Họ tên",
+      title: "Họ và tên",
       dataIndex: "name",
       key: "name",
       // eslint-disable-next-line jsx-a11y/anchor-is-valid
@@ -351,9 +351,9 @@ const StudentList = () => {
       </div>
       <div className="student-list-wrapper">
         <Table
-          scroll={{ y: 490 }}
+          scroll={{ y: 396 }}
           className="student-list-table"
-          size="middle"
+          size="small"
           columns={columns}
           dataSource={dataFetch}
           rowSelection={rowSelection}

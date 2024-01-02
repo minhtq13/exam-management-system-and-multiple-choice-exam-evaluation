@@ -305,8 +305,8 @@ const TeacherList = () => {
       </div>
       <div className="teacher-list-wrapper">
         <Table
-          scroll={{ y: 490 }}
-          size="middle"
+          scroll={{ y: 396 }}
+          size="small"
           className="teacher-list-table"
           columns={columns}
           dataSource={dataFetch}

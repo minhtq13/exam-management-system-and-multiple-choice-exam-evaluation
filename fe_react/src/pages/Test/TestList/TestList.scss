@@ -37,6 +37,9 @@
   .test-list-table {
     border: 1px solid #ccc;
     padding: 12px;
+    .ant-table-body {
+      min-height: 396px;
+    }
 
     .ant-table-content {
       min-height: 500px;
