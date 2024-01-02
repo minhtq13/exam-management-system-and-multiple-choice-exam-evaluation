@@ -1,14 +1,12 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import { Table } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
-import { customPaginationText, generateRandomSixDigitNumber } from "../../utils/tools";
+import { customPaginationText } from "../../utils/tools";
 import ViewImage from "./ViewImage";
 
-const TableResult = ({ resultAI }) => {
+const TableResult = ({ resultAI, loadingTable, setListExamClassCode, setListMSSV }) => {
   const [testCodeFilter, setTestCodeFilter] = useState([]);
   const [studentCodeFilter, setStudentCodeFilter] = useState([]);
-  const numberAnswer = 60;
+  const numberAnswer = 30;
   const columnsAnswer = [];
   for (var i = 0; i < numberAnswer; i++) {
     columnsAnswer.push({
@@ -100,7 +98,7 @@ const TableResult = ({ resultAI }) => {
         }
         return acc;
       }, []);
-
+      setListExamClassCode(listTestCode)
       const listStudentCode = resultAI.reduce((acc, item) => {
         const existingIndex = acc.findIndex((el) => el.value === item.studentCode);
         if (existingIndex === -1) {
@@ -108,6 +106,7 @@ const TableResult = ({ resultAI }) => {
         }
         return acc;
       }, []);
+      setListMSSV(listStudentCode)
 
       const newDataTable = resultAI.map((item, index) => {
         const formatDataTable = {
@@ -140,6 +139,7 @@ const TableResult = ({ resultAI }) => {
   const renderTable = useMemo(() => {
     return (
       <Table
+        loading={loadingTable}
         className="table-ai"
         columns={columns}
         dataSource={dataTable}
@@ -168,7 +168,7 @@ const TableResult = ({ resultAI }) => {
       />
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataTable, pageSize]);
+  }, [dataTable, pageSize, loadingTable]);
   return <div className="table-result-component">{renderTable}</div>;
 };
 

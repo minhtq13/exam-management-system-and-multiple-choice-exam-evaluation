@@ -379,7 +379,8 @@ const SubjectList = () => {
     <div className="subject-list">
       <div className="header-subject-list">
         <p>Danh sách học phần</p>
-        <div className="block-button">
+      </div>
+      <div className="block-button">
           <ModalPopup
             buttonOpenModal={
               <Button
@@ -404,10 +405,9 @@ const SubjectList = () => {
             Thêm chương
           </Button>
         </div>
-      </div>
       <div className="subject-list-wrapper">
         <Table
-          scroll={{ y: 490 }}
+          scroll={{ y: 396 }}
           size="small"
           className="subject-list-table"
           columns={columns}
@@ -452,22 +452,18 @@ const SubjectList = () => {
           title="Nội dung"
           onOk={() => navigate(`${appPath.subjectView}/${subjectId}`)}
           cancelText="Đóng"
-          okText="Thêm"
+          okText="Thêm chương"
           onCancel={() => {
             setOpenModal(false);
             setEditingKey("");
           }}
           maskClosable={true}
           centered={true}
-          style={{
-            height: "50vh",
-            width: "80vw",
-            overflowY: "scroll",
-          }}
         >
           <Form form={form} component={false}>
             <Table
               size="small"
+              scroll={{ y: 396 }}
               loading={infoLoading}
               components={{
                 body: {

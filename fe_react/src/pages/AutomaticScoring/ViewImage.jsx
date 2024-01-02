@@ -74,7 +74,7 @@ const ViewImage = ({ dataArray, index }) => {
                 <div className="header">
                   <div className="block1">
                     <div>
-                      TT: <strong className="value">{currentSlide + 1}/60</strong>
+                      TT: <strong className="value">{currentSlide + 1}/{dataArray.length}</strong>
                     </div>
                     <div>
                       <PreviewOriginalImage

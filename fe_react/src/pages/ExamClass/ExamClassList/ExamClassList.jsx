@@ -156,7 +156,7 @@ const ExamClassList = () => {
           </div>
         )}
         <Table
-          scroll={{ y: 300 }}
+          scroll={{ y: 265 }}
           size="small"
           className="exam-class-participant"
           columns={roleType === "STUDENT" ? [...tabsColumn, ...addTabsColumn] : tabsColumn}
@@ -492,8 +492,8 @@ const ExamClassList = () => {
 
       <div className="exam-class-list-wrapper">
         <Table
-          scroll={{ y: 490 }}
-          size="middle"
+          scroll={{ y: 396 }}
+          size="small"
           className="exam-class-list-table"
           columns={columns}
           dataSource={dataFetch}

@@ -695,19 +695,17 @@ const UpdateExamClassInfoForm = ({
       <Modal
         className="exam-class-modal"
         open={openModal}
+        cancelText="Quay lại"
         title="Danh sách đề thi"
         onOk={() => setOpenModal(false)}
         onCancel={() => setOpenModal(false)}
         maskClosable={true}
         centered={true}
       >
-        <div className="filter-testlit-options-exam-class-modal">
-          {/* Thêm các select filter vào đây */}
-        </div>
         <Table
           size="small"
-          scroll={{ y: 326 }}
-          className="test-list-table"
+          scroll={{ y: 408 }}
+          className="test-list-exam-class-table"
           columns={columns}
           dataSource={dataFetch}
           loading={tableLoading}
@@ -726,13 +724,8 @@ const UpdateExamClassInfoForm = ({
                           <Button
                             key={index}
                             onClick={() => {
-                              setOpenModalPreview(
-                                true
-                              );
-                              handleView(
-                                record,
-                                item
-                              );
+                              setOpenModalPreview(true);
+                              handleView(record, item);
                             }}
                           >
                             {item}
@@ -778,8 +771,7 @@ const UpdateExamClassInfoForm = ({
       <Modal
         className="exam-class-modal"
         open={openStudentModal}
-        okText="Đồng ý"
-        cancelText="Đóng"
+        cancelText="Quay lại"
         title="Danh sách sinh viên"
         onOk={() => setOpenStudentModal(false)}
         onCancel={() => setOpenStudentModal(false)}
@@ -830,8 +822,7 @@ const UpdateExamClassInfoForm = ({
       </Modal>
       <Modal
         className="exam-class-modal"
-        okText="Đồng ý"
-        cancelText="Đóng"
+        cancelText="Quay lại"
         open={openTeacherModal}
         title="Danh sách giảng viên"
         onOk={() => setOpenTeacherModal(false)}
@@ -882,13 +873,16 @@ const UpdateExamClassInfoForm = ({
         />
       </Modal>
       <Modal
+        className="modal-preview-test"
         open={openModalPreview}
-        okText="Đồng ý"
-        onOk={() => setOpenModalPreview(false)}
         onCancel={() => setOpenModalPreview(false)}
         maskClosable={true}
         centered={true}
-        width={"40vw"}
+        footer={[
+          <Button key="back" onClick={() => setOpenModalPreview(false)}>
+            Quay lại
+          </Button>,
+        ]}
       >
         <Spin tip="Đang tải..." spinning={viewLoading}>
           <TestPreview
