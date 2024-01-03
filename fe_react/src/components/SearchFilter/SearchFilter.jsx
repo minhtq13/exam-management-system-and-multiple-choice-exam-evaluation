@@ -1,12 +1,12 @@
 import { Input, Select } from "antd";
 import "./SearchFilter.scss";
 
-const SearchFilter = ({ placeholder, displayFilter, onSearch, options }) => {
+const SearchFilter = ({ placeholder, displayFilter, onSearch, options, onChange, onSelect }) => {
   return (
     <div className="list-search-filter">
       <div className="list-search">
         <span className="list-search-filter-label">Tìm kiếm:</span>
-        <Input.Search placeholder={placeholder} enterButton />
+        <Input.Search placeholder={placeholder} enterButton onSearch={onSearch} allowClear onChange={onChange} />
       </div>
       {displayFilter && (
         <div className="list-filter">
@@ -18,6 +18,7 @@ const SearchFilter = ({ placeholder, displayFilter, onSearch, options }) => {
             allowClear
             onSearch={onSearch}
             options={options}
+            onChange={onSelect}
           />
         </div>
       )}

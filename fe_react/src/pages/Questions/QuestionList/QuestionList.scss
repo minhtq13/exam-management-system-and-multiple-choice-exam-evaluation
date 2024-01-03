@@ -17,6 +17,11 @@
       font-weight: bold;
       flex-shrink: 0;
     }
+
+    .ant-select-selector {
+      max-height: 60px;
+      overflow-y: scroll;
+    }
   }
 
   .test-level {
@@ -46,6 +51,7 @@
     max-width: 500px !important;
     object-fit: contain;
   }
+
   .ant-spin-container {
     margin-top: 20px;
     background-color: #ffffff;

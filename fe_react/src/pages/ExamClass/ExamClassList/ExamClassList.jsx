@@ -383,6 +383,8 @@ const ExamClassList = () => {
     classCode: obj.classCode,
     semester: obj.semester,
     subjectTitle: obj.subjectTitle,
+    time: obj.examineTime,
+    date: obj.examineDate,
     examineTime: obj.examineTime === null && obj.examineDate === null ? "" : `${obj.examineTime} - ${obj.examineDate}`,
     numberOfStudents: obj.numberOfStudents ?? 0,
     numberOfSupervisors: obj.numberOfSupervisors ?? 0,
@@ -549,10 +551,11 @@ const ExamClassList = () => {
               </div>
               <div className="exam-class-participant-right">
                 <div>{`Phòng thi: ${record.roomName}`}</div>
-                <div>{`Ngày thi: ${record.examineDate}`}</div>
-                <div>{`Giờ thi: ${record.examineTime}`}</div>
+                <div>{`Ngày thi: ${record.date}`}</div>
+                <div>{`Giờ thi: ${record.time}`}</div>
               </div>
             </div>
+
             <Tabs
               defaultActiveKey="STUDENT"
               items={tabsOptions}

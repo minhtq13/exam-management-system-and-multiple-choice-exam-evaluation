@@ -11,9 +11,9 @@ const useStudents = () => {
 	const getAllStudents = (params) => {
 		setTableStudentLoading(true);
 		getPagingStudentsService(
-			params.name,
-			params.code,
+			params.search,
 			params.page,
+			params.courseNum,
 			params.size,
 			params.sort,
 			(res) => {

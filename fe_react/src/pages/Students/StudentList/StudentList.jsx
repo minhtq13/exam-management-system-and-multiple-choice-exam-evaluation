@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table, Tag } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import deleteIcon from "../../../assets/images/svg/delete-icon.svg";
@@ -15,14 +14,13 @@ import useNotify from "../../../hooks/useNotify";
 import useStudents from "../../../hooks/useStudents";
 import { setSelectedItem } from "../../../redux/slices/appSlice";
 import { deleteStudentsService } from "../../../services/studentsService";
-import { convertGender, customPaginationText } from "../../../utils/tools";
+import { convertGender, courseNumOptions, customPaginationText } from "../../../utils/tools";
 import SearchFilter from "../../../components/SearchFilter/SearchFilter";
 import "./StudentList.scss";
 
 const StudentList = () => {
   const initialParam = {
-    name: null,
-    code: null,
+    search: null,
     page: 0,
     size: 10,
     courseNum: null,
@@ -37,7 +35,6 @@ const StudentList = () => {
   } = useStudents();
   const { importList, exportList, loadingImport } = useImportExport();
   const [deleteKey, setDeleteKey] = useState(null);
-  const searchInput = useRef(null);
   const [fileList, setFileList] = useState(null);
   const [param, setParam] = useState(initialParam);
   const handleUpload = async () => {
@@ -48,95 +45,6 @@ const StudentList = () => {
   const handleChange = (e) => {
     setFileList(e.target.files[0]);
   };
-  const handleReset = (clearFilters) => {
-    clearFilters();
-  };
-  const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-      close,
-    }) => (
-      <div
-        style={{
-          padding: 8,
-        }}
-        onKeyDown={(e) => e.stopPropagation()}
-      >
-        <Input
-          ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) => {
-            setSelectedKeys(e.target.value ? [e.target.value] : []);
-            setParam({
-              ...param,
-              [dataIndex]: e.target.value,
-              page: 0,
-            });
-          }}
-          onPressEnter={() => getAllStudents(param)}
-          style={{
-            marginBottom: 8,
-            display: "block",
-          }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => getAllStudents({ ...param, page: 0 })}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Tìm kiếm
-          </Button>
-          <Button
-            onClick={() => {
-              clearFilters && handleReset(clearFilters);
-              setParam(initialParam);
-            }}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Đặt lại
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              close();
-            }}
-          >
-            Đóng
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: (filtered) => (
-      <SearchOutlined
-        style={{
-          color: filtered ? "#1677ff" : undefined,
-        }}
-      />
-    ),
-    onFilter: (value, record) =>
-      record[dataIndex]
-        .toString()
-        .toLowerCase()
-        .includes(value.toLowerCase()),
-    onFilterDropdownOpenChange: (visible) => {
-      if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100);
-      }
-    },
-  });
   const dispatch = useDispatch();
   const onRow = (record) => {
     return {
@@ -162,7 +70,6 @@ const StudentList = () => {
       title: "MSSV",
       dataIndex: "code",
       key: "code",
-      ...getColumnSearchProps("code"),
       width: "12%",
       align: "center",
     },
@@ -172,7 +79,6 @@ const StudentList = () => {
       key: "name",
       // eslint-disable-next-line jsx-a11y/anchor-is-valid
       render: (text) => <a>{text}</a>,
-      ...getColumnSearchProps("name"),
       width: "25%",
     },
     {
@@ -181,31 +87,6 @@ const StudentList = () => {
       key: "courseNum",
       width: "10%",
       align: "center",
-      filters: [
-        {
-          text: "64",
-          value: 64,
-        },
-        {
-          text: "65",
-          value: 65,
-        },
-        {
-          text: "66",
-          value: 66,
-        },
-        {
-          text: "67",
-          value: 67,
-        },
-        {
-          text: "68",
-          value: 68,
-        },
-      ],
-      onFilter: (value, record) => {
-        return record.courseNum === value;
-      },
     },
     {
       title: "Email",
@@ -281,6 +162,15 @@ const StudentList = () => {
     onChange: onSelectChange,
     selections: [Table.SELECTION_ALL],
   };
+  const onSearch = (value, _e, info) => {
+    setParam({ ...param, search: value })
+  };
+  const onSeletCourse = (options) => {
+    setParam({ ...param, courseNum: options })
+  }
+  const onChange = (_e) => {
+    setParam({ ...param, search: _e.target.value })
+  }
   const handleDelete = () => {
     deleteStudentsService(
       deleteKey,
@@ -309,9 +199,8 @@ const StudentList = () => {
         <p>Danh sách sinh viên</p>
       </div>
       <div className="search-filter-button">
-        <SearchFilter displayFilter placeholder="Nhập tên hoặc MSSV" />
+        <SearchFilter displayFilter placeholder="Nhập tên hoặc MSSV" options={courseNumOptions} onSearch={onSearch} onChange={onChange} onSelect={onSeletCourse} />
         <div className="block-button">
-         
           <ModalPopup
             buttonOpenModal={
               <Button

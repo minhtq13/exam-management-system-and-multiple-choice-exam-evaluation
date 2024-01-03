@@ -145,6 +145,7 @@ const QuestionList = () => {
         <div className="test-chapters">
           <span className="select-label">Chương:</span>
           <Select
+            disabled={subjectId === null}
             mode="multiple"
             showSearch
             allowClear

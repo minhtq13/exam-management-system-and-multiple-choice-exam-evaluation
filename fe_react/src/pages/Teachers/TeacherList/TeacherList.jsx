@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table, Tag } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import deleteIcon from "../../../assets/images/svg/delete-icon.svg";
@@ -33,10 +32,6 @@ const TeacherList = () => {
   const [fileList, setFileList] = useState(null);
   const { allTeachers, getAllTeachers, tableTeacherLoading, paginationTeacher } = useTeachers();
   const { exportList, importList, loadingImport } = useImportExport();
-  const searchInput = useRef(null);
-  const handleReset = (clearFilters) => {
-    clearFilters();
-  };
   const handleUpload = async () => {
     const formData = new FormData();
     formData.append("file", fileList);
@@ -45,83 +40,6 @@ const TeacherList = () => {
   const handleChange = (e) => {
     setFileList(e.target.files[0]);
   };
-  const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
-      <div
-        style={{
-          padding: 8,
-        }}
-        onKeyDown={(e) => e.stopPropagation()}
-      >
-        <Input
-          ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) => {
-            setSelectedKeys(e.target.value ? [e.target.value] : []);
-            setParam({
-              ...param,
-              [dataIndex]: e.target.value,
-              page: 0,
-            });
-          }}
-          onPressEnter={() => getAllTeachers(param)}
-          style={{
-            marginBottom: 8,
-            display: "block",
-          }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => getAllTeachers({ ...param, page: 0 })}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Tìm kiếm
-          </Button>
-          <Button
-            onClick={() => {
-              clearFilters && handleReset(clearFilters);
-              setParam(initialParam);
-            }}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Đặt lại
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              close();
-            }}
-          >
-            Đóng
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: (filtered) => (
-      <SearchOutlined
-        style={{
-          color: filtered ? "#1677ff" : undefined,
-        }}
-      />
-    ),
-    onFilter: (value, record) =>
-      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-    onFilterDropdownOpenChange: (visible) => {
-      if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100);
-      }
-    },
-  });
 
   const dispatch = useDispatch();
   const onRow = (record) => {
@@ -147,7 +65,6 @@ const TeacherList = () => {
       title: "Mã cán bộ",
       dataIndex: "code",
       key: "code",
-      ...getColumnSearchProps("code"),
       width: "15%",
       align: "center",
     },
@@ -157,7 +74,6 @@ const TeacherList = () => {
       key: "name",
       // eslint-disable-next-line jsx-a11y/anchor-is-valid
       render: (text) => <a>{text}</a>,
-      ...getColumnSearchProps("name"),
       width: "25%",
     },
     {
@@ -265,13 +181,19 @@ const TeacherList = () => {
     };
     exportList(params, "teacher");
   };
+  const onSearch = (value, _e, info) => {
+    setParam({ ...param, search: value })
+  };
+  const onChange = (_e) => {
+    setParam({ ...param, search: _e.target.value })
+  }
   return (
     <div className="teacher-list">
       <div className="header-teacher-list">
         <p>Danh sách giảng viên</p>
       </div>
       <div className="search-filter-button">
-        <SearchFilter displayFilter={false} placeholder="Nhập tên hoặc mã cán bộ" />
+        <SearchFilter displayFilter={false} placeholder="Nhập tên hoặc mã cán bộ" onSearch={onSearch} onChange={onChange} />
         <div className="block-button">
           <Button className="options" onClick={handleExport}>
             <img src={exportIcon} alt="Tải xuống Icon" />

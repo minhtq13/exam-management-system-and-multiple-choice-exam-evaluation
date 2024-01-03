@@ -17,6 +17,7 @@
 
     .ant-spin-container {
       display: flex;
+      align-items: center;
       justify-content: flex-end;
     }
 
@@ -303,10 +304,24 @@
   .question-text {
     display: flex;
     width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: flex-start;
+
+    .btn-remove {
+      height: 100% !important;
+      display: flex;
+      justify-content: flex-start;
+    }
+  }
+
+  .question-text-order {
+    display: flex;
+    width: 90%;
   }
 
   .topic-Text {
-    width: 15%;
+    width: 18%;
     margin-right: 10px;
     flex-shrink: 0;
   }

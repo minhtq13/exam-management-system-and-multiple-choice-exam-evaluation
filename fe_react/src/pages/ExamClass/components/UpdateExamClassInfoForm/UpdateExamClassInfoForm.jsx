@@ -10,9 +10,8 @@ import {
   Spin,
   Popover,
 } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
 import "./UpdateExamClassInfoForm.scss";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import useCombo from "../../../../hooks/useCombo";
 import useTest from "../../../../hooks/useTest";
 import useNotify from "../../../../hooks/useNotify";
@@ -20,7 +19,7 @@ import { testSetDetailService } from "../../../../services/testServices";
 import TestPreview from "../../../../components/TestPreview/TestPreview";
 import useTeachers from "../../../../hooks/useTeachers";
 import useStudents from "../../../../hooks/useStudents";
-import { customPaginationText, disabledDate } from "../../../../utils/tools";
+import { courseNumOptions, customPaginationText, disabledDate } from "../../../../utils/tools";
 import SearchFilter from "../../../../components/SearchFilter/SearchFilter";
 const UpdateExamClassInfoForm = ({
   onFinish,
@@ -42,10 +41,6 @@ const UpdateExamClassInfoForm = ({
     subLoading,
     allSubjects,
     getAllSubjects,
-    allTeacher,
-    allStudent,
-    studentLoading,
-    teacherLoading,
     getAllStudent,
     getAllTeacher,
   } = useCombo();
@@ -102,7 +97,6 @@ const UpdateExamClassInfoForm = ({
   const [studentSelectedPerPage, setStudentSelectedPerPage] = useState({ "1": lstStudentId } ?? {});
   const [teacherSelectedPerPage, setTeacherSelectedPerPage] = useState({ "1": lstSupervisorId } ?? {});
   const notify = useNotify();
-  const searchInput = useRef(null);
   useEffect(() => {
     if (openTeacherModal) {
       getAllTeachers(teacherParam);
@@ -139,9 +133,6 @@ const UpdateExamClassInfoForm = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param, openModal]);
   // eslint-disable-next-line
-  // const handleReset = (clearFilters) => {
-  // 	clearFilters();
-  // };
   const getOptions = (array, codeShow) => {
     return array && array.length > 0
       ? array.map((item) => {
@@ -154,124 +145,19 @@ const UpdateExamClassInfoForm = ({
       })
       : [];
   };
-  const getColumnSearchProps = (
-    dataIndex,
-    onSearch,
-    handleReset,
-    param,
-    initParam
-  ) => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-      close,
-    }) => (
-      <div
-        style={{
-          padding: 8,
-        }}
-        onKeyDown={(e) => e.stopPropagation()}
-      >
-        <Input
-          ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) => {
-            setSelectedKeys(e.target.value ? [e.target.value] : []);
-            handleReset({
-              ...param,
-              [dataIndex]: e.target.value,
-              page: 0,
-            });
-          }}
-          onPressEnter={() => onSearch(param)}
-          style={{
-            marginBottom: 8,
-            display: "block",
-          }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => onSearch({ ...param, page: 0 })}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Tìm kiếm
-          </Button>
-          <Button
-            onClick={() => {
-              clearFilters && handleReset(clearFilters);
-              handleReset(initParam);
-            }}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Đặt lại
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              close();
-            }}
-          >
-            Đóng
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: (filtered) => (
-      <SearchOutlined
-        style={{
-          color: filtered ? "#1677ff" : undefined,
-        }}
-      />
-    ),
-    onFilter: (value, record) =>
-      record[dataIndex]
-        .toString()
-        .toLowerCase()
-        .includes(value.toLowerCase()),
-    onFilterDropdownOpenChange: (visible) => {
-      if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100);
-      }
-    },
-  });
+
   const teacherColumns = [
     {
       title: "Mã cán bộ",
       dataIndex: "code",
       key: "code",
-      width: "20%",
-      ...getColumnSearchProps(
-        "code",
-        getAllTeachers,
-        setTeacherParam,
-        teacherParam,
-        teacherParamInit
-      ),
+      width: "20%"
     },
     {
       title: "Họ và tên",
       dataIndex: "name",
       key: "name",
       width: "35%",
-      ...getColumnSearchProps(
-        "name",
-        getAllTeachers,
-        setTeacherParam,
-        teacherParam,
-        teacherParamInit
-      ),
     },
     {
       title: "Email",
@@ -293,13 +179,6 @@ const UpdateExamClassInfoForm = ({
       dataIndex: "code",
       key: "code",
       width: "12%",
-      ...getColumnSearchProps(
-        "code",
-        getAllStudents,
-        setStudentParam,
-        studentParam,
-        studentParamInit
-      ),
     },
     {
       title: "Họ tên",
@@ -308,13 +187,6 @@ const UpdateExamClassInfoForm = ({
       width: "33%",
       // eslint-disable-next-line jsx-a11y/anchor-is-valid
       render: (text) => <a>{text}</a>,
-      ...getColumnSearchProps(
-        "name",
-        getAllStudents,
-        setStudentParam,
-        studentParam,
-        studentParamInit
-      ),
     },
     {
       title: "Khóa",
@@ -322,31 +194,6 @@ const UpdateExamClassInfoForm = ({
       key: "courseNum",
       width: "15%",
       align: "center",
-      filters: [
-        {
-          text: "64",
-          value: 64,
-        },
-        {
-          text: "65",
-          value: 65,
-        },
-        {
-          text: "66",
-          value: 66,
-        },
-        {
-          text: "67",
-          value: 67,
-        },
-        {
-          text: "68",
-          value: 68,
-        },
-      ],
-      onFilter: (value, record) => {
-        return record.courseNum === value;
-      },
     },
     {
       title: "Email",
@@ -468,6 +315,22 @@ const UpdateExamClassInfoForm = ({
       teacherSelectedPerPage[paginationTeacher.current],
     onChange: teacherSelectChange,
   };
+
+  const onStudentChange = (_e) => {
+    setStudentParam({ ...studentParam, search: _e.target.value })
+  }
+  const onStudentSearch = (value, _e, info) => {
+    setStudentParam({ ...studentParam, search: value });
+  }
+  const onStudentSelect = (options) => {
+    setStudentParam({ ...studentParam, courseNum: options })
+  }
+  const onTeacherChange = (_e) => {
+    setTeacherParam({ ...teacherParam, search: _e.target.value })
+  }
+  const onTeacherSearch = (value, _e, info) => {
+    setTeacherParam({ ...teacherParam, search: value });
+  }
   const handleView = (record, code) => {
     setTestNo(code);
     setOpenModalPreview(true);
@@ -631,7 +494,7 @@ const UpdateExamClassInfoForm = ({
         </Form.Item>
 
 
-   
+
         <Form.Item
           name="testId"
           label="Đề thi"
@@ -779,7 +642,7 @@ const UpdateExamClassInfoForm = ({
         centered={true}
       >
         <div className="selected-number-text">{`Đã chọn: ${studentSelected.length} sinh viên`}</div>
-        <SearchFilter displayFilter placeholder="Nhập tên hoặc MSSV" />
+        <SearchFilter displayFilter placeholder="Nhập tên hoặc MSSV" options={courseNumOptions} onSearch={onStudentSearch} onChange={onStudentChange} onSelect={onStudentSelect} />
         <Table
           size="small"
           scroll={{ y: 320 }}
@@ -831,7 +694,7 @@ const UpdateExamClassInfoForm = ({
         centered={true}
       >
         <div className="selected-number-text">{`Đã chọn: ${teacherSelected.length} giảng viên`}</div>
-        <SearchFilter displayFilter={false} placeholder="Nhập tên hoặc mã cán bộ" />
+        <SearchFilter displayFilter={false} placeholder="Nhập tên hoặc mã cán bộ" onChange={onTeacherChange} onSearch={onTeacherSearch} />
         <Table
           size="small"
           scroll={{ y: 320 }}

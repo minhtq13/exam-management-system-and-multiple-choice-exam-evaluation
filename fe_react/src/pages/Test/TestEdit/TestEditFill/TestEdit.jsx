@@ -1,5 +1,5 @@
 import ReactQuill from "react-quill";
-import { ArrowRightOutlined } from "@ant-design/icons";
+import { ArrowRightOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import "react-quill/dist/quill.snow.css";
 import { useEffect, useState } from "react";
 import "./TestEdit.scss";
@@ -22,6 +22,7 @@ const TestEdit = () => {
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
   const [openPreModal, setOpenPreModal] = useState(false);
   const [checkQues, setCheckQues] = useState([]);
+  const [openAdd, setOpenAdd] = useState(false);
   const notify = useNotify();
   const location = useLocation();
   const code = location.pathname.split("/")[3];
@@ -219,45 +220,60 @@ const TestEdit = () => {
                             ]}
                           >
                             <div className="question-text">
-                              <Form.Item
-                                className="topic-Text"
-                                label="Câu số:"
-                                key={`questionNo${parentField.key}`}
-                                {...parentField}
-                                name={[
-                                  parentField.name,
-                                  `questionNo`,
-                                ]}
-                                rules={[
-                                  {
-                                    required: true,
-                                    message:
-                                      "Chưa nhập thứ tự câu hỏi!",
-                                  },
-                                ]}
-                              >
-                                <Input onChange={(e) => handleQuestionNumberChange(parentIndex, e.target.value)} />
-                              </Form.Item>
-                              <Form.Item
-                                className="content"
-                                key={`content${parentField.key}`}
-                                {...parentField}
-                                name={[
-                                  parentField.name,
-                                  `content`,
-                                ]}
-                              >
-                                <ReactQuill
-                                  key={
-                                    parentIndex
+                              <div className="question-text-order">
+                                <Form.Item
+                                  className="topic-Text"
+                                  label="Câu số:"
+                                  key={`questionNo${parentField.key}`}
+                                  {...parentField}
+                                  name={[
+                                    parentField.name,
+                                    `questionNo`,
+                                  ]}
+                                  rules={[
+                                    {
+                                      required: true,
+                                      message:
+                                        "Chưa nhập thứ tự câu hỏi!",
+                                    },
+                                  ]}
+                                >
+                                  <Input onChange={(e) => handleQuestionNumberChange(parentIndex, e.target.value)} />
+                                </Form.Item>
+                                <Form.Item
+                                  className="content"
+                                  key={`content${parentField.key}`}
+                                  {...parentField}
+                                  name={[
+                                    parentField.name,
+                                    `content`,
+                                  ]}
+                                >
+                                  <ReactQuill
+                                    key={
+                                      parentIndex
+                                    }
+                                    readOnly={true}
+                                    theme="snow"
+                                    modules={{
+                                      toolbar: false,
+                                    }}
+                                  />
+                                </Form.Item>
+                              </div>
+                              <div className="btn-remove">
+                                <Button
+                                  type="dashed"
+                                  onClick={() => {
+                                    parentListOperations.remove(
+                                      parentIndex
+                                    );
+                                    setIdValues(idValues.filter((item, index) => index !== parentIndex))
                                   }
-                                  readOnly={true}
-                                  theme="snow"
-                                  modules={{
-                                    toolbar: false,
-                                  }}
-                                />
-                              </Form.Item>
+                                  }
+                                  icon={<DeleteOutlined />}
+                                ></Button>
+                              </div>
                             </div>
                             <Form.List
                               key={`answers${parentField.key}`}
@@ -338,6 +354,14 @@ const TestEdit = () => {
                           </div>
                         )
                       )}
+                      <div className="btn-add">
+                        <Button
+                          onClick={() => setOpenAdd(true)}
+                          icon={<PlusOutlined />}
+                        >
+                          Thêm mới
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </Form.List>
@@ -402,6 +426,17 @@ const TestEdit = () => {
             testNo={code}
           />
         </Spin>
+      </Modal>
+      <Modal
+        open={openAdd}
+        title="Sửa đề thi thành công!"
+        okText="Xem đề thi"
+        onOk={() => setOpenAdd(false)}
+        onCancel={() => setOpenAdd(false)}
+        cancelText="Đóng"
+        centered={true}
+      >
+        <p>Bạn đã chỉnh sửa đề thi thành công!</p>
       </Modal>
     </div>
   );

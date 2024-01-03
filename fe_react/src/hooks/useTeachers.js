@@ -11,8 +11,7 @@ const useTeachers = () => {
 	const getAllTeachers = (params) => {
 		setTableTeacherLoading(true);
 		getPagingTeachersService(
-			params.name,
-			params.code,
+			params.search,
 			params.page,
 			params.size,
 			params.sort,
