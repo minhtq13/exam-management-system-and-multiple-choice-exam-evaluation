@@ -39,10 +39,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     IGetDetailUserDTO getDetailUser(Long userId);
 
     @Query(nativeQuery = true, value = SQLUser.GET_LIST_STUDENT)
-    Page<IGetUserListDTO> getPageStudent(String search, Integer courseNum, Pageable pageable);
+    Page<IGetUserListDTO> getPageStudent(String search, Set<Integer> courseNums, Pageable pageable);
 
     @Query(nativeQuery = true, value = SQLUser.GET_LIST_STUDENT)
-    List<IGetUserListDTO> getListStudent(String search, Integer courseNum);
+    List<IGetUserListDTO> getListStudent(String search, Set<Integer> courseNums);
 
     @Query(nativeQuery = true, value = SQLUser.GET_LIST_TEACHER)
     Page<IGetUserListDTO> getPageTeacher(String search, Pageable pageable);

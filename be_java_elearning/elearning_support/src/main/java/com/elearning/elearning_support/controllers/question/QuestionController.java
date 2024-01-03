@@ -53,8 +53,9 @@ public class QuestionController {
         @RequestParam(name = "chapterCode", required = false, defaultValue = "") String chapterCode,
         @RequestParam(name = "chapterIds", required = false, defaultValue = "-1") Set<Long> chapterIds,
         @RequestParam(name = "level", required = false, defaultValue = "ALL") QuestionLevelEnum level,
-        @RequestParam(name = "search", required = false, defaultValue = "") String search) {
-        return questionService.getListQuestion(subjectId, subjectCode, chapterIds, chapterCode, level, search);
+        @RequestParam(name = "search", required = false, defaultValue = "") String search,
+        @RequestParam(name = "testId", required = false, defaultValue = "-1") Long testId) {
+        return questionService.getListQuestion(subjectId, subjectCode, chapterIds, chapterCode, level, search, testId);
     }
 
     @GetMapping("/detail/{questionId}")

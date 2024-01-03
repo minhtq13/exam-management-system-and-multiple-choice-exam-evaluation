@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -78,12 +79,12 @@ public class UserController {
     @Operation(summary = "Danh sách học sinh / sinh viên dạng phân trang")
     public Page<IGetUserListDTO> getPageStudent(
         @RequestParam(name = "search", required = false, defaultValue = "") String search,
-        @RequestParam(name = "courseNum", required = false, defaultValue = "-1") Integer courseNum,
+        @RequestParam(name = "courseNums", required = false, defaultValue = "-1") Set<Integer> courseNums,
         @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
         @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
         @RequestParam(name = "sort", required = false, defaultValue = "lastModifiedAt") String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
-        return userService.getPageStudent(search, courseNum, pageable);
+        return userService.getPageStudent(search, courseNums, pageable);
     }
 
     @GetMapping("/student/list")

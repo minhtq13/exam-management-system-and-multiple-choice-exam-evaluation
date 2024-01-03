@@ -143,7 +143,7 @@ public class TestSetServiceImpl implements TestSetService {
         }
 
         // Lấy các câu hỏi trong bộ câu hỏi của đề thi
-        List<QuestionAnswerDTO> lstQuestionInTest = questionRepository.getListQuestionInTest(generateReqDTO.getTestId()).stream()
+        List<QuestionAnswerDTO> lstQuestionInTest = questionRepository.getListQuestionIdInTest(generateReqDTO.getTestId()).stream()
             .map(QuestionAnswerDTO::new).collect(Collectors.toList());
         // Lọc theo mức độ: dễ/trung bình/ khó
         List<QuestionAnswerDTO> lstEasyQuestion = lstQuestionInTest.stream().filter(question -> Objects.equals(question.getLevel(),

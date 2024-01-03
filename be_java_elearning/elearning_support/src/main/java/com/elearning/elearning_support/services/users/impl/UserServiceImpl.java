@@ -3,6 +3,7 @@ package com.elearning.elearning_support.services.users.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.math3.util.Pair;
@@ -154,13 +156,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<IGetUserListDTO> getPageStudent(String search, Integer courseNum, Pageable pageable) {
-        return userRepository.getPageStudent(search, courseNum, pageable);
+    public Page<IGetUserListDTO> getPageStudent(String search, Set<Integer> courseNums, Pageable pageable) {
+        return userRepository.getPageStudent(search, courseNums, pageable);
     }
 
     @Override
     public List<IGetUserListDTO> getListStudent(String search, Integer courseNum) {
-        return userRepository.getListStudent(search, courseNum);
+        return userRepository.getListStudent(search, Collections.singleton(courseNum));
     }
 
     @Override
@@ -279,8 +281,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public InputStreamResource exportStudent(String search, Integer courseNum) throws IOException {
-        List<StudentExportDTO> lstStudent = userRepository.getListStudent(search, courseNum).stream().map(StudentExportDTO::new).collect(
-            Collectors.toList());
+        List<StudentExportDTO> lstStudent = userRepository.getListStudent(search, Collections.singleton(courseNum)).stream()
+            .map(StudentExportDTO::new).collect(Collectors.toList());
         // Tạo map cấu trúc file excel
         Map<Integer, Pair<String, String>> mapStructure = new LinkedHashMap<>();
         mapStructure.put(1, Pair.create("Họ", "getLastName"));

@@ -18,7 +18,8 @@ public interface QuestionService {
 
     void updateQuestion(Long questionId, QuestionUpdateDTO updateDTO);
 
-    List<QuestionListDTO> getListQuestion(Long subjectId, String subjectCode, Set<Long> chapterId, String chapterCode, QuestionLevelEnum level, String search);
+    List<QuestionListDTO> getListQuestion(Long subjectId, String subjectCode, Set<Long> chapterId, String chapterCode, QuestionLevelEnum level,
+        String search, Long testId);
 
     /**
      * Import questions

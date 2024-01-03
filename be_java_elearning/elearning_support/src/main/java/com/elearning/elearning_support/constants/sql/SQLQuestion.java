@@ -26,7 +26,7 @@ public class SQLQuestion {
     public static final String GET_LIST_QUESTION_ID_BY_CHAPTER_ID_IN =
         "SELECT id FROM {h-schema}question WHERE chapter_id IN (:lstChapterId) AND deleted_flag = 1";
 
-    public static final String GET_LIST_QUESTION_IN_TEST =
+    public static final String GET_LIST_QUESTION_ID_IN_TEST =
         "SELECT \n" +
             "   testQuest.question_id AS id, \n" +
             "   question.level AS level, \n" +
@@ -36,6 +36,21 @@ public class SQLQuestion {
             "   LEFT JOIN {h-schema} answer ON testQuest.question_id = answer.question_id \n" +
             "WHERE testQuest.test_id = :testId AND question.is_enabled = true \n" +
             "GROUP BY testQuest.question_id, question.level";
+
+    public static final String GET_LIST_QUESTION_IN_TEST =
+        "SELECT \n" +
+            "    testQuest.question_id AS id, \n" +
+            "    question.code AS code, \n" +
+            "    question.content AS content, \n" +
+            "    question.level AS level, \n" +
+            "    {h-schema}get_list_file_json_by_ids_id(question.image_ids) AS lstImageJson, \n" +
+            "    {h-schema}get_list_answer_json_by_question_id(question.id) AS lstAnswerJson \n" +
+            "FROM {h-schema}test_question AS testQuest \n" +
+            "   JOIN {h-schema}question ON testQuest.question_id = question.id \n" +
+            "WHERE \n" +
+            "     testQuest.test_id = :testId AND \n" +
+            "     question.is_enabled = true AND \n" +
+            "     ('' = :search OR question.content ILIKE ('%' || :search || '%')) \n";
 
     public static final String GET_QUESTION_DETAILS =
         "SELECT \n" +

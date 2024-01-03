@@ -2,6 +2,7 @@ package com.elearning.elearning_support.services.users;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +42,7 @@ public interface UserService {
     /**
      * Lấy danh sách HSSV dạng page
      */
-    Page<IGetUserListDTO> getPageStudent(String search, Integer courseNum, Pageable pageable);
+    Page<IGetUserListDTO> getPageStudent(String search, Set<Integer> courseNums, Pageable pageable);
 
     /**
      * Lấy danh sách HSSV dạng list
