@@ -436,7 +436,9 @@ const TestEdit = () => {
         cancelText="Đóng"
         centered={true}
       >
-        <p>Bạn đã chỉnh sửa đề thi thành công!</p>
+        <div className="add-question-edit">
+          Thêm câu hỏi
+        </div>
       </Modal>
     </div>
   );
