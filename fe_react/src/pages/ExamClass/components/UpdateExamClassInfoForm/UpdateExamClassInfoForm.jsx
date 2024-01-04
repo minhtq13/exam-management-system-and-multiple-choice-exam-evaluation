@@ -61,7 +61,7 @@ const UpdateExamClassInfoForm = ({
     code: null,
     page: 0,
     size: 10,
-    courseNum: null,
+    courseNums: null,
     sort: "lastModifiedAt",
   };
   const teacherParamInit = {
@@ -323,7 +323,7 @@ const UpdateExamClassInfoForm = ({
     setStudentParam({ ...studentParam, search: value });
   }
   const onStudentSelect = (options) => {
-    setStudentParam({ ...studentParam, courseNum: options })
+    setStudentParam({ ...studentParam, courseNums: options })
   }
   const onTeacherChange = (_e) => {
     setTeacherParam({ ...teacherParam, search: _e.target.value })

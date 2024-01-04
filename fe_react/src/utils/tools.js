@@ -145,35 +145,35 @@ export const nextday = nextDay.setDate(minDate.getDate() + 1);
 
 export const courseNumOptions = [
 	{
-		value: "60",
+		value: 60,
 		label: "K60",
 	},
 	{
-		value: "61",
+		value: 61,
 		label: "K61",
 	},
 	{
-		value: "62",
+		value: 62,
 		label: "K62",
 	},
 	{
-		value: "63",
+		value: 63,
 		label: "K63",
 	},
 	{
-		value: "64",
+		value: 64,
 		label: "K64",
 	},
 	{
-		value: "65",
+		value: 65,
 		label: "K65",
 	},
 	{
-		value: "66",
+		value: 66,
 		label: "K66",
 	},
 	{
-		value: "67",
+		value: 67,
 		label: "K67",
 	},
 ];

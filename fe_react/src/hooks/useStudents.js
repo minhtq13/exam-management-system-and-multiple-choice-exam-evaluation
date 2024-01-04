@@ -13,7 +13,9 @@ const useStudents = () => {
 		getPagingStudentsService(
 			params.search,
 			params.page,
-			params.courseNum,
+			params.courseNums && params.courseNums.length > 0
+				? params.courseNums.join(",")
+				: null,
 			params.size,
 			params.sort,
 			(res) => {

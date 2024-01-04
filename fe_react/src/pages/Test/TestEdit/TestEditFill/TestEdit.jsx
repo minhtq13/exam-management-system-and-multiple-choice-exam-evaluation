@@ -261,19 +261,6 @@ const TestEdit = () => {
                                   />
                                 </Form.Item>
                               </div>
-                              <div className="btn-remove">
-                                <Button
-                                  type="dashed"
-                                  onClick={() => {
-                                    parentListOperations.remove(
-                                      parentIndex
-                                    );
-                                    setIdValues(idValues.filter((item, index) => index !== parentIndex))
-                                  }
-                                  }
-                                  icon={<DeleteOutlined />}
-                                ></Button>
-                              </div>
                             </div>
                             <Form.List
                               key={`answers${parentField.key}`}

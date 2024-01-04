@@ -23,7 +23,7 @@ const StudentList = () => {
     search: null,
     page: 0,
     size: 10,
-    courseNum: null,
+    courseNums: [],
     sort: "lastModifiedAt",
   };
   const [deleteDisable, setDeleteDisable] = useState(true);
@@ -166,7 +166,8 @@ const StudentList = () => {
     setParam({ ...param, search: value })
   };
   const onSeletCourse = (options) => {
-    setParam({ ...param, courseNum: options })
+    setParam({ ...param, courseNums: options })
+    console.log(options)
   }
   const onChange = (_e) => {
     setParam({ ...param, search: _e.target.value })
@@ -189,10 +190,11 @@ const StudentList = () => {
     const params = {
       name: param.name,
       code: param.code,
-      courseNum: param.courseNum,
+      courseNums: param.courseNums,
     };
     exportList(params, "student");
   };
+  console.log(param)
   return (
     <div className="student-list">
       <div className="header-student-list">

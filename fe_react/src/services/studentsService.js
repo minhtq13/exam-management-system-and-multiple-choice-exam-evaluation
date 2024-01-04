@@ -20,7 +20,7 @@ export const getAllStudentsService = async (
 export const getPagingStudentsService = async (
 	search,
 	page,
-	courseNum,
+	courseNums,
 	size,
 	sort,
 	successCallback,
@@ -36,8 +36,8 @@ export const getPagingStudentsService = async (
 		params.search = search;
 	}
 
-	if (courseNum) {
-		params.courseNum = courseNum;
+	if (courseNums) {
+		params.courseNums = courseNums;
 	}
 
 	const queryString = Object.entries(params)

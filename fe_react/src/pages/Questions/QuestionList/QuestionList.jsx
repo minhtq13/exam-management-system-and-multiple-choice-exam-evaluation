@@ -172,6 +172,10 @@ const QuestionList = () => {
             onChange={levelOnchange}
           />
         </div>
+        <div className="list-search">
+          <span className="list-search-filter-label">Tìm kiếm:</span>
+          <Input.Search placeholder="Nhập nội dung câu hỏi" enterButton onSearch={onSearch} allowClear onChange={onChange} />
+        </div>
       </div>
       <Spin spinning={quesLoading} tip="Đang tải...">
         {allQuestions.map((item, index) => {
