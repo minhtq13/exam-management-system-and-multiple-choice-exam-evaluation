@@ -106,7 +106,7 @@ public class UserController {
     @Operation(summary = "Export danh sách HSSV")
     public ResponseEntity<InputStreamResource> exportStudent(
         @RequestParam(name = "search", required = false, defaultValue = "") String search,
-        @RequestParam(name = "courseNum", required = false, defaultValue = "-1") Set<Integer> courseNums
+        @RequestParam(name = "courseNums", required = false, defaultValue = "-1") Set<Integer> courseNums
     ) throws IOException {
 
         HttpHeaders headers = new HttpHeaders();
