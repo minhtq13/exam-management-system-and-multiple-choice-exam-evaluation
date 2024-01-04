@@ -449,7 +449,7 @@ const ExamClassList = () => {
             <Select
               allowClear
               showSearch
-              placeholder="Chọn môn học để hiển thị danh sách đề thi"
+              placeholder="Chọn môn học"
               optionFilterProp="children"
               filterOption={(input, option) => (option?.label ?? "").includes(input)}
               optionLabelProp="label"
@@ -457,6 +457,7 @@ const ExamClassList = () => {
               onChange={subjectOnChange}
               loading={subLoading}
               className="examclass-select-subject"
+              style={{ minWidth: "260px", maxWidth: "260px" }}
             />
           </div>
         </div>

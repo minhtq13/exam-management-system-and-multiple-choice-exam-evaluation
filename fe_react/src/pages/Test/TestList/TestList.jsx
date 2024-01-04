@@ -244,13 +244,14 @@ const TestList = () => {
               <Select
                 allowClear
                 showSearch
-                placeholder="Chọn môn học để hiển thị danh sách đề thi"
+                placeholder="Chọn học phần"
                 optionFilterProp="children"
                 filterOption={(input, option) => (option?.label ?? "").includes(input)}
                 optionLabelProp="label"
                 options={subjectOptions}
                 onChange={subjectOnChange}
                 loading={subLoading}
+                style={{ minWidth: "260px", maxWidth: "260px" }}
               />
             </div>
           </div>

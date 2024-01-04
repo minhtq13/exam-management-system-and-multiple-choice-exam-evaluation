@@ -1,4 +1,9 @@
 .automatic-scoring-wrapper {
+  .detail-button {
+    font-size: 14px;
+    margin-right: 10px;
+    font-weight: 600;
+  }
   .ant-upload-list-item-name {
     width: 120px;
   }
@@ -42,8 +47,8 @@
       gap: 24px;
       .detail-button {
         font-size: 14px;
-        color: #a19898;
         margin-right: 10px;
+        font-weight: 600;
       }
       .options {
         border: none;
@@ -120,12 +125,6 @@
       align-items: center;
       gap: 24px;
       margin-top: 20px;
-    }
-    .hint {
-      // position: absolute;
-      font-size: 14px;
-      color: #a19898;
-      font-style: italic;
     }
     .block-1 {
       display: flex;

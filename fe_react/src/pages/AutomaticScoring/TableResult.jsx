@@ -2,11 +2,12 @@ import { Table } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
 import { customPaginationText } from "../../utils/tools";
 import ViewImage from "./ViewImage";
+import { Spin } from 'antd';
 
-const TableResult = ({ resultAI, loadingTable, setListExamClassCode, setListMSSV }) => {
+const TableResult = ({ resultAI, loadingTable, setListExamClassCode, setListMSSV, numberAnswer }) => {
   const [testCodeFilter, setTestCodeFilter] = useState([]);
   const [studentCodeFilter, setStudentCodeFilter] = useState([]);
-  const numberAnswer = 30;
+  // const numberAnswer = 30;
   const columnsAnswer = [];
   for (var i = 0; i < numberAnswer; i++) {
     columnsAnswer.push({
@@ -136,39 +137,50 @@ const TableResult = ({ resultAI, loadingTable, setListExamClassCode, setListMSSV
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resultAI]);
   const [pageSize, setPageSize] = useState(10);
+  const tipSpining = () => {
+    return (
+      <div style={{fontStyle: "italic"}} className="tip-spining">
+        Vui lòng chờ, quá trình chấm bài có thể mất một khoảng thời gian!
+      </div>
+    )
+  }
+
   const renderTable = useMemo(() => {
     return (
-      <Table
-        loading={loadingTable}
-        className="table-ai"
-        columns={columns}
-        dataSource={dataTable}
-        scroll={{ x: 1500, y: 408 }}
-        size="small"
-        pagination={{
-          pageSize: pageSize,
-          total: dataTable.length,
-          locale: customPaginationText,
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => (
-            <span>
-              <strong>
-                {range[0]}-{range[1]}
-              </strong>{" "}
+      <Spin spinning={loadingTable}  tip={tipSpining()}>
+        <Table
+          className="table-ai"
+          columns={columns}
+          dataSource={dataTable}
+          scroll={{ x: 1500, y: 408 }}
+          size="small"
+          pagination={{
+            pageSize: pageSize,
+            total: dataTable.length,
+            locale: customPaginationText,
+            showQuickJumper: true,
+            showSizeChanger: true,
+            showTotal: (total, range) => (
+              <span>
+                <strong>
+                  {range[0]}-{range[1]}
+                </strong>{" "}
                 trong <strong>{total}</strong> bản ghi
-            </span>
-          ),
-          pageSizeOptions: ["10", "20", "50", "100"],
-          onChange: (page, pageSize) => {},
-          onShowSizeChange: (current, size) => {
-            setPageSize(size);
-          },
-        }}
-      />
+              </span>
+            ),
+            pageSizeOptions: ["10", "20", "50", "100"],
+            onChange: (page, pageSize) => {},
+            onShowSizeChange: (current, size) => {
+              setPageSize(size);
+            },
+          }}
+        />
+      </Spin>
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataTable, pageSize, loadingTable]);
+  }, [dataTable, pageSize, loadingTable, numberAnswer]);
+
+  // ...
   return <div className="table-result-component">{renderTable}</div>;
 };
 

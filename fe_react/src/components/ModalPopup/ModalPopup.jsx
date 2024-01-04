@@ -97,6 +97,7 @@ const ModalPopup = ({
 							marginTop: "10px",
 							fontStyle: "italic",
 							color: "#bbb",
+							fontWeight: "400"
 						}}
 					>
 						{confirmMessage}

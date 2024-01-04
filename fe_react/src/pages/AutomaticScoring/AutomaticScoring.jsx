@@ -1,13 +1,16 @@
 import { Button, Form, Select, Space } from "antd";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import iconArrow from "../../assets/images/svg/arrow-under-header.svg";
+import ModalPopup from "../../components/ModalPopup/ModalPopup";
 import useAI from "../../hooks/useAI";
 import useNotify from "../../hooks/useNotify";
 import "./AutomaticScoring.scss";
 import HeaderSelect from "./HeaderSelect";
 import ModalSelectedImage from "./ModalSelectedImage";
 import TableResult from "./TableResult";
-import { useEffect, useState } from "react";
-import iconArrow from "../../assets/images/svg/arrow-under-header.svg";
+import deletePopUpIcon from "../../assets/images/svg/delete-popup-icon.svg";
+
 const { Option } = Select;
 
 const formItemLayout = {
@@ -18,6 +21,32 @@ const formItemLayout = {
     span: 14,
   },
 };
+const numberAnswerOption = [
+  {
+    text: "15 câu",
+    value: 15,
+  },
+  {
+    text: "20 câu",
+    value: 20,
+  },
+  {
+    text: "25 câu",
+    value: 25,
+  },
+  {
+    text: "30 câu",
+    value: 30,
+  },
+  {
+    text: "40 câu",
+    value: 40,
+  },
+  {
+    text: "60 câu",
+    value: 60,
+  },
+];
 
 const AutomaticScoring = () => {
   const notify = useNotify();
@@ -36,6 +65,7 @@ const AutomaticScoring = () => {
   const { examClassCode } = useSelector((state) => state.appReducer);
   const [listExamClassCode, setListExamClassCode] = useState([]);
   const [listMSSV, setListMSSV] = useState([]);
+  const [numberAnswer, setNumberAnswer] = useState(30);
 
   useEffect(() => {
     if (examClassCode) {
@@ -46,6 +76,8 @@ const AutomaticScoring = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [examClassCode, refreshTableImage]);
   const handleSubmit = () => {
+    resetTableResult();
+    setResultAI([]);
     if (imgInFolder.length > 0) {
       getModelAI(examClassCode);
     } else {
@@ -62,6 +94,9 @@ const AutomaticScoring = () => {
   };
   const handleSelectMDT = (value) => {};
   const handleSelectMSSV = (value) => {};
+  const handleSelectNumberAnswer = (value) => {
+    setNumberAnswer(value);
+  };
   return (
     <div className="automatic-scoring-wrapper">
       <div className="header-automatic-scoring">
@@ -72,15 +107,24 @@ const AutomaticScoring = () => {
         <Form name="validate_other" {...formItemLayout} onFinish={onFinish}>
           <div className="option">
             <ModalSelectedImage loading={loading} imgInFolder={imgInFolder} />
-            <Button
-              type="primary"
-              onClick={handleSubmit}
-              loading={loading}
-              className="button-submit-ai"
-              disabled={!examClassCode || imgInFolder.length === 0}
-            >
-              Chấm điểm
-            </Button>
+            <ModalPopup
+              buttonOpenModal={
+                <Button
+                  type="primary"
+                  loading={loading}
+                  className="button-submit-ai"
+                  disabled={!examClassCode || imgInFolder.length === 0}
+                >
+                  Chấm điểm
+                </Button>
+              }
+              icon={deletePopUpIcon}
+              title="Chấm điểm"
+              message={"Bạn chắc chắn muốn chấm điểm những ảnh đã chọn? "}
+              confirmMessage={"Bạn có thể xem lại các ảnh được chấm ở bên cạnh nút chấm điểm!"}
+              ok={"Đồng ý"}
+              onAccept={handleSubmit}
+            />
             <Button
               onClick={handleReset}
               className="button-reset-table-result"
@@ -88,11 +132,6 @@ const AutomaticScoring = () => {
             >
               Đặt lại
             </Button>
-            {loading && (
-              <div className="hint">
-                Vui lòng chờ, quá trình chấm bài có thể mất một khoảng thời gian!
-              </div>
-            )}
           </div>
           <div className="filter-table-ai">
             <Space>
@@ -139,9 +178,33 @@ const AutomaticScoring = () => {
                 })}
               </Select>
             </Space>
+            <Space>
+              <div className="detail-button">Hiển thị: </div>
+              <Select
+                optionLabelProp="label"
+                onChange={handleSelectNumberAnswer}
+                className="custom-select-antd"
+                suffixIcon={<img src={iconArrow} alt="" />}
+                style={{ width: 150 }}
+                placeholder="Nhập số câu muốn hiển thị"
+                showSearch
+                defaultValue={30}
+              >
+                {numberAnswerOption.map((item, index) => {
+                  return (
+                    <Option value={item.value} label={item.text} key={index}>
+                      <div className="d-flex item_DropBar dropdown-option">
+                        <div className="dropdown-option-item text-14">{item.text}</div>
+                      </div>
+                    </Option>
+                  );
+                })}
+              </Select>
+            </Space>
           </div>
           <div className="result-ai">
             <TableResult
+              numberAnswer={numberAnswer}
               resultAI={resultAI}
               loadingTable={loading}
               setListExamClassCode={setListExamClassCode}

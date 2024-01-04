@@ -162,7 +162,7 @@ const AddQuestions = () => {
 			<div className="question-add-header">Thêm câu hỏi</div>
 			<div className="question-subject-chapter">
 				<div className="question-subject">
-					<span>Học phần: </span>
+					<span style={{fontWeight: 600}}>Học phần: </span>
 					<Select
 						allowClear
 						showSearch
@@ -178,7 +178,7 @@ const AddQuestions = () => {
 					/>
 				</div>
 				<div className="question-subject question-chapter">
-					<span>Chương: </span>
+					<span style={{fontWeight: 600}}>Chương: </span>
 					<Select
 						showSearch
 						placeholder="Chọn chương"
