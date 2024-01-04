@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.elearning.elearning_support.dtos.fileAttach.importFile.ImportResponseDTO;
 import com.elearning.elearning_support.dtos.users.IGetUserListDTO;
+import com.elearning.elearning_support.dtos.users.ImportUserValidatorDTO;
 import com.elearning.elearning_support.dtos.users.ProfileUserDTO;
 import com.elearning.elearning_support.dtos.users.UserCreateDTO;
 import com.elearning.elearning_support.dtos.users.UserDetailDTO;
 import com.elearning.elearning_support.dtos.users.UserSaveReqDTO;
+import com.elearning.elearning_support.dtos.users.importUser.CommonUserImportDTO;
 
 @Service
 public interface UserService {
@@ -47,7 +49,7 @@ public interface UserService {
     /**
      * Lấy danh sách HSSV dạng list
      */
-    List<IGetUserListDTO> getListStudent(String search, Integer courseNum);
+    List<IGetUserListDTO> getListStudent(String search, Set<Integer> courseNums);
 
 
     /**
@@ -65,11 +67,15 @@ public interface UserService {
      */
     ImportResponseDTO importStudent(MultipartFile fileImport);
 
+    /**
+     * Validate import user
+     */
+    void validateImportUser(ImportUserValidatorDTO validatorDTO, CommonUserImportDTO importDTO, List<String> causeList);
 
     /**
      * Export danh sách HSSV
      */
-    InputStreamResource exportStudent(String search, Integer courseNum) throws IOException;
+    InputStreamResource exportStudent(String search, Set<Integer> courseNums) throws IOException;
 
 
     /**

@@ -2,10 +2,12 @@ package com.elearning.elearning_support.services.examClass;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import com.elearning.elearning_support.dtos.CustomInputStreamResource;
 import com.elearning.elearning_support.dtos.examClass.ExamClassCreateDTO;
 import com.elearning.elearning_support.dtos.examClass.ExamClassSaveReqDTO;
@@ -59,5 +61,11 @@ public interface ExamClassService {
      * Export danh sách SV / GV trong lớp thi
      */
     CustomInputStreamResource exportExamClassParticipant(Long examClassId, UserExamClassRoleEnum roleType) throws IOException;
+
+    /**
+     * Import danh sách SV vào lớp thi
+     */
+    Set<Long> importStudentExamClass(Long examClassId, MultipartFile fileImport);
+
 
 }

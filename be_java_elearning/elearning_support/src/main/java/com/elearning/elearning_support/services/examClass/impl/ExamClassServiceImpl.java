@@ -3,21 +3,34 @@ package com.elearning.elearning_support.services.examClass.impl;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.math3.util.Pair;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
+import com.elearning.elearning_support.constants.FileConstants.Extension.Excel;
+import com.elearning.elearning_support.constants.RoleConstants;
 import com.elearning.elearning_support.constants.message.errorKey.ErrorKey;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst;
+import com.elearning.elearning_support.constants.message.messageConst.MessageConst.FileAttach;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst.Resources;
 import com.elearning.elearning_support.dtos.CustomInputStreamResource;
 import com.elearning.elearning_support.dtos.examClass.ExamClassCreateDTO;
@@ -26,17 +39,31 @@ import com.elearning.elearning_support.dtos.examClass.ICommonExamClassDTO;
 import com.elearning.elearning_support.dtos.examClass.IExamClassDetailDTO;
 import com.elearning.elearning_support.dtos.examClass.IExamClassParticipantDTO;
 import com.elearning.elearning_support.dtos.examClass.UserExamClassDTO;
+import com.elearning.elearning_support.dtos.fileAttach.importFile.ImportResponseDTO;
+import com.elearning.elearning_support.dtos.fileAttach.importFile.RowErrorDTO;
+import com.elearning.elearning_support.dtos.users.ImportUserValidatorDTO;
+import com.elearning.elearning_support.dtos.users.importUser.CommonUserImportDTO;
+import com.elearning.elearning_support.dtos.users.student.StudentImportDTO;
 import com.elearning.elearning_support.entities.exam_class.ExamClass;
 import com.elearning.elearning_support.entities.exam_class.UserExamClass;
 import com.elearning.elearning_support.entities.test.Test;
+import com.elearning.elearning_support.entities.users.User;
+import com.elearning.elearning_support.entities.users.UserRole;
 import com.elearning.elearning_support.enums.examClass.UserExamClassRoleEnum;
+import com.elearning.elearning_support.enums.importFile.ImportResponseEnum;
+import com.elearning.elearning_support.enums.importFile.StudentImportFieldMapping;
+import com.elearning.elearning_support.enums.users.UserTypeEnum;
 import com.elearning.elearning_support.exceptions.exceptionFactory.ExceptionFactory;
 import com.elearning.elearning_support.repositories.examClass.ExamClassRepository;
 import com.elearning.elearning_support.repositories.examClass.UserExamClassRepository;
+import com.elearning.elearning_support.repositories.users.UserRepository;
+import com.elearning.elearning_support.repositories.users.UserRoleRepository;
 import com.elearning.elearning_support.services.examClass.ExamClassService;
 import com.elearning.elearning_support.services.test.TestService;
+import com.elearning.elearning_support.services.users.UserService;
 import com.elearning.elearning_support.utils.auth.AuthUtils;
 import com.elearning.elearning_support.utils.excelFile.ExcelFileUtils;
+import com.elearning.elearning_support.utils.file.FileUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,6 +81,14 @@ public class ExamClassServiceImpl implements ExamClassService {
     private final TestService testService;
 
     private final ExcelFileUtils excelFileUtils;
+
+    private final UserRoleRepository userRoleRepository;
+
+    private final UserRepository userRepository;
+
+    private final UserService userService;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     @Override
@@ -192,5 +227,111 @@ public class ExamClassServiceImpl implements ExamClassService {
         return examClassRepository.findByIdAndIsEnabled(id, Boolean.TRUE)
             .orElseThrow(() -> exceptionFactory.resourceNotFoundException(MessageConst.ExamClass.NOT_FOUND, Resources.EXAM_CLASS,
                 MessageConst.RESOURCE_NOT_FOUND, ErrorKey.ExamClass.ID, String.valueOf(id)));
+    }
+
+    @Override
+    public Set<Long> importStudentExamClass(Long examClassId, MultipartFile fileImport) {
+        ExamClass examClass = findExamClassById(examClassId);
+        // Tạo response mặc định
+        ImportResponseDTO response = new ImportResponseDTO();
+        response.setStatus(ImportResponseEnum.SUCCESS.getStatus());
+        response.setMessage(ImportResponseEnum.SUCCESS.getMessage());
+
+        // Đọc file và import dữ liệu
+        try {
+            // Validate file sơ bộ
+            FileUtils.validateUploadFile(fileImport, Arrays.asList(Excel.XLS, Excel.XLSX));
+
+            // Tạo workbook để đọc file import
+            XSSFWorkbook inputWorkbook = new XSSFWorkbook(fileImport.getInputStream());
+            XSSFSheet inputSheet = inputWorkbook.getSheetAt(0);
+            if (Objects.isNull(inputSheet)) {
+                throw exceptionFactory.fileUploadException(FileAttach.FILE_EXCEL_EMPTY_SHEET_ERROR, Resources.FILE_ATTACHED,
+                    MessageConst.UPLOAD_FAILED);
+            }
+
+            // Validators
+            ImportUserValidatorDTO validatorDTO = new ImportUserValidatorDTO(userRepository.getLstCurrentUsername(),
+                userRepository.getListCurrentEmail(), userRepository.getListCurrentCodeByUserType(UserTypeEnum.STUDENT.getType()));
+
+            // Tạo các map field
+            Map<Integer, String> mapIndexColumnKey = new HashMap<>();
+            // students save DB
+            List<User> lstNewStudent = new ArrayList<>();
+
+            // Duyệt file input
+            Iterator<Row> rowIterator = inputSheet.rowIterator();
+            int numberOfColumns = StudentImportFieldMapping.values().length;
+            while (rowIterator.hasNext()) {
+                Row currentRow = rowIterator.next();
+                boolean isEmptyRow = true;
+                if (currentRow.getRowNum() == 0) { // header row
+                    for (Cell cell : currentRow) {
+                        mapIndexColumnKey.put(cell.getColumnIndex(), ExcelFileUtils.getStringCellValue(cell));
+                    }
+                    // Validate thừa thiếu/cột
+                    if (currentRow.getLastCellNum() < numberOfColumns) {
+                        throw exceptionFactory.fileUploadException(FileAttach.FILE_EXCEL_MISSING_COLUMN_NUMBER_ERROR, Resources.FILE_ATTACHED,
+                            MessageConst.UPLOAD_FAILED);
+                    }
+                    if (currentRow.getLastCellNum() > numberOfColumns) {
+                        throw exceptionFactory.fileUploadException(FileAttach.FILE_EXCEL_MISSING_COLUMN_NUMBER_ERROR, Resources.FILE_ATTACHED,
+                            MessageConst.UPLOAD_FAILED);
+                    }
+                    continue;
+                }
+                // Duyệt các cell trong row
+                CommonUserImportDTO importDTO = new StudentImportDTO();
+                importDTO.setUserType(UserTypeEnum.STUDENT.getType());
+                for (Cell cell : currentRow) {
+                    String columnKey = mapIndexColumnKey.get(cell.getColumnIndex());
+                    String objectFieldKey = StudentImportFieldMapping.getObjectFieldByColumnKey(columnKey);
+                    String cellValue = ExcelFileUtils.getStringCellValue(cell);
+                    if (!ObjectUtils.isEmpty(cellValue)) {
+                        isEmptyRow = false;
+                    }
+                    if (!ObjectUtils.isEmpty(objectFieldKey)) {
+                        org.apache.commons.beanutils.BeanUtils.setProperty(importDTO, objectFieldKey, cellValue);
+                    }
+                }
+                // Validate và mapping vào entity
+                List<String> causeList = new ArrayList<>();
+                userService.validateImportUser(validatorDTO, importDTO, causeList);
+                if (!isEmptyRow) {
+                    if (ObjectUtils.isEmpty(causeList)) {
+                        User newStudent = new User(importDTO);
+                        newStudent.setPassword(passwordEncoder.encode(importDTO.getPasswordRaw()));
+                        lstNewStudent.add(newStudent);
+                        // add username/email/code to validators
+                        validatorDTO.getLstExistedUsername().add(newStudent.getUsername());
+                        validatorDTO.getLstExistedEmail().add(newStudent.getEmail());
+                        validatorDTO.getLstExistedCode().add(newStudent.getCode());
+                    } else {
+                        response.getErrorRows().add(new RowErrorDTO(currentRow.getRowNum() + 1, importDTO, causeList));
+                        response.setMessage(ImportResponseEnum.EXIST_INVALID_DATA.getMessage());
+                        response.setStatus(ImportResponseEnum.EXIST_INVALID_DATA.getStatus());
+                    }
+                }
+            }
+            lstNewStudent = userRepository.saveAll(lstNewStudent);
+            List<UserRole> lstStudentUserRole = lstNewStudent.stream()
+                .map(student -> new UserRole(student.getId(), RoleConstants.ROLE_STUDENT_ID)).collect(Collectors.toList());
+            userRoleRepository.saveAll(lstStudentUserRole);
+            List<UserExamClass> lstStudentExamClass = lstNewStudent.stream()
+                .map(student -> new UserExamClass(student.getId(), examClass.getId(), UserExamClassRoleEnum.STUDENT.getType())).collect(Collectors.toList());
+            userExamClassRepository.saveAll(lstStudentExamClass);
+            inputWorkbook.close();
+
+            // Set status and message response
+            return lstNewStudent.stream().map(User::getId).collect(Collectors.toSet());
+        } catch (IOException ioException) {
+            response.setMessage(ImportResponseEnum.IO_ERROR.getMessage());
+            response.setStatus(ImportResponseEnum.IO_ERROR.getStatus());
+        } catch (Exception exception) {
+            response.setMessage(ImportResponseEnum.UNKNOWN_ERROR.getMessage());
+            response.setStatus(ImportResponseEnum.UNKNOWN_ERROR.getStatus());
+            log.error(MessageConst.EXCEPTION_LOG_FORMAT, exception.getMessage(), exception.getCause());
+        }
+        return null;
     }
 }

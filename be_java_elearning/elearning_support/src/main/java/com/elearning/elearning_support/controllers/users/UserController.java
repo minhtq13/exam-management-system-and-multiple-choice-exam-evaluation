@@ -91,9 +91,9 @@ public class UserController {
     @Operation(summary = "Danh sách học sinh / sinh viên danh sách toàn bộ")
     public List<IGetUserListDTO> getListStudent(
         @RequestParam(name = "search", required = false, defaultValue = "") String search,
-        @RequestParam(name = "courseNum", required = false, defaultValue = "-1") Integer courseNum
+        @RequestParam(name = "courseNums", required = false, defaultValue = "-1") Set<Integer> courseNums
     ) {
-        return userService.getListStudent(search, courseNum);
+        return userService.getListStudent(search, courseNums);
     }
 
     @PostMapping(value = "/student/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -106,14 +106,14 @@ public class UserController {
     @Operation(summary = "Export danh sách HSSV")
     public ResponseEntity<InputStreamResource> exportStudent(
         @RequestParam(name = "search", required = false, defaultValue = "") String search,
-        @RequestParam(name = "courseNum", required = false, defaultValue = "-1") Integer courseNum
+        @RequestParam(name = "courseNum", required = false, defaultValue = "-1") Set<Integer> courseNums
     ) throws IOException {
 
         HttpHeaders headers = new HttpHeaders();
         String fileName = String.format("StudentExport_%s_.xlsx", LocalDateTime.now());
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.parseMediaType(String.join(";", Arrays.asList(Excel.CONTENT_TYPES))).toString());
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
-        return ResponseEntity.ok().headers(headers).body(userService.exportStudent(search, courseNum));
+        return ResponseEntity.ok().headers(headers).body(userService.exportStudent(search, courseNums));
     }
 
     /*

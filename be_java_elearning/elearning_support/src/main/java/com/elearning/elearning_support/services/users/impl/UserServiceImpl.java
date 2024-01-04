@@ -3,7 +3,6 @@ package com.elearning.elearning_support.services.users.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -161,8 +160,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<IGetUserListDTO> getListStudent(String search, Integer courseNum) {
-        return userRepository.getListStudent(search, Collections.singleton(courseNum));
+    public List<IGetUserListDTO> getListStudent(String search, Set<Integer> courseNums) {
+        return userRepository.getListStudent(search, courseNums);
     }
 
     @Override
@@ -280,8 +279,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public InputStreamResource exportStudent(String search, Integer courseNum) throws IOException {
-        List<StudentExportDTO> lstStudent = userRepository.getListStudent(search, Collections.singleton(courseNum)).stream()
+    public InputStreamResource exportStudent(String search, Set<Integer> courseNums) throws IOException {
+        List<StudentExportDTO> lstStudent = userRepository.getListStudent(search, courseNums).stream()
             .map(StudentExportDTO::new).collect(Collectors.toList());
         // Tạo map cấu trúc file excel
         Map<Integer, Pair<String, String>> mapStructure = new LinkedHashMap<>();
@@ -418,7 +417,8 @@ public class UserServiceImpl implements UserService {
     /**
      * Hàm check trùng các thông tin
      */
-    private void validateImportUser(ImportUserValidatorDTO validatorDTO, CommonUserImportDTO importDTO, List<String> causeList) {
+    @Override
+    public void validateImportUser(ImportUserValidatorDTO validatorDTO, CommonUserImportDTO importDTO, List<String> causeList) {
         // Validate field bắt buộc
         List<String> missingRequiredFields = new ArrayList<>();
         if (ObjectUtils.isEmpty(importDTO.getFullNameRaw())) {

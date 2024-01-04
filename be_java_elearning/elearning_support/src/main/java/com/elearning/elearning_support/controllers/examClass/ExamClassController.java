@@ -3,6 +3,7 @@ package com.elearning.elearning_support.controllers.examClass;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import com.elearning.elearning_support.dtos.CustomInputStreamResource;
 import com.elearning.elearning_support.dtos.examClass.ExamClassCreateDTO;
 import com.elearning.elearning_support.dtos.examClass.ExamClassSaveReqDTO;
@@ -110,6 +112,13 @@ public class ExamClassController {
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.parseMediaType(String.join(";", Arrays.asList(Excel.CONTENT_TYPES))).toString());
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resourceRes.getFileName());
         return ResponseEntity.ok().headers(headers).body(resourceRes.getResource());
+    }
+
+    @PostMapping(value = "/participant/student/import/{examClassId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Import thí sinh vào lớp thi")
+    public Set<Long> importStudentExamClass(@PathVariable(name = "examClassId") Long examClassId,
+        @RequestParam(name = "file") MultipartFile importFile) {
+        return examClassService.importStudentExamClass(examClassId, importFile);
     }
 
 }
