@@ -34,8 +34,7 @@ public class TestQuestion {
     @Column(name = "question_id", nullable = false)
     private Long questionId;
 
-    @NotNull
-    @Column(name = "question_mark", nullable = false)
+    @Column(name = "question_mark")
     private Double questionMark;
 
     public TestQuestion(Long testId, Long questionId, Double questionMark) {
