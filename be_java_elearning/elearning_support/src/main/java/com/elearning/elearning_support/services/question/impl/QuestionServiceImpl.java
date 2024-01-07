@@ -132,7 +132,9 @@ public class QuestionServiceImpl implements QuestionService {
             int numNewAnswer = numUpdatedAnswer - numCurrentAnswer;
             // update current answer
             for (int i = 0; i < numCurrentAnswer; i++) {
-                org.springframework.beans.BeanUtils.copyProperties(question.getLstAnswer().get(i), updateDTO.getLstAnswer().get(i));
+                org.springframework.beans.BeanUtils.copyProperties(updateDTO.getLstAnswer().get(i), question.getLstAnswer().get(i));
+                question.getLstAnswer().get(i).setModifiedAt(new Date());
+                question.getLstAnswer().get(i).setModifiedBy(AuthUtils.getCurrentUserId());
             }
             // add new answer
             if (numNewAnswer > 0) {
@@ -143,7 +145,9 @@ public class QuestionServiceImpl implements QuestionService {
         } else {
             // update current answer
             for (int i = 0; i < numUpdatedAnswer; i++) {
-                org.springframework.beans.BeanUtils.copyProperties(question.getLstAnswer().get(i), updateDTO.getLstAnswer().get(i));
+                org.springframework.beans.BeanUtils.copyProperties(updateDTO.getLstAnswer().get(i), question.getLstAnswer().get(i));
+                question.getLstAnswer().get(i).setModifiedAt(new Date());
+                question.getLstAnswer().get(i).setModifiedBy(AuthUtils.getCurrentUserId());
             }
             // remove answer
             for (int i = numUpdatedAnswer; i < numCurrentAnswer; i++) {

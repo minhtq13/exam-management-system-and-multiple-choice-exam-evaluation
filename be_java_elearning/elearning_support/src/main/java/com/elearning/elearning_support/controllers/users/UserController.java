@@ -108,7 +108,6 @@ public class UserController {
         @RequestParam(name = "search", required = false, defaultValue = "") String search,
         @RequestParam(name = "courseNums", required = false, defaultValue = "-1") Set<Integer> courseNums
     ) throws IOException {
-
         HttpHeaders headers = new HttpHeaders();
         String fileName = String.format("StudentExport_%s_.xlsx", LocalDateTime.now());
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.parseMediaType(String.join(";", Arrays.asList(Excel.CONTENT_TYPES))).toString());
