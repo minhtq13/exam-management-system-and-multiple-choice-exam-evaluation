@@ -31,12 +31,16 @@ const useAI = () => {
       }
     );
   };
-  const resetTableResult = (payload) => {
+  const resetTableResult = (payload, noti = true) => {
     resetTableResultService(
       tempFileCode,
       payload,
       (res) => {
-        notify.success("Đã xóa dữ liệu của bảng thành công!");
+        if (noti) {
+          notify.success("Đã xóa dữ liệu của bảng thành công!");
+        } else {
+          console.log(res)
+        }
       },
       (err) => {
         notify.warning("Không tìm thấy dữ liệu");

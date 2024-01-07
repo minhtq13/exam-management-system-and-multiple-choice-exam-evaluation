@@ -2,6 +2,7 @@ import { Button, Form, Select, Space } from "antd";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import iconArrow from "../../assets/images/svg/arrow-under-header.svg";
+import deletePopUpIcon from "../../assets/images/svg/delete-popup-icon.svg";
 import ModalPopup from "../../components/ModalPopup/ModalPopup";
 import useAI from "../../hooks/useAI";
 import useNotify from "../../hooks/useNotify";
@@ -9,7 +10,6 @@ import "./AutomaticScoring.scss";
 import HeaderSelect from "./HeaderSelect";
 import ModalSelectedImage from "./ModalSelectedImage";
 import TableResult from "./TableResult";
-import deletePopUpIcon from "../../assets/images/svg/delete-popup-icon.svg";
 
 const { Option } = Select;
 
@@ -75,8 +75,10 @@ const AutomaticScoring = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [examClassCode, refreshTableImage]);
+  console.log("imgInFolder", imgInFolder)
+  console.log("examClassCode", examClassCode)
   const handleSubmit = () => {
-    resetTableResult();
+    resetTableResult({}, false);
     setResultAI([]);
     if (imgInFolder.length > 0) {
       getModelAI(examClassCode);
@@ -144,6 +146,7 @@ const AutomaticScoring = () => {
                 style={{ width: 230 }}
                 placeholder="Tìm MSSV"
                 showSearch
+                allowClear
               >
                 {listMSSV.map((item, index) => {
                   return (
@@ -166,6 +169,7 @@ const AutomaticScoring = () => {
                 style={{ width: 230 }}
                 placeholder="Tìm mã đề thi"
                 showSearch
+                allowClear
               >
                 {listExamClassCode.map((item, index) => {
                   return (

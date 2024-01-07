@@ -478,22 +478,7 @@ const UpdateExamClassInfoForm = ({
             />
             <Button onClick={() => setOpenStudentModal(true)}>Chọn</Button>
           </div>
-          {/* <Select
-						key={JSON.stringify(studentSelected)}
-						open={false}
-						className="exam-class-students"
-						mode="multiple"
-						loading={studentLoading}
-						placeholder="Chọn học sinh"
-						onClick={() => setOpenStudentModal(true)}
-						defaultValue={studentSelected}
-						options={getOptions(allStudent, true)}
-						removeIcon={null}
-						suffixIcon={null} > 0 ?
-					/> */}
         </Form.Item>
-
-
 
         <Form.Item
           name="testId"
@@ -529,19 +514,6 @@ const UpdateExamClassInfoForm = ({
             />
             <Button onClick={() => setOpenTeacherModal(true)}>Chọn</Button>
           </div>
-          {/* <Select
-						key={JSON.stringify(teacherSelected)}
-						open={false}
-						className="exam-class-teachers"
-						mode="multiple"
-						loading={teacherLoading}
-						onClick={() => setOpenTeacherModal(true)}
-						defaultValue={teacherSelected}
-						placeholder="Chọn giám thị"
-						options={getOptions(allTeacher, true)}
-						removeIcon={null}
-						suffixIcon={null}
-					/> */}
         </Form.Item>
         <Form.Item className="btn-info">
           <Button

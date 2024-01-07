@@ -1,12 +1,14 @@
 import { Select, Space } from "antd";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from 'react-router-dom';
 import iconArrow from "../../assets/images/svg/arrow-under-header.svg";
 import useCombo from "../../hooks/useCombo";
-import { useDispatch, useSelector } from "react-redux";
 import { setExamClassCode } from "../../redux/slices/appSlice";
 const { Option } = Select;
 
 const HeaderSelect = () => {
+  const location = useLocation();
   const { getAllSemesters, allSemester, allSubjects, getAllSubjects, getAllExamClass, examClass } =
     useCombo();
   const [semesterSelected, setSemesterSelected] = useState(null);
@@ -37,6 +39,10 @@ const HeaderSelect = () => {
   const handleChangeExamCodeSelect = (value) => {
     dispatch(setExamClassCode(value));
   };
+  useEffect(() => {
+      dispatch(setExamClassCode(null));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location]);
   const filterSubject = (input, option) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   return (
     <div>
