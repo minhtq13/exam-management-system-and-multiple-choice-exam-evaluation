@@ -9,7 +9,7 @@ import {
   Popconfirm,
   InputNumber,
 } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import addIcon from "../../../assets/images/svg/add-icon.svg";
@@ -19,7 +19,6 @@ import { appPath } from "../../../config/appPath";
 import useNotify from "../../../hooks/useNotify";
 import useSubjects from "../../../hooks/useSubjects";
 import { setSelectedItem } from "../../../redux/slices/appSlice";
-import { SearchOutlined } from "@ant-design/icons";
 import "./SubjectList.scss";
 
 import ModalPopup from "../../../components/ModalPopup/ModalPopup";
@@ -27,11 +26,12 @@ import { deleteSubjectsService } from "../../../services/subjectsService";
 import { updateChapterService } from "../../../services/chapterServices";
 import { customPaginationText } from "../../../utils/tools";
 import ActionButton from "../../../components/ActionButton/ActionButton";
+import SearchFilter from "../../../components/SearchFilter/SearchFilter";
+import debounce from "lodash.debounce";
 
 const SubjectList = () => {
   const initialParam = {
-    title: null,
-    code: null,
+    search: null,
     page: 0,
     size: 10,
     sort: "code",
@@ -53,97 +53,7 @@ const SubjectList = () => {
   const [param, setParam] = useState(initialParam);
   const [openModal, setOpenModal] = useState(false);
   const [subjectId, setSubjectId] = useState(null);
-  const searchInput = useRef(null);
-  const handleReset = (clearFilters) => {
-    clearFilters();
-  };
   const errorMessange = "Chưa điền đầy đủ thông tin";
-  const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-      close,
-    }) => (
-      <div
-        style={{
-          padding: 8,
-        }}
-        onKeyDown={(e) => e.stopPropagation()}
-      >
-        <Input
-          ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) => {
-            setSelectedKeys(e.target.value ? [e.target.value] : []);
-            setParam({
-              ...param,
-              [dataIndex]: e.target.value,
-              page: 0,
-            });
-          }}
-          onPressEnter={() => getAllSubjects(param)}
-          style={{
-            marginBottom: 8,
-            display: "block",
-          }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => getAllSubjects({ ...param, page: 0 })}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Tìm kiếm
-          </Button>
-          <Button
-            onClick={() => {
-              clearFilters && handleReset(clearFilters);
-              setParam(initialParam);
-            }}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Đặt lại
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              close();
-            }}
-          >
-            Đóng
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: (filtered) => (
-      <SearchOutlined
-        style={{
-          color: filtered ? "#1677ff" : undefined,
-        }}
-      />
-    ),
-    onFilter: (value, record) =>
-      record[dataIndex]
-        .toString()
-        .toLowerCase()
-        .includes(value.toLowerCase()),
-    onFilterDropdownOpenChange: (visible) => {
-      if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100);
-      }
-    },
-  });
   const EditableCell = ({
     editing,
     dataIndex,
@@ -205,7 +115,6 @@ const SubjectList = () => {
       title: "Mã học phần",
       dataIndex: "code",
       key: "code",
-      ...getColumnSearchProps("code"),
       width: "15%",
       align: "center",
     },
@@ -215,7 +124,6 @@ const SubjectList = () => {
       key: "title",
       // eslint-disable-next-line jsx-a11y/anchor-is-valid
       render: (text) => <a>{text}</a>,
-      ...getColumnSearchProps("title"),
       width: "30%",
     },
     {
@@ -375,12 +283,20 @@ const SubjectList = () => {
       }
     );
   };
+  const onSearch = (value, _e, info) => {
+    setParam({ ...param, search: value })
+  };
+  const onChange = debounce((_e) => {
+    setParam({ ...param, search: _e.target.value })
+  }, 3000);
   return (
     <div className="subject-list">
       <div className="header-subject-list">
         <p>Danh sách học phần</p>
       </div>
-      <div className="block-button">
+      <div className="search-filter-button">
+        <SearchFilter placeholder="Nhập tên học phần hoặc mã HP" onChange={onChange} onSearch={onSearch} />
+        <div className="block-button">
           <ModalPopup
             buttonOpenModal={
               <Button
@@ -405,6 +321,7 @@ const SubjectList = () => {
             Thêm chương
           </Button>
         </div>
+      </div>
       <div className="subject-list-wrapper">
         <Table
           scroll={{ y: 396 }}

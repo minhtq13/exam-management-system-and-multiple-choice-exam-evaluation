@@ -1,12 +1,12 @@
 import { Input, Select } from "antd";
 import "./SearchFilter.scss";
 
-const SearchFilter = ({ placeholder, displayFilter, onSearch, options, onChange, onSelect }) => {
+const SearchFilter = ({ placeholder, displayFilter, onSearch, options, onChange, onSelect, disabled }) => {
   return (
     <div className="list-search-filter">
       <div className="list-search">
         <span className="list-search-filter-label">Tìm kiếm:</span>
-        <Input.Search placeholder={placeholder} enterButton onSearch={onSearch} allowClear onChange={onChange} />
+        <Input.Search placeholder={placeholder} enterButton onSearch={onSearch} allowClear onChange={onChange} disabled={disabled} />
       </div>
       {displayFilter && (
         <div className="list-filter">

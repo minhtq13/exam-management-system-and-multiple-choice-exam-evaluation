@@ -96,6 +96,7 @@ const ExamClassList = () => {
       dataIndex: "name",
       key: "name",
       width: "25%",
+      align: "center"
     },
     {
       title: roleType === "STUDENT" ? "MSSV" : "Mã cán bộ",
@@ -123,14 +124,22 @@ const ExamClassList = () => {
   ];
 
   const tabsData = participants.map((itemA, index) => {
-    const correspondingItemB = resultData.find((itemB) => itemB.id === itemA.id);
-    return {
-      key: (index + 1).toString(),
-      name: itemA.name,
-      code: itemA.code,
-      testSetCode: correspondingItemB ? correspondingItemB.testSetCode : null,
-      totalPoints: correspondingItemB ? correspondingItemB.totalPoints : null,
-    };
+    const correspondingItemB = resultData.find((itemB) => itemB.studentId === itemA.id);
+    if (resultData.length > 0) {
+      return {
+        key: (index + 1).toString(),
+        name: itemA.name,
+        code: itemA.code,
+        testSetCode: correspondingItemB ? correspondingItemB.testSetCode : null,
+        totalPoints: correspondingItemB ? correspondingItemB.totalPoints : "Không có bài",
+      };
+    } else {
+      return {
+        key: (index + 1).toString(),
+        name: itemA.name,
+        code: itemA.code,
+      }
+    }
   });
   const handleExportStudent = () => {
     exportExamClassStudent(classCode);
@@ -549,6 +558,7 @@ const ExamClassList = () => {
                 <div>{`Môn thi: ${record.subjectTitle}`}</div>
                 <div>{`Mã lớp thi: ${record.code}`}</div>
                 <div>{`Học kỳ: ${record.semester}`}</div>
+                <div>{`Trạng thái: ${resultData.length > 0 ? "Đã có điểm thi" : "Chưa có điểm thi"}`}</div>
               </div>
               <div className="exam-class-participant-right">
                 <div>{`Phòng thi: ${record.roomName}`}</div>
@@ -556,7 +566,6 @@ const ExamClassList = () => {
                 <div>{`Giờ thi: ${record.time}`}</div>
               </div>
             </div>
-
             <Tabs
               defaultActiveKey="STUDENT"
               items={tabsOptions}

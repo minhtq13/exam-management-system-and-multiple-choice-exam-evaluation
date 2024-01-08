@@ -23,6 +23,7 @@ const useQuestions = () => {
 				? payload.chapterIds.join(",")
 				: null,
 			payload.level,
+			payload.search,
 			(res) => {
 				setAllQuestions(res.data);
 				setQuesLoading(false);

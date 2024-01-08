@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import TestView from "./TestView/TestView";
 import useCombo from "../../../../hooks/useCombo";
 
-const ManualTest = ({ questionList, chapterIds, subjectId }) => {
+const ManualTest = ({ questionList, chapterIds, subjectId, subjectOptions }) => {
   const [startTime, setStartTime] = useState(null);
   const [name, setName] = useState("");
   const [duration, setDuration] = useState(null);
@@ -43,7 +43,6 @@ const ManualTest = ({ questionList, chapterIds, subjectId }) => {
               loading={semesterLoading}
               placeholder="Chọn kỳ thi"
               options={options}
-              style={{ height: 45 }}
               onChange={(value) => setSemesterId(value)}
             />
           </div>
@@ -75,6 +74,8 @@ const ManualTest = ({ questionList, chapterIds, subjectId }) => {
               type="number"
               placeholder="Nhập tổng điểm bài thi"
               onChange={(_e) => setTotalPoint(_e.target.value)}
+              value={10}
+              disabled={true}
             />
           </div>
           <div className="manual-item manual-totalQues">
@@ -143,6 +144,8 @@ const ManualTest = ({ questionList, chapterIds, subjectId }) => {
               numMediumQuestion: mediumNumber,
               numHardQuestion: hardNumber,
             }}
+            subjectOptions={subjectOptions}
+            semesterOptions={options}
           />
         </Spin>
       </div>

@@ -41,11 +41,8 @@
       .check-ques-table {
         display: flex;
         flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
         width: 80%;
         margin-top: 25px;
-        border: 1px solid black;
 
         .ques-num {
           width: 50%;
@@ -317,11 +314,11 @@
 
   .question-text-order {
     display: flex;
-    width: 90%;
+    width: 100%;
   }
 
   .topic-Text {
-    width: 18%;
+    width: 15%;
     margin-right: 10px;
     flex-shrink: 0;
   }

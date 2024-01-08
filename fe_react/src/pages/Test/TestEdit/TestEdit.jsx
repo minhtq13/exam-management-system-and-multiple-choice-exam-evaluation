@@ -129,7 +129,6 @@ const TestEdit = () => {
       }),
     });
   };
-  console.log(stores);
 
   return (
     <div className="test-edit">

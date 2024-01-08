@@ -1,4 +1,4 @@
-import { Button, Select, Spin, Tag } from "antd";
+import { Button, Select, Spin, Tag, Input } from "antd";
 import { useEffect, useState } from "react";
 import useQuestions from "../../../hooks/useQuestion";
 import deletePopUpIcon from "../../../assets/images/svg/delete-popup-icon.svg";
@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { appPath } from "../../../config/appPath";
 import { setQuestionItem } from "../../../redux/slices/appSlice";
 import { useDispatch } from "react-redux";
+import debounce from "lodash.debounce";
 import useCombo from "../../../hooks/useCombo";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -19,6 +20,7 @@ const QuestionList = () => {
     subjectCode: null,
     chapterCode: null,
     chapterIds: [],
+    search: null,
     level: "ALL",
   };
   const {
@@ -121,6 +123,12 @@ const QuestionList = () => {
   const levelOnchange = (value) => {
     setParam({ ...param, level: value });
   };
+  const onSearch = (value, _e, info) => {
+    setParam({ ...param, search: value })
+  };
+  const onChange = debounce((_e) => {
+    setParam({ ...param, search: _e.target.value })
+  }, 3000)
   return (
     <div className="question-list">
       <div className="subject-chapters-top">

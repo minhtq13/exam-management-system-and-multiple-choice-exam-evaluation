@@ -21,7 +21,6 @@ const ExamClassEdit = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const onFinish = (value) => {
-    console.log(value);
     setLoading(true);
     updateExamClassService(
       id,
@@ -31,9 +30,9 @@ const ExamClassEdit = () => {
         examineTime: dayjs(value.examineTime).format(
           "HH:mm DD/MM/YYYY"
         ),
-        lstStudentId: lstStudentId ? lstStudentId :
-          (examClassInfo.lstStudentIdexam ? examClassInfo.lstStudentId.split(",").map(Number) : null),
-        lstSupervisorId: lstSupervisorId ? lstSupervisorId
+        lstStudentId: lstStudentId && lstStudentId.length > 0 ? lstStudentId :
+          (examClassInfo.lstStudentId ? examClassInfo.lstStudentId.split(",").map(Number) : null),
+        lstSupervisorId: lstSupervisorId && lstSupervisorId.length > 0 ? lstSupervisorId
           : (examClassInfo.lstSupervisorId ? examClassInfo.lstSupervisorId.split(",").map(Number) : null)
       },
       (res) => {

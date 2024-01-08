@@ -17,6 +17,7 @@ import { deleteStudentsService } from "../../../services/studentsService";
 import { convertGender, courseNumOptions, customPaginationText } from "../../../utils/tools";
 import SearchFilter from "../../../components/SearchFilter/SearchFilter";
 import "./StudentList.scss";
+import debounce from "lodash.debounce";
 
 const StudentList = () => {
   const initialParam = {
@@ -167,11 +168,10 @@ const StudentList = () => {
   };
   const onSeletCourse = (options) => {
     setParam({ ...param, courseNums: options })
-    console.log(options)
   }
-  const onChange = (_e) => {
+  const onChange = debounce((_e) => {
     setParam({ ...param, search: _e.target.value })
-  }
+  }, 3000);
   const handleDelete = () => {
     deleteStudentsService(
       deleteKey,
@@ -190,11 +190,12 @@ const StudentList = () => {
     const params = {
       name: param.name,
       code: param.code,
-      courseNums: param.courseNums,
+      courseNums: param.courseNums && param.courseNums.length > 0
+        ? param.courseNums.join(",")
+        : null,
     };
     exportList(params, "student");
   };
-  console.log(param)
   return (
     <div className="student-list">
       <div className="header-student-list">

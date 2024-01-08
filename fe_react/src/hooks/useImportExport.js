@@ -127,10 +127,10 @@ const useImportExport = () => {
 				document.body.appendChild(link);
 				link.click();
 				setLoadingExport(false);
-				notify.success("Tải danh sách sinh viên thành công!");
+				notify.success("Tải xuống kết quả thi thành công!");
 			})
 			.catch((error) => {
-				notify.error("Lỗi tải danh sách sinh viên!");
+				notify.error("Lỗi tải kết quả thi!");
 				setLoadingExport(false);
 			});
 	};

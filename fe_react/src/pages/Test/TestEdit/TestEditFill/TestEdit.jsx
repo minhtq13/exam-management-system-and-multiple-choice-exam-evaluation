@@ -1,5 +1,5 @@
 import ReactQuill from "react-quill";
-import { ArrowRightOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import { ArrowRightOutlined } from "@ant-design/icons";
 import "react-quill/dist/quill.snow.css";
 import { useEffect, useState } from "react";
 import "./TestEdit.scss";
@@ -22,7 +22,6 @@ const TestEdit = () => {
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
   const [openPreModal, setOpenPreModal] = useState(false);
   const [checkQues, setCheckQues] = useState([]);
-  const [openAdd, setOpenAdd] = useState(false);
   const notify = useNotify();
   const location = useLocation();
   const code = location.pathname.split("/")[3];
@@ -154,7 +153,6 @@ const TestEdit = () => {
     setCheckQues(newCheckQues);
   };
 
-  console.log(checkQues)
   const getQuesValue = (value, length) => {
     let result = "";
     if (!value || value < 0 || value > length) {
@@ -341,14 +339,6 @@ const TestEdit = () => {
                           </div>
                         )
                       )}
-                      <div className="btn-add">
-                        <Button
-                          onClick={() => setOpenAdd(true)}
-                          icon={<PlusOutlined />}
-                        >
-                          Thêm mới
-                        </Button>
-                      </div>
                     </div>
                   )}
                 </Form.List>
@@ -389,7 +379,7 @@ const TestEdit = () => {
         cancelText="Đóng"
         centered={true}
       >
-        <p>Bạn đã chỉnh sửa đề thi thành công!</p>
+        <p>Bạn đã sửa đề thi thành công!</p>
       </Modal>
       <Modal
         className="test-edit-preview"
@@ -406,26 +396,13 @@ const TestEdit = () => {
         cancelText="Đóng"
         centered={true}
       >
-        <Spin tip="Đang tải..." spinning={loadingData}>
+        <Spin tip="Loading..." spinning={loadingData}>
           <TestPreview
             questions={testDetail.lstQuestion}
             testDetail={testDetail.testSet}
             testNo={code}
           />
         </Spin>
-      </Modal>
-      <Modal
-        open={openAdd}
-        title="Sửa đề thi thành công!"
-        okText="Xem đề thi"
-        onOk={() => setOpenAdd(false)}
-        onCancel={() => setOpenAdd(false)}
-        cancelText="Đóng"
-        centered={true}
-      >
-        <div className="add-question-edit">
-          Thêm câu hỏi
-        </div>
       </Modal>
     </div>
   );

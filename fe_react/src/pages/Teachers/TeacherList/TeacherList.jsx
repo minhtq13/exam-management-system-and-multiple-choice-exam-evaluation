@@ -17,6 +17,7 @@ import { deleteTeachersService } from "../../../services/teachersServices";
 import { convertGender } from "../../../utils/tools";
 import "./TeacherList.scss";
 import SearchFilter from "../../../components/SearchFilter/SearchFilter";
+import debounce from "lodash.debounce";
 
 const TeacherList = () => {
   const initialParam = {
@@ -184,9 +185,9 @@ const TeacherList = () => {
   const onSearch = (value, _e, info) => {
     setParam({ ...param, search: value })
   };
-  const onChange = (_e) => {
+  const onChange = debounce((_e) => {
     setParam({ ...param, search: _e.target.value })
-  }
+  }, 3000);
   return (
     <div className="teacher-list">
       <div className="header-teacher-list">

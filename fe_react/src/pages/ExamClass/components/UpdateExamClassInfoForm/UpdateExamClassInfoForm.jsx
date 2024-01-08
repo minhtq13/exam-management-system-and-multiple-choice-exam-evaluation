@@ -21,6 +21,7 @@ import useTeachers from "../../../../hooks/useTeachers";
 import useStudents from "../../../../hooks/useStudents";
 import { courseNumOptions, customPaginationText, disabledDate } from "../../../../utils/tools";
 import SearchFilter from "../../../../components/SearchFilter/SearchFilter";
+import debounce from "lodash.debounce";
 const UpdateExamClassInfoForm = ({
   onFinish,
   initialValues,
@@ -94,6 +95,7 @@ const UpdateExamClassInfoForm = ({
   const [teacherSelected, setTeacherSelected] = useState(
     lstSupervisorId ?? []
   );
+  const [testId, setTestId] = useState(null);
   const [studentSelectedPerPage, setStudentSelectedPerPage] = useState({ "1": lstStudentId } ?? {});
   const [teacherSelectedPerPage, setTeacherSelectedPerPage] = useState({ "1": lstSupervisorId } ?? {});
   const notify = useNotify();
@@ -256,7 +258,7 @@ const UpdateExamClassInfoForm = ({
               size="small"
               onClick={() => {
                 setTestValue(
-                  `${record.name} - ${record.questionQuantity} câu - ${record.duration} phút - ${record.testSet} mã đề`
+                  `${record.name} - ${record.duration} phút - ${record.testSet} mã đề`
                 );
                 setOpenModal(false);
                 onSelectTestId(record.id);
@@ -316,18 +318,18 @@ const UpdateExamClassInfoForm = ({
     onChange: teacherSelectChange,
   };
 
-  const onStudentChange = (_e) => {
+  const onStudentChange = debounce((_e) => {
     setStudentParam({ ...studentParam, search: _e.target.value })
-  }
+  }, 3000);
   const onStudentSearch = (value, _e, info) => {
     setStudentParam({ ...studentParam, search: value });
   }
   const onStudentSelect = (options) => {
     setStudentParam({ ...studentParam, courseNums: options })
   }
-  const onTeacherChange = (_e) => {
+  const onTeacherChange = debounce((_e) => {
     setTeacherParam({ ...teacherParam, search: _e.target.value })
-  }
+  }, 3000);
   const onTeacherSearch = (value, _e, info) => {
     setTeacherParam({ ...teacherParam, search: value });
   }
@@ -484,12 +486,12 @@ const UpdateExamClassInfoForm = ({
           name="testId"
           label="Đề thi"
           colon={true}
-          rules={[
-            {
-              required: true,
-              message: "Chưa chọn bộ đề thi",
-            },
-          ]}
+        // rules={[
+        //   {
+        //     required: true,
+        //     message: "Chưa chọn bộ đề thi",
+        //   },
+        // ]}
         >
           <div className="test-select">
             <Popover

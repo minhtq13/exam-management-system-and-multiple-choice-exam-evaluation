@@ -1,8 +1,9 @@
 import { Button, Input, List, Spin } from "antd";
 import "./TestSetCreate.scss";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { AiOutlineDownload, AiFillEye } from "react-icons/ai";
+import { FaPen } from "react-icons/fa6";
 import { testSetCreateService } from "../../../services/testServices";
 import useNotify from "../../../hooks/useNotify";
 import TestPreview from "../../../components/TestPreview/TestPreview";
@@ -10,6 +11,8 @@ import { downloadTestPdf } from "../../../utils/tools";
 import useTest from "../../../hooks/useTest";
 import { HUST_COLOR } from "../../../utils/constant";
 import { useSelector } from "react-redux";
+import { appPath } from "../../../config/appPath";
+import { genPreviewOperationsStyle } from "antd/es/image/style";
 
 const TestSetCreate = () => {
   const { getTestSetDetail, testSetDetail, detailLoading } = useTest();
@@ -25,6 +28,7 @@ const TestSetCreate = () => {
   const onView = (test) => {
     getTestSetDetail({ testId: testId, code: test.testSetCode });
   };
+  const navigate = useNavigate();
   const { testInfo } = useSelector((state) => state.appReducer);
   const onCreate = () => {
     if (!testSetNum) {
@@ -48,7 +52,9 @@ const TestSetCreate = () => {
       );
     }
   };
-  console.log(testInfo)
+  const handleUpdate = (testNo) => {
+    navigate(`${appPath.testEdit}/${testNo}/${testId}`);
+  }
   return (
     <div className="test-set-create">
       <div className="test-set-left">
@@ -113,17 +119,27 @@ const TestSetCreate = () => {
           renderItem={(item) => (
             <List.Item
               actions={[
-                <div
-                  key="list-view"
-                  className="preview"
-                  onClick={() => {
-                    onView(item);
-                    setTestNo(item.testSetCode);
-                  }}
-                >
-                  <div className="preview-text">Xem</div>
-                  <AiFillEye color={HUST_COLOR} />
-                </div>,
+                <div className="edit-preview">
+                  <div
+                    key="list-view"
+                    className="preview"
+                    onClick={() => {
+                      onView(item);
+                      setTestNo(item.testSetCode);
+                    }}
+                  >
+                    <div className="preview-text">Xem</div>
+                    <AiFillEye color={HUST_COLOR} />
+                  </div>,
+                  <div
+                    key="list-view"
+                    className="edit"
+                    onClick={() => handleUpdate(item.testSetCode)}
+                  >
+                    <div className="edit-text">Sửa</div>
+                    <FaPen color={HUST_COLOR} />
+                  </div>,
+                </div>
               ]}
             >
               <List.Item.Meta
@@ -159,26 +175,28 @@ const TestSetCreate = () => {
             </div>
           )}
         </Spin>
-        <Button
-          type="primary"
-          htmlType="submit"
-          icon={<AiOutlineDownload size={18} />}
-          disabled={
-            testSetDetail.lstQuestion &&
-            testSetDetail.lstQuestion.length < 1
-          }
-          onClick={() =>
-            downloadTestPdf(
-              testSetDetail.lstQuestion
-                ? testSetDetail.lstQuestion
-                : [],
-              testSetDetail.testSet ? testSetDetail.testSet : {},
-              testNo
-            )
-          }
-        >
-          Tải xuống
-        </Button>
+        <div className="btn-test-set-create">
+          <Button
+            type="primary"
+            htmlType="submit"
+            icon={<AiOutlineDownload size={18} />}
+            disabled={
+              testSetDetail.lstQuestion &&
+              testSetDetail.lstQuestion.length < 1
+            }
+            onClick={() =>
+              downloadTestPdf(
+                testSetDetail.lstQuestion
+                  ? testSetDetail.lstQuestion
+                  : [],
+                testSetDetail.testSet ? testSetDetail.testSet : {},
+                testNo
+              )
+            }
+          >
+            Tải xuống
+          </Button>
+        </div>
       </div>
     </div>
   );

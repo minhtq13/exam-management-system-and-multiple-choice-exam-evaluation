@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Select, Tabs } from "antd";
+import { Select, Tabs, Input } from "antd";
 import "./TestCreate.scss";
 import AutoTest from "./AutoTest/AutoTest";
 import useQuestions from "../../../hooks/useQuestion";
 import ManualTest from "./ManualTest/ManualTest";
 import useCombo from "../../../hooks/useCombo";
+import debounce from "lodash.debounce";
 
 const TestCreate = () => {
   const initialParam = {
@@ -13,6 +14,7 @@ const TestCreate = () => {
     chapterCode: null,
     chapterIds: [],
     level: "ALL",
+    search: null
   };
   const [param, setParam] = useState(initialParam);
   const {
@@ -61,11 +63,13 @@ const TestCreate = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subjectId]);
   useEffect(() => {
-    if (tabKey === "manual") {
+    if (tabKey === "auto" && subjectId) {
+      getAllQuestions({ ...param, level: "ALL", search: null });
+    } else if (tabKey === "manual") {
       getAllQuestions(param);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [param, tabKey]);
+  }, [param, tabKey, subjectId]);
   const subjectOptions = allSubjects.map((item) => {
     return { value: item.id, label: item.name };
   });
@@ -88,6 +92,26 @@ const TestCreate = () => {
   const levelOnchange = (value) => {
     setParam({ ...param, level: value });
   };
+
+  const onSearch = (value, _e, info) => {
+    setParam({ ...param, search: value })
+  };
+  const onChange = debounce((_e) => {
+    setParam({ ...param, search: _e.target.value })
+  }, 3000)
+
+  const calQuesLevel = (data) => {
+    const result = {
+      0: 0,
+      1: 0,
+      2: 0,
+    };
+    data.forEach((item) => {
+      result[item.level]++;
+    });
+    return result;
+  }
+  const levelCalResult = calQuesLevel(allQuestions);
   const items = [
     {
       key: "auto",
@@ -97,6 +121,9 @@ const TestCreate = () => {
           chapterIds={chapterIds}
           formKey={formKey}
           subjectId={subjectId}
+          sumQues={allQuestions.length ?? null}
+          levelCal={levelCalResult}
+          subjectOptions={subjectOptions}
         />
       ),
     },
@@ -106,8 +133,9 @@ const TestCreate = () => {
       children: (
         <ManualTest
           chapterIds={chapterIds}
-          questionList={allQuestions}
+          questionList={allQuestions ?? []}
           subjectId={subjectId}
+          subjectOptions={subjectOptions}
         />
       ),
     },
@@ -135,6 +163,7 @@ const TestCreate = () => {
         <div className="test-chapters">
           <span className="select-label">Chương:</span>
           <Select
+            disabled={!subjectId}
             mode="multiple"
             allowClear
             placeholder="Chọn chương"
@@ -158,6 +187,10 @@ const TestCreate = () => {
             onChange={levelOnchange}
             disabled={tabKey === "auto"}
           />
+        </div>
+        <div className="list-search">
+          <span className="list-search-filter-label">Tìm kiếm:</span>
+          <Input.Search placeholder="Nhập nội dung câu hỏi" enterButton onSearch={onSearch} allowClear onChange={onChange} disabled={tabKey === "auto"} />
         </div>
       </div>
       <Tabs

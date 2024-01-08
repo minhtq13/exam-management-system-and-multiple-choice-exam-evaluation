@@ -60,19 +60,27 @@
       font-size: 16px !important;
     }
 
-    .preview {
+    .edit-preview {
+      display: flex;
+      gap: 10px;
+    }
+
+    .preview,
+    .edit {
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .preview-text {
+    .preview-text,
+    .edit-text {
       cursor: pointer;
       color: black;
       font-size: 16px;
     }
 
-    .preview-text:hover {
+    .preview-text:hover,
+    .edit-text:hover {
       color: #007BFF;
     }
 
@@ -80,6 +88,11 @@
       font-size: 18px;
       color: var(--hust-color);
       font-weight: bold;
+    }
+
+    .ant-spin-container {
+      max-height: 250px;
+      overflow-y: scroll;
     }
   }
 }
@@ -160,4 +173,9 @@
     font-size: 16px;
     display: block;
   }
+}
+
+.btn-test-set-create {
+  display: flex;
+  gap: 10px;
 }

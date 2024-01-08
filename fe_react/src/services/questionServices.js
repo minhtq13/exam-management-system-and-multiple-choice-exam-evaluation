@@ -22,8 +22,8 @@ export const getQuestionService = async (
 	subjectCode,
 	chapterCode,
 	chapterIds,
-	search,
 	level,
+	search,
 	successCallback,
 	errorCallback
 ) => {
@@ -37,6 +37,10 @@ export const getQuestionService = async (
 
 	if (chapterIds) {
 		params.chapterIds = chapterIds;
+	}
+
+	if (search) {
+		params.search = search;
 	}
 
 	const queryString = Object.entries(params)

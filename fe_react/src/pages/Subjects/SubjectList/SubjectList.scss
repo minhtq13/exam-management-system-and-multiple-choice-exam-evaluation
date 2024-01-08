@@ -1,4 +1,11 @@
 .subject-list {
+  .search-filter-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
   .header-subject-list {
     padding: 12px;
     display: flex;
@@ -12,12 +19,11 @@
       color: var(--hust-color);
     }
   }
+
   .block-button {
     display: flex;
-    justify-content: flex-end;
     align-items: center;
     gap: 10px;
-    margin-bottom: 20px;
 
     .options {
       color: var(--hust-color);
@@ -31,6 +37,7 @@
   .subject-list-table {
     border: 1px solid #ccc;
     padding: 12px;
+
     .ant-table-body {
       min-height: 396px;
     }

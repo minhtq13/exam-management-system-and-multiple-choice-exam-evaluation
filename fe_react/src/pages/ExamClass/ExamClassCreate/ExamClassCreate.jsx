@@ -11,26 +11,27 @@ const ExamClassAdd = () => {
   const [lstSupervisorId, setLstSupervisorId] = useState([]);
   const notify = useNotify();
   const onFinish = (value) => {
-    setLoading(true);
-    addExamClassService(
-      {
-        ...value,
-        examineTime: dayjs(value.examineTime).format(
-          "HH:mm DD/MM/YYYY"
-        ),
-        testId: selectedTestId,
-        lstStudentId: lstStudentId,
-        lstSupervisorId: lstSupervisorId,
-      },
-      (res) => {
-        setLoading(false);
-        notify.success("Thêm mới lớp thi thành công!");
-      },
-      (error) => {
-        setLoading(false);
-        notify.error("Lỗi thêm mới lớp thi!");
-      }
-    );
+    console.log(selectedTestId)
+    // setLoading(true);
+    // addExamClassService(
+    //   {
+    //     ...value,
+    //     examineTime: dayjs(value.examineTime).format(
+    //       "HH:mm DD/MM/YYYY"
+    //     ),
+    //     testId: selectedTestId,
+    //     lstStudentId: lstStudentId,
+    //     lstSupervisorId: lstSupervisorId,
+    //   },
+    //   (res) => {
+    //     setLoading(false);
+    //     notify.success("Thêm mới lớp thi thành công!");
+    //   },
+    //   (error) => {
+    //     setLoading(false);
+    //     notify.error("Lỗi thêm mới lớp thi!");
+    //   }
+    // );
   };
   return (
     <div className="exam-class-add">

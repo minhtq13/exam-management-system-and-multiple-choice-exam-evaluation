@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Form, Button, Input, DatePicker, Modal, Col, Row, Select } from "antd";
+import { Form, Button, Input, DatePicker, Modal, Col, Row, Select, Skeleton } from "antd";
 import "./AutoTest.scss";
 import dayjs from "dayjs";
 import { testRandomService } from "../../../../services/testServices";
@@ -8,8 +8,11 @@ import useNotify from "../../../../hooks/useNotify";
 import { appPath } from "../../../../config/appPath";
 import useCombo from "../../../../hooks/useCombo";
 import { disabledDate } from "../../../../utils/tools";
+import { useDispatch } from "react-redux";
+import { setTestInfo } from "../../../../redux/slices/appSlice";
+import useQuestions from "../../../../hooks/useQuestion";
 
-const AutoTest = ({ chapterIds, formKey, subjectId }) => {
+const AutoTest = ({ chapterIds, formKey, subjectId, levelCal, sumQues, subjectOptions }) => {
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [testId, setTestId] = useState(null);
@@ -18,9 +21,12 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
   const [mediumNumber, setMediumNumber] = useState(0);
   const [hardNumber, setHardNumber] = useState(0);
   const [disable, setDisable] = useState(true);
+  const [formValue, setFormValue] = useState(null);
   const [form] = Form.useForm();
   const { allSemester, semesterLoading, getAllSemesters } = useCombo();
+  const { quesLoading } = useQuestions();
   const notify = useNotify();
+  const dispatch = useDispatch();
   useEffect(() => {
     getAllSemesters({ search: "" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -33,6 +39,7 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
       : [];
   const navigate = useNavigate();
   const onFinish = (value) => {
+    setFormValue(value);
     if (subjectId !== null && chapterIds.length > 0) {
       setLoading(true);
       testRandomService(
@@ -72,14 +79,30 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
       );
     }
   };
-  const checkConfigTotal = (rule, value) => {
+
+  const checkSum = () => {
+    if (totalQuestion && totalQuestion > sumQues) {
+      return Promise.reject(
+        "Không đủ số lượng câu hỏi trong ngân hàng."
+      )
+    };
+    return Promise.resolve();
+  }
+  const checkConfigTotal = () => {
     const total =
       Number(easyNumber) + Number(mediumNumber) + Number(hardNumber);
-    return total !== Number(totalQuestion)
-      ? Promise.reject(
-        "Tổng số câu dễ, trung bình, khó phải bằng tổng số câu hỏi."
-      )
-      : Promise.resolve();
+    if (easyNumber && mediumNumber && hardNumber) {
+      return total !== Number(totalQuestion)
+        ? Promise.reject(
+          "Tổng số câu dễ, trung bình, khó phải bằng tổng số câu hỏi."
+        )
+        : Promise.resolve();
+    }
+    return;
+  };
+
+  const checkConfigLevel = (inputLevel, quesLevel) => {
+    return inputLevel > quesLevel ? Promise.reject("Không đủ số lượng câu hỏi trong ngân hàng câu hỏi.") : Promise.resolve();
   };
 
   const questionNumOnchange = (e) => {
@@ -90,8 +113,15 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
       setDisable(true);
     }
   };
+
   return (
     <div className="test-create-view">
+      <div className="question-config-info">
+        <span>{`Dễ: ${levelCal[0]}`}</span>
+        <span>{`Trung bình: ${levelCal[1]}`}</span>
+        <span>{`Khó: ${levelCal[2]}`}</span>
+        <span>{`Tổng: ${sumQues}`}</span>
+      </div>
       <Form
         onFinish={onFinish}
         initialValues={{ totalPoint: "10" }}
@@ -109,7 +139,7 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
             },
           ]}
         >
-          <Input placeholder="Nhập tên kỳ thi" />
+          <Input placeholder="Nhập tên kỳ thi" disabled={!chapterIds.length > 0} />
         </Form.Item>
         <Form.Item
           name="questionQuantity"
@@ -119,12 +149,16 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
               required: true,
               message: "Chưa điền số lượng câu hỏi",
             },
+            {
+              validator: checkSum
+            }
           ]}
         >
           <Input
             type="number"
             placeholder="Nhập số lượng câu hỏi"
             onChange={questionNumOnchange}
+            disabled={!chapterIds.length > 0}
           />
         </Form.Item>
         <Form.Item
@@ -153,6 +187,7 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
             format={"YYYY-MM-DD HH:mm"}
             showTime={{ format: "HH:mm" }}
             disabledDate={disabledDate}
+            disabled={!chapterIds.length > 0}
           ></DatePicker>
         </Form.Item>
         <Form.Item
@@ -165,7 +200,7 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
             },
           ]}
         >
-          <Input type="number" placeholder="Nhập thời gian thi" />
+          <Input type="number" placeholder="Nhập thời gian thi" disabled={!chapterIds.length > 0} />
         </Form.Item>
         <Form.Item
           className="semester-test"
@@ -182,6 +217,7 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
             loading={semesterLoading}
             placeholder="Chọn kỳ thi"
             options={options}
+            disabled={!chapterIds.length > 0}
           />
         </Form.Item>
         <Form.Item
@@ -201,12 +237,17 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
             <Col >
               <Form.Item
                 name={["generateConfig", "numEasyQuestion"]}
+                rules={[
+                  {
+                    validator: () => checkConfigLevel(easyNumber, levelCal[0]),
+                  }
+                ]}
               >
                 <Input
-                  style={{ minWidth: 150}}
+                  style={{ minWidth: 150 }}
                   placeholder="Dễ"
                   type="number"
-                  disabled={disable}
+                  disabled={disable || !chapterIds.length < 0}
                   onChange={(e) =>
                     setEasyNumber(e.target.value)
                   }
@@ -216,30 +257,40 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
             <Col>
               <Form.Item
                 name={["generateConfig", "numMediumQuestion"]}
+                rules={[
+                  {
+                    validator: () => checkConfigLevel(mediumNumber, levelCal[1]),
+                  }
+                ]}
               >
                 <Input
-                  style={{ minWidth: 150}}
+                  style={{ minWidth: 150 }}
                   placeholder="Trung bình"
                   type="number"
                   onChange={(e) =>
                     setMediumNumber(e.target.value)
                   }
-                  disabled={disable}
+                  disabled={disable || !chapterIds.length < 0}
                 />
               </Form.Item>
             </Col>
             <Col>
               <Form.Item
                 name={["generateConfig", "numHardQuestion"]}
+                rules={[
+                  {
+                    validator: () => checkConfigLevel(hardNumber, levelCal[2]),
+                  }
+                ]}
               >
                 <Input
-                  style={{ minWidth: 150}}
+                  style={{ minWidth: 150 }}
                   placeholder="Khó"
                   type="number"
                   onChange={(e) =>
                     setHardNumber(e.target.value)
                   }
-                  disabled={disable}
+                  disabled={disable || !chapterIds.length < 0}
                 />
               </Form.Item>
             </Col>
@@ -262,7 +313,16 @@ const AutoTest = ({ chapterIds, formKey, subjectId }) => {
         className="test-set-create-modal"
         open={openModal}
         title="Tạo đề thi thành công!"
-        onOk={() => navigate(`${appPath.testSetCreate}/${testId}`)}
+        onOk={() => {
+          navigate(`${appPath.testSetCreate}/${testId}`)
+          dispatch(setTestInfo({
+            duration: formValue.duration,
+            questionQuantity: formValue.questionQuantity,
+            subjectName: subjectOptions && subjectOptions.length > 0 ? (subjectOptions.find(item => item.value === subjectId) || {}).label : null,
+            semester: options.find(item => item.value === formValue.semesterId).label
+          }))
+        }
+        }
         onCancel={() => setOpenModal(false)}
       >
         <p>Bạn có muốn tạo tập đề thi không?</p>
