@@ -1,16 +1,15 @@
-import { useEffect, useState } from "react";
-import { Form, Button, Input, DatePicker, Modal, Col, Row, Select, Skeleton } from "antd";
-import "./AutoTest.scss";
+import { Button, Col, DatePicker, Form, Input, Modal, Row, Select } from "antd";
 import dayjs from "dayjs";
-import { testRandomService } from "../../../../services/testServices";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import useNotify from "../../../../hooks/useNotify";
 import { appPath } from "../../../../config/appPath";
 import useCombo from "../../../../hooks/useCombo";
-import { disabledDate } from "../../../../utils/tools";
-import { useDispatch } from "react-redux";
+import useNotify from "../../../../hooks/useNotify";
 import { setTestInfo } from "../../../../redux/slices/appSlice";
-import useQuestions from "../../../../hooks/useQuestion";
+import { testRandomService } from "../../../../services/testServices";
+import { disabledDate } from "../../../../utils/tools";
+import "./AutoTest.scss";
 
 const AutoTest = ({ chapterIds, formKey, subjectId, levelCal, sumQues, subjectOptions }) => {
   const [loading, setLoading] = useState(false);
@@ -24,7 +23,6 @@ const AutoTest = ({ chapterIds, formKey, subjectId, levelCal, sumQues, subjectOp
   const [formValue, setFormValue] = useState(null);
   const [form] = Form.useForm();
   const { allSemester, semesterLoading, getAllSemesters } = useCombo();
-  const { quesLoading } = useQuestions();
   const notify = useNotify();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -52,7 +50,7 @@ const AutoTest = ({ chapterIds, formKey, subjectId, levelCal, sumQues, subjectOp
           ),
           duration: Number(value.duration),
           questionQuantity: Number(value.questionQuantity),
-          totalPoint: Number(value.totalPoint),
+          totalPoint: 10,
           semesterId: Number(value.semesterId),
           generateConfig: {
             numEasyQuestion: Number(
@@ -124,7 +122,6 @@ const AutoTest = ({ chapterIds, formKey, subjectId, levelCal, sumQues, subjectOp
       </div>
       <Form
         onFinish={onFinish}
-        initialValues={{ totalPoint: "10" }}
         name="test-create"
         key={formKey}
         form={form}
@@ -141,37 +138,17 @@ const AutoTest = ({ chapterIds, formKey, subjectId, levelCal, sumQues, subjectOp
         >
           <Input placeholder="Nhập tên kỳ thi" disabled={!chapterIds.length > 0} />
         </Form.Item>
-        <Form.Item
-          name="questionQuantity"
-          label="Số câu hỏi:"
+       <Form.Item
+          name="duration"
+          label="Thời gian thi (phút):"
           rules={[
             {
               required: true,
-              message: "Chưa điền số lượng câu hỏi",
-            },
-            {
-              validator: checkSum
-            }
-          ]}
-        >
-          <Input
-            type="number"
-            placeholder="Nhập số lượng câu hỏi"
-            onChange={questionNumOnchange}
-            disabled={!chapterIds.length > 0}
-          />
-        </Form.Item>
-        <Form.Item
-          name="totalPoint"
-          label="Tổng điểm:"
-          rules={[
-            {
-              required: true,
-              message: "Chưa điền tổng điểm bài thi",
+              message: "Chưa điền thời gian thi",
             },
           ]}
         >
-          <Input disabled type="number" placeholder="Nhập tổng điểm bài thi" />
+          <Input type="number" placeholder="Nhập thời gian thi" disabled={!chapterIds.length > 0} />
         </Form.Item>
         <Form.Item
           name="startTime"
@@ -190,17 +167,26 @@ const AutoTest = ({ chapterIds, formKey, subjectId, levelCal, sumQues, subjectOp
             disabled={!chapterIds.length > 0}
           ></DatePicker>
         </Form.Item>
-        <Form.Item
-          name="duration"
-          label="Thời gian thi (phút):"
+      
+          <Form.Item
+          name="questionQuantity"
+          label="Số câu hỏi:"
           rules={[
             {
               required: true,
-              message: "Chưa điền thời gian thi",
+              message: "Chưa điền số lượng câu hỏi",
             },
+            {
+              validator: checkSum
+            }
           ]}
         >
-          <Input type="number" placeholder="Nhập thời gian thi" disabled={!chapterIds.length > 0} />
+          <Input
+            type="number"
+            placeholder="Nhập số lượng câu hỏi"
+            onChange={questionNumOnchange}
+            disabled={!chapterIds.length > 0}
+          />
         </Form.Item>
         <Form.Item
           className="semester-test"
@@ -237,11 +223,7 @@ const AutoTest = ({ chapterIds, formKey, subjectId, levelCal, sumQues, subjectOp
             <Col >
               <Form.Item
                 name={["generateConfig", "numEasyQuestion"]}
-                rules={[
-                  {
-                    validator: () => checkConfigLevel(easyNumber, levelCal[0]),
-                  }
-                ]}
+                rules={[{ validator: () => checkConfigLevel(easyNumber, levelCal[0]) } ]}
               >
                 <Input
                   style={{ minWidth: 150 }}

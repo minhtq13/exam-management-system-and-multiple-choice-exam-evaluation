@@ -3,7 +3,6 @@ import "./TestSetCreate.scss";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { AiOutlineDownload, AiFillEye } from "react-icons/ai";
-import { FaPen } from "react-icons/fa6";
 import { testSetCreateService } from "../../../services/testServices";
 import useNotify from "../../../hooks/useNotify";
 import TestPreview from "../../../components/TestPreview/TestPreview";
@@ -12,7 +11,7 @@ import useTest from "../../../hooks/useTest";
 import { HUST_COLOR } from "../../../utils/constant";
 import { useSelector } from "react-redux";
 import { appPath } from "../../../config/appPath";
-import { genPreviewOperationsStyle } from "antd/es/image/style";
+import { EditOutlined } from "@ant-design/icons";
 
 const TestSetCreate = () => {
   const { getTestSetDetail, testSetDetail, detailLoading } = useTest();
@@ -80,7 +79,7 @@ const TestSetCreate = () => {
         </div>
         <div className="test-set-quantity">
           <div className="test-set-input">
-            <span>Số lượng:</span>
+            <div style={{fontSize: "16px"}}>Số lượng đề thi:</div>
             <Input
               type="number"
               placeholder="Nhập số lượng đề thi"
@@ -93,6 +92,7 @@ const TestSetCreate = () => {
                 }
                 setTestSetNum(e.target.value);
               }}
+              style={{ width: 175 }}
             />
           </div>
           {isError && (
@@ -127,18 +127,20 @@ const TestSetCreate = () => {
                       onView(item);
                       setTestNo(item.testSetCode);
                     }}
+                    style={{ cursor: "pointer" }}
                   >
                     <div className="preview-text">Xem</div>
                     <AiFillEye color={HUST_COLOR} />
-                  </div>,
+                  </div>
                   <div
                     key="list-view"
                     className="edit"
                     onClick={() => handleUpdate(item.testSetCode)}
+                    style={{ cursor: "pointer" }}
                   >
                     <div className="edit-text">Sửa</div>
-                    <FaPen color={HUST_COLOR} />
-                  </div>,
+                    <EditOutlined color={HUST_COLOR} /> 
+                  </div>
                 </div>
               ]}
             >

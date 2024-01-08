@@ -83,7 +83,7 @@ const TestPreview = ({ questions, testDetail, testNo }) => {
 						<p>(Ký tên, ghi rõ họ tên)</p>
 					</div>
 					<div className="sig-right">
-						<p>Hà Nội, ngày...tháng...năm...</p>
+						<p>Hà Nội, ngày ..... tháng ..... năm ......</p>
 						<p className="text-bold">GIẢNG VIÊN RA ĐỀ</p>
 						<p>(Ký tên, ghi rõ họ tên)</p>
 					</div>

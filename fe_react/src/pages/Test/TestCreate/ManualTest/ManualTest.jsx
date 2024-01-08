@@ -8,7 +8,6 @@ const ManualTest = ({ questionList, chapterIds, subjectId, subjectOptions }) => 
   const [startTime, setStartTime] = useState(null);
   const [name, setName] = useState("");
   const [duration, setDuration] = useState(null);
-  const [totalPoint, setTotalPoint] = useState(null);
   const [questionQuantity, setQuestionQuantity] = useState(null);
   const [easyNumber, setEasyNumber] = useState(null);
   const [mediumNumber, setMediumNumber] = useState(null);
@@ -58,7 +57,7 @@ const ManualTest = ({ questionList, chapterIds, subjectId, subjectOptions }) => 
           </div>
           <div className="manual-item manual-duration">
             <span className="manual-item-label">
-              Thời gian thi(phút):{" "}
+              Thời gian thi (phút):{" "}
             </span>
             <Input
               type="number"
@@ -68,24 +67,12 @@ const ManualTest = ({ questionList, chapterIds, subjectId, subjectOptions }) => 
           </div>
         </div>
         <div className="manual-test-right">
-          <div className="manual-item manual-totalPoint">
-            <span className="manual-item-label">Tổng điểm: </span>
-            <Input
-              type="number"
-              placeholder="Nhập tổng điểm bài thi"
-              onChange={(_e) => setTotalPoint(_e.target.value)}
-              value={10}
-              disabled={true}
-            />
-          </div>
           <div className="manual-item manual-totalQues">
             <span className="manual-item-label">Số câu hỏi: </span>
             <Input
               type="number"
               placeholder="Nhập số câu hỏi"
-              onChange={(_e) =>
-                setQuestionQuantity(_e.target.value)
-              }
+              onChange={(_e) => setQuestionQuantity(_e.target.value)}
             />
           </div>
           <div className="manual-item manual-config">
@@ -134,7 +121,7 @@ const ManualTest = ({ questionList, chapterIds, subjectId, subjectOptions }) => 
             questionList={questionList}
             startTime={startTime}
             duration={duration}
-            totalPoint={totalPoint}
+            totalPoint={10}
             name={name}
             subjectId={subjectId}
             semesterId={semesterId}

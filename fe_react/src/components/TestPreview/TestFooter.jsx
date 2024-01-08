@@ -44,7 +44,7 @@ export const TestFooter = () => {
 					<p>(Ký tên, ghi rõ họ tên)</p>
 				</div>
 				<div className="sig-right" style={contentStyle}>
-					<p>Hà Nội, ngày...tháng...năm...</p>
+					<p>Hà Nội, ngày ..... tháng ..... năm ......</p>
 					<p className="text-bold" style={textBold}>
 						GIẢNG VIÊN RA ĐỀ
 					</p>
