@@ -79,7 +79,7 @@ const TestSetCreate = () => {
         </div>
         <div className="test-set-quantity">
           <div className="test-set-input">
-            <div style={{fontSize: "16px"}}>Số lượng đề thi:</div>
+            <div style={{ fontSize: "16px" }}>Số lượng đề thi:</div>
             <Input
               type="number"
               placeholder="Nhập số lượng đề thi"
@@ -139,7 +139,7 @@ const TestSetCreate = () => {
                     style={{ cursor: "pointer" }}
                   >
                     <div className="edit-text">Sửa</div>
-                    <EditOutlined color={HUST_COLOR} /> 
+                    <EditOutlined color={HUST_COLOR} />
                   </div>
                 </div>
               ]}
