@@ -16,4 +16,7 @@ public interface UserExamClassRepository extends JpaRepository<UserExamClass, Lo
     @Query(nativeQuery = true, value = SQLExamClass.DELETE_EXAM_CLASS_PARTICIPANT_BY_ID)
     void deleteAllByExamClassId(Long examClassId);
 
+    @Modifying
+    void deleteAllByUserId(Long userId);
+
 }

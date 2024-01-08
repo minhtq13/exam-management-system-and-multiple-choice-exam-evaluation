@@ -68,9 +68,9 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public Page<ISubjectListDTO> getListSubject(String subjectTitle, String subjectCode, Long departmentId, String departmentName,
+    public Page<ISubjectListDTO> getListSubject(String search, Long departmentId, String departmentName,
         Pageable pageable) {
-        return subjectRepository.getListSubject(subjectTitle, subjectCode, departmentId, departmentName, pageable);
+        return subjectRepository.getListSubject(search, departmentId, departmentName, pageable);
     }
 
     @Override

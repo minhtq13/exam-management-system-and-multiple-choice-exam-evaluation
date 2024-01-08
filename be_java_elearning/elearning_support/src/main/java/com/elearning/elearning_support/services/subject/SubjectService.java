@@ -28,7 +28,7 @@ public interface SubjectService {
     /**
      * Danh sách môn học
      */
-    Page<ISubjectListDTO> getListSubject(String subjectTitle, String subjectCode, Long departmentId, String departmentName, Pageable pageable);
+    Page<ISubjectListDTO> getListSubject(String search, Long departmentId, String departmentName, Pageable pageable);
 
 
     /**

@@ -26,7 +26,7 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
     Boolean existsByIdAndIsEnabled(Long id, Boolean isEnabled);
 
     @Query(nativeQuery = true, value = SQLSubject.GET_LIST_SUBJECT)
-    Page<ISubjectListDTO> getListSubject(String subjectTitle, String subjectCode, Long departmentId, String departmentName,
+    Page<ISubjectListDTO> getListSubject(String search, Long departmentId, String departmentName,
         Pageable pageable);
 
     @Query(nativeQuery = true, value = SQLSubject.GET_DETAIL_SUBJECT)

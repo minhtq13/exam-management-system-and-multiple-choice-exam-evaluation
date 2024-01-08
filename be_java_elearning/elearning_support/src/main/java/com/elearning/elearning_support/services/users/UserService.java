@@ -16,6 +16,7 @@ import com.elearning.elearning_support.dtos.users.UserCreateDTO;
 import com.elearning.elearning_support.dtos.users.UserDetailDTO;
 import com.elearning.elearning_support.dtos.users.UserSaveReqDTO;
 import com.elearning.elearning_support.dtos.users.importUser.CommonUserImportDTO;
+import com.elearning.elearning_support.enums.users.UserTypeEnum;
 
 @Service
 public interface UserService {
@@ -40,6 +41,12 @@ public interface UserService {
      * Chi tiết thông tin user
      */
     UserDetailDTO getUserDetail(Long userId);
+
+    /**
+     * Xóa hoàn toàn user
+     */
+    void deleteUserHard(UserTypeEnum userType, Long userId);
+
 
     /**
      * Lấy danh sách HSSV dạng page

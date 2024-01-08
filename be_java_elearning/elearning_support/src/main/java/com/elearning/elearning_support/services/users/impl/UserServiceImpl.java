@@ -46,6 +46,7 @@ import com.elearning.elearning_support.dtos.users.importUser.CommonUserImportDTO
 import com.elearning.elearning_support.dtos.users.student.StudentExportDTO;
 import com.elearning.elearning_support.dtos.users.student.StudentImportDTO;
 import com.elearning.elearning_support.dtos.users.teacher.TeacherExportDTO;
+import com.elearning.elearning_support.entities.studentTest.StudentTestSet;
 import com.elearning.elearning_support.entities.users.User;
 import com.elearning.elearning_support.entities.users.UserRole;
 import com.elearning.elearning_support.enums.commons.DeletedFlag;
@@ -55,6 +56,8 @@ import com.elearning.elearning_support.enums.importFile.TeacherImportFieldMappin
 import com.elearning.elearning_support.enums.users.GenderEnum;
 import com.elearning.elearning_support.enums.users.UserTypeEnum;
 import com.elearning.elearning_support.exceptions.exceptionFactory.ExceptionFactory;
+import com.elearning.elearning_support.repositories.examClass.UserExamClassRepository;
+import com.elearning.elearning_support.repositories.test.test_set.StudentTestSetRepository;
 import com.elearning.elearning_support.repositories.users.UserRepository;
 import com.elearning.elearning_support.repositories.users.UserRoleRepository;
 import com.elearning.elearning_support.services.users.UserService;
@@ -81,6 +84,10 @@ public class UserServiceImpl implements UserService {
     private final ExceptionFactory exceptionFactory;
 
     private final ExcelFileUtils excelFileUtils;
+
+    private final StudentTestSetRepository studentTestSetRepository;
+
+    private final UserExamClassRepository userExamClassRepository;
 
 
     private final String[] IGNORE_COPY_USER_PROPERTIES = new String[]{
@@ -137,7 +144,7 @@ public class UserServiceImpl implements UserService {
 
         // Update user_role (delete all -> save new)
         if (!ObjectUtils.isEmpty(updateDTO.getLstRoleId())) {
-            userRoleRepository.deleteAllByUserId(user.getId());
+            userRoleRepository.deleteAllByUserIdNative(user.getId());
             List<UserRole> lstUserRole = updateDTO.getLstRoleId().stream().map(roleId -> new UserRole(user.getId(), roleId))
                 .collect(Collectors.toList());
             userRoleRepository.saveAll(lstUserRole);
@@ -152,6 +159,33 @@ public class UserServiceImpl implements UserService {
                 MessageConst.RESOURCE_NOT_FOUND, ErrorKey.User.ID, String.valueOf(userId));
         }
         return new UserDetailDTO(iUserDetails);
+    }
+
+    @Transactional
+    @Override
+    public void deleteUserHard(UserTypeEnum userType, Long userId) {
+        try {
+            // check user exists
+            if (!userRepository.existsById(userId)) {
+                throw exceptionFactory.resourceNotFoundException(MessageConst.User.USER_NOT_FOUND_ERROR_CODE, Resources.USER,
+                    MessageConst.RESOURCE_NOT_FOUND, ErrorKey.User.ID, String.valueOf(userId));
+            }
+            // check user_type
+            if (Objects.equals(userType, UserTypeEnum.STUDENT)) {
+                // xóa student_test_set
+                List<StudentTestSet> lstStudentTestSet = studentTestSetRepository.findAllByStudentId(userId);
+                studentTestSetRepository.deleteAll(lstStudentTestSet);
+            }
+            // xóa users_roles
+            userRoleRepository.deleteAllByUserId(userId);
+            // xóa user_exam_class
+            userExamClassRepository.deleteAllByUserId(userId);
+            // xóa users
+            userRepository.deleteById(userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(MessageConst.EXCEPTION_LOG_FORMAT, e.getMessage(), e.getCause());
+        }
     }
 
     @Override

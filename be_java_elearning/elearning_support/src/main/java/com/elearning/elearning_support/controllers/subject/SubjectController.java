@@ -45,8 +45,7 @@ public class SubjectController {
     @GetMapping("/list")
     @Operation(summary = "Danh sách môn học")
     public Page<ISubjectListDTO> getListSubject(
-        @RequestParam(name = "title", required = false, defaultValue = "") String subjectTitle,
-        @RequestParam(name = "code", required = false, defaultValue = "") String subjectCode,
+        @RequestParam(name = "search", required = false, defaultValue = "") String search,
         @RequestParam(name = "departmentId", required = false, defaultValue = "-1") Long departmentId,
         @RequestParam(name = "departmentName", required = false, defaultValue = "") String departmentName,
         @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
@@ -54,7 +53,7 @@ public class SubjectController {
         @RequestParam(name = "sort", required = false, defaultValue = "code") String sort
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
-        return subjectService.getListSubject(subjectTitle, subjectCode, departmentId, departmentName, pageable);
+        return subjectService.getListSubject(search, departmentId, departmentName, pageable);
     }
 
     @GetMapping("/detail/{subjectId}")

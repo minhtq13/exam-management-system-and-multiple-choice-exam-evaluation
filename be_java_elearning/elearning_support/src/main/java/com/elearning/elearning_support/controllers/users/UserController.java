@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ import com.elearning.elearning_support.dtos.users.IGetUserListDTO;
 import com.elearning.elearning_support.dtos.users.UserCreateDTO;
 import com.elearning.elearning_support.dtos.users.UserDetailDTO;
 import com.elearning.elearning_support.dtos.users.UserSaveReqDTO;
+import com.elearning.elearning_support.enums.users.UserTypeEnum;
 import com.elearning.elearning_support.services.users.UserService;
 import com.elearning.elearning_support.utils.file.FileUtils.Excel;
 import io.swagger.v3.oas.annotations.Operation;
@@ -66,7 +68,13 @@ public class UserController {
     public UserDetailDTO getUserDetail(@PathVariable(name = "userId") Long userId) {
         return userService.getUserDetail(userId);
     }
-
+    @DeleteMapping("/hard/{id}")
+    @Operation(summary = "Xóa cứng người dùng")
+    public void deleteUserHard(
+        @RequestParam(name = "userType") UserTypeEnum userType,
+        @PathVariable(name = "id") Long id) {
+        userService.deleteUserHard(userType, id);
+    }
     /*
      *  ================== API dành cho user END =======================
      */

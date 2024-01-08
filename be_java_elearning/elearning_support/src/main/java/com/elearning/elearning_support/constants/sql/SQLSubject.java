@@ -14,8 +14,7 @@ public class SQLSubject {
             "WHERE \n" +
             "    subject.is_enabled = true AND \n" +
             "    subject.deleted_flag = 1 AND \n" +
-            "    ('' = :subjectTitle OR subject.title ILIKE ('%' || :subjectTitle || '%')) AND \n" +
-            "    ('' = :subjectCode OR subject.code ILIKE ('%' || :subjectCode || '%')) AND \n" +
+            "    ('' = :search OR subject.title ILIKE ('%' || :search || '%') OR subject.code ILIKE ('%' || :search || '%')) AND \n" +
             "    ('' = :departmentName OR department.name ILIKE ('%' || :departmentName || '%')) AND \n" +
             "    (-1 = :departmentId OR department.id = :departmentId)";
 
