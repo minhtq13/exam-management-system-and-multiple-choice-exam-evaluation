@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -315,12 +314,14 @@ public class TestSetServiceImpl implements TestSetService {
         return lstTestQuestionAnswer;
     }
 
+    /**
+     * Calculate questionMark
+     */
     private Double calculateQuestionMark(Integer totalPoint, Integer questionQuantity) {
         try {
-            Double questionMark = (double) totalPoint / questionQuantity;
-            return Double.parseDouble(new DecimalFormat("#.000000").format(questionMark));
+            return (double) totalPoint / questionQuantity;
         } catch (Exception e) {
-            log.error("==== ERROR {0} ====", e.getCause());
+            log.error("==== ERROR {1} ====", e.getCause());
             return null;
         }
     }
@@ -450,7 +451,7 @@ public class TestSetServiceImpl implements TestSetService {
             scoringPreviewItem.setNumTestSetQuestions(correctAnswers.size()); // Number questions of a test set
             scoringPreviewItem.setNumMarkedAnswers(handledItem.getAnswers().size() - numNotMarkedQuestions);
             scoringPreviewItem.setNumCorrectAnswers(numCorrectAns);
-            scoringPreviewItem.setNumWrongAnswers(mapQueriedTestSetQuestions.size() - numCorrectAns);
+            scoringPreviewItem.setNumWrongAnswers(mapQueriedTestSetQuestions.get(testSetId).size() - numCorrectAns);
             scoringPreviewItem.setTotalScore(totalScore);
             scoringPreviewItem.setHandledScoredImg(handledUploadFile.getFilePath());
             scoringPreviewItem.setOriginalImgFileName(handledItem.getOriginalImgFileName());
