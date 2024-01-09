@@ -148,6 +148,8 @@ const UpdateExamClassInfoForm = ({
       : [];
   };
 
+  const [form] = Form.useForm();
+
   const teacherColumns = [
     {
       title: "Mã cán bộ",
@@ -260,6 +262,7 @@ const UpdateExamClassInfoForm = ({
                 setTestValue(
                   `${record.name} - ${record.duration} phút - ${record.testSet} mã đề`
                 );
+                form.setFieldsValue({ testId: record.id });
                 setOpenModal(false);
                 onSelectTestId(record.id);
               }}
@@ -389,6 +392,7 @@ const UpdateExamClassInfoForm = ({
         className="info-exam-class-form"
         initialValues={initialValues}
         onFinish={onFinish}
+        form={form}
       >
         <div className="info-exam-class-header">Thông tin lớp thi</div>
         <Form.Item
@@ -481,17 +485,16 @@ const UpdateExamClassInfoForm = ({
             <Button onClick={() => setOpenStudentModal(true)}>Chọn</Button>
           </div>
         </Form.Item>
-
         <Form.Item
           name="testId"
           label="Đề thi"
           colon={true}
-        // rules={[
-        //   {
-        //     required: true,
-        //     message: "Chưa chọn bộ đề thi",
-        //   },
-        // ]}
+          rules={[
+            {
+              required: true,
+              message: "Chưa chọn bộ đề thi",
+            },
+          ]}
         >
           <div className="test-select">
             <Popover
@@ -504,7 +507,6 @@ const UpdateExamClassInfoForm = ({
                 value={testValue}
               />
             </Popover>
-
             <Button onClick={() => setOpenModal(true)}>Chọn</Button>
           </div>
         </Form.Item>

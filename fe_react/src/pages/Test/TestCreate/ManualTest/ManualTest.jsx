@@ -3,8 +3,9 @@ import "./ManualTest.scss";
 import { useEffect, useState } from "react";
 import TestView from "./TestView/TestView";
 import useCombo from "../../../../hooks/useCombo";
+import debounce from "lodash.debounce";
 
-const ManualTest = ({ questionList, chapterIds, subjectId, subjectOptions }) => {
+const ManualTest = ({ questionList, chapterIds, subjectId, subjectOptions, onSelectLevel, onChangeSearch }) => {
   const [startTime, setStartTime] = useState(null);
   const [name, setName] = useState("");
   const [duration, setDuration] = useState(null);
@@ -25,6 +26,34 @@ const ManualTest = ({ questionList, chapterIds, subjectId, subjectOptions }) => 
         return { value: item.id, label: item.name };
       })
       : [];
+  const levelOptions = [
+    {
+      value: "ALL",
+      label: "Tất cả",
+    },
+    {
+      value: "EASY",
+      label: "Dễ",
+    },
+    {
+      value: "MEDIUM",
+      label: "Trung bình",
+    },
+    {
+      value: "HARD",
+      label: "Khó",
+    },
+  ];
+  const levelOnchange = (value) => {
+    onSelectLevel(value);
+  };
+
+  const onSearch = (value, _e, info) => {
+    onChangeSearch(value)
+  };
+  const onChange = debounce((_e) => {
+    onChangeSearch(_e.target.value)
+  }, 3000)
   return (
     <div className="manual-test">
       <div className="manual-select">
@@ -113,6 +142,21 @@ const ManualTest = ({ questionList, chapterIds, subjectId, subjectOptions }) => 
                 )}
             </div>
           </div>
+        </div>
+      </div>
+      <div className="level-search">
+        <div className="list-search">
+          <span className="list-search-filter-label">Tìm kiếm:</span>
+          <Input.Search placeholder="Nhập nội dung câu hỏi" enterButton onSearch={onSearch} allowClear onChange={onChange} />
+        </div>
+        <div className="test-level">
+          <span className="select-label">Mức độ:</span>
+          <Select
+            defaultValue={"ALL"}
+            optionLabelProp="label"
+            options={levelOptions}
+            onChange={levelOnchange}
+          />
         </div>
       </div>
       <div className="test-re-view">

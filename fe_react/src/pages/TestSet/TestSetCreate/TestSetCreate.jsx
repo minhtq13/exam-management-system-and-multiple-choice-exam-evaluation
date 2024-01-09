@@ -79,7 +79,7 @@ const TestSetCreate = () => {
         </div>
         <div className="test-set-quantity">
           <div className="test-set-input">
-            <div style={{ fontSize: "16px" }}>Số lượng đề thi:</div>
+            <div className="test-set-input-label">Số lượng:</div>
             <Input
               type="number"
               placeholder="Nhập số lượng đề thi"

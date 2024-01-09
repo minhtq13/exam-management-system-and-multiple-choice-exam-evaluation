@@ -52,7 +52,6 @@
     }
 
     .ant-spin-nested-loading {
-      top: 30px;
       width: 100%;
     }
   }
@@ -65,5 +64,26 @@
     .error-message {
       color: #FF4D4F;
     }
+  }
+}
+
+.level-search {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 330px;
+
+  .list-search,
+  .test-level {
+    display: flex;
+    align-items: center;
+    margin: 15px 0px;
+    gap: 15px;
+  }
+
+  span {
+    font-size: 16px;
+    font-weight: bold;
+    flex-shrink: 0;
   }
 }
