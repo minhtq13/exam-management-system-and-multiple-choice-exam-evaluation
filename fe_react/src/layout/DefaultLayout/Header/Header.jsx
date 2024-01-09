@@ -1,11 +1,11 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-import debounce from "lodash.debounce";
+// import debounce from "lodash.debounce";
 import { React } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import logoDHBK from "../../../assets/images/png-jpg/logo-dhbk.png";
-import Searchbox from "../../../components/Search/Searchbox";
+// import Searchbox from "../../../components/Search/Searchbox";
 import { setIsCollapse } from "../../../redux/slices/appSlice";
 import Account from "./Account/Account";
 import "./Header.scss";
@@ -15,12 +15,12 @@ const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isCollapse } = useSelector((state) => state.appReducer);
-  const handleOnChange = debounce((event) => {
-    console.log(event.target.value);
-  }, 300);
-  const handleOnSearch = (value) => {
-    console.log(value);
-  };
+  // const handleOnChange = debounce((event) => {
+  //   console.log(event.target.value);
+  // }, 300);
+  // const handleOnSearch = (value) => {
+  //   console.log(value);
+  // };
   const toggleCollapsed = () => {
     dispatch(setIsCollapse(!isCollapse));
   };
@@ -49,10 +49,12 @@ const Header = () => {
         </Button>
       </div>
       <div className="header-search">
-        <Searchbox
+        {/* <Searchbox
           onChange={(event) => handleOnChange(event)}
           onSearch={(value) => handleOnSearch(value)}
-        />
+        /> */}
+        TRƯỜNG ĐẠI HỌC BÁCH KHOA HÀ NỘI
+        <img src={logoDHBK} alt=""  style={{ marginLeft: 20, maxWidth: 35}}/>
       </div>
       <div className="header-noti-account">
         <Notifications />

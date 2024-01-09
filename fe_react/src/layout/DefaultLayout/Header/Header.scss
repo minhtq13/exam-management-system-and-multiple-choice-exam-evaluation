@@ -26,6 +26,14 @@
   .header-search {
     margin-left: 15px;
     float: left;
+    flex: 1;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    font-family: "Exo 2", sans-serif;
+    font-size: 20px;
   }
 
   .header-logo {
