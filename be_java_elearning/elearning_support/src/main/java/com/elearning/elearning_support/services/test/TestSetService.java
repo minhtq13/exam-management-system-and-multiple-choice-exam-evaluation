@@ -10,6 +10,7 @@ import com.elearning.elearning_support.dtos.fileAttach.FileAttachDTO;
 import com.elearning.elearning_support.dtos.studentTestSet.StudentHandledTestDTO;
 import com.elearning.elearning_support.dtos.test.studentTestSet.HandledImagesDeleteDTO;
 import com.elearning.elearning_support.dtos.test.test_set.ScoringPreviewResDTO;
+import com.elearning.elearning_support.dtos.test.test_set.TestSetCreateDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetGenerateReqDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetPreviewDTO;
@@ -19,7 +20,15 @@ import com.elearning.elearning_support.dtos.test.test_set.TestSetUpdateDTO;
 @Service
 public interface TestSetService {
 
+    /**
+     * Gen bộ đề thi tự động
+     */
     List<TestSetPreviewDTO> generateTestSet(TestSetGenerateReqDTO generateReqDTO);
+
+    /**
+     *
+     */
+    TestSetPreviewDTO createTestSet(TestSetCreateDTO createDTO);
 
     /**
      * Chi tiết đề thi

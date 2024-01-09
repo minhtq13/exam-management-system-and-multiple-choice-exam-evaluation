@@ -37,4 +37,7 @@ public interface TestSetRepository extends JpaRepository<TestSet, Long> {
 
     @Query(value = "SELECT testSet.id FROM TestSet testSet WHERE testSet.testId = :testId AND testSet.isEnabled = TRUE")
     Set<Long> getListTestSetIdByTestId(Long testId);
+
+    @Query(nativeQuery = true, value = SQLTestSet.GET_MAX_CURRENT_TEST_NO_BY_TEST_ID)
+    Integer getMaxCurrentTestNoByTestId(Long testId);
 }

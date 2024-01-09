@@ -23,6 +23,7 @@ import com.elearning.elearning_support.dtos.fileAttach.FileAttachDTO;
 import com.elearning.elearning_support.dtos.test.studentTestSet.HandledImagesDeleteDTO;
 import com.elearning.elearning_support.dtos.test.test_set.ScoringPreviewResDTO;
 import com.elearning.elearning_support.dtos.test.test_set.ScoringTestSetReqDTO;
+import com.elearning.elearning_support.dtos.test.test_set.TestSetCreateDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetDetailDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetGenerateReqDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetPreviewDTO;
@@ -46,6 +47,12 @@ public class TestSetController {
     @Operation(summary = "Gen đề thi trong kỳ thi")
     public List<TestSetPreviewDTO> genTestSetFromTest(@RequestBody TestSetGenerateReqDTO generateDTO) {
         return testSetService.generateTestSet(generateDTO);
+    }
+
+    @PostMapping("/create")
+    @Operation(summary = "Tạo một đề thi thủ công")
+    public TestSetPreviewDTO createTestSet(@RequestBody @Validated TestSetCreateDTO createDTO){
+        return testSetService.createTestSet(createDTO);
     }
 
     @PostMapping(value = "/export", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)

@@ -46,6 +46,8 @@ import com.elearning.elearning_support.dtos.test.studentTestSet.HandledImagesDel
 import com.elearning.elearning_support.dtos.test.test_set.ITestSetScoringDTO;
 import com.elearning.elearning_support.dtos.test.test_set.ScoringPreviewItemDTO;
 import com.elearning.elearning_support.dtos.test.test_set.ScoringPreviewResDTO;
+import com.elearning.elearning_support.dtos.test.test_set.TestQuestionAnswerUpdateDTO;
+import com.elearning.elearning_support.dtos.test.test_set.TestSetCreateDTO;
 import com.elearning.elearning_support.dtos.test.test_set.TestSetPreviewDTO;
 import com.elearning.elearning_support.entities.exam_class.ExamClass;
 import com.elearning.elearning_support.entities.studentTest.StudentTestSet;
@@ -59,6 +61,7 @@ import com.elearning.elearning_support.repositories.users.UserRepository;
 import com.elearning.elearning_support.services.fileAttach.FileAttachService;
 import com.elearning.elearning_support.utils.StringUtils;
 import com.elearning.elearning_support.utils.file.FileUtils;
+import com.elearning.elearning_support.utils.object.ObjectUtil;
 import com.elearning.elearning_support.utils.tests.TestUtils;
 import com.elearning.elearning_support.constants.message.errorKey.ErrorKey;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst;
@@ -220,6 +223,43 @@ public class TestSetServiceImpl implements TestSetService {
             .collect(Collectors.toList());
     }
 
+    @Transactional
+    @Override
+    public TestSetPreviewDTO createTestSet(TestSetCreateDTO createDTO) {
+        Long currentUserId = AuthUtils.getCurrentUserId();
+        // check test_id
+        Test test = testRepository.findByIdAndIsEnabled(createDTO.getTestId(), Boolean.TRUE).orElseThrow(
+            () -> exceptionFactory.resourceNotFoundException(MessageConst.Test.NOT_FOUND, MessageConst.RESOURCE_NOT_FOUND, Resources.TEST,
+                ErrorKey.Test.ID, String.valueOf(createDTO.getTestId()))
+        );
+        // tạo test_set
+        Set<String> randomTestSetCodes = randomTestSetCode(test.getId(), 1);
+        String testSetCode = !ObjectUtils.isEmpty(randomTestSetCodes) ? randomTestSetCodes.toArray()[0].toString() : "";
+        TestSet newTestSet = TestSet.builder()
+            .testId(test.getId())
+            .testNo(String.valueOf(ObjectUtil.getOrDefault(testSetRepository.getMaxCurrentTestNoByTestId(test.getId()), 0) + 1))
+            .code(testSetCode)
+            .totalPoint(test.getTotalPoint())
+            .questionMark(calculateQuestionMark(test.getTotalPoint(), test.getQuestionQuantity()))
+            .isEnabled(Boolean.TRUE)
+            .build();
+        newTestSet.setCreatedBy(currentUserId);
+        newTestSet.setCreatedAt(new Date());
+        newTestSet = testSetRepository.save(newTestSet);
+        // tạo test_set_question
+        List<TestSetQuestion> lstTestSetQuestion = new ArrayList<>();
+        for (TestQuestionAnswerUpdateDTO question : createDTO.getQuestions()) {
+            lstTestSetQuestion.add(TestSetQuestion.builder()
+                .testSetId(newTestSet.getId())
+                .questionId(question.getQuestionId())
+                .questionNo(question.getQuestionNo())
+                .questionMark(calculateQuestionMark(test.getTotalPoint(), createDTO.getQuestions().size()))
+                .lstAnswer(question.getAnswers())
+                .build());
+        }
+        testSetQuestionRepository.saveAll(lstTestSetQuestion);
+        return new TestSetPreviewDTO(newTestSet.getId(), newTestSet.getCode(), newTestSet.getTestNo(), test.getId());
+    }
 
     @Override
     public TestSetDetailDTO getTestSetDetail(TestSetSearchReqDTO searchReqDTO) {

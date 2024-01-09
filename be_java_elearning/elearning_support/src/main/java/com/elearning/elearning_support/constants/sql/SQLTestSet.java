@@ -25,4 +25,7 @@ public class SQLTestSet {
             "    JOIN {h-schema}exam_class AS exClass ON exClass.test_id = test.id \n" +
             "WHERE exClass.code IN (:examClassCodes) AND testSet.code IN (:testCodes)";
 
+    public static final String GET_MAX_CURRENT_TEST_NO_BY_TEST_ID =
+        "SELECT MAX(CAST(test_no AS int4)) AS maxTestNo FROM {h-schema}test_set WHERE test_id = :testId";
+
 }
