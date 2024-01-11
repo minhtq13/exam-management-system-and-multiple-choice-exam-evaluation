@@ -7,6 +7,7 @@ const initialState = {
 	questionItem: null,
 	examClassCode: null,
 	testInfo: {},
+	detailExamClass: {},
 };
 
 const appReducer = createSlice({
@@ -31,6 +32,9 @@ const appReducer = createSlice({
 		setTestInfo: (state, action) => {
 			state.testInfo = action.payload;
 		},
+		setDetailExamClass: (state, action) => {
+			state.detailExamClass = action.payload;
+		},
 	},
 });
 
@@ -41,5 +45,6 @@ export const {
 	setQuestionItem,
 	setExamClassCode,
 	setTestInfo,
+	setDetailExamClass
 } = appReducer.actions;
 export default appReducer.reducer;

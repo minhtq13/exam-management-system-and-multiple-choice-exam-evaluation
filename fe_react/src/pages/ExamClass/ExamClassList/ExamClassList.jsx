@@ -14,7 +14,7 @@ import useCombo from "../../../hooks/useCombo";
 import useExamClasses from "../../../hooks/useExamClass";
 import useImportExport from "../../../hooks/useImportExport";
 import useNotify from "../../../hooks/useNotify";
-import { setSelectedItem } from "../../../redux/slices/appSlice";
+import { setDetailExamClass, setSelectedItem } from "../../../redux/slices/appSlice";
 import { deleteExamClassService } from "../../../services/examClassServices";
 import "./ExamClassList.scss";
 import { customPaginationText } from "../../../utils/tools";
@@ -45,6 +45,7 @@ const ExamClassList = () => {
   const { subLoading, allSubjects, getAllSubjects, allSemester, semesterLoading, getAllSemesters } =
     useCombo();
   const { exportExamClass, exportExamClassStudent } = useImportExport();
+  const dispatch = useDispatch();
   const [deleteKey, setDeleteKey] = useState(null);
   const [importLoading, setImportLoading] = useState(false);
   const [param, setParam] = useState(initialParam);
@@ -55,6 +56,8 @@ const ExamClassList = () => {
   const [classId, setClassId] = useState(null);
   const [classCode, setClassCode] = useState(null);
   const [record, setRecord] = useState({});
+  const [pageSize, setPageSize] = useState(10);
+
   useEffect(() => {
     if (classId) {
       getParticipants(classId, roleType);
@@ -81,8 +84,8 @@ const ExamClassList = () => {
   const semesterOptions =
     allSemester && allSemester.length > 0
       ? allSemester.map((item) => {
-        return { value: item.id, label: item.name };
-      })
+          return { value: item.id, label: item.name };
+        })
       : [];
   const subjectOnChange = (value) => {
     setParam({ ...param, subjectId: value });
@@ -96,7 +99,7 @@ const ExamClassList = () => {
       dataIndex: "name",
       key: "name",
       width: "25%",
-      align: "center"
+      align: "center",
     },
     {
       title: roleType === "STUDENT" ? "MSSV" : "Mã cán bộ",
@@ -115,7 +118,7 @@ const ExamClassList = () => {
       align: "center",
     },
     {
-      title: "Điểm",
+      title: "Điểm thi",
       dataIndex: "totalPoints",
       key: "totalPoint",
       width: "12%",
@@ -138,12 +141,14 @@ const ExamClassList = () => {
         key: (index + 1).toString(),
         name: itemA.name,
         code: itemA.code,
-      }
+      };
     }
   });
   const handleExportStudent = () => {
     exportExamClassStudent(classCode);
   };
+
+  const renderTabStatistic = () => {};
   const renderTab = () => {
     return (
       <div className="exam-class-tabs">
@@ -158,7 +163,7 @@ const ExamClassList = () => {
               type="primary"
               //onClick={handleUpload}
               disabled={!fileList}
-            //loading={loadingImport}
+              //loading={loadingImport}
             >
               Import
             </Button>
@@ -171,6 +176,26 @@ const ExamClassList = () => {
           columns={roleType === "STUDENT" ? [...tabsColumn, ...addTabsColumn] : tabsColumn}
           dataSource={tabsData}
           loading={partiLoading || resultLoading}
+          pagination={{
+            pageSize: pageSize,
+            total: tabsData.length,
+            locale: customPaginationText,
+            showQuickJumper: true,
+            showSizeChanger: true,
+            showTotal: (total, range) => (
+              <span>
+                <strong>
+                  {range[0]}-{range[1]}
+                </strong>{" "}
+                trong <strong>{total}</strong> bản ghi
+              </span>
+            ),
+            pageSizeOptions: ["10", "20", "50", "100"],
+            onChange: (page, pageSize) => {},
+            onShowSizeChange: (current, size) => {
+              setPageSize(size);
+            },
+          }}
         />
       </div>
     );
@@ -185,6 +210,11 @@ const ExamClassList = () => {
       key: "SUPERVISOR",
       label: "Giám thị",
       children: renderTab(),
+    },
+    {
+      key: "statistic",
+      label: "Thống kê",
+      children: renderTabStatistic(),
     },
   ];
 
@@ -290,7 +320,6 @@ const ExamClassList = () => {
       }
     },
   });
-  const dispatch = useDispatch();
   const onRow = (record) => {
     return {
       onClick: () => {
@@ -374,12 +403,22 @@ const ExamClassList = () => {
       align: "center",
       render: (_, record) => (
         <Space size="middle" style={{ cursor: "pointer" }}>
-          <ActionButton icon="detail" handleClick={() => {
-            setRecord(record);
-            setClassId(record.id);
-            setClassCode(record.code);
-            setOpenModal(true);
-          }} />
+          <ActionButton
+            icon="detail"
+            handleClick={() => {
+              dispatch(
+                setDetailExamClass({
+                  record: record,
+                  classId: record.id,
+                  classCode: record.code,
+                })
+              );
+              setRecord(record);
+              setClassId(record.id);
+              setClassCode(record.code);
+              setOpenModal(true);
+            }}
+          />
           <ActionButton icon="edit" handleClick={() => handleEdit(record)} />
         </Space>
       ),
@@ -394,7 +433,10 @@ const ExamClassList = () => {
     subjectTitle: obj.subjectTitle,
     time: obj.examineTime,
     date: obj.examineDate,
-    examineTime: obj.examineTime === null && obj.examineDate === null ? "" : `${obj.examineTime} - ${obj.examineDate}`,
+    examineTime:
+      obj.examineTime === null && obj.examineDate === null
+        ? ""
+        : `${obj.examineTime} - ${obj.examineDate}`,
     numberOfStudents: obj.numberOfStudents ?? 0,
     numberOfSupervisors: obj.numberOfSupervisors ?? 0,
     id: obj.id,
@@ -428,6 +470,9 @@ const ExamClassList = () => {
       }
     );
   };
+  const handleDetail = () => {
+    navigate(`${appPath.examClassDetail}/${classId}`);
+  };
   const handleExport = () => {
     exportExamClass(param.semesterId, "exam-class");
   };
@@ -435,7 +480,6 @@ const ExamClassList = () => {
     <div className="exam-class-list">
       <div className="header-exam-class-list">
         <p>Danh sách lớp thi</p>
-
       </div>
       <div className="search-filter-button">
         <div className="examclass-subject-semester">
@@ -549,16 +593,25 @@ const ExamClassList = () => {
           title="Danh sách người tham gia"
           onOk={() => setOpenModal(false)}
           onCancel={() => setOpenModal(false)}
+          footer={[
+            <Button onClick={handleDetail}>Chi tiết</Button>,
+            <Button type="primary" onClick={() => setOpenModal(false)}>
+              Ok
+            </Button>,
+          ]}
           maskClosable={true}
           centered={true}
         >
+          {/* HERE */}
           <div className="exam-class-participant-details">
             <div className="exam-class-info-details">
               <div className="exam-class-participant-left">
                 <div>{`Môn thi: ${record.subjectTitle}`}</div>
                 <div>{`Mã lớp thi: ${record.code}`}</div>
                 <div>{`Học kỳ: ${record.semester}`}</div>
-                <div>{`Trạng thái: ${resultData.length > 0 ? "Đã có điểm thi" : "Chưa có điểm thi"}`}</div>
+                <div>{`Trạng thái: ${
+                  resultData.length > 0 ? "Đã có điểm thi" : "Chưa có điểm thi"
+                }`}</div>
               </div>
               <div className="exam-class-participant-right">
                 <div>{`Phòng thi: ${record.roomName}`}</div>
