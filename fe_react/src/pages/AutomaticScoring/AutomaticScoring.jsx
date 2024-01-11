@@ -75,8 +75,6 @@ const AutomaticScoring = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [examClassCode, refreshTableImage]);
-  console.log("imgInFolder", imgInFolder)
-  console.log("examClassCode", examClassCode)
   const handleSubmit = () => {
     resetTableResult({}, false);
     setResultAI([]);

@@ -3,6 +3,7 @@ import AdminDashboard from "../pages/Dashboard/AdminDashboard/AdminDashboard";
 import StudentDashboard from "../pages/Dashboard/StudentDashboard/StudentDashboard";
 import TeacherDashboard from "../pages/Dashboard/TeacherDashboard/TeacherDashboard";
 import ExamClassAdd from "../pages/ExamClass/ExamClassCreate/ExamClassCreate";
+import ExamClassDetail from "../pages/ExamClass/ExamClassDetail/ExamClassDetail";
 import ExamClassEdit from "../pages/ExamClass/ExamClassEdit/ExamClassEdit";
 
 import ExamClassList from "../pages/ExamClass/ExamClassList/ExamClassList";
@@ -83,6 +84,7 @@ const publicRoutes = [
 	{ path: appPath.examClassCreate, component: ExamClassAdd },
 	{ path: appPath.examClassEdit, component: ExamClassEdit },
 	{ path: appPath.examClassEdit + "/:id", component: ExamClassEdit },
+	{ path: appPath.examClassDetail + "/:id", component: ExamClassDetail },
 	// user
 	{ path: appPath.createUser, component: CreateUser },
 	{ path: appPath.profileUser, component: ProfileUser },

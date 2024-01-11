@@ -53,7 +53,7 @@ const Header = () => {
           onChange={(event) => handleOnChange(event)}
           onSearch={(value) => handleOnSearch(value)}
         /> */}
-        TRƯỜNG ĐẠI HỌC BÁCH KHOA HÀ NỘI
+        HỆ THỐNG HỖ TRỢ ĐÁNH GIÁ KẾT QUẢ THI TRẮC NGHIỆM - TRƯỜNG ĐẠI HỌC BÁCH KHOA HÀ NỘI
         <img src={logoDHBK} alt=""  style={{ marginLeft: 20, maxWidth: 35}}/>
       </div>
       <div className="header-noti-account">
