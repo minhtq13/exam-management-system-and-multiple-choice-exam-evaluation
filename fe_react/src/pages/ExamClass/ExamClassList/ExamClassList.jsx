@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { ImportOutlined, SearchOutlined, VerticalAlignTopOutlined } from "@ant-design/icons";
+import { ImportOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Modal, Select, Space, Table, Tabs } from "antd";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";

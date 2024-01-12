@@ -162,7 +162,6 @@ const ExamClassDetail = () => {
       label: <h3>Giám thị</h3>,
       children: renderTab(),
     },
-
   ];
   return (
     <div>
