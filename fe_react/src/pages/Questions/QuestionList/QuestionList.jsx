@@ -172,6 +172,13 @@ const QuestionList = () => {
           />
         </div>
         <div className="test-level">
+
+        </div>
+        <div className="list-search">
+          <span className="list-search-filter-label">Tìm kiếm:</span>
+          <Input.Search placeholder="Nhập nội dung câu hỏi" enterButton onSearch={onSearch} allowClear onChange={onChange} />
+        </div>
+        <div className="test-level">
           <span className="select-label">Mức độ:</span>
           <Select
             defaultValue={"ALL"}
@@ -179,10 +186,6 @@ const QuestionList = () => {
             options={levelOptions}
             onChange={levelOnchange}
           />
-        </div>
-        <div className="list-search">
-          <span className="list-search-filter-label">Tìm kiếm:</span>
-          <Input.Search placeholder="Nhập nội dung câu hỏi" enterButton onSearch={onSearch} allowClear onChange={onChange} />
         </div>
       </div>
       <Spin spinning={quesLoading} tip="Đang tải...">

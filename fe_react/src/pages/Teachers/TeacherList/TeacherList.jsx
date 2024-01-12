@@ -18,6 +18,7 @@ import { convertGender } from "../../../utils/tools";
 import "./TeacherList.scss";
 import SearchFilter from "../../../components/SearchFilter/SearchFilter";
 import debounce from "lodash.debounce";
+import { ImportOutlined } from "@ant-design/icons";
 
 const TeacherList = () => {
   const initialParam = {
@@ -196,10 +197,6 @@ const TeacherList = () => {
       <div className="search-filter-button">
         <SearchFilter displayFilter={false} placeholder="Nhập tên hoặc mã cán bộ" onSearch={onSearch} onChange={onChange} />
         <div className="block-button">
-          <Button className="options" onClick={handleExport}>
-            <img src={exportIcon} alt="Tải xuống Icon" />
-            Tải xuống
-          </Button>
           <ModalPopup
             buttonOpenModal={
               <Button className="options" disabled={deleteDisable}>
@@ -215,6 +212,10 @@ const TeacherList = () => {
             ok={"Đồng ý"}
             onAccept={handleDelete}
           />
+          <Button className="options" onClick={handleExport}>
+            <img src={exportIcon} alt="Tải xuống Icon" />
+            Tải xuống
+          </Button>
           <Input type="file" name="file" onChange={(e) => handleChange(e)}></Input>
           <Button
             type="primary"
@@ -222,7 +223,7 @@ const TeacherList = () => {
             disabled={!fileList}
             loading={loadingImport}
           >
-            Import
+            <ImportOutlined/> Import
           </Button>
         </div>
       </div>

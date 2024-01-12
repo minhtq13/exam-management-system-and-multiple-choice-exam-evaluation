@@ -45,6 +45,5 @@ export const {
 	setQuestionItem,
 	setExamClassCode,
 	setTestInfo,
-	setDetailExamClass
 } = appReducer.actions;
 export default appReducer.reducer;

@@ -80,6 +80,17 @@ export const getAuthenticationName = () => {
   return "";
 };
 
+export const setDetailExamClass = (detailExamClass) => {
+  localStorage.setItem("detailExamClass", JSON.stringify(detailExamClass));
+}
+export const getDetailExamClass = () => {
+  const detailExamClass = localStorage.getItem("detailExamClass");
+  if (checkDataInLocalStorage(detailExamClass)) {
+    return JSON.parse(detailExamClass);
+  }
+  return "";
+}
+
 // export const getUserInfo = () => {
 //     const userInfo = localStorage.getItem("_currentUser");
 
