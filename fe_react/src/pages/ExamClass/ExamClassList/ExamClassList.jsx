@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { SearchOutlined } from "@ant-design/icons";
+import { ImportOutlined, SearchOutlined, VerticalAlignTopOutlined } from "@ant-design/icons";
 import { Button, Input, Modal, Select, Space, Table, Tabs } from "antd";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
@@ -8,17 +8,18 @@ import { useNavigate } from "react-router-dom";
 import deleteIcon from "../../../assets/images/svg/delete-icon.svg";
 import deletePopUpIcon from "../../../assets/images/svg/delete-popup-icon.svg";
 import exportIcon from "../../../assets/images/svg/export-icon.svg";
+import ActionButton from "../../../components/ActionButton/ActionButton";
 import ModalPopup from "../../../components/ModalPopup/ModalPopup";
 import { appPath } from "../../../config/appPath";
 import useCombo from "../../../hooks/useCombo";
 import useExamClasses from "../../../hooks/useExamClass";
 import useImportExport from "../../../hooks/useImportExport";
 import useNotify from "../../../hooks/useNotify";
-import { setDetailExamClass, setSelectedItem } from "../../../redux/slices/appSlice";
+import { setSelectedItem } from "../../../redux/slices/appSlice";
 import { deleteExamClassService } from "../../../services/examClassServices";
-import "./ExamClassList.scss";
+import { setDetailExamClass } from "../../../utils/storage";
 import { customPaginationText } from "../../../utils/tools";
-import ActionButton from "../../../components/ActionButton/ActionButton";
+import "./ExamClassList.scss";
 
 const ExamClassList = () => {
   const initialParam = {
@@ -59,7 +60,7 @@ const ExamClassList = () => {
   const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
-    if (classId) {
+    if (classId && roleType !== "STATISTIC") {
       getParticipants(classId, roleType);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -148,7 +149,6 @@ const ExamClassList = () => {
     exportExamClassStudent(classCode);
   };
 
-  const renderTabStatistic = () => {};
   const renderTab = () => {
     return (
       <div className="exam-class-tabs">
@@ -165,12 +165,12 @@ const ExamClassList = () => {
               disabled={!fileList}
               //loading={loadingImport}
             >
-              Import
+              <ImportOutlined/> Import
             </Button>
           </div>
         )}
         <Table
-          scroll={{ y: 265 }}
+          scroll={{ y: 235 }}
           size="small"
           className="exam-class-participant"
           columns={roleType === "STUDENT" ? [...tabsColumn, ...addTabsColumn] : tabsColumn}
@@ -210,11 +210,6 @@ const ExamClassList = () => {
       key: "SUPERVISOR",
       label: "Giám thị",
       children: renderTab(),
-    },
-    {
-      key: "statistic",
-      label: "Thống kê",
-      children: renderTabStatistic(),
     },
   ];
 
@@ -357,10 +352,8 @@ const ExamClassList = () => {
       title: "Phòng thi",
       dataIndex: "roomName",
       key: "roomName",
-      // eslint-disable-next-line jsx-a11y/anchor-is-valid
       render: (text) => <a>{text}</a>,
-      ...getColumnSearchProps("fullName"),
-      width: "10%",
+      width: "8%",
       align: "center",
     },
     {
@@ -406,13 +399,11 @@ const ExamClassList = () => {
           <ActionButton
             icon="detail"
             handleClick={() => {
-              dispatch(
-                setDetailExamClass({
-                  record: record,
-                  classId: record.id,
-                  classCode: record.code,
-                })
-              );
+              setDetailExamClass({
+                record: record,
+                classId: record.id,
+                classCode: record.code,
+              });
               setRecord(record);
               setClassId(record.id);
               setClassCode(record.code);
@@ -420,6 +411,17 @@ const ExamClassList = () => {
             }}
           />
           <ActionButton icon="edit" handleClick={() => handleEdit(record)} />
+          <ActionButton
+            icon="statistic"
+            handleClick={() => {
+              setDetailExamClass({
+                record: record,
+                classId: record.id,
+                classCode: record.code,
+              });
+              navigate(`${appPath.examClassDetail}/${record.id}`);
+            }}
+          />
         </Space>
       ),
     },
@@ -515,10 +517,7 @@ const ExamClassList = () => {
           </div>
         </div>
         <div className="block-button">
-          <Button className="options" onClick={handleExport}>
-            <img src={exportIcon} alt="Tải xuống Icon" />
-            Tải xuống
-          </Button>
+      
           <ModalPopup
             buttonOpenModal={
               <Button className="options" disabled={deleteDisable}>
@@ -534,6 +533,10 @@ const ExamClassList = () => {
             icon={deletePopUpIcon}
             onAccept={handleDelete}
           />
+          <Button className="options" onClick={handleExport}>
+            <img src={exportIcon} alt="Tải xuống Icon" />
+            Tải xuống
+          </Button>
           <Input type="file" name="file" onChange={(e) => handleChange(e)}></Input>
           <Button
             type="primary"
@@ -541,7 +544,7 @@ const ExamClassList = () => {
             disabled={!fileList}
             loading={importLoading}
           >
-            Import
+            <ImportOutlined/> Import
           </Button>
         </div>
       </div>
@@ -594,7 +597,7 @@ const ExamClassList = () => {
           onOk={() => setOpenModal(false)}
           onCancel={() => setOpenModal(false)}
           footer={[
-            <Button onClick={handleDetail}>Chi tiết</Button>,
+            <Button onClick={handleDetail}>Thống kê</Button>,
             <Button type="primary" onClick={() => setOpenModal(false)}>
               Ok
             </Button>,

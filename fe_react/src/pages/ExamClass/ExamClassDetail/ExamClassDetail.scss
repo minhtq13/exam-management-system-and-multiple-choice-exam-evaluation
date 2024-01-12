@@ -97,20 +97,7 @@
   min-width: 50vw;
 
   .ant-table-body {
-    min-height: 396px;
-  }
-
-  .ant-modal-content {
-    height: 90vh;
-
-    .ant-modal-body {
-      height: 73vh;
-    }
-  }
-
-  .ant-table {
-    max-height: 50vh;
-    overflow-y: scroll;
+    min-height: 390px;
   }
 }
 
@@ -123,4 +110,8 @@
     font-size: 16px;
     margin-bottom: 5px;
   }
+}
+.charts {
+  display: flex;
+  gap: 20px;
 }

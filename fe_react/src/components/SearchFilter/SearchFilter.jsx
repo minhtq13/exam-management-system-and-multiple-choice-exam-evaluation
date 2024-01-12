@@ -12,6 +12,7 @@ const SearchFilter = ({ placeholder, displayFilter, onSearch, options, onChange,
         <div className="list-filter">
           <span className="list-search-filter-label">Khóa:</span>
           <Select
+            className="filter-select-course-num"
             mode="multiple"
             placeholder="Chọn khóa"
             showSearch

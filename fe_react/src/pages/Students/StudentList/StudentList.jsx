@@ -18,6 +18,7 @@ import { convertGender, courseNumOptions, customPaginationText } from "../../../
 import SearchFilter from "../../../components/SearchFilter/SearchFilter";
 import "./StudentList.scss";
 import debounce from "lodash.debounce";
+import { ImportOutlined } from "@ant-design/icons";
 
 const StudentList = () => {
   const initialParam = {
@@ -237,7 +238,7 @@ const StudentList = () => {
             disabled={!fileList}
             loading={loadingImport}
           >
-            Import
+            <ImportOutlined/> Import
           </Button>
         </div>
       </div>

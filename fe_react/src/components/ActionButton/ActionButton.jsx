@@ -60,6 +60,11 @@ const ActionButton = ({ icon, handleClick, color = HUST_COLOR }) => {
           icon: <DownloadOutlined style={{ color: color }} />,
           toolTip: "Download"
         }
+      case "statistic":
+        return {
+          icon: <UnorderedListOutlined  style={{ color: color }} />,
+          toolTip: "Thống kê"
+        }
       default:
         return {
           icon: <EditOutlined style={{ color: color }} />,

@@ -1,25 +1,22 @@
 import { Button, Input, Table, Tabs } from "antd";
 import React, { useEffect, useState } from "react";
-import useImportExport from "../../../hooks/useImportExport";
 import exportIcon from "../../../assets/images/svg/export-icon.svg";
 import useExamClasses from "../../../hooks/useExamClass";
-import { useSelector } from "react-redux";
-import { customPaginationText } from "../../../utils/tools";
-import "./ExamClassDetail.scss";
+import useImportExport from "../../../hooks/useImportExport";
 import { HUST_COLOR } from "../../../utils/constant";
+import { getDetailExamClass } from "../../../utils/storage";
+import { customPaginationText } from "../../../utils/tools";
+import ChartColumn from "./ChartColumn";
+import ChartPie from "./ChartPie";
+import "./ExamClassDetail.scss";
+import { ImportOutlined } from "@ant-design/icons";
 
 const ExamClassDetail = () => {
-  const { detailExamClass } = useSelector((state) => state.appReducer);
-  useEffect(() => {
-    setClassCode(detailExamClass.classCode);
-    setRecord(detailExamClass.record);
-    setClassId(detailExamClass.classId);
-  }, [detailExamClass]);
+  const detailExamClass = getDetailExamClass();
   const [fileList, setFileList] = useState(null);
   const [roleType, setRoleType] = useState("STUDENT");
-  const [classCode, setClassCode] = useState(null);
-  const [record, setRecord] = useState({});
-  const [classId, setClassId] = useState(null);
+  const classId = detailExamClass.classId;
+  const record = detailExamClass.record;
 
   const { partiLoading, participants, getParticipants, resultLoading, resultData } =
     useExamClasses();
@@ -32,7 +29,7 @@ const ExamClassDetail = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [classId, roleType]);
   const handleExportStudent = () => {
-    exportExamClassStudent(classCode);
+    exportExamClassStudent(detailExamClass.classCode);
   };
   const handleChange = (e) => {
     setFileList(e.target.files[0]);
@@ -90,7 +87,14 @@ const ExamClassDetail = () => {
 
   const [pageSize, setPageSize] = useState(10);
 
-  const renderTabStatistic = () => {};
+  const renderTabStatistic = () => {
+    return (
+      <div className="charts">
+        <ChartColumn/>
+        <ChartPie/>
+      </div>
+    )
+  };
   const renderTab = () => {
     return (
       <div className="exam-class-tabs">
@@ -107,12 +111,12 @@ const ExamClassDetail = () => {
               disabled={!fileList}
               //loading={loadingImport}
             >
-              Import
+              <ImportOutlined/> Import
             </Button>
           </div>
         )}
         <Table
-          scroll={{ y: 396 }}
+          scroll={{ y: 390 }}
           size="small"
           className="exam-class-detail-participants"
           columns={roleType === "STUDENT" ? [...tabsColumn, ...addTabsColumn] : tabsColumn}
@@ -144,6 +148,11 @@ const ExamClassDetail = () => {
   };
   const tabsOptions = [
     {
+      key: "STATISTIC",
+      label: <h3>Thống kê</h3>,
+      children: renderTabStatistic(),
+    },
+    {
       key: "STUDENT",
       label: <h3>Sinh viên</h3>,
       children: renderTab(),
@@ -153,11 +162,7 @@ const ExamClassDetail = () => {
       label: <h3>Giám thị</h3>,
       children: renderTab(),
     },
-    {
-      key: "STATISTIC",
-      label: <h3>Thống kê</h3>,
-      children: renderTabStatistic(),
-    },
+
   ];
   return (
     <div>
@@ -169,20 +174,23 @@ const ExamClassDetail = () => {
           <div className="exam-class-participant-left">
             <div>{`Môn thi: ${record.subjectTitle}`}</div>
             <div>{`Mã lớp thi: ${record.code}`}</div>
+          </div>
+          <div className="exam-class-participant-right">
             <div>{`Học kỳ: ${record.semester}`}</div>
-          </div>
-          <div className="exam-class-participant-right">
             <div>{`Phòng thi: ${record.roomName}`}</div>
-            <div>{`Ngày thi: ${record.date}`}</div>
+       
           </div>
           <div className="exam-class-participant-right">
+            <div>{`Ngày thi: ${record.date}`}</div>
             <div>{`Giờ thi: ${record.time}`}</div>
+          </div>
+          <div className="exam-class-participant-right">
             <div>{`Trạng thái: ${
               resultData.length > 0 ? "Đã có điểm thi" : "Chưa có điểm thi"
             }`}</div>
           </div>
         </div>
-        <Tabs defaultActiveKey="STUDENT" items={tabsOptions} onChange={(key) => setRoleType(key)} />
+        <Tabs defaultActiveKey="STATISTIC" items={tabsOptions} onChange={(key) => setRoleType(key)} />
       </div>
     </div>
   );
