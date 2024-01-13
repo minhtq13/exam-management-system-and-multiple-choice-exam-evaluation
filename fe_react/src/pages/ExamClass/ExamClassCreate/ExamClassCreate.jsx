@@ -11,7 +11,6 @@ const ExamClassAdd = () => {
   const [lstSupervisorId, setLstSupervisorId] = useState([]);
   const notify = useNotify();
   const onFinish = (value) => {
-    console.log(selectedTestId)
     setLoading(true);
     addExamClassService(
       {

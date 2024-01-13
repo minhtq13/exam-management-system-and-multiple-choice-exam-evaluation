@@ -94,7 +94,6 @@ const AddQuestions = () => {
   };
   const notify = useNotify();
   const onFinish = (values) => {
-    console.log(value.lstQuestion);
     const isValid =
       values.lstQuestion &&
       values.lstQuestion.every((question, questionIndex) => {
@@ -200,7 +199,7 @@ const AddQuestions = () => {
             <>
               {parentFields.map((parentField, parentIndex) => (
                 <div
-                  key={`fragQuestions${parentField.key}`}
+                  key={parentIndex}
                   className="question-list"
                   name={[
                     parentField.name,
@@ -210,7 +209,6 @@ const AddQuestions = () => {
                   <div className="question-text">
                     <Form.Item
                       className="topic-Text"
-                      key={`content${parentField.key}`}
                       {...parentField}
                       label={`Câu ${parentIndex + 1}:`}
                       name={[parentField.name, `content`]}
@@ -232,7 +230,6 @@ const AddQuestions = () => {
                       />
                     </Form.Item>
                     <Form.Item
-                      key={`level${parentField.key}`}
                       {...parentField}
                       label={"Mức độ"}
                       name={[parentField.name, `level`]}
@@ -263,7 +260,6 @@ const AddQuestions = () => {
                     </div>
                   </div>
                   <Form.List
-                    key={`lstAnswer${parentField.key}`}
                     {...parentField}
                     name={[parentField.name, `lstAnswer`]}
                     initialValue={[
@@ -279,18 +275,11 @@ const AddQuestions = () => {
                   >
                     {(childFields, childListOperations) => (
                       <div className="answers">
-                        {childFields.map(
-                          (
-                            childField,
-                            childIndex
-                          ) => {
+                        {childFields.map((childField, childIndex) => {
                             return (
                               <div
-                                key={`frAnswers${childField.key}-${parentIndex}`}
-                                name={[
-                                  childField.name,
-                                  `frAnswers${childField.key}`,
-                                ]}
+                                key={`${childIndex}-${parentIndex}`}
+                                name={[childField.name,`frAnswers${childField.key}`,]}
                                 className="answer-list"
                               >
                                 <div className="answer-list-text-checkbox">
@@ -301,25 +290,16 @@ const AddQuestions = () => {
                                         childField.name,
                                         `isCorrect`,
                                       ]}
-                                      key={`isCorrect${childField.key}-${parentField.key}`}
                                       valuePropName="checked"
                                     >
                                       <Checkbox
-                                        checked={
-                                          checked
-                                        }
-                                        onChange={
-                                          onChange
-                                        }
+                                        checked={checked}
+                                        onChange={onChange}
                                       />
                                     </Form.Item>
                                     <Form.Item
                                       {...childField}
-                                      name={[
-                                        childField.name,
-                                        `content`,
-                                      ]}
-                                      key={`content${childField.key}-${parentField.key}`}
+                                      name={[childField.name,`content`,]}
                                       rules={[
                                         {
                                           required: true,
@@ -331,25 +311,10 @@ const AddQuestions = () => {
                                     >
                                       <ReactQuill
                                         theme="snow"
-                                        modules={
-                                          modules
-                                        }
-                                        formats={
-                                          formats
-                                        }
-                                        value={
-                                          value
-                                        }
-                                        onChange={(
-                                          value
-                                        ) => {
-                                          setValue(
-                                            value
-                                          );
-                                          console.log(
-                                            value
-                                          );
-                                        }}
+                                        modules={modules}
+                                        formats={formats}
+                                        value={value}
+                                        onChange={(value) => {setValue(value);}}
                                         bounds="#root"
                                         placeholder="Nhập câu trả lời..."
                                       />
@@ -358,17 +323,10 @@ const AddQuestions = () => {
                                   <div className="remove-answer">
                                     <Button
                                       type="dashed"
-                                      onClick={() =>
-                                        childListOperations.remove(
-                                          childIndex
-                                        )
-                                      }
-                                      icon={
-                                        <DeleteOutlined />
-                                      }
+                                      onClick={() => childListOperations.remove(childIndex)}
+                                      icon={<DeleteOutlined />}
                                     />
                                   </div>
-
                                 </div>
                               </div>
                             );
@@ -377,12 +335,8 @@ const AddQuestions = () => {
                         {childFields.length < 4 && (
                           <Form.Item className="add-answer-btn">
                             <Button
-                              onClick={() =>
-                                childListOperations.add()
-                              }
-                              icon={
-                                <PlusOutlined />
-                              }
+                              onClick={() => childListOperations.add()}
+                              icon={<PlusOutlined />}
                             >
                               Thêm tùy chọn
                             </Button>

@@ -106,13 +106,16 @@
 .list-test-modal {
   height: 70vh;
   min-width: 40vw;
-
+  
   .ant-modal-content {
     height: 70vh;
-
+    
     .ant-modal-body {
       height: 55vh;
       overflow-y: scroll;
     }
+  }
+  .ant-modal-footer {
+    margin-top: 0px !important;
   }
 }

@@ -236,11 +236,11 @@ const TestEdit = () => {
                                     },
                                   ]}
                                 >
-                                  <Input onChange={(e) => handleQuestionNumberChange(parentIndex, e.target.value)} />
+                                  <Input className="input-change-question" onChange={(e) => handleQuestionNumberChange(parentIndex, e.target.value)} />
                                 </Form.Item>
                                 <Form.Item
                                   className="content"
-                                  key={`content${parentField.key}`}
+                                  key={`content${parentField.key}-${parentField.key}`}
                                   {...parentField}
                                   name={[
                                     parentField.name,
@@ -261,7 +261,7 @@ const TestEdit = () => {
                               </div>
                             </div>
                             <Form.List
-                              key={`answers${parentField.key}`}
+                              key={`answers${parentField.key}-${parentField.key}`}
                               {...parentField}
                               name={[
                                 parentField.name,
@@ -362,8 +362,13 @@ const TestEdit = () => {
         title="Hướng dẫn"
         onOk={() => setOpenModal(false)}
         onCancel={() => setOpenModal(false)}
-        okText="Đã hiểu"
+        className="modal-instruction"
         centered={true}
+        footer={[
+          <Button type="primary" onClick={() => setOpenModal(false)}>
+            Đã hiểu
+          </Button>,
+        ]}
       >
         <p>
           Vui lòng điền số thứ tự câu hỏi và câu trả lời vào ô nhập

@@ -15,12 +15,6 @@ const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isCollapse } = useSelector((state) => state.appReducer);
-  // const handleOnChange = debounce((event) => {
-  //   console.log(event.target.value);
-  // }, 300);
-  // const handleOnSearch = (value) => {
-  //   console.log(value);
-  // };
   const toggleCollapsed = () => {
     dispatch(setIsCollapse(!isCollapse));
   };

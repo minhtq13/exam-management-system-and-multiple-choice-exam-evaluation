@@ -22,11 +22,13 @@
     }
 
     .test-edit-left {
-      width: 40%;
+      width: 25%;
       display: flex;
       flex-direction: column;
       background-color: #ffffff;
       padding: 20px;
+      margin-bottom: 13px;
+      border-radius: 10px;
 
       .left-content {
         display: flex;
@@ -315,6 +317,10 @@
   .question-text-order {
     display: flex;
     width: 100%;
+    gap: 20px;
+    .input-change-question {
+      min-width: 50px;
+    }
   }
 
   .topic-Text {

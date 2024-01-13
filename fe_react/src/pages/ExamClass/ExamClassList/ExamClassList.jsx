@@ -597,8 +597,8 @@ const ExamClassList = () => {
           onOk={() => setOpenModal(false)}
           onCancel={() => setOpenModal(false)}
           footer={[
-            <Button onClick={handleDetail}>Thống kê</Button>,
-            <Button type="primary" onClick={() => setOpenModal(false)}>
+            <Button key="statistic" onClick={handleDetail}>Thống kê</Button>,
+            <Button key="ok" type="primary" onClick={() => setOpenModal(false)}>
               Ok
             </Button>,
           ]}
