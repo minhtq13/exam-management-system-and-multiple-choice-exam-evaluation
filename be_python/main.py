@@ -52,13 +52,12 @@ def get_marker(image, model, filename, folder_code = ""):
                 (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 0.4 if conf > threshold_warning else 0.5,
                 blue_color if conf > threshold_warning else warning_color, 1,cv2.LINE_AA)
         # Handle errors
-        maybe_wrong_marker = []
         if count_marker2 != 1 or count_maker1 != 3:
-            error_message = f"Xem lại ảnh đầu vào {filename} có thể bị thiếu góc"
+            error_message = f"{filename}"
             maybe_wrong_marker.append(error_message)
-            with open(f"{SHARED_DATA_DIR}/AnsweredSheets/{folder_code}/MayBeWrong/error_{filename.split('.')[0]}.txt", "w", encoding="utf-8") as f:
-                for string in maybe_wrong_marker:
-                    f.write(string + "\n")
+            # with open(f"{SHARED_DATA_DIR}/AnsweredSheets/{folder_code}/MayBeWrong/error.txt", "w", encoding="utf-8") as f:
+            #     for string in maybe_wrong_marker:
+            #         f.write(string + "\n")
             raise Exception(error_message)
         oriented, marker_coordinates_true = orient_image_by_angle(list_marker, marker_coordinates)
         oritentation = ''
@@ -78,8 +77,7 @@ def get_marker(image, model, filename, folder_code = ""):
         output = generate_output(image, corners)
         return output, oritentation, maybe_wrong_marker
     except Exception as e:
-        print(e)
-        return None, None, None
+        return None, None, maybe_wrong_marker
 # ============================================ CUT IMAGE COLUMN ANSWER =======================================
 
 def crop_image_answer(img, numberAnswer):
@@ -136,7 +134,7 @@ def predictAnswer(img, model, index, numberAnswer):
         conf =  round(float(answer[4]), 3)
         class_answer = int(answer[5])
         if conf < threshold_warning:
-            maybe_wrong_answer.append(f'Kiểm tra lại nhãn "{get_class(class_answer)}" tại câu {i+1} ảnh {filename}, có xác suất: {conf}')
+            maybe_wrong_answer.append(f'Nhãn "{get_class(class_answer)}" câu {i+1}, ảnh {filename}, xác suất: {conf}')
         for char in str(get_class(class_answer)):
             point1, point2, point3, point4 = get_coordinates(x1, y1, x2, y2, char)
             cv2.rectangle(img, (point1, point2), (point3, point4), green_color if conf > threshold_warning else warning_color,
@@ -171,7 +169,6 @@ def predictInfo(img, model, filename):
     list_label = sorted(list_label, key=lambda x: x[0])
     list_label = remove_elements_info(list_label)
     dict_info = {}
-    maybe_wrong_info = []
     for i, info in enumerate(list_label):
         class_info = get_class(int(info[5]))
         dict_info[f"{i+1}"] = class_info
@@ -182,7 +179,7 @@ def predictInfo(img, model, filename):
         conf = round(float(info[4]), 3)
         class_info = int(info[5])
         if conf < threshold_warning:
-            maybe_wrong_info.append(f'Kiểm tra lại nhãn thứ {i} từ trái sang phải: "{get_class(class_info)}", có xác suất: {conf}, tại ảnh {filename}')
+            maybe_wrong_info.append(f'Nhãn thứ {i} từ trái sang phải: "{get_class(class_info)}", xác suất: {conf}, ảnh {filename}')
 
         point1, point2, point3, point4 = get_coordinates_info(x1, y1, x2, y2, get_class(class_info))
         cv2.rectangle(img, (point1, point2), (point3, point4), 
@@ -258,6 +255,10 @@ if __name__ == "__main__":
         except OSError:
             print(f"Lỗi: Không thể tạo thư mục {folder_maybe_wrong}.")            
             
+    maybe_wrong_info = []
+    maybe_wrong_answer_array = []
+    maybe_wrong_marker = []
+
 
     # ================================= Chương trình chính=================================
     file_names = os.listdir(folder_path)
@@ -289,7 +290,6 @@ if __name__ == "__main__":
             result_answer, size_array, coord_array = crop_image_answer(cv2.convertScaleAbs(document * 255), numberAnswer)
             list_answer = []
             array_img_graft = []
-            maybe_wrong_answer_array = []
             for i, answer in enumerate(result_answer):
                 selected_answer, img_graft, maybe_wrong_answer = predictAnswer(img=answer, model=model, index=i, numberAnswer=numberAnswer)
                 list_answer = list_answer + selected_answer
@@ -330,14 +330,18 @@ if __name__ == "__main__":
             with open(file_path, "w") as file:
                 json.dump(result, file)
             # =============================== Ghi file cảnh báo có thể sai ==========================
-            if len(maybe_wrong_info) > 0 or len(maybe_wrong_answer_array) > 0:
-                with open(f"{folder_maybe_wrong}/warning_{filename.split('.')[0]}.txt", "w", encoding="utf-8") as f:
-                    if len(maybe_wrong_info) > 0:
-                        for string in maybe_wrong_info:
-                            f.write(string + "\n")
-                    if len(maybe_wrong_answer_array) > 0:
-                        for string in maybe_wrong_answer_array:
-                            f.write(string + "\n")
+           
 
         # ========================================= Đo thời gian ==========================
         # print("Thời gian thực thi: ", time.time() - start_time, " giây")
+    if len(maybe_wrong_info) > 0 or len(maybe_wrong_answer_array) > 0 or len(maybe_wrong_marker):
+        with open(f"{folder_maybe_wrong}/may_be_wrong.txt", "w", encoding="utf-8") as f:
+            if len(maybe_wrong_marker) > 0:
+                for string in maybe_wrong_marker:
+                    f.write(string + "\n")
+            if len(maybe_wrong_info) > 0:
+                for string in maybe_wrong_info:
+                    f.write(string + "\n")
+            if len(maybe_wrong_answer_array) > 0:
+                for string in maybe_wrong_answer_array:
+                    f.write(string + "\n")
