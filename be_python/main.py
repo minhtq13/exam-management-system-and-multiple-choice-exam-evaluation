@@ -53,7 +53,7 @@ def get_marker(image, model, filename, folder_code = ""):
                 blue_color if conf > threshold_warning else warning_color, 1,cv2.LINE_AA)
         # Handle errors
         if count_marker2 != 1 or count_maker1 != 3:
-            error_message = f"{filename}"
+            error_message = f"Ảnh {filename} không nhận diện được đủ marker hoặc có thể bị thiếu góc"
             maybe_wrong_marker.append(error_message)
             # with open(f"{SHARED_DATA_DIR}/AnsweredSheets/{folder_code}/MayBeWrong/error.txt", "w", encoding="utf-8") as f:
             #     for string in maybe_wrong_marker:

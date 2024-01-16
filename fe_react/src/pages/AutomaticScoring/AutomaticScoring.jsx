@@ -2,7 +2,7 @@ import { Button, Form, Select, Space } from "antd";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import iconArrow from "../../assets/images/svg/arrow-under-header.svg";
-import deletePopUpIcon from "../../assets/images/svg/delete-popup-icon.svg";
+import confirmIcon from "../../assets/images/svg/confirm.svg";
 import ModalPopup from "../../components/ModalPopup/ModalPopup";
 import useAI from "../../hooks/useAI";
 import useNotify from "../../hooks/useNotify";
@@ -10,6 +10,7 @@ import "./AutomaticScoring.scss";
 import HeaderSelect from "./HeaderSelect";
 import ModalSelectedImage from "./ModalSelectedImage";
 import TableResult from "./TableResult";
+import MayBeWrong from "./MayBeWrong";
 
 const { Option } = Select;
 
@@ -54,6 +55,7 @@ const AutomaticScoring = () => {
   const {
     getModelAI,
     resultAI,
+    mayBeWrong,
     loading,
     resetTableResult,
     setResultAI,
@@ -76,9 +78,9 @@ const AutomaticScoring = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [examClassCode, refreshTableImage]);
   const handleSubmit = () => {
-    resetTableResult({}, false);
-    setResultAI([]);
     if (imgInFolder.length > 0) {
+      resetTableResult({}, false);
+      setResultAI([]);
       getModelAI(examClassCode);
     } else {
       notify.error("Vui lòng tải ảnh lên!");
@@ -118,13 +120,14 @@ const AutomaticScoring = () => {
                   Chấm điểm
                 </Button>
               }
-              icon={deletePopUpIcon}
+              icon={confirmIcon}
               title="Chấm điểm"
               message={"Bạn chắc chắn muốn chấm điểm những ảnh đã chọn? "}
-              confirmMessage={"Bạn có thể xem lại các ảnh được chấm ở bên cạnh nút chấm điểm!"}
+              confirmMessage={"Quá trình này có thể mất một khoảng thời gian, bạn có thể xem lại các ảnh được chấm ở bên cạnh nút chấm điểm!"}
               ok={"Đồng ý"}
               onAccept={handleSubmit}
             />
+            <MayBeWrong mayBeWrong={mayBeWrong} examClassCode={examClassCode}/>
             <Button
               onClick={handleReset}
               className="button-reset-table-result"
