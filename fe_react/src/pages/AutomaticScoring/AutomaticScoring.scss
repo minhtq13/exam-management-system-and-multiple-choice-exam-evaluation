@@ -208,4 +208,23 @@
   align-items: center !important;
   justify-content: center !important;
 }
-
+.may-be-wrong-modal {
+  .may-be-wrong-content {
+    .header-mbw-content {
+      margin: 20px 0px;
+      font-size: 16px;
+    }
+    .result-mbw {
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+    .mbw-value {
+      margin: 12px 8px;
+    }
+    .hint-mbw {
+      color: #a0a0a0;
+      font-style: italic;
+      margin-top: 20px;
+    }
+  }
+}

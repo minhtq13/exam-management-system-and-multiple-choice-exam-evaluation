@@ -81,7 +81,7 @@ const ModalPopup = ({
 				]}
 			>
 				<div className="modal-popup-content">
-					<img src={icon} alt="" />
+					<img className="icon" src={icon} alt="" />
 					<p
 						className="text-bold"
 						style={{
