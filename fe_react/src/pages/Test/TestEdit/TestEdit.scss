@@ -9,6 +9,7 @@
     font-weight: 600;
     color: var(--hust-color);
     margin-bottom: 15px;
+    text-align: center;
   }
 
   .test-edit-button {
@@ -164,7 +165,7 @@
     max-height: 100%;
     overflow-y: scroll;
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;
     background-color: #ffffff;
     padding: 10px 10px 10px 25px;
     justify-content: flex-start;

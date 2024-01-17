@@ -85,8 +85,8 @@ const ExamClassList = () => {
   const semesterOptions =
     allSemester && allSemester.length > 0
       ? allSemester.map((item) => {
-          return { value: item.id, label: item.name };
-        })
+        return { value: item.id, label: item.name };
+      })
       : [];
   const subjectOnChange = (value) => {
     setParam({ ...param, subjectId: value });
@@ -163,9 +163,9 @@ const ExamClassList = () => {
               type="primary"
               //onClick={handleUpload}
               disabled={!fileList}
-              //loading={loadingImport}
+            //loading={loadingImport}
             >
-              <ImportOutlined/> Import
+              <ImportOutlined /> Import
             </Button>
           </div>
         )}
@@ -191,7 +191,7 @@ const ExamClassList = () => {
               </span>
             ),
             pageSizeOptions: ["10", "20", "50", "100"],
-            onChange: (page, pageSize) => {},
+            onChange: (page, pageSize) => { },
             onShowSizeChange: (current, size) => {
               setPageSize(size);
             },
@@ -517,7 +517,7 @@ const ExamClassList = () => {
           </div>
         </div>
         <div className="block-button">
-      
+
           <ModalPopup
             buttonOpenModal={
               <Button className="options" disabled={deleteDisable}>
@@ -544,7 +544,7 @@ const ExamClassList = () => {
             disabled={!fileList}
             loading={importLoading}
           >
-            <ImportOutlined/> Import
+            <ImportOutlined /> Import
           </Button>
         </div>
       </div>
@@ -612,9 +612,8 @@ const ExamClassList = () => {
                 <div>{`Môn thi: ${record.subjectTitle}`}</div>
                 <div>{`Mã lớp thi: ${record.code}`}</div>
                 <div>{`Học kỳ: ${record.semester}`}</div>
-                <div>{`Trạng thái: ${
-                  resultData.length > 0 ? "Đã có điểm thi" : "Chưa có điểm thi"
-                }`}</div>
+                <div>{`Trạng thái: ${resultData.length > 0 ? "Đã có điểm thi" : "Chưa có điểm thi"
+                  }`}</div>
               </div>
               <div className="exam-class-participant-right">
                 <div>{`Phòng thi: ${record.roomName}`}</div>

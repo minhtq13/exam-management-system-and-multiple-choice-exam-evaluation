@@ -8,6 +8,7 @@
     font-weight: 600;
     color: var(--hust-color);
     margin-bottom: 18px;
+    text-align: center;
   }
 
   .test-edit-body {
@@ -318,6 +319,7 @@
     display: flex;
     width: 100%;
     gap: 20px;
+
     .input-change-question {
       min-width: 50px;
     }
