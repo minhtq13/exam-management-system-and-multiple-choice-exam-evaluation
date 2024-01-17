@@ -1,18 +1,23 @@
 .subject-chapters-top {
-  display: flex;
   background-color: #ffffff;
   padding: 20px 30px;
   border-radius: 15px;
-  gap: 20px;
-  width: 100%;
-  flex-wrap: wrap;
+
+  .subject-chapter,
+  .search-level {
+    width: 100%;
+    display: flex;
+    gap: 50px;
+    align-items: center;
+  }
 
   .test-chapters,
   .test-subject {
     display: flex;
     align-items: center;
-    width: 35%;
+    width: 45%;
     gap: 10px;
+    margin-bottom: 20px;
 
     .select-label {
       font-size: 16px;
@@ -30,6 +35,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    width: 45%;
 
     .list-search-filter-label {
       font-weight: bold;
@@ -38,9 +44,7 @@
     }
 
     .ant-input-wrapper {
-      input {
-        width: 215px !important;
-      }
+      width: 96% !important;
     }
   }
 

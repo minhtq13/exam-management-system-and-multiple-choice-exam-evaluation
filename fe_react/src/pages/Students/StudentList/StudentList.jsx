@@ -81,7 +81,7 @@ const StudentList = () => {
       key: "name",
       // eslint-disable-next-line jsx-a11y/anchor-is-valid
       render: (text) => <a>{text}</a>,
-      width: "25%",
+      width: "20%",
     },
     {
       title: "Khóa",
@@ -95,6 +95,11 @@ const StudentList = () => {
       dataIndex: "email",
       key: "email",
       width: "22%",
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phoneNumber",
+      key: "phoneNumber",
     },
     {
       title: "Giới tính",
@@ -146,6 +151,7 @@ const StudentList = () => {
     code: obj.code,
     id: obj.id,
     courseNum: obj.courseNum,
+    phoneNumber: obj.phoneNumber
   }));
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const onSelectChange = (newSelectedRowKeys) => {
@@ -238,7 +244,7 @@ const StudentList = () => {
             disabled={!fileList}
             loading={loadingImport}
           >
-            <ImportOutlined/> Import
+            <ImportOutlined /> Import
           </Button>
         </div>
       </div>

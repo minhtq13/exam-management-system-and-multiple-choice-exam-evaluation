@@ -132,60 +132,61 @@ const QuestionList = () => {
   return (
     <div className="question-list">
       <div className="subject-chapters-top">
-        <div className="test-subject">
-          <span className="select-label">Học phần:</span>
-          <Select
-            allowClear
-            showSearch
-            placeholder="Chọn môn học"
-            optionFilterProp="children"
-            filterOption={(input, option) =>
-              (option?.label.toLowerCase() ?? "").includes(
-                input.toLowerCase()
-              )
-            }
-            optionLabelProp="label"
-            options={subjectOptions}
-            onChange={subjectOnChange}
-            loading={subLoading}
-          />
+        <div className="subject-chapter">
+          <div className="test-subject">
+            <span className="select-label">Học phần:</span>
+            <Select
+              allowClear
+              showSearch
+              placeholder="Chọn môn học"
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                (option?.label.toLowerCase() ?? "").includes(
+                  input.toLowerCase()
+                )
+              }
+              optionLabelProp="label"
+              options={subjectOptions}
+              onChange={subjectOnChange}
+              loading={subLoading}
+            />
+          </div>
+          <div className="test-chapters">
+            <span className="select-label">Chương:</span>
+            <Select
+              disabled={subjectId === null}
+              mode="multiple"
+              showSearch
+              allowClear
+              placeholder="Chọn chương"
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                (option?.label.toLowerCase() ?? "").includes(
+                  input.toLowerCase()
+                )
+              }
+              optionLabelProp="label"
+              options={chapterOptions}
+              onChange={chapterOnchange}
+              loading={chapterLoading}
+              value={chapterId}
+            />
+          </div>
         </div>
-        <div className="test-chapters">
-          <span className="select-label">Chương:</span>
-          <Select
-            disabled={subjectId === null}
-            mode="multiple"
-            showSearch
-            allowClear
-            placeholder="Chọn chương"
-            optionFilterProp="children"
-            filterOption={(input, option) =>
-              (option?.label.toLowerCase() ?? "").includes(
-                input.toLowerCase()
-              )
-            }
-            optionLabelProp="label"
-            options={chapterOptions}
-            onChange={chapterOnchange}
-            loading={chapterLoading}
-            value={chapterId}
-          />
-        </div>
-        <div className="test-level">
-
-        </div>
-        <div className="list-search">
-          <span className="list-search-filter-label">Tìm kiếm:</span>
-          <Input.Search placeholder="Nhập nội dung câu hỏi" enterButton onSearch={onSearch} allowClear onChange={onChange} />
-        </div>
-        <div className="test-level">
-          <span className="select-label">Mức độ:</span>
-          <Select
-            defaultValue={"ALL"}
-            optionLabelProp="label"
-            options={levelOptions}
-            onChange={levelOnchange}
-          />
+        <div className="search-level">
+          <div className="list-search">
+            <span className="list-search-filter-label">Tìm kiếm:</span>
+            <Input.Search placeholder="Nhập nội dung câu hỏi" enterButton onSearch={onSearch} allowClear onChange={onChange} />
+          </div>
+          <div className="test-level">
+            <span className="select-label">Mức độ:</span>
+            <Select
+              defaultValue={"ALL"}
+              optionLabelProp="label"
+              options={levelOptions}
+              onChange={levelOnchange}
+            />
+          </div>
         </div>
       </div>
       <Spin spinning={quesLoading} tip="Đang tải...">

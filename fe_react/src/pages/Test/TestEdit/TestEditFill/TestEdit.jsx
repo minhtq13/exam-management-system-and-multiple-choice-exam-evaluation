@@ -24,8 +24,8 @@ const TestEdit = () => {
   const [checkQues, setCheckQues] = useState([]);
   const notify = useNotify();
   const location = useLocation();
-  const code = location.pathname.split("/")[3];
-  const testId = location.pathname.split("/")[4];
+  const code = location.pathname.split("/")[4];
+  const testId = location.pathname.split("/")[3];
   useEffect(() => {
     if (!editLoading) {
       setLoadingData(true);

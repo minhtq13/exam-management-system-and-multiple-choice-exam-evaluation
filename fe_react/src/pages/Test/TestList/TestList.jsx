@@ -214,7 +214,7 @@ const TestList = () => {
   };
 
   const handleEdit = () => {
-    navigate(`${appPath.testEdit}/${testNo}/${testItem.id}`);
+    navigate(`${appPath.testEdit}/${testItem.id}/${testNo}`);
   };
 
   return (
