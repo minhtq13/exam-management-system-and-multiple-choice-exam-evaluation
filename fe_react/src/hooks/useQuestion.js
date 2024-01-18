@@ -24,6 +24,7 @@ const useQuestions = () => {
 				: null,
 			payload.level,
 			payload.search,
+			payload.testId,
 			(res) => {
 				setAllQuestions(res.data);
 				setQuesLoading(false);

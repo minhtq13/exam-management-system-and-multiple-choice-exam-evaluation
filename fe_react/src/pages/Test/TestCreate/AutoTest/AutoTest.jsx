@@ -1,15 +1,14 @@
 import { Button, Col, DatePicker, Form, Input, Modal, Row, Select } from "antd";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { appPath } from "../../../../config/appPath";
 import useCombo from "../../../../hooks/useCombo";
 import useNotify from "../../../../hooks/useNotify";
-import { setTestInfo } from "../../../../redux/slices/appSlice";
 import { testRandomService } from "../../../../services/testServices";
 import { disabledDate } from "../../../../utils/tools";
 import "./AutoTest.scss";
+import { setDetailTest } from "../../../../utils/storage";
 
 const AutoTest = ({ chapterIds, formKey, subjectId, levelCal, sumQues, subjectOptions }) => {
   const [loading, setLoading] = useState(false);
@@ -24,7 +23,6 @@ const AutoTest = ({ chapterIds, formKey, subjectId, levelCal, sumQues, subjectOp
   const [form] = Form.useForm();
   const { allSemester, semesterLoading, getAllSemesters } = useCombo();
   const notify = useNotify();
-  const dispatch = useDispatch();
   useEffect(() => {
     getAllSemesters({ search: "" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -138,7 +136,7 @@ const AutoTest = ({ chapterIds, formKey, subjectId, levelCal, sumQues, subjectOp
         >
           <Input placeholder="Nhập tên kỳ thi" disabled={!chapterIds.length > 0} />
         </Form.Item>
-       <Form.Item
+        <Form.Item
           name="duration"
           label="Thời gian thi (phút):"
           rules={[
@@ -167,8 +165,8 @@ const AutoTest = ({ chapterIds, formKey, subjectId, levelCal, sumQues, subjectOp
             disabled={!chapterIds.length > 0}
           ></DatePicker>
         </Form.Item>
-      
-          <Form.Item
+
+        <Form.Item
           name="questionQuantity"
           label="Số câu hỏi:"
           rules={[
@@ -223,7 +221,7 @@ const AutoTest = ({ chapterIds, formKey, subjectId, levelCal, sumQues, subjectOp
             <Col >
               <Form.Item
                 name={["generateConfig", "numEasyQuestion"]}
-                rules={[{ validator: () => checkConfigLevel(easyNumber, levelCal[0]) } ]}
+                rules={[{ validator: () => checkConfigLevel(easyNumber, levelCal[0]) }]}
               >
                 <Input
                   style={{ minWidth: 150 }}
@@ -297,12 +295,14 @@ const AutoTest = ({ chapterIds, formKey, subjectId, levelCal, sumQues, subjectOp
         title="Tạo đề thi thành công!"
         onOk={() => {
           navigate(`${appPath.testSetCreate}/${testId}`)
-          dispatch(setTestInfo({
-            duration: formValue.duration,
-            questionQuantity: formValue.questionQuantity,
-            subjectName: subjectOptions && subjectOptions.length > 0 ? (subjectOptions.find(item => item.value === subjectId) || {}).label : null,
-            semester: options.find(item => item.value === formValue.semesterId).label
-          }))
+          setDetailTest(
+            {
+              duration: formValue.duration,
+              questionQuantity: formValue.questionQuantity,
+              subjectName: subjectOptions && subjectOptions.length > 0 ? (subjectOptions.find(item => item.value === subjectId) || {}).label : null,
+              semester: options.find(item => item.value === formValue.semesterId).label
+            }
+          )
         }
         }
         onCancel={() => setOpenModal(false)}

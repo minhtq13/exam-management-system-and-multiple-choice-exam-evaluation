@@ -1,95 +1,108 @@
 export const checkDataInLocalStorage = (data) => {
-  if (!data || data === null || data === undefined || data === "null" || data === "undefined") {
-    return false;
-  }
-  return true;
+	if (
+		!data ||
+		data === null ||
+		data === undefined ||
+		data === "null" ||
+		data === "undefined"
+	) {
+		return false;
+	}
+	return true;
 };
 
-export const saveInfoToLocalStorage = (
-  accessToken,
-  refreshToken,
-  roles
-) => {
-  localStorage.setItem("role", roles);
-  localStorage.setItem("access_token", accessToken);
-  localStorage.setItem("refresh_token", refreshToken);
+export const saveInfoToLocalStorage = (accessToken, refreshToken, roles) => {
+	localStorage.setItem("role", roles);
+	localStorage.setItem("access_token", accessToken);
+	localStorage.setItem("refresh_token", refreshToken);
 };
 export const saveUserInfo = (username, email, role, message) => {
-  localStorage.setItem("username", username);
-  localStorage.setItem("email", email);
-  localStorage.setItem("role", role);
-  localStorage.setItem("message", message);
+	localStorage.setItem("username", username);
+	localStorage.setItem("email", email);
+	localStorage.setItem("role", role);
+	localStorage.setItem("message", message);
 };
 
 export const getUserName = () => {
-  return localStorage.getItem("username");
+	return localStorage.getItem("username");
 };
 export const getRole = () => {
-  return localStorage.getItem("role");
+	return localStorage.getItem("role");
 };
 
 export const getUserInfo = () => {
-  const userInfo = {
-    username: localStorage.getItem("username"),
-    email: localStorage.getItem("email"),
-    role: localStorage.getItem("role"),
-  };
+	const userInfo = {
+		username: localStorage.getItem("username"),
+		email: localStorage.getItem("email"),
+		role: localStorage.getItem("role"),
+	};
 
-  return userInfo;
+	return userInfo;
 };
 
 export const clearInfoLocalStorage = () => {
-  localStorage.removeItem("username");
-  localStorage.removeItem("email");
-  localStorage.removeItem("role");
-  localStorage.removeItem("message");
-  localStorage.removeItem("access_token");
-  localStorage.removeItem("refresh_token");
+	localStorage.removeItem("username");
+	localStorage.removeItem("email");
+	localStorage.removeItem("role");
+	localStorage.removeItem("message");
+	localStorage.removeItem("access_token");
+	localStorage.removeItem("refresh_token");
 };
 export const clearAllToken = () => {
-  localStorage.removeItem("access_token");
-  localStorage.removeItem("refresh_token");
+	localStorage.removeItem("access_token");
+	localStorage.removeItem("refresh_token");
 };
 
 export const getToken = () => {
-  const token = localStorage.getItem("access_token");
-  return token;
+	const token = localStorage.getItem("access_token");
+	return token;
 };
 
 export const getRefreshToken = () => {
-  const rfToken = localStorage.getItem("refresh_token");
-  return rfToken;
+	const rfToken = localStorage.getItem("refresh_token");
+	return rfToken;
 };
 
 export const getTimeExpr = () => {
-  const time = localStorage.getItem("_timeExpr");
-  return time;
+	const time = localStorage.getItem("_timeExpr");
+	return time;
 };
 export const setToken = (token) => {
-  localStorage.setItem("access_token", token);
+	localStorage.setItem("access_token", token);
 };
 
 export const setRefeshToken = (refeshToken) => {
-  localStorage.setItem("refresh_token", refeshToken);
+	localStorage.setItem("refresh_token", refeshToken);
 };
 export const getAuthenticationName = () => {
-  const username = localStorage.getItem("authenticationName");
-  if (checkDataInLocalStorage(username)) {
-    return username;
-  }
-  return "";
+	const username = localStorage.getItem("authenticationName");
+	if (checkDataInLocalStorage(username)) {
+		return username;
+	}
+	return "";
 };
 
 export const setDetailExamClass = (detailExamClass) => {
-  localStorage.setItem("detailExamClass", JSON.stringify(detailExamClass));
-}
+	localStorage.setItem("detailExamClass", JSON.stringify(detailExamClass));
+};
 export const getDetailExamClass = () => {
-  const detailExamClass = localStorage.getItem("detailExamClass");
-  if (checkDataInLocalStorage(detailExamClass)) {
-    return JSON.parse(detailExamClass);
-  }
-  return "";
-}
+	const detailExamClass = localStorage.getItem("detailExamClass");
+	if (checkDataInLocalStorage(detailExamClass)) {
+		return JSON.parse(detailExamClass);
+	}
+	return "";
+};
+
+export const setDetailTest = (detailTest) => {
+	localStorage.setItem("detailTest", JSON.stringify(detailTest));
+};
+export const getDetailTest = () => {
+	const detailTest = localStorage.getItem("detailTest");
+	if (checkDataInLocalStorage(detailTest)) {
+		return JSON.parse(detailTest);
+	}
+	return "";
+};
 
 // export const getUserInfo = () => {
 //     const userInfo = localStorage.getItem("_currentUser");

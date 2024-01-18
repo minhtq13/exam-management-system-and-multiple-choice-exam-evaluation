@@ -187,3 +187,183 @@
   display: flex;
   gap: 10px;
 }
+
+.test-set-create-manual {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  height: 73vh;
+
+  .question-items {
+    margin-bottom: 15px;
+    width: 100%;
+
+    .text-preview {
+      width: 100%;
+      text-align: center;
+      align-self: center;
+    }
+
+    .ql-container {
+      border: none;
+    }
+
+    .ql-editor {
+      padding: 0px;
+      border: none;
+
+      img {
+        max-width: 250px !important;
+        object-fit: contain;
+      }
+    }
+
+    .topic-remove {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .btn-space {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+    }
+
+    .topic-level {
+      display: flex;
+      align-items: first baseline;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .question-topic {
+      margin-bottom: 5px;
+      font-size: 16px;
+      display: flex;
+      gap: 5px;
+      width: 92%;
+
+      .question-number {
+        flex-shrink: 0;
+        font-weight: bold;
+      }
+
+    }
+
+    .answer-items {
+      font-size: 16px;
+      display: flex;
+      gap: 5px;
+    }
+
+    .corrected {
+      font-weight: bold;
+      display: flex;
+      gap: 5px;
+    }
+  }
+
+  .manual-preview {
+    width: 49%;
+
+    .manual-preview-content {
+      background-color: #ffffff;
+      padding: 20px;
+      width: 100%;
+      height: 92%;
+      overflow-y: scroll;
+    }
+
+    .btn-save-manual {
+      display: flex;
+      justify-content: center;
+
+      .ant-btn {
+        margin-top: 15px;
+      }
+    }
+
+  }
+
+  .manual-fill {
+    width: 49%;
+    height: 100%;
+
+    .ant-checkbox-group {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+
+      .ant-checkbox-wrapper {
+        display: flex;
+        justify-content: flex-start;
+
+        span :nth-child(3) {
+          width: 100% !important;
+        }
+
+        .ant-checkbox {
+          display: block;
+          align-self: flex-start;
+          margin-top: 2px;
+        }
+      }
+    }
+
+    .ant-spin-nested-loading {
+      top: 10px;
+      width: 100%;
+      background-color: #ffffff;
+      height: 93%;
+    }
+
+    .ant-spin-container {
+      margin-top: 10px;
+      background-color: #ffffff;
+      padding: 20px;
+      height: 100%;
+      overflow-y: scroll;
+      width: 100%;
+    }
+  }
+
+  .test-level {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    .ant-select {
+      width: 100px;
+    }
+  }
+
+  .search-level {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    justify-content: space-between;
+
+    .list-search-filter-label {
+      font-weight: bold;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .list-search {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 60%;
+
+      .ant-input-wrapper {
+        width: 98% !important;
+
+        .ant-btn {
+          margin-top: 0px !important;
+        }
+      }
+    }
+  }
+}
