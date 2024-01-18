@@ -97,3 +97,15 @@ export const updateTestSetService = async (
 		errorCallback
 	);
 };
+export const createTestSetService = async (
+	params,
+	successCallback,
+	errorCallback
+) => {
+	await postRequest(
+		`${apiPath.testSetManual}`,
+		params,
+		successCallback,
+		errorCallback
+	);
+};

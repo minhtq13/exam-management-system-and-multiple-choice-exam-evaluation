@@ -1,11 +1,11 @@
 
 import { useState } from "react";
 import "./TestSetCreate.scss";
-import { useSelector } from "react-redux";
 import { Tabs } from "antd";
 import TestSetCreateAuto from "./TestSetCreateAuto";
 import { useLocation } from "react-router-dom";
 import TestSetCreateManual from "./TestSetCreateManual";
+import { getDetailTest } from "../../../utils/storage";
 const TestSetCreate = () => {
   const [tabKey, setTabKey] = useState("auto");
   const location = useLocation();
@@ -22,7 +22,7 @@ const TestSetCreate = () => {
       children: <TestSetCreateManual testId={testId} />
     },
   ]
-  const { testInfo } = useSelector((state) => state.appReducer);
+  const testInfo = getDetailTest();
   const tabOnchange = (value) => {
     setTabKey(value);
   };

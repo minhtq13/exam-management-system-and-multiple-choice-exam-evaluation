@@ -15,12 +15,13 @@ import useCombo from "../../../hooks/useCombo";
 import useImportExport from "../../../hooks/useImportExport";
 import useNotify from "../../../hooks/useNotify";
 import useTest from "../../../hooks/useTest";
-import { setSelectedItem, setTestInfo } from "../../../redux/slices/appSlice";
+import { setSelectedItem } from "../../../redux/slices/appSlice";
 import { deleteTestService, testSetDetailService } from "../../../services/testServices";
 import "./TestList.scss";
 import { customPaginationText, downloadTestPdf } from "../../../utils/tools";
 import { HUST_COLOR } from "../../../utils/constant";
 import ActionButton from "../../../components/ActionButton/ActionButton";
+import { setDetailTest } from "../../../utils/storage";
 const TestList = () => {
   const [deleteDisable, setDeleteDisable] = useState(true);
   const { allTest, getAllTests, tableLoading, pagination } = useTest();
@@ -39,7 +40,7 @@ const TestList = () => {
   const [testSetNos, setTestSetNos] = useState([]);
   const [param, setParam] = useState(initialParam);
   const handleCreate = (record) => {
-    dispatch(setTestInfo(record));
+    setDetailTest(record);
     navigate(`${appPath.testSetCreate}/${record.id}`);
   };
   useEffect(() => {

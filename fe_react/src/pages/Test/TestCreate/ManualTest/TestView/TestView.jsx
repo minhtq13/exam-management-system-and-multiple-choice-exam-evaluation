@@ -8,13 +8,11 @@ import useNotify from "../../../../../hooks/useNotify";
 import { appPath } from "../../../../../config/appPath";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useDispatch } from "react-redux";
-import { setTestInfo } from "../../../../../redux/slices/appSlice";
+import { setDetailTest } from "../../../../../utils/storage";
 const TestView = ({
   questionList,
   startTime,
   duration,
-  totalPoint,
   name,
   subjectId,
   semesterId,
@@ -44,7 +42,6 @@ const TestView = ({
     setLevelCounts(getLevelCounts(checkValues));
   };
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const notify = useNotify();
   const onCreate = () => {
     setLoading(true);
@@ -166,12 +163,12 @@ const TestView = ({
         title="Tạo đề thi thành công!"
         onOk={() => {
           navigate(`${appPath.testSetCreate}/${testId}`);
-          dispatch(setTestInfo({
+          setDetailTest({
             duration: duration,
             questionQuantity: generateConfig.numTotalQuestion,
             subjectName: subjectOptions && subjectOptions.length > 0 ? (subjectOptions.find(item => item.value === subjectId) || {}).label : null,
             semester: semesterOptions ? semesterOptions.find(item => item.value === semesterId).label : null
-          }))
+          })
         }
         }
         onCancel={() => setOpenModal(false)}
