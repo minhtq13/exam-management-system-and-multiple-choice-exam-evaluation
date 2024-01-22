@@ -26,6 +26,18 @@ const TestView = ({
   const [testId, setTestId] = useState(null);
   const [numberQues, setNumberQues] = useState(0);
   const [levelCounts, setLevelCounts] = useState({ 0: 0, 1: 0, 2: 0 });
+  const [checkPer, setCheckPer] = useState([]);
+  const mergeArray = (...arrays) => {
+    const uniqueValues = arrays.reduce((acc, currentArray) => {
+      currentArray.forEach(value => {
+        acc.add(value);
+      });
+      return acc;
+    }, new Set());
+
+    return [...uniqueValues];
+  }
+
   const getLevelCounts = (ids) => {
     let levelCount = { 0: 0, 1: 0, 2: 0 };
     const filteredArray = questionList.filter(ques => ids.includes(ques.id));
@@ -37,9 +49,15 @@ const TestView = ({
     return levelCount;
   }
   const onChange = (checkValues) => {
+    let arr = checkPer;
+    arr.push(checkValues);
+    setCheckPer(arr);
+    const result = mergeArray(...arr);
     setQesIds(checkValues);
-    setNumberQues(checkValues.length);
+    //setNumberQues(ids.length);
     setLevelCounts(getLevelCounts(checkValues));
+    console.log(arr)
+    console.log("a", result)
   };
   const navigate = useNavigate();
   const notify = useNotify();
