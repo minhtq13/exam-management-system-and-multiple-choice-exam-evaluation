@@ -61,7 +61,6 @@ const TestSetCreateManual = ({ testId }) => {
   const [param, setParam] = useState(initialParam);
   const [lstPreview, setLstPreview] = useState([]);
   const [checkIds, setCheckIds] = useState([]);
-  const [openModal, setOpenModal] = useState(false);
   const [code, setCode] = useState(null);
   const [loading, setLoading] = useState(false);
   const notify = useNotify();
@@ -76,6 +75,7 @@ const TestSetCreateManual = ({ testId }) => {
     setLstPreview(allQuestions.filter(item => checkValues.includes(item.id)));
   };
   const questionRender = (item, index, isPreview) => {
+    console.log(lstPreview.length === 0)
     return (
       <div className="question-items" key={index}>
         <div className="topic-level">
@@ -160,49 +160,47 @@ const TestSetCreateManual = ({ testId }) => {
   }
   return (
     <div className="test-set-create-manual">
-      <div className="manual-fill">
-        <div className="search-level">
-          <div className="list-search">
-            <span className="list-search-filter-label">Tìm kiếm:</span>
-            <Input.Search placeholder="Nhập nội dung câu hỏi" enterButton onSearch={onSearch} allowClear onChange={onChange} />
+      <div className="manual-content">
+        <div className="manual-fill">
+          <div className="search-level">
+            <div className="list-search">
+              <span className="list-search-filter-label">Tìm kiếm:</span>
+              <Input.Search placeholder="Nhập nội dung câu hỏi" enterButton onSearch={onSearch} allowClear onChange={onChange} />
+            </div>
+            <div className="test-level">
+              <span className="list-search-filter-label">Mức độ:</span>
+              <Select
+                defaultValue={"ALL"}
+                optionLabelProp="label"
+                options={levelOptions}
+                onChange={levelOnchange}
+              />
+            </div>
           </div>
-          <div className="test-level">
-            <span className="list-search-filter-label">Mức độ:</span>
-            <Select
-              defaultValue={"ALL"}
-              optionLabelProp="label"
-              options={levelOptions}
-              onChange={levelOnchange}
-            />
+          <Spin spinning={quesLoading} tip="Đang tải">
+            <Checkbox.Group options={questionOptions} onChange={selectChange} />
+          </Spin>
+        </div>
+        <div className="manual-preview">
+          <div className="manual-preview-code">
+            <span className="manual-preview-code-label">Mã đề thi:</span>
+            <Input value={code} onChange={(e) => setCode(e.target.value)} placeholder="Nhập mã đề thi" />
+          </div>
+          <div className="manual-preview-content">
+            {lstPreview.length > 0 ? lstPreview.map((item, index) => {
+              return questionRender(item, index, true);
+            }) : <div className="preview-noti">Vui lòng chọn câu hỏi và xem trước đề thi ở đây!</div>}
           </div>
         </div>
-        <Spin spinning={quesLoading} tip="Đang tải">
-          <Checkbox.Group options={questionOptions} onChange={selectChange} />
-        </Spin>
       </div>
-      <div className="manual-preview">
-        <div className="manual-preview-content">
-          {lstPreview.map((item, index) => {
-            return questionRender(item, index, true);
-          })}
-        </div>
-        <div className="btn-save-manual">
-          <Button
-            type="primary"
-            style={{ width: 80, height: 40 }}
-            onClick={() => setOpenModal(true)}
-          >Lưu</Button>
-        </div>
+      <div className="btn-save-manual">
+        <Button
+          type="primary"
+          style={{ width: 80, height: 40 }}
+          onClick={onCreate}
+          loading={loading}
+        >Lưu</Button>
       </div>
-      <Modal open={openModal} title="Nhập mã đề thi"
-        onOk={onCreate}
-        onCancel={() => setOpenModal(false)}
-        okText="Lưu"
-        cancelText="Đóng"
-        centered
-      >
-        <Input value={code} onChange={(e) => setCode(e.target.value)} />
-      </Modal>
     </div>
   )
 }
