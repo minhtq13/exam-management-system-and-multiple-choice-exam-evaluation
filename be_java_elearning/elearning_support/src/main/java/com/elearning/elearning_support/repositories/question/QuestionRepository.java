@@ -27,7 +27,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     Set<IQuestionAnswerDTO> getListQuestionIdInTest(Long testId);
 
     @Query(nativeQuery = true, value = SQLQuestion.GET_LIST_QUESTION_IN_TEST)
-    List<IListQuestionDTO> getListQuestionInTest(Long testId, String search);
+    List<IListQuestionDTO> getListQuestionInTest(Long testId, String search, Integer questionLevel);
 
     @Query(nativeQuery = true, value = SQLQuestion.GET_QUESTION_DETAILS)
     IQuestionDetailsDTO getQuestionDetails(Long questionId);

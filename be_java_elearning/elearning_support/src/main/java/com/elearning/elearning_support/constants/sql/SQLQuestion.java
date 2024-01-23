@@ -50,7 +50,8 @@ public class SQLQuestion {
             "WHERE \n" +
             "     testQuest.test_id = :testId AND \n" +
             "     question.is_enabled = true AND \n" +
-            "     ('' = :search OR question.content ILIKE ('%' || :search || '%')) \n";
+            "     ('' = :search OR question.content ILIKE ('%' || :search || '%')) AND \n" +
+            "     (-1 = :questionLevel OR question.level = :questionLevel) \n";
 
     public static final String GET_QUESTION_DETAILS =
         "SELECT \n" +
