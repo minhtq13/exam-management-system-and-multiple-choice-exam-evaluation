@@ -232,9 +232,21 @@ public class TestSetServiceImpl implements TestSetService {
             () -> exceptionFactory.resourceNotFoundException(MessageConst.Test.NOT_FOUND, MessageConst.RESOURCE_NOT_FOUND, Resources.TEST,
                 ErrorKey.Test.ID, String.valueOf(createDTO.getTestId()))
         );
+
+        // tạo testSetCode: thủ công/tự động
+        String testSetCode;
+        if (!ObjectUtils.isEmpty(createDTO.getTestSetCode())) {
+            if (testSetRepository.existsByTestIdAndCode(createDTO.getTestId(), createDTO.getTestSetCode())) {
+                throw exceptionFactory.resourceExistedException(MessageConst.TestSet.EXISTED_BY_CODE, Resources.TEST_SET,
+                    MessageConst.RESOURCE_EXISTED, ErrorKey.TestSet.CODE, createDTO.getTestSetCode());
+            } else {
+                testSetCode = createDTO.getTestSetCode();
+            }
+        } else {
+            Set<String> randomTestSetCodes = randomTestSetCode(test.getId(), 1);
+            testSetCode = !ObjectUtils.isEmpty(randomTestSetCodes) ? randomTestSetCodes.toArray()[0].toString() : "";
+        }
         // tạo test_set
-        Set<String> randomTestSetCodes = randomTestSetCode(test.getId(), 1);
-        String testSetCode = !ObjectUtils.isEmpty(randomTestSetCodes) ? randomTestSetCodes.toArray()[0].toString() : "";
         TestSet newTestSet = TestSet.builder()
             .testId(test.getId())
             .testNo(String.valueOf(ObjectUtil.getOrDefault(testSetRepository.getMaxCurrentTestNoByTestId(test.getId()), 0) + 1))

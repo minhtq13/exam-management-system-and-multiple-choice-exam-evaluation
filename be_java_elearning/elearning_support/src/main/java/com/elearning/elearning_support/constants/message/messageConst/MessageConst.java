@@ -64,6 +64,7 @@ public class MessageConst {
 
     public static class TestSet {
         public static final String NOT_FOUND = "error.test.set.not.found";
+        public static final String EXISTED_BY_CODE = "error.test.set.existed.code";
     }
 
 

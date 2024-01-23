@@ -20,6 +20,9 @@ public class TestSetCreateDTO {
     @Schema(description = "Id kỳ thi")
     Long testId;
 
+    @Schema(description = "Mã đề thi tự chọn")
+    String testSetCode;
+
     @Schema(description = "Danh sách câu hỏi và đáp án")
     List<TestQuestionAnswerUpdateDTO> questions = new ArrayList<>();
 
