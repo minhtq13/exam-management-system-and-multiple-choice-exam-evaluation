@@ -229,8 +229,10 @@ public class ExamClassServiceImpl implements ExamClassService {
                 MessageConst.RESOURCE_NOT_FOUND, ErrorKey.ExamClass.ID, String.valueOf(id)));
     }
 
+    //TODO: review logic and implement
     @Override
     public Set<Long> importStudentExamClass(Long examClassId, MultipartFile fileImport) {
+        // check existed exam class
         ExamClass examClass = findExamClassById(examClassId);
         // Tạo response mặc định
         ImportResponseDTO response = new ImportResponseDTO();
