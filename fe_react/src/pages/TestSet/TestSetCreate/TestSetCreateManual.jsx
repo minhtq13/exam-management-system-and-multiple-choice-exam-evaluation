@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
-import useQuestions from "../../../hooks/useQuestion"
-import { Checkbox, Spin, Tag, Input, Select, Button, Modal } from "antd";
-import ReactQuill from "react-quill";
+import { Button, Checkbox, Input, Select, Spin, Tag } from "antd";
 import debounce from "lodash.debounce";
-import { testSetCreateService } from "../../../services/testServices";
+import { useEffect, useState } from "react";
+import ReactQuill from "react-quill";
 import useNotify from "../../../hooks/useNotify";
+import useQuestions from "../../../hooks/useQuestion";
+import { testSetCreateService } from "../../../services/testServices";
+import { levelOptions } from "../../../utils/constant";
+import {useNavigate} from "react-router-dom";
 
 const TestSetCreateManual = ({ testId }) => {
+  const navigate = useNavigate();
   const initialParam = {
     subjectId: null,
     subjectCode: null,
@@ -16,24 +19,7 @@ const TestSetCreateManual = ({ testId }) => {
     level: "ALL",
     testId: testId
   };
-  const levelOptions = [
-    {
-      value: "ALL",
-      label: "Tất cả",
-    },
-    {
-      value: "EASY",
-      label: "Dễ",
-    },
-    {
-      value: "MEDIUM",
-      label: "Trung bình",
-    },
-    {
-      value: "HARD",
-      label: "Khó",
-    },
-  ];
+
   const tagRender = (value, color) => {
     if (value === 0) {
       color = "green";
@@ -66,6 +52,7 @@ const TestSetCreateManual = ({ testId }) => {
   const notify = useNotify();
   useEffect(() => {
     getAllQuestions(param);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param]);
   const levelOnchange = (option) => {
     setParam({ ...param, level: option })
@@ -132,8 +119,8 @@ const TestSetCreateManual = ({ testId }) => {
     setLoading(true);
     testSetCreateService(
       {
-        code: code,
-        testId: testId,
+        testSetCode: code,
+        testId: Number(testId),
         questions: lstPreview.map((ques, quesIndex) => {
           return {
             questionId: ques.id,
@@ -150,6 +137,7 @@ const TestSetCreateManual = ({ testId }) => {
       (res) => {
         setLoading(false);
         notify.success(`Bạn đã tạo thành công mã đề thi ${code}`);
+        navigate(`/test-list`)
       },
       (error) => {
         setLoading(false);
@@ -182,8 +170,8 @@ const TestSetCreateManual = ({ testId }) => {
         </div>
         <div className="manual-preview">
           <div className="manual-preview-code">
-            <span className="manual-preview-code-label">Mã đề thi:</span>
-            <Input value={code} onChange={(e) => setCode(e.target.value)} placeholder="Nhập mã đề thi" />
+            <span className="manual-preview-code-label" style={{fontSize: 16}}>Mã đề thi:</span>
+            <Input type="number" onChange={(e) => setCode(e.target.value)} placeholder="Nhập mã đề thi" />
           </div>
           <div className="manual-preview-content">
             {lstPreview.length > 0 ? lstPreview.map((item, index) => {
@@ -195,10 +183,10 @@ const TestSetCreateManual = ({ testId }) => {
       <div className="btn-save-manual">
         <Button
           type="primary"
-          style={{ width: 80, height: 40 }}
+          style={{ minWidth: 100, height: 40 }}
           onClick={onCreate}
           loading={loading}
-        >Lưu</Button>
+        >Tạo đề</Button>
       </div>
     </div>
   )
