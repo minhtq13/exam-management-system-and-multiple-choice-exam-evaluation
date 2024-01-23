@@ -1,5 +1,4 @@
 
-import { useState } from "react";
 import "./TestSetCreate.scss";
 import { Tabs } from "antd";
 import TestSetCreateAuto from "./TestSetCreateAuto";
@@ -7,7 +6,6 @@ import { useLocation } from "react-router-dom";
 import TestSetCreateManual from "./TestSetCreateManual";
 import { getDetailTest } from "../../../utils/storage";
 const TestSetCreate = () => {
-  const [tabKey, setTabKey] = useState("auto");
   const location = useLocation();
   const testId = location.pathname.split("/")[2];
   const items = [
@@ -24,7 +22,6 @@ const TestSetCreate = () => {
   ]
   const testInfo = getDetailTest();
   const tabOnchange = (value) => {
-    setTabKey(value);
   };
 
   return (

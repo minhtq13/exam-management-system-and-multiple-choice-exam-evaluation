@@ -14,11 +14,12 @@ import useNotify from "../../../hooks/useNotify";
 import useStudents from "../../../hooks/useStudents";
 import { setSelectedItem } from "../../../redux/slices/appSlice";
 import { deleteStudentsService } from "../../../services/studentsService";
-import { convertGender, courseNumOptions, customPaginationText } from "../../../utils/tools";
+import { convertGender, customPaginationText } from "../../../utils/tools";
 import SearchFilter from "../../../components/SearchFilter/SearchFilter";
 import "./StudentList.scss";
 import debounce from "lodash.debounce";
 import { ImportOutlined } from "@ant-design/icons";
+import { courseNumOptions } from "../../../utils/constant";
 
 const StudentList = () => {
   const initialParam = {
