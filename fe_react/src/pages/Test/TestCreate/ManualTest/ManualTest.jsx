@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import TestView from "./TestView/TestView";
 import useCombo from "../../../../hooks/useCombo";
 import debounce from "lodash.debounce";
+import { levelOptions } from "../../../../utils/constant";
 
 const ManualTest = ({ questionList, chapterIds, subjectId, subjectOptions, onSelectLevel, onChangeSearch }) => {
   const [startTime, setStartTime] = useState(null);
@@ -26,24 +27,6 @@ const ManualTest = ({ questionList, chapterIds, subjectId, subjectOptions, onSel
         return { value: item.id, label: item.name };
       })
       : [];
-  const levelOptions = [
-    {
-      value: "ALL",
-      label: "Tất cả",
-    },
-    {
-      value: "EASY",
-      label: "Dễ",
-    },
-    {
-      value: "MEDIUM",
-      label: "Trung bình",
-    },
-    {
-      value: "HARD",
-      label: "Khó",
-    },
-  ];
   const levelOnchange = (value) => {
     onSelectLevel(value);
   };

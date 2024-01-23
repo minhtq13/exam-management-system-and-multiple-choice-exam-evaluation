@@ -1,11 +1,9 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-// import debounce from "lodash.debounce";
 import { React } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import logoDHBK from "../../../assets/images/png-jpg/logo-dhbk.png";
-// import Searchbox from "../../../components/Search/Searchbox";
 import { setIsCollapse } from "../../../redux/slices/appSlice";
 import Account from "./Account/Account";
 import "./Header.scss";
@@ -43,11 +41,7 @@ const Header = () => {
         </Button>
       </div>
       <div className="header-search">
-        {/* <Searchbox
-          onChange={(event) => handleOnChange(event)}
-          onSearch={(value) => handleOnSearch(value)}
-        /> */}
-        HỆ THỐNG HỖ TRỢ ĐÁNH GIÁ KẾT QUẢ THI TRẮC NGHIỆM - TRƯỜNG ĐẠI HỌC BÁCH KHOA HÀ NỘI
+        HỆ THỐNG QUẢN LÝ RA ĐỀ VÀ ĐÁNH GIÁ THI TRẮC NGHIỆM TRÊN GIẤY
         <img src={logoDHBK} alt=""  style={{ marginLeft: 20, maxWidth: 35}}/>
       </div>
       <div className="header-noti-account">

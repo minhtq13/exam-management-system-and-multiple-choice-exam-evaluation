@@ -13,6 +13,7 @@ import debounce from "lodash.debounce";
 import useCombo from "../../../hooks/useCombo";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { levelOptions } from "../../../utils/constant";
 
 const QuestionList = () => {
   const initialParam = {
@@ -69,24 +70,7 @@ const QuestionList = () => {
   const chapterOptions = allChapters.map((item) => {
     return { value: item.id, label: item.name };
   });
-  const levelOptions = [
-    {
-      value: "ALL",
-      label: "Tất cả",
-    },
-    {
-      value: "EASY",
-      label: "Dễ",
-    },
-    {
-      value: "MEDIUM",
-      label: "Trung bình",
-    },
-    {
-      value: "HARD",
-      label: "Khó",
-    },
-  ];
+
   const tagRender = (value, color) => {
     if (value === 0) {
       color = "green";

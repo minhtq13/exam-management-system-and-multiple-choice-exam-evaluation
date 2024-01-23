@@ -20,44 +20,33 @@ const TestView = ({
   subjectOptions,
   semesterOptions
 }) => {
-  const [quesIds, setQesIds] = useState([]);
+  const [quesIds, setQuesIds] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [testId, setTestId] = useState(null);
-  const [numberQues, setNumberQues] = useState(0);
   const [levelCounts, setLevelCounts] = useState({ 0: 0, 1: 0, 2: 0 });
-  const [checkPer, setCheckPer] = useState([]);
-  const mergeArray = (...arrays) => {
-    const uniqueValues = arrays.reduce((acc, currentArray) => {
-      currentArray.forEach(value => {
-        acc.add(value);
-      });
-      return acc;
-    }, new Set());
+  // const mergeArray = (...arrays) => {
+  //   const uniqueValues = arrays.reduce((acc, currentArray) => {
+  //     currentArray.forEach(value => {
+  //       acc.add(value);
+  //     });
+  //     return acc;
+  //   }, new Set());
 
-    return [...uniqueValues];
-  }
+  //   return [...uniqueValues];
+  // }
 
   const getLevelCounts = (ids) => {
     let levelCount = { 0: 0, 1: 0, 2: 0 };
     const filteredArray = questionList.filter(ques => ids.includes(ques.id));
-    // Đếm số phần tử tương ứng với từng level
     filteredArray.forEach(item => {
       levelCount[item.level]++;
     });
-    // Trả về mảng đã lọc và đối tượng chứa kết quả đếm levels
     return levelCount;
   }
   const onChange = (checkValues) => {
-    let arr = checkPer;
-    arr.push(checkValues);
-    setCheckPer(arr);
-    const result = mergeArray(...arr);
-    setQesIds(checkValues);
-    //setNumberQues(ids.length);
+    setQuesIds(checkValues);
     setLevelCounts(getLevelCounts(checkValues));
-    console.log(arr)
-    console.log("a", result)
   };
   const navigate = useNavigate();
   const notify = useNotify();
@@ -135,9 +124,7 @@ const TestView = ({
                   }
                   key={`answer${ansNo}`}
                 >
-                  <span>{`${String.fromCharCode(
-                    65 + ansNo
-                  )}. `}</span>
+                  <span>{`${String.fromCharCode(65 + ansNo)}. `}</span>
                   <ReactQuill
                     key={ansNo}
                     value={ans.content}
@@ -163,7 +150,7 @@ const TestView = ({
           <div className="number-ques-item">{`Dễ: ${levelCounts[0]}`}</div>
           <div className="number-ques-item">{`Trung bình: ${levelCounts[1]}`}</div>
           <div className="number-ques-item">{`Khó: ${levelCounts[2]}`}</div>
-          <div className="number-ques-item">{`Tổng: ${numberQues}`}</div>
+          <div className="number-ques-item">{`Tổng: ${quesIds.length}`}</div>
         </div>
         <Checkbox.Group options={options} onChange={onChange} />
       </div>

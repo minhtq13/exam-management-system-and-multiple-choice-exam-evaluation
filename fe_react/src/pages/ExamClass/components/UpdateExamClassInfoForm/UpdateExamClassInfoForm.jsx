@@ -19,9 +19,10 @@ import { testSetDetailService } from "../../../../services/testServices";
 import TestPreview from "../../../../components/TestPreview/TestPreview";
 import useTeachers from "../../../../hooks/useTeachers";
 import useStudents from "../../../../hooks/useStudents";
-import { courseNumOptions, customPaginationText, disabledDate } from "../../../../utils/tools";
+import { customPaginationText, disabledDate } from "../../../../utils/tools";
 import SearchFilter from "../../../../components/SearchFilter/SearchFilter";
 import debounce from "lodash.debounce";
+import { courseNumOptions } from "../../../../utils/constant";
 const UpdateExamClassInfoForm = ({
   onFinish,
   initialValues,
@@ -95,7 +96,7 @@ const UpdateExamClassInfoForm = ({
   const [teacherSelected, setTeacherSelected] = useState(
     lstSupervisorId ?? []
   );
-  const [testId, setTestId] = useState(null);
+  // const [testId, setTestId] = useState(null);
   const [studentSelectedPerPage, setStudentSelectedPerPage] = useState({ "1": lstStudentId } ?? {});
   const [teacherSelectedPerPage, setTeacherSelectedPerPage] = useState({ "1": lstSupervisorId } ?? {});
   const notify = useNotify();
