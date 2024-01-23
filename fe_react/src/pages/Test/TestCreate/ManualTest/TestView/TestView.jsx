@@ -21,6 +21,7 @@ const TestView = ({
   semesterOptions
 }) => {
   const [quesIds, setQuesIds] = useState([]);
+  const [test, setTest] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [testId, setTestId] = useState(null);
@@ -44,10 +45,10 @@ const TestView = ({
     });
     return levelCount;
   }
-  const onChange = (checkValues) => {
-    setQuesIds(checkValues);
-    setLevelCounts(getLevelCounts(checkValues));
-  };
+  // const onChange = (checkValues) => {
+  //   setQuesIds(checkValues);
+  //   setLevelCounts(getLevelCounts(checkValues));
+  // };
   const navigate = useNavigate();
   const notify = useNotify();
   const onCreate = () => {
@@ -140,6 +141,20 @@ const TestView = ({
       value: item.id,
     };
   });
+  const onChange = (checkValues, item) => {
+    console.log(checkValues.target.checked);
+    let result = test;
+    if (checkValues.target.checked) {
+      // Nếu được check, thêm phần tử mới vào mảng
+      result.push({ id: item.id });
+    } else {
+      // Nếu không được check, lọc bỏ phần tử có id tương ứng
+      result = result.filter(existingItem => existingItem.id !== item.id);
+    }
+    console.log(result);
+    setTest(result);
+  }
+
   return (
     <div className="test-view">
       <div className="test-wrap">
@@ -152,7 +167,50 @@ const TestView = ({
           <div className="number-ques-item">{`Khó: ${levelCounts[2]}`}</div>
           <div className="number-ques-item">{`Tổng: ${quesIds.length}`}</div>
         </div>
-        <Checkbox.Group options={options} onChange={onChange} />
+        {
+          questionList.map((item, index) => (
+            <div className="question-items" key={index}>
+              <div className="topic-level">
+                <div className="question-topic">
+                  <Checkbox onChange={(e) => onChange(e, item)} checked={test.find(ques => ques.id === item.id) ? true : false} />
+                  <div className="question-number">{`Câu ${index + 1}: `}</div>
+                  <ReactQuill
+                    key={index}
+                    value={item.content}
+                    readOnly={true}
+                    theme="snow"
+                    modules={{ toolbar: false }}
+                  />
+                </div>
+                <Tag color={tagRender(item.level)}>
+                  {renderTag(item)}
+                </Tag>
+              </div>
+              {item.lstAnswer &&
+                item.lstAnswer.length > 0 &&
+                item.lstAnswer.map((ans, ansNo) => (
+                  <div
+                    className={
+                      ans.isCorrect
+                        ? "answer-items corrected"
+                        : "answer-items"
+                    }
+                    key={`answer${ansNo}`}
+                  >
+                    <span>{`${String.fromCharCode(65 + ansNo)}. `}</span>
+                    <ReactQuill
+                      key={ansNo}
+                      value={ans.content}
+                      readOnly={true}
+                      theme="snow"
+                      modules={{ toolbar: false }}
+                    />
+                  </div>
+                ))}
+            </div>
+          ))
+        }
+        {/* <Checkbox.Group options={options} onChange={onChange} /> */}
       </div>
       <Button
         loading={loading}

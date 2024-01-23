@@ -1,13 +1,10 @@
-
-import { Button, Checkbox, Input, Select, Spin, Tag } from "antd";
-import debounce from "lodash.debounce";
 import { useEffect, useState } from "react";
+import useQuestions from "../../../hooks/useQuestion"
+import { Checkbox, Spin, Tag, Input, Select, Button, Modal } from "antd";
 import ReactQuill from "react-quill";
-import useNotify from "../../../hooks/useNotify";
-import useQuestions from "../../../hooks/useQuestion";
+import debounce from "lodash.debounce";
 import { testSetCreateService } from "../../../services/testServices";
-import { levelOptions } from "../../../utils/constant";
-
+import useNotify from "../../../hooks/useNotify";
 
 const TestSetCreateManual = ({ testId }) => {
   const initialParam = {
@@ -19,6 +16,24 @@ const TestSetCreateManual = ({ testId }) => {
     level: "ALL",
     testId: testId
   };
+  const levelOptions = [
+    {
+      value: "ALL",
+      label: "Tất cả",
+    },
+    {
+      value: "EASY",
+      label: "Dễ",
+    },
+    {
+      value: "MEDIUM",
+      label: "Trung bình",
+    },
+    {
+      value: "HARD",
+      label: "Khó",
+    },
+  ];
   const tagRender = (value, color) => {
     if (value === 0) {
       color = "green";
@@ -45,17 +60,18 @@ const TestSetCreateManual = ({ testId }) => {
   const { getAllQuestions, quesLoading, allQuestions } = useQuestions();
   const [param, setParam] = useState(initialParam);
   const [lstPreview, setLstPreview] = useState([]);
+  const [checkIds, setCheckIds] = useState([]);
   const [code, setCode] = useState(null);
   const [loading, setLoading] = useState(false);
   const notify = useNotify();
   useEffect(() => {
     getAllQuestions(param);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param]);
   const levelOnchange = (option) => {
     setParam({ ...param, level: option })
   }
   const selectChange = (checkValues) => {
+    setCheckIds([...checkIds, checkValues]);
     setLstPreview(allQuestions.filter(item => checkValues.includes(item.id)));
   };
   const questionRender = (item, index, isPreview) => {
@@ -166,8 +182,8 @@ const TestSetCreateManual = ({ testId }) => {
         </div>
         <div className="manual-preview">
           <div className="manual-preview-code">
-            <span className="manual-preview-code-label" style={{fontSize: 16}}>Mã đề thi:</span>
-            <Input type="number" onChange={(e) => setCode(e.target.value)} placeholder="Nhập mã đề thi" />
+            <span className="manual-preview-code-label">Mã đề thi:</span>
+            <Input value={code} onChange={(e) => setCode(e.target.value)} placeholder="Nhập mã đề thi" />
           </div>
           <div className="manual-preview-content">
             {lstPreview.length > 0 ? lstPreview.map((item, index) => {
@@ -179,10 +195,10 @@ const TestSetCreateManual = ({ testId }) => {
       <div className="btn-save-manual">
         <Button
           type="primary"
-          style={{ minWidth: 100, height: 40 }}
+          style={{ width: 80, height: 40 }}
           onClick={onCreate}
           loading={loading}
-        >Tạo đề</Button>
+        >Lưu</Button>
       </div>
     </div>
   )
