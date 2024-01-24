@@ -79,7 +79,7 @@ const AutoTest = ({ chapterIds, formKey, subjectId, levelCal, sumQues, subjectOp
   const checkSum = () => {
     if (totalQuestion && totalQuestion > sumQues) {
       return Promise.reject(
-        "Không đủ số lượng câu hỏi trong ngân hàng."
+        "Không đủ số lượng câu hỏi trong ngân hàng!"
       )
     };
     return Promise.resolve();

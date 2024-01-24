@@ -16,12 +16,13 @@ const ManualTest = ({ questionList, quesLoading, subjectId, subjectOptions, onSe
   const [hardNumber, setHardNumber] = useState(null);
   // eslint-disable-next-line no-unused-vars
   const [semesterId, setSemesterId] = useState(null);
+  const [config, setConfig] = useState({ 0: 0, 1: 0, 2: 0 });
   const { allSemester, semesterLoading, getAllSemesters } = useCombo();
   useEffect(() => {
     getAllSemesters({ search: "" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(quesLoading)
+  const errorMessage = "Không đủ số lượng câu hỏi trong ngân hàng!"
   const options =
     allSemester && allSemester.length > 0
       ? allSemester.map((item) => {
@@ -38,6 +39,7 @@ const ManualTest = ({ questionList, quesLoading, subjectId, subjectOptions, onSe
   const onChange = debounce((_e) => {
     onChangeSearch(_e.target.value)
   }, 3000)
+  const check = (config[0] + config[1] + config[2]) <= 0;
   return (
     <div className="manual-test">
       <div className="manual-select">
@@ -80,38 +82,56 @@ const ManualTest = ({ questionList, quesLoading, subjectId, subjectOptions, onSe
           </div>
         </div>
         <div className="manual-test-right">
-          <div className="manual-item manual-totalQues">
-            <span className="manual-item-label">Số câu hỏi: </span>
-            <Input
-              type="number"
-              placeholder="Nhập số câu hỏi"
-              onChange={(_e) => setQuestionQuantity(_e.target.value)}
-            />
+          <div className="manual-config-item">
+            <div className="manual-item manual-totalQues">
+              <span className="manual-item-label">Số câu hỏi: </span>
+              <div className="manual-config-item">
+                <Input
+                  type="number"
+                  placeholder="Nhập số câu hỏi"
+                  onChange={(_e) => setQuestionQuantity(_e.target.value)}
+                  disabled={check}
+                />
+                {questionQuantity > (config[0] + config[1] + config[2]) && <div className="error-message">{errorMessage}</div>}
+              </div>
+            </div>
           </div>
           <div className="manual-item manual-config">
             <span className="manual-item-label">Phân loại:</span>
             <div className="manual-config-details">
-              <Input
-                type="number"
-                placeholder="Số câu dễ"
-                onChange={(_e) =>
-                  setEasyNumber(_e.target.value)
-                }
-              />
-              <Input
-                type="number"
-                placeholder="Số câu trung bình"
-                onChange={(_e) =>
-                  setMediumNumber(_e.target.value)
-                }
-              />
-              <Input
-                type="number"
-                placeholder="Số câu khó"
-                onChange={(_e) =>
-                  setHardNumber(_e.target.value)
-                }
-              />
+              <div className="manual-config-item">
+                <Input
+                  type="number"
+                  placeholder="Số câu dễ"
+                  onChange={(_e) =>
+                    setEasyNumber(_e.target.value)
+                  }
+                  disabled={check}
+                />
+                {easyNumber > config[0] && <div className="error-message">{errorMessage}</div>}
+              </div>
+              <div className="manual-config-item">
+                <Input
+                  type="number"
+                  placeholder="Số câu trung bình"
+                  onChange={(_e) =>
+                    setMediumNumber(_e.target.value)
+                  }
+                  disabled={check}
+                />
+                {mediumNumber > config[1] && <div className="error-message">{errorMessage}</div>}
+              </div>
+              <div className="manual-config-item">
+                <Input
+                  type="number"
+                  placeholder="Số câu khó"
+                  onChange={(_e) =>
+                    setHardNumber(_e.target.value)
+                  }
+                  disabled={check}
+                />
+              </div>
+              {hardNumber > config[2] && <div className="error-message">{errorMessage}</div>}
               {Number(questionQuantity) !==
                 Number(easyNumber) +
                 Number(mediumNumber) +
@@ -162,6 +182,7 @@ const ManualTest = ({ questionList, quesLoading, subjectId, subjectOptions, onSe
             subjectOptions={subjectOptions}
             semesterOptions={options}
             quesLoading={quesLoading}
+            onSelectConfig={(item) => setConfig(item)}
           />
         </Spin>
       </div>

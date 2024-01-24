@@ -19,7 +19,8 @@ const TestView = ({
   generateConfig,
   subjectOptions,
   semesterOptions,
-  quesLoading
+  quesLoading,
+  onSelectConfig
 }) => {
   const [checkedItems, setCheckedItems] = useState([]);
   const [openModal, setOpenModal] = useState(false);
@@ -88,6 +89,7 @@ const TestView = ({
     }
     setCheckedItems(result);
     setLevelCounts(getLevelCounts(result));
+    onSelectConfig(getLevelCounts(result));
   }
   console.log("test", checkedItems);
   console.log(quesLoading)

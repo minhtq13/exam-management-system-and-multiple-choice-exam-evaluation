@@ -12,7 +12,7 @@
       display: flex;
       flex-direction: column;
       gap: 15px;
-      width: 40%;
+      width: 42%;
     }
   }
 
@@ -20,6 +20,12 @@
     display: flex;
     gap: 10px;
     align-items: center;
+
+    .manual-config-item {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
 
     .manual-item-label {
       font-size: 16px;
@@ -57,13 +63,15 @@
   }
 
   .manual-config-details {
+    width: 100%;
+
     .ant-input {
       margin-bottom: 10px;
     }
+  }
 
-    .error-message {
-      color: #FF4D4F;
-    }
+  .error-message {
+    color: #FF4D4F;
   }
 }
 
@@ -79,6 +87,10 @@
     align-items: center;
     margin: 15px 0px;
     gap: 15px;
+  }
+
+  .ant-select-selector {
+    min-width: 100px !important;
   }
 
   span {
