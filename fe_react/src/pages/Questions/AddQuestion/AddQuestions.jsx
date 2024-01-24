@@ -276,61 +276,61 @@ const AddQuestions = () => {
                     {(childFields, childListOperations) => (
                       <div className="answers">
                         {childFields.map((childField, childIndex) => {
-                            return (
-                              <div
-                                key={`${childIndex}-${parentIndex}`}
-                                name={[childField.name,`frAnswers${childField.key}`,]}
-                                className="answer-list"
-                              >
-                                <div className="answer-list-text-checkbox">
-                                  <div className="answer-checkbox">
-                                    <Form.Item
-                                      {...childField}
-                                      name={[
-                                        childField.name,
-                                        `isCorrect`,
-                                      ]}
-                                      valuePropName="checked"
-                                    >
-                                      <Checkbox
-                                        checked={checked}
-                                        onChange={onChange}
-                                      />
-                                    </Form.Item>
-                                    <Form.Item
-                                      {...childField}
-                                      name={[childField.name,`content`,]}
-                                      rules={[
-                                        {
-                                          required: true,
-                                          message:
-                                            "Chưa điền câu trả lời",
-                                        },
-                                      ]}
-                                      className="answers-item"
-                                    >
-                                      <ReactQuill
-                                        theme="snow"
-                                        modules={modules}
-                                        formats={formats}
-                                        value={value}
-                                        onChange={(value) => {setValue(value);}}
-                                        bounds="#root"
-                                        placeholder="Nhập câu trả lời..."
-                                      />
-                                    </Form.Item>
-                                  </div>
-                                  <div className="remove-answer">
-                                    <Button
-                                      type="dashed"
-                                      onClick={() => childListOperations.remove(childIndex)}
-                                      icon={<DeleteOutlined />}
+                          return (
+                            <div
+                              key={`${childIndex}-${parentIndex}`}
+                              name={[childField.name, `frAnswers${childField.key}`,]}
+                              className="answer-list"
+                            >
+                              <div className="answer-list-text-checkbox">
+                                <div className="answer-checkbox">
+                                  <Form.Item
+                                    {...childField}
+                                    name={[
+                                      childField.name,
+                                      `isCorrect`,
+                                    ]}
+                                    valuePropName="checked"
+                                  >
+                                    <Checkbox
+                                      checked={checked}
+                                      onChange={onChange}
                                     />
-                                  </div>
+                                  </Form.Item>
+                                  <Form.Item
+                                    {...childField}
+                                    name={[childField.name, `content`,]}
+                                    rules={[
+                                      {
+                                        required: true,
+                                        message:
+                                          "Chưa điền câu trả lời",
+                                      },
+                                    ]}
+                                    className="answers-item"
+                                  >
+                                    <ReactQuill
+                                      theme="snow"
+                                      modules={modules}
+                                      formats={formats}
+                                      value={value}
+                                      onChange={(value) => { setValue(value); }}
+                                      bounds="#root"
+                                      placeholder="Nhập câu trả lời..."
+                                    />
+                                  </Form.Item>
+                                </div>
+                                <div className="remove-answer">
+                                  <Button
+                                    type="dashed"
+                                    onClick={() => childListOperations.remove(childIndex)}
+                                    icon={<DeleteOutlined />}
+                                  />
                                 </div>
                               </div>
-                            );
-                          }
+                            </div>
+                          );
+                        }
                         )}
                         {childFields.length < 4 && (
                           <Form.Item className="add-answer-btn">

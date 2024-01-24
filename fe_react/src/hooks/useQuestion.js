@@ -8,7 +8,7 @@ import useNotify from "./useNotify";
 
 const useQuestions = () => {
 	const [allQuestions, setAllQuestions] = useState([]);
-	const [quesLoading, setQuesLoading] = useState(false);
+	const [quesLoading, setQuesLoading] = useState(true);
 	const [questionInfo, setQuestionInfo] = useState({});
 	const [infoLoading, setInfoLoading] = useState(true);
 	const [deleteLoading, setDeleteLoading] = useState(false);

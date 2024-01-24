@@ -256,7 +256,7 @@
 
     .topic-level {
       display: flex;
-      align-items: first baseline;
+      align-items: flex-start;
       justify-content: space-between;
       width: 100%;
     }
@@ -265,6 +265,7 @@
       margin-bottom: 5px;
       font-size: 16px;
       display: flex;
+      align-items: start;
       gap: 5px;
       width: 92%;
 

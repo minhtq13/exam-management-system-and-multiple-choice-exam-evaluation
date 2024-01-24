@@ -471,7 +471,7 @@ const UpdateExamClassInfoForm = ({
         >
           <DatePicker
             placeholder="Chọn thời gian thi"
-            format={"YYYY-MM-DD HH:mm"}
+            format={"HH:mm-DD/MM/YYYY"}
             showTime={{ format: "HH:mm" }}
             disabledDate={disabledDate}
           ></DatePicker>

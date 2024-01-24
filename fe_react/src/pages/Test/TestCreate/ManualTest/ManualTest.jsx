@@ -6,7 +6,7 @@ import useCombo from "../../../../hooks/useCombo";
 import debounce from "lodash.debounce";
 import { levelOptions } from "../../../../utils/constant";
 
-const ManualTest = ({ questionList, chapterIds, subjectId, subjectOptions, onSelectLevel, onChangeSearch }) => {
+const ManualTest = ({ questionList, quesLoading, subjectId, subjectOptions, onSelectLevel, onChangeSearch }) => {
   const [startTime, setStartTime] = useState(null);
   const [name, setName] = useState("");
   const [duration, setDuration] = useState(null);
@@ -21,6 +21,7 @@ const ManualTest = ({ questionList, chapterIds, subjectId, subjectOptions, onSel
     getAllSemesters({ search: "" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  console.log(quesLoading)
   const options =
     allSemester && allSemester.length > 0
       ? allSemester.map((item) => {
@@ -160,6 +161,7 @@ const ManualTest = ({ questionList, chapterIds, subjectId, subjectOptions, onSel
             }}
             subjectOptions={subjectOptions}
             semesterOptions={options}
+            quesLoading={quesLoading}
           />
         </Spin>
       </div>

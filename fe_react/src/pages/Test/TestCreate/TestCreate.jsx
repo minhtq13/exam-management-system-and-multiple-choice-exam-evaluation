@@ -26,13 +26,14 @@ const TestCreate = () => {
   } = useCombo();
   const [subjectId, setSubjectId] = useState(null);
   const [chapterIds, setChapterIds] = useState([]);
-  const { allQuestions, getAllQuestions } = useQuestions();
+  const { allQuestions, getAllQuestions, quesLoading } = useQuestions();
   const [tabKey, setTabKey] = useState("auto");
   const [formKey, setFormKey] = useState(0);
   useEffect(() => {
     getAllSubjects({ subjectCode: null, subjectTitle: null });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  console.log(quesLoading)
   useEffect(() => {
     if (subjectId) {
       getAllChapters({
@@ -109,6 +110,7 @@ const TestCreate = () => {
           subjectOptions={subjectOptions}
           onSelectLevel={(level) => setParam({ ...param, level: level })}
           onChangeSearch={(search) => setParam({ ...param, search: search })}
+          quesLoading={quesLoading}
         />
       ),
     },

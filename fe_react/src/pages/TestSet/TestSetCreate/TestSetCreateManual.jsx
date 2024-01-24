@@ -1,12 +1,14 @@
 import { Button, Checkbox, Input, Select, Spin, Tag } from "antd";
 import debounce from "lodash.debounce";
 import { useEffect, useState } from "react";
+import useQuestions from "../../../hooks/useQuestion"
+import { Checkbox, Spin, Tag, Input, Select, Button } from "antd";
 import ReactQuill from "react-quill";
 import useNotify from "../../../hooks/useNotify";
 import useQuestions from "../../../hooks/useQuestion";
 import { testSetCreateService } from "../../../services/testServices";
 import { levelOptions } from "../../../utils/constant";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const TestSetCreateManual = ({ testId }) => {
   const navigate = useNavigate();
@@ -45,22 +47,28 @@ const TestSetCreateManual = ({ testId }) => {
   }, 3000)
   const { getAllQuestions, quesLoading, allQuestions } = useQuestions();
   const [param, setParam] = useState(initialParam);
-  const [lstPreview, setLstPreview] = useState([]);
-  const [checkIds, setCheckIds] = useState([]);
   const [code, setCode] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [checkedItems, setCheckedItems] = useState([]);
+
   const notify = useNotify();
   useEffect(() => {
     getAllQuestions(param);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param]);
   const levelOnchange = (option) => {
     setParam({ ...param, level: option })
   }
-  const selectChange = (checkValues) => {
-    setCheckIds([...checkIds, checkValues]);
-    setLstPreview(allQuestions.filter(item => checkValues.includes(item.id)));
-  };
+  const onCheck = (checkValues, item) => {
+    let result = [...checkedItems];
+    if (checkValues.target.checked) {
+      result.push(item);
+    } else {
+      result = result.filter(existingItem => existingItem.id !== item.id);
+    }
+    setCheckedItems(result);
+  }
+  console.log("test", checkedItems);
   const questionRender = (item, index, isPreview) => {
     return (
       <div className="question-items" key={index}>
@@ -109,19 +117,13 @@ const TestSetCreateManual = ({ testId }) => {
       </div>
     )
   }
-  const questionOptions = allQuestions.map((item, index) => {
-    return {
-      label: questionRender(item, index),
-      value: item.id,
-    };
-  });
   const onCreate = () => {
     setLoading(true);
     testSetCreateService(
       {
         testSetCode: code,
         testId: Number(testId),
-        questions: lstPreview.map((ques, quesIndex) => {
+        questions: checkedItems.map((ques, quesIndex) => {
           return {
             questionId: ques.id,
             questionNo: quesIndex + 1,
@@ -165,16 +167,58 @@ const TestSetCreateManual = ({ testId }) => {
             </div>
           </div>
           <Spin spinning={quesLoading} tip="Đang tải">
-            <Checkbox.Group options={questionOptions} onChange={selectChange} />
+            {
+              allQuestions.map((item, index) => (
+                <div className="question-items" key={index}>
+                  <div className="topic-level">
+                    <div className="question-topic">
+                      <Checkbox onChange={(e) => onCheck(e, item)} checked={checkedItems.some(i => i.id === item.id)} />
+                      <div className="question-number">{`Câu ${index + 1}: `}</div>
+                      <ReactQuill
+                        key={index}
+                        value={item.content}
+                        readOnly={true}
+                        theme="snow"
+                        modules={{ toolbar: false }}
+                      />
+                    </div>
+                    <Tag color={tagRender(item.level)}>
+                      {renderTag(item)}
+                    </Tag>
+                  </div>
+                  {item.lstAnswer &&
+                    item.lstAnswer.length > 0 &&
+                    item.lstAnswer.map((ans, ansNo) => (
+                      <div
+                        className={
+                          ans.isCorrect
+                            ? "answer-items corrected"
+                            : "answer-items"
+                        }
+                        key={`answer${ansNo}`}
+                      >
+                        <span>{`${String.fromCharCode(65 + ansNo)}. `}</span>
+                        <ReactQuill
+                          key={ansNo}
+                          value={ans.content}
+                          readOnly={true}
+                          theme="snow"
+                          modules={{ toolbar: false }}
+                        />
+                      </div>
+                    ))}
+                </div>
+              ))
+            }
           </Spin>
         </div>
         <div className="manual-preview">
           <div className="manual-preview-code">
-            <span className="manual-preview-code-label" style={{fontSize: 16}}>Mã đề thi:</span>
+            <span className="manual-preview-code-label" style={{ fontSize: 16 }}>Mã đề thi:</span>
             <Input type="number" onChange={(e) => setCode(e.target.value)} placeholder="Nhập mã đề thi" />
           </div>
           <div className="manual-preview-content">
-            {lstPreview.length > 0 ? lstPreview.map((item, index) => {
+            {checkedItems.length > 0 ? checkedItems.map((item, index) => {
               return questionRender(item, index, true);
             }) : <div className="preview-noti">Vui lòng chọn câu hỏi và xem trước đề thi ở đây!</div>}
           </div>
