@@ -15,7 +15,6 @@
   .test-subject {
     display: flex;
     align-items: center;
-    width: 45%;
     gap: 10px;
     margin-bottom: 20px;
 
@@ -35,7 +34,6 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    width: 45%;
 
     .list-search-filter-label {
       font-weight: bold;
@@ -44,14 +42,14 @@
     }
 
     .ant-input-wrapper {
-      width: 96% !important;
+      min-width: 300px;
+      max-width: 400px;
     }
   }
 
   .test-level {
     display: flex;
     align-items: center;
-    width: 15%;
     gap: 10px;
 
     .select-label {
@@ -66,7 +64,8 @@
   }
 
   .ant-select {
-    width: 80%;
+    min-width: 300px;
+    max-width: 500px;
   }
 }
 

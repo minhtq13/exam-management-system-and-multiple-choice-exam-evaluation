@@ -15,7 +15,7 @@
   padding: 30px 20px;
 
   .ant-select {
-    width: 80%;
+    // width: 80%;
     height: 40px;
     cursor: pointer;
 
@@ -42,11 +42,11 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    .ant-select-selector {
+      min-width: 400px;
+    }
   }
 
-  .question-chapter {
-    justify-content: flex-end;
-  }
 }
 
 .question-add {

@@ -598,6 +598,11 @@ const ExamClassList = () => {
           onCancel={() => setOpenModal(false)}
           footer={[
             <Button key="statistic" onClick={handleDetail}>Thống kê</Button>,
+            <Button key="update" type="primary" onClick={() => {
+              navigate(`${appPath.examClassEdit}/${record.id}`)
+            }}>
+              Cập nhật
+            </Button>,
             <Button key="ok" type="primary" onClick={() => setOpenModal(false)}>
               Ok
             </Button>,
