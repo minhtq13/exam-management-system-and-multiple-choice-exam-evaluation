@@ -43,6 +43,7 @@ import com.elearning.elearning_support.dtos.users.UserCreateDTO;
 import com.elearning.elearning_support.dtos.users.UserDetailDTO;
 import com.elearning.elearning_support.dtos.users.UserSaveReqDTO;
 import com.elearning.elearning_support.dtos.users.importUser.CommonUserImportDTO;
+import com.elearning.elearning_support.dtos.users.importUser.ValidatedImportUserDTO;
 import com.elearning.elearning_support.dtos.users.student.StudentExportDTO;
 import com.elearning.elearning_support.dtos.users.student.StudentImportDTO;
 import com.elearning.elearning_support.dtos.users.teacher.TeacherExportDTO;
@@ -88,6 +89,8 @@ public class UserServiceImpl implements UserService {
     private final StudentTestSetRepository studentTestSetRepository;
 
     private final UserExamClassRepository userExamClassRepository;
+
+    private final String defaultMailDomain = "gmail.com";
 
 
     private final String[] IGNORE_COPY_USER_PROPERTIES = new String[]{
@@ -452,7 +455,8 @@ public class UserServiceImpl implements UserService {
      * Hàm check trùng các thông tin
      */
     @Override
-    public void validateImportUser(ImportUserValidatorDTO validatorDTO, CommonUserImportDTO importDTO, List<String> causeList) {
+    public ValidatedImportUserDTO validateImportUser(ImportUserValidatorDTO validatorDTO, CommonUserImportDTO importDTO, List<String> causeList) {
+        ValidatedImportUserDTO validatedResult = new ValidatedImportUserDTO();
         // Validate field bắt buộc
         List<String> missingRequiredFields = new ArrayList<>();
         if (ObjectUtils.isEmpty(importDTO.getFullNameRaw())) {
@@ -474,6 +478,7 @@ public class UserServiceImpl implements UserService {
             missingRequiredFields.add("email");
         }
         if (!missingRequiredFields.isEmpty()) {
+            validatedResult.setMissedRequiredField(Boolean.TRUE);
             causeList.add(String.format("Missing required fields: %s", String.join(",", missingRequiredFields)));
         }
 
@@ -489,6 +494,7 @@ public class UserServiceImpl implements UserService {
             invalidFormatFields.add("gender");
         }
         if (!invalidFormatFields.isEmpty()) {
+            validatedResult.setHasInvalidFormatField(Boolean.TRUE);
             causeList.add(String.format("Invalid formatted fields: %s", String.join(",", invalidFormatFields)));
         }
 
@@ -504,9 +510,11 @@ public class UserServiceImpl implements UserService {
             duplicatedFields.add("code");
         }
         if (!duplicatedFields.isEmpty()) {
+            validatedResult.setHasDuplicatedField(Boolean.TRUE);
             causeList.add(String.format("Duplicated fields: %s", String.join(",", duplicatedFields)));
         }
 
+        return validatedResult;
     }
 
     /**
@@ -570,7 +578,8 @@ public class UserServiceImpl implements UserService {
     /**
      * Generate new username and password for user
      */
-    private void generateUsernamePassword(User user) {
+    @Override
+    public void generateUsernamePasswordEmail(User user) {
         StringBuilder usernameBuilder = new StringBuilder();
         String fullName = user.getFullName();
         String[] fullNameArr = fullName.trim().split(" ");
@@ -580,13 +589,19 @@ public class UserServiceImpl implements UserService {
                 usernameBuilder.append(StringUtils.convertVietnameseToEng(fullNameArr[index]).toLowerCase().charAt(0));
             }
         }
-        //Set username and password to user
+        //Set username
         Integer userLikeExisted = userRepository.countByUsername(usernameBuilder.toString());
         usernameBuilder.append(userLikeExisted == 0 ? "" : String.valueOf(userLikeExisted + 1));
         user.setUsername(usernameBuilder.toString());
 
+        // password
         String password = user.getUsername() + "@" + DateUtils.asLocalDate(new Date()).getYear();
+        user.setPasswordRaw(password);
         user.setPassword(passwordEncoder.encode(password));
+
+        // email
+        user.setEmail(usernameBuilder.toString() + "@" + defaultMailDomain);
+
     }
 
 }

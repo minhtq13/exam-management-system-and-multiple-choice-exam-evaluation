@@ -21,6 +21,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import com.elearning.elearning_support.constants.RoleConstants;
 import com.elearning.elearning_support.security.constants.SecurityConstants;
 import com.elearning.elearning_support.security.exceptionHandlers.AccessDeniedHandler;
 import com.elearning.elearning_support.security.exceptionHandlers.AuthEntryPoint;

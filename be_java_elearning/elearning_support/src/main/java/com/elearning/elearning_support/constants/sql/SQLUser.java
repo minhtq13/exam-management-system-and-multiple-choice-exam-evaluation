@@ -113,7 +113,11 @@ public class SQLUser {
     public static final String GET_LIST_USER_ID_CODE_BY_CODE_AND_USER_TYPE =
         "SELECT id, code FROM {h-schema}users WHERE code IN (:lstCode) AND user_type = :userType AND deleted_flag = 1";
 
-
-
+    public static final String FIND_STUDENT_ID_BY_UNIQUE_INFO =
+        "SELECT users.id \n" +
+            "FROM {h-schema}users \n" +
+            "   JOIN {h-schema}view_user_student_role as vStudent ON vStudent.user_id = users.id \n" +
+            "WHERE \n" +
+            "   (users.email = :email) OR (users.username = :username) OR (users.code = :code AND users.user_type = 1)";
 
 }

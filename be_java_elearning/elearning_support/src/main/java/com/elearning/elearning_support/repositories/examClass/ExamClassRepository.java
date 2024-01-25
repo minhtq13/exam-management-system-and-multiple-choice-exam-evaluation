@@ -2,6 +2,7 @@ package com.elearning.elearning_support.repositories.examClass;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,4 +34,8 @@ public interface ExamClassRepository extends JpaRepository<ExamClass, Long> {
 
     @Query(nativeQuery = true, value = SQLExamClass.GET_LIST_EXAM_CLASS_PARTICIPANT)
     List<IExamClassParticipantDTO> getListExamClassParticipant(Long examClassId, Integer roleType);
+
+    @Query(nativeQuery = true, value = SQLExamClass.GET_LIST_EXAM_CLASS_PARTICIPANT_ID)
+    Set<Long> getListExamClassParticipantId(Long examClassId, Integer roleType);
+
 }

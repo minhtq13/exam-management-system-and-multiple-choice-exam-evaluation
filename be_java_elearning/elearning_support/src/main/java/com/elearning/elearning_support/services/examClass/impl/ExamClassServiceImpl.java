@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -43,6 +44,7 @@ import com.elearning.elearning_support.dtos.fileAttach.importFile.ImportResponse
 import com.elearning.elearning_support.dtos.fileAttach.importFile.RowErrorDTO;
 import com.elearning.elearning_support.dtos.users.ImportUserValidatorDTO;
 import com.elearning.elearning_support.dtos.users.importUser.CommonUserImportDTO;
+import com.elearning.elearning_support.dtos.users.importUser.ValidatedImportUserDTO;
 import com.elearning.elearning_support.dtos.users.student.StudentImportDTO;
 import com.elearning.elearning_support.entities.exam_class.ExamClass;
 import com.elearning.elearning_support.entities.exam_class.UserExamClass;
@@ -234,6 +236,7 @@ public class ExamClassServiceImpl implements ExamClassService {
     public Set<Long> importStudentExamClass(Long examClassId, MultipartFile fileImport) {
         // check existed exam class
         ExamClass examClass = findExamClassById(examClassId);
+        Set<Long> lstExamClassParticipantIds = examClassRepository.getListExamClassParticipantId(examClass.getId(), UserExamClassRoleEnum.STUDENT.getType());
         // Tạo response mặc định
         ImportResponseDTO response = new ImportResponseDTO();
         response.setStatus(ImportResponseEnum.SUCCESS.getStatus());
@@ -260,6 +263,7 @@ public class ExamClassServiceImpl implements ExamClassService {
             Map<Integer, String> mapIndexColumnKey = new HashMap<>();
             // students save DB
             List<User> lstNewStudent = new ArrayList<>();
+            Set<Long> lstExistedStudentId = new HashSet<>();
 
             // Duyệt file input
             Iterator<Row> rowIterator = inputSheet.rowIterator();
@@ -297,11 +301,17 @@ public class ExamClassServiceImpl implements ExamClassService {
                     }
                 }
                 // Validate và mapping vào entity
+                User newStudent = new User(importDTO);
+                userService.generateUsernamePasswordEmail(newStudent);
+                if (!newStudent.getFullName().isEmpty()) {
+                    importDTO.setUsername(newStudent.getUsername());
+                    importDTO.setEmail(newStudent.getEmail());
+                    importDTO.setPasswordRaw(newStudent.getPasswordRaw());
+                }
                 List<String> causeList = new ArrayList<>();
-                userService.validateImportUser(validatorDTO, importDTO, causeList);
+                ValidatedImportUserDTO validatedResult = userService.validateImportUser(validatorDTO, importDTO, causeList);
                 if (!isEmptyRow) {
                     if (ObjectUtils.isEmpty(causeList)) {
-                        User newStudent = new User(importDTO);
                         newStudent.setPassword(passwordEncoder.encode(importDTO.getPasswordRaw()));
                         lstNewStudent.add(newStudent);
                         // add username/email/code to validators
@@ -309,23 +319,33 @@ public class ExamClassServiceImpl implements ExamClassService {
                         validatorDTO.getLstExistedEmail().add(newStudent.getEmail());
                         validatorDTO.getLstExistedCode().add(newStudent.getCode());
                     } else {
+                        // if duplicated data and data has already been valid
+                        if (validatedResult.getHasDuplicatedField() && !validatedResult.getMissedRequiredField() && ! validatedResult.getHasInvalidFormatField()){
+                            Long existedStudentId = userRepository.findStudentByUniqueInfo(importDTO.getCode(), importDTO.getEmail(), importDTO.getUsername());
+                            lstExistedStudentId.add(existedStudentId);
+                        }
                         response.getErrorRows().add(new RowErrorDTO(currentRow.getRowNum() + 1, importDTO, causeList));
                         response.setMessage(ImportResponseEnum.EXIST_INVALID_DATA.getMessage());
                         response.setStatus(ImportResponseEnum.EXIST_INVALID_DATA.getStatus());
                     }
                 }
             }
+            // List new students imported
             lstNewStudent = userRepository.saveAll(lstNewStudent);
             List<UserRole> lstStudentUserRole = lstNewStudent.stream()
                 .map(student -> new UserRole(student.getId(), RoleConstants.ROLE_STUDENT_ID)).collect(Collectors.toList());
             userRoleRepository.saveAll(lstStudentUserRole);
+
+            // add to exam class: both new and existed students
+            lstExistedStudentId.removeIf(lstExamClassParticipantIds::contains);
             List<UserExamClass> lstStudentExamClass = lstNewStudent.stream()
                 .map(student -> new UserExamClass(student.getId(), examClass.getId(), UserExamClassRoleEnum.STUDENT.getType())).collect(Collectors.toList());
+            lstExistedStudentId.forEach(studentId -> lstStudentExamClass.add(new UserExamClass(studentId, examClass.getId(), UserExamClassRoleEnum.STUDENT.getType())));
             userExamClassRepository.saveAll(lstStudentExamClass);
             inputWorkbook.close();
 
-            // Set status and message response
-            return lstNewStudent.stream().map(User::getId).collect(Collectors.toSet());
+            // return list studentId
+            return lstStudentExamClass.stream().map(UserExamClass::getUserId).collect(Collectors.toSet());
         } catch (IOException ioException) {
             response.setMessage(ImportResponseEnum.IO_ERROR.getMessage());
             response.setStatus(ImportResponseEnum.IO_ERROR.getStatus());

@@ -28,7 +28,7 @@ public class CustomUserDetails implements UserDetails {
 
     public CustomUserDetails(User user) {
         this.user = user;
-        this.roles = user.getRoles().stream().map(Role::getName).collect(Collectors.toSet());
+        this.roles = user.getRoles().stream().map(Role::getCode).collect(Collectors.toSet());
         List<Permission> lstPermission = new ArrayList<>();
         for (Role role : user.getRoles()) {
             lstPermission.addAll(role.getLstPermissions());

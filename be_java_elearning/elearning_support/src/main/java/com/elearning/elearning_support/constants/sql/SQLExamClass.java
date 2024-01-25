@@ -55,8 +55,10 @@ public class SQLExamClass {
             "    exClass.code AS code, \n" +
             "    exClass.room_name AS roomName, \n" +
             "    exClass.examine_time AS examineTime, \n" +
+            "    exClass.examine_time AS examineDate, \n" +
             "    test.id AS testId, \n" +
             "    test.name AS testName, \n" +
+            "    test.duration as duration, \n" +
             "    semester.id AS semesterId, \n" +
             "    semester.code AS semester, \n" +
             "    subject.id AS subjectId, \n" +
@@ -99,6 +101,12 @@ public class SQLExamClass {
 
     public static final String DELETE_EXAM_CLASS_PARTICIPANT_BY_ID =
         "DELETE FROM {h-schema}user_exam_class WHERE exam_class_id = :examClassId";
+
+    public static final String GET_LIST_EXAM_CLASS_PARTICIPANT_ID =
+        "SELECT \n" +
+            "   userExClass.user_id AS id, \n" +
+            "FROM {h-schema}user_exam_class AS userExClass \n" +
+            "WHERE userExClass.exam_class_id = :examClassId AND userExClass.role_type = :roleType ";
 
 
 

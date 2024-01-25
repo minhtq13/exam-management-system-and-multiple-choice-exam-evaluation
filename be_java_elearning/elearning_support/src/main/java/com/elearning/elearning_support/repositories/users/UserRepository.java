@@ -62,4 +62,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(nativeQuery = true, value = SQLUser.GET_LIST_USER_ID_CODE_BY_CODE_AND_USER_TYPE)
     List<ICommonIdCode> getListIdCodeByCodeAndUserType(Set<String> lstCode, Integer userType);
 
+    @Query(nativeQuery = true, value = SQLUser.FIND_STUDENT_ID_BY_UNIQUE_INFO)
+    Long findStudentByUniqueInfo(String code, String email, String username);
+
 }

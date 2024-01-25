@@ -16,6 +16,8 @@ import com.elearning.elearning_support.dtos.users.UserCreateDTO;
 import com.elearning.elearning_support.dtos.users.UserDetailDTO;
 import com.elearning.elearning_support.dtos.users.UserSaveReqDTO;
 import com.elearning.elearning_support.dtos.users.importUser.CommonUserImportDTO;
+import com.elearning.elearning_support.dtos.users.importUser.ValidatedImportUserDTO;
+import com.elearning.elearning_support.entities.users.User;
 import com.elearning.elearning_support.enums.users.UserTypeEnum;
 
 @Service
@@ -77,7 +79,7 @@ public interface UserService {
     /**
      * Validate import user
      */
-    void validateImportUser(ImportUserValidatorDTO validatorDTO, CommonUserImportDTO importDTO, List<String> causeList);
+    ValidatedImportUserDTO validateImportUser(ImportUserValidatorDTO validatorDTO, CommonUserImportDTO importDTO, List<String> causeList);
 
     /**
      * Export danh sách HSSV
@@ -94,5 +96,10 @@ public interface UserService {
      * Export danh sách GV
      */
     InputStreamResource exportTeacher(String search) throws IOException;
+
+    /**
+     * Generate username, password and email for user
+     */
+    void generateUsernamePasswordEmail(User user);
 
 }

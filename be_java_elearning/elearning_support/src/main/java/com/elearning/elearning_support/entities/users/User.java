@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.springframework.beans.BeanUtils;
@@ -83,6 +84,9 @@ public class User extends BaseEntity implements Serializable {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Transient
+    private String passwordRaw;
 
     @Column(name = "avatar_id")
     private Long avatarId;

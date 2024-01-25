@@ -39,6 +39,8 @@ public class DateUtils {
     public static final String FORMAT_DATE_YYYY_MM_DD_T_HH_MM_SS_SSSZ = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public static final String FORMAT_DATE_HH_MM_DD_MM_YYYY = "HH:mm dd/MM/yyyy";
 
+    public static final String FORMAT_DATE_HH_MM = "HH:mm";
+
     public static final String FORMAT_DATE_FILE_DD_MM_YYYY_HH_MM_SS = "ddMMyyyyHHmmss";
 
     public static final String FORMAT_DD_MM_YYYY= "dd-MM-yyyy";

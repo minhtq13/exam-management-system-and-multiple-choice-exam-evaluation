@@ -26,7 +26,8 @@ public interface ICommonExamClassDTO {
     Date getExamineDate();
 
     @Schema(description = "Giờ thi")
-    String getExamineTime();
+    @JsonFormat(pattern = DateUtils.FORMAT_DATE_HH_MM, timezone = DateUtils.TIME_ZONE)
+    Date getExamineTime();
 
     @Schema(description = "Thời gian làm bài")
     Integer getDuration();
