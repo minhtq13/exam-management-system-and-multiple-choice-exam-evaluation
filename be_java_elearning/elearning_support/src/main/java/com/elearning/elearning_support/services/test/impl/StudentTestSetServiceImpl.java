@@ -2,6 +2,9 @@ package com.elearning.elearning_support.services.test.impl;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +17,9 @@ import com.elearning.elearning_support.constants.message.errorKey.ErrorKey;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst.Resources;
 import com.elearning.elearning_support.dtos.CustomInputStreamResource;
+import com.elearning.elearning_support.dtos.common.CommonNameValueDTO;
 import com.elearning.elearning_support.dtos.examClass.IExamClassParticipantDTO;
+import com.elearning.elearning_support.dtos.test.studentTestSet.ExamClassResultStatisticsDTO;
 import com.elearning.elearning_support.dtos.test.studentTestSet.IStudentTestSetResultDTO;
 import com.elearning.elearning_support.dtos.test.studentTestSet.StudentTestSetResultDTO;
 import com.elearning.elearning_support.entities.exam_class.ExamClass;
@@ -24,6 +29,7 @@ import com.elearning.elearning_support.repositories.examClass.ExamClassRepositor
 import com.elearning.elearning_support.repositories.test.test_set.StudentTestSetRepository;
 import com.elearning.elearning_support.repositories.test.test_set.TestSetRepository;
 import com.elearning.elearning_support.services.test.StudentTestSetService;
+import com.elearning.elearning_support.utils.CollectionUtils;
 import com.elearning.elearning_support.utils.excelFile.ExcelFileUtils;
 import lombok.RequiredArgsConstructor;
 
@@ -42,7 +48,7 @@ public class StudentTestSetServiceImpl implements StudentTestSetService {
     private final ExcelFileUtils excelFileUtils;
 
     @Override
-    public List<StudentTestSetResultDTO> getListStudentTestSetResult(String examClassCode) {
+    public ExamClassResultStatisticsDTO getListStudentTestSetResult(String examClassCode) {
         // Check examClass exists
         ExamClass examClass = examClassRepository.findByCodeAndIsEnabled(examClassCode, Boolean.TRUE).orElseThrow(
             () -> exceptionFactory.resourceNotFoundException(MessageConst.ExamClass.NOT_FOUND, MessageConst.RESOURCE_NOT_FOUND,
@@ -57,9 +63,36 @@ public class StudentTestSetServiceImpl implements StudentTestSetService {
         Set<Long> testSetIdsInTest = testSetRepository.getListTestSetIdByTestId(examClass.getTestId());
 
         // Get student test results
-        return studentTestSetRepository.getStudentTestSetResult(studentIdsInExClass, testSetIdsInTest).stream()
+        List<StudentTestSetResultDTO> results = studentTestSetRepository.getStudentTestSetResult(studentIdsInExClass, testSetIdsInTest).stream()
             .map(item -> new StudentTestSetResultDTO(item, examClass.getId(), examClass.getCode())).collect(
                 Collectors.toList());
+        List<Double> studentResultPoints = results.stream().map(StudentTestSetResultDTO::getTotalPoints).sorted(Comparator.comparing(Double::doubleValue)).collect(
+            Collectors.toList());
+
+        // calculate pie chart
+        List<Double> rangePoints = Arrays.asList(0.0, 3.0, 4.0, 5.5, 6.5, 7.0, 8.0, 8.5, 9.5, 10.0); // fixed
+        List<CommonNameValueDTO> pieChart = new ArrayList<>();
+        for (int idx = 0; idx < rangePoints.size() - 1; idx++) {
+            final int currentIdx = idx;
+            Long value = studentResultPoints.stream().filter(stdPoint -> {
+                double roundedPoint = Math.round(stdPoint * 2) / 2.0;
+                return roundedPoint >= rangePoints.get(currentIdx) && (
+                    roundedPoint < rangePoints.get(currentIdx + 1) || (currentIdx + 1 == rangePoints.size() - 1));
+            }).count();
+            pieChart.add(
+                new CommonNameValueDTO(String.format("%.1f - %.1f", rangePoints.get(currentIdx), rangePoints.get(currentIdx + 1)), value));
+        }
+
+        // calculate column chart
+        double pointStep = 0.5;
+        List<Double> gradePoints = CollectionUtils.generateDoubleSequenceWithStep(0.0, 10.0, pointStep);
+        List<CommonNameValueDTO> columChart = new ArrayList<>();
+        gradePoints.forEach(point -> {
+            Long value = studentResultPoints.stream().filter(stdPoint -> Math.round(stdPoint * 2) / 2.0 == point).count();
+            columChart.add(new CommonNameValueDTO(String.format("%.1f", point), value));
+        });
+
+        return new ExamClassResultStatisticsDTO(results, pieChart, columChart);
     }
 
     @Override
