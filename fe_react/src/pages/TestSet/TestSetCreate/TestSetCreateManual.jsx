@@ -8,7 +8,7 @@ import { testSetCreateService } from "../../../services/testServices";
 import { levelOptions } from "../../../utils/constant";
 import { useNavigate } from "react-router-dom";
 
-const TestSetCreateManual = ({ testId }) => {
+const TestSetCreateManual = ({ testId, questionQuantity }) => {
   const navigate = useNavigate();
   const initialParam = {
     subjectId: null,
@@ -48,7 +48,7 @@ const TestSetCreateManual = ({ testId }) => {
   const [code, setCode] = useState(null);
   const [loading, setLoading] = useState(false);
   const [checkedItems, setCheckedItems] = useState([]);
-
+  const [errCode, setErrCode] = useState(false);
   const notify = useNotify();
   useEffect(() => {
     getAllQuestions(param);
@@ -115,34 +115,42 @@ const TestSetCreateManual = ({ testId }) => {
     )
   }
   const onCreate = () => {
-    setLoading(true);
-    testSetCreateService(
-      {
-        testSetCode: code,
-        testId: Number(testId),
-        questions: checkedItems.map((ques, quesIndex) => {
-          return {
-            questionId: ques.id,
-            questionNo: quesIndex + 1,
-            answers: ques.lstAnswer.map((ans, ansIndex) => {
-              return {
-                answerId: ans.id,
-                answerNo: ansIndex + 1
-              }
-            })
-          }
-        })
-      },
-      (res) => {
-        setLoading(false);
-        notify.success(`Bạn đã tạo thành công mã đề thi ${code}`);
-        navigate(`/test-list`)
-      },
-      (error) => {
-        setLoading(false);
-        notify.error(`Lỗi tạo mã đề thi ${code}`)
-      }
-    )
+    if (!code) {
+      setErrCode(true);
+    } else {
+      setLoading(true);
+      testSetCreateService(
+        {
+          testSetCode: code,
+          testId: Number(testId),
+          questions: checkedItems.map((ques, quesIndex) => {
+            return {
+              questionId: ques.id,
+              questionNo: quesIndex + 1,
+              answers: ques.lstAnswer.map((ans, ansIndex) => {
+                return {
+                  answerId: ans.id,
+                  answerNo: ansIndex + 1
+                }
+              })
+            }
+          })
+        },
+        (res) => {
+          setLoading(false);
+          notify.success(`Bạn đã tạo thành công mã đề thi ${code}`);
+          navigate(`/test-list`)
+        },
+        (error) => {
+          setLoading(false);
+          notify.error(`Lỗi tạo mã đề thi ${code}`)
+        }
+      )
+    }
+  }
+  const onCodeChange = (e) => {
+    setCode(e.target.value);
+    setErrCode(e.target.value.trim() === "");
   }
   return (
     <div className="test-set-create-manual">
@@ -213,7 +221,10 @@ const TestSetCreateManual = ({ testId }) => {
         <div className="manual-preview">
           <div className="manual-preview-code">
             <span className="manual-preview-code-label" style={{ fontSize: 16 }}>Mã đề thi:</span>
-            <Input type="number" onChange={(e) => setCode(e.target.value)} placeholder="Nhập mã đề thi" />
+            <div className="manual-preview-code-value">
+              <Input type="number" onChange={onCodeChange} placeholder="Nhập mã đề thi" status={errCode ? "error" : ""} />
+              {/* {errCode && <span>Chưa nhập mã đề thi!</span>} */}
+            </div>
           </div>
           <div className="manual-preview-content">
             {checkedItems.length > 0 ? checkedItems.map((item, index) => {
@@ -228,6 +239,7 @@ const TestSetCreateManual = ({ testId }) => {
           style={{ minWidth: 100, height: 40 }}
           onClick={onCreate}
           loading={loading}
+          disabled={checkedItems.length > questionQuantity}
         >Tạo đề</Button>
       </div>
     </div>

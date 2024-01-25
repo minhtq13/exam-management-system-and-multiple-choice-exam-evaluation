@@ -321,6 +321,15 @@
         font-weight: bold;
         flex-shrink: 0;
       }
+
+      .manual-preview-code-value {
+        display: flex;
+        flex-direction: column;
+
+        span {
+          color: #FF4D4F;
+        }
+      }
     }
 
   }
@@ -391,6 +400,7 @@
     }
   }
 }
+
 .select-level-q {
   min-width: 150px;
 }

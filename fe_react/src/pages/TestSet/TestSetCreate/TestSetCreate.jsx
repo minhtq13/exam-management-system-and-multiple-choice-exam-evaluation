@@ -8,6 +8,7 @@ import { getDetailTest } from "../../../utils/storage";
 const TestSetCreate = () => {
   const location = useLocation();
   const testId = location.pathname.split("/")[2];
+  const testInfo = getDetailTest();
   const items = [
     {
       key: "auto",
@@ -17,12 +18,9 @@ const TestSetCreate = () => {
     {
       key: "manual",
       label: <h3>Thủ công</h3>,
-      children: <TestSetCreateManual testId={testId} />
+      children: <TestSetCreateManual testId={testId} questionQuantity={testInfo.questionQuantity} />
     },
   ]
-  const testInfo = getDetailTest();
-  const tabOnchange = (value) => {
-  };
 
   return (
     <div className="test-set-create">
@@ -47,7 +45,6 @@ const TestSetCreate = () => {
         <span></span>
       </div>
       <Tabs
-        onChange={tabOnchange}
         defaultActiveKey="1"
         items={items}
         className="test-content"
