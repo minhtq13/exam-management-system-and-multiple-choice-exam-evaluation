@@ -17,6 +17,8 @@ const useExamClasses = () => {
 	const [partiLoading, setPartiLoading] = useState(true);
 	const [resultLoading, setResultLoading] = useState(false);
 	const [resultData, setResultData] = useState([]);
+	const [dataPieChart, setPieDataChart] = useState([]);
+	const [dataColumnChart, setColumnDataChart] = useState([]);
 
 	const getAllExamClasses = (payload) => {
 		setTableLoading(true);
@@ -84,8 +86,10 @@ const useExamClasses = () => {
 			examClassCode,
 			param,
 			(res) => {
-				setResultData(res.data);
+				setResultData(res.data.results);
 				setResultLoading(false);
+				setColumnDataChart(res.data.columnChart)
+				setPieDataChart(res.data.pieChart)
 			},
 			(error) => {
 				notify.error("Không thể lấy kết quả thi!");
@@ -108,6 +112,8 @@ const useExamClasses = () => {
 		getResult,
 		resultLoading,
 		resultData,
+		dataPieChart, 
+		dataColumnChart
 	};
 };
 

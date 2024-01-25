@@ -91,8 +91,6 @@ const TestView = ({
     setLevelCounts(getLevelCounts(result));
     onSelectConfig(getLevelCounts(result));
   }
-  console.log("test", checkedItems);
-  console.log(quesLoading)
   return (
     <div className="test-view">
       <div className="test-wrap">

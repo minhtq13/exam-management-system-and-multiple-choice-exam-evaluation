@@ -33,7 +33,6 @@ const TestCreate = () => {
     getAllSubjects({ subjectCode: null, subjectTitle: null });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(quesLoading)
   useEffect(() => {
     if (subjectId) {
       getAllChapters({

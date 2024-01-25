@@ -14,12 +14,21 @@ import { ImportOutlined } from "@ant-design/icons";
 const ExamClassDetail = () => {
   const detailExamClass = getDetailExamClass();
   const [fileList, setFileList] = useState(null);
-  const [roleType, setRoleType] = useState("STUDENT");
+  const [roleType, setRoleType] = useState("STATISTIC");
   const classId = detailExamClass.classId;
   const record = detailExamClass.record;
+  const classCode = detailExamClass.classCode;
 
-  const { partiLoading, participants, getParticipants, resultLoading, resultData } =
-    useExamClasses();
+  const {
+    partiLoading,
+    participants,
+    getParticipants,
+    resultLoading,
+    resultData,
+    getResult,
+    dataPieChart,
+    dataColumnChart,
+  } = useExamClasses();
 
   const { exportExamClassStudent } = useImportExport();
   useEffect(() => {
@@ -34,6 +43,12 @@ const ExamClassDetail = () => {
   const handleChange = (e) => {
     setFileList(e.target.files[0]);
   };
+  useEffect(() => {
+    if (classCode && roleType === "STATISTIC") {
+      getResult(classCode, {});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [classCode, roleType]);
   const tabsData = participants.map((itemA, index) => {
     const correspondingItemB = resultData.find((itemB) => itemB.studentId === itemA.id);
     if (resultData.length > 0) {
@@ -90,10 +105,10 @@ const ExamClassDetail = () => {
   const renderTabStatistic = () => {
     return (
       <div className="charts">
-        <ChartColumn/>
-        <ChartPie/>
+        <ChartColumn dataColumnChart={dataColumnChart} resultData={resultData} />
+        <ChartPie dataPieChart={dataPieChart} resultData={resultData} />
       </div>
-    )
+    );
   };
   const renderTab = () => {
     return (
@@ -111,7 +126,7 @@ const ExamClassDetail = () => {
               disabled={!fileList}
               //loading={loadingImport}
             >
-              <ImportOutlined/> Import
+              <ImportOutlined /> Import
             </Button>
           </div>
         )}
@@ -177,19 +192,27 @@ const ExamClassDetail = () => {
           <div className="exam-class-participant-right">
             <div>{`Học kỳ: ${record.semester}`}</div>
             <div>{`Phòng thi: ${record.roomName}`}</div>
-       
           </div>
           <div className="exam-class-participant-right">
             <div>{`Ngày thi: ${record.date}`}</div>
             <div>{`Giờ thi: ${record.time}`}</div>
           </div>
           <div className="exam-class-participant-right">
-            <div>{`Trạng thái: ${
-              resultData.length > 0 ? "Đã có điểm thi" : "Chưa có điểm thi"
-            }`}</div>
+            <div>
+              Trạng thái:{" "}
+              {resultData.length > 0 ? (
+                <span style={{ fontSize: 16, fontWeight: 600 }}>Đã có điểm thi</span>
+              ) : (
+                <span style={{ fontSize: 16, fontWeight: 600, color: HUST_COLOR }}>Chưa có điểm thi</span>
+              )}
+            </div>
           </div>
         </div>
-        <Tabs defaultActiveKey="STATISTIC" items={tabsOptions} onChange={(key) => setRoleType(key)} />
+        <Tabs
+          defaultActiveKey="STATISTIC"
+          items={tabsOptions}
+          onChange={(key) => setRoleType(key)}
+        />
       </div>
     </div>
   );

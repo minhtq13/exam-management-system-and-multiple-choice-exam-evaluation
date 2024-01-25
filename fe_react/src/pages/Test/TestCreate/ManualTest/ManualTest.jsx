@@ -156,6 +156,7 @@ const ManualTest = ({ questionList, quesLoading, subjectId, subjectOptions, onSe
         <div className="test-level">
           <span className="select-label">Mức độ:</span>
           <Select
+            className="select-level-q"
             defaultValue={"ALL"}
             optionLabelProp="label"
             options={levelOptions}

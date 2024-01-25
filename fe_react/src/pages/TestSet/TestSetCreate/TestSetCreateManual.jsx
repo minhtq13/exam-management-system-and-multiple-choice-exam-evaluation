@@ -66,7 +66,6 @@ const TestSetCreateManual = ({ testId }) => {
     }
     setCheckedItems(result);
   }
-  console.log("test", checkedItems);
   const questionRender = (item, index, isPreview) => {
     return (
       <div className="question-items" key={index}>
@@ -157,6 +156,7 @@ const TestSetCreateManual = ({ testId }) => {
             <div className="test-level">
               <span className="list-search-filter-label">Mức độ:</span>
               <Select
+                className="select-level-q"
                 defaultValue={"ALL"}
                 optionLabelProp="label"
                 options={levelOptions}

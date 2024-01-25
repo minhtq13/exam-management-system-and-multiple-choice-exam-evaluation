@@ -1,44 +1,31 @@
-import React from "react";
+import { Pie } from "@ant-design/plots";
+import React, { useMemo } from "react";
 import "./ChartPie.scss";
-import { Pie } from '@ant-design/plots';
 
-const ChartPie = () => {
+const ChartPie = ({ dataPieChart, resultData }) => {
+  const data = dataPieChart
 
-  const data = [
-    {
-      name: "0-3",
-      value: 7,
-    },
-    {
-      name: "3-5",
-      value: 10,
-    },
-    {
-      name: "5-7",
-      value: 27,
-    },
-    {
-      name: "7-8",
-      value: 20,
-    },
-    {
-      name: "8-9",
-      value: 15,
-    },
-    {
-      name: "9-10",
-      value: 2,
-    },
-  ]
+  const updateValues = (items) => {
+    items.forEach((elementA) => {
+      const matchingElementB = data.find((elementB) => elementB.name === elementA.name);
+      if (matchingElementB) {
+        elementA.value = matchingElementB.value;
+      }
+    });
+
+    return items;
+  };
   const config = {
     data,
-    angleField: 'value',
-    colorField: 'name',
+    angleField: "value",
+    colorField: "name",
     innerRadius: 0.6,
     labels: [
-      { text: 'name', style: { fontSize: 12, fontWeight: 'bold' } },
+      // { text: "name", style: { fontSize: 12, fontWeight: "bold" } },
       {
         text: (d, i, data) => {
+          if (resultData.length === 0) return;
+          if (d.value === 0) return "";
           return `${((d.value / data.reduce((a, b) => a + b.value, 0)) * 100).toFixed(2)}%`;
         },
         style: {
@@ -48,45 +35,46 @@ const ChartPie = () => {
       },
     ],
     style: {
-      stroke: '#fff',
+      stroke: "#fff",
       inset: 1,
       radius: 10,
     },
     scale: {
       color: {
-        palette: 'spectral',
+        palette: "spectral",
         offset: (t) => t * 0.8 + 0.1,
       },
     },
     legend: {
       color: {
-        title: 'Điểm',
-        position: 'bottom',
+        title: "Điểm",
+        position: "bottom",
         layout: {
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
         },
       },
     },
     interaction: {
       tooltip: {
         render: (e, { title, items }) => {
+          items = updateValues(items);
           return (
-            <div key={title} style={{minWidth: 150}}>
-              <h4>{title}</h4>
+            <div key={title} style={{ minWidth: 150 }}>
               {items.map((item, index) => {
-                const { value, color } = item;
+                const { name, value, color } = item;
                 return (
                   <div key={index}>
-                    <div style={{ margin: 0, display: 'flex', justifyContent: 'space-between' }}>
+                    <h4>{name}</h4>
+                    <div style={{ margin: 0, display: "flex", justifyContent: "space-between" }}>
                       <div>
                         <span
                           style={{
-                            display: 'inline-block',
+                            display: "inline-block",
                             width: 6,
                             height: 6,
-                            borderRadius: '50%',
+                            borderRadius: "50%",
                             backgroundColor: color,
                             marginRight: 6,
                           }}
@@ -95,14 +83,14 @@ const ChartPie = () => {
                       </div>
                       <b>{value}</b>
                     </div>
-                    <div style={{ margin: 0, display: 'flex', justifyContent: 'space-between' }}>
+                    <div style={{ margin: 0, display: "flex", justifyContent: "space-between" }}>
                       <div>
                         <span
                           style={{
-                            display: 'inline-block',
+                            display: "inline-block",
                             width: 6,
                             height: 6,
-                            borderRadius: '50%',
+                            borderRadius: "50%",
                             backgroundColor: color,
                             marginRight: 6,
                           }}
@@ -110,7 +98,10 @@ const ChartPie = () => {
                         <span>Phần trăm: </span>
                       </div>
                       <b>
-                        {((value / data.reduce((a, b) => a + b.value, 0)) * 100).toFixed(2)}%
+                        {value === 0
+                          ? "0"
+                          : ((value / data.reduce((a, b) => a + b.value, 0)) * 100).toFixed(2)}
+                        %
                       </b>
                     </div>
                   </div>
@@ -122,11 +113,11 @@ const ChartPie = () => {
       },
     },
   };
-  return (
-    <div className="chart-pie-component">
-      <Pie {...config} />
-    </div>
-  );
+  const renderPieChart = useMemo(() => {
+    return <Pie {...config} />;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+  return <div className="chart-pie-component">{renderPieChart}</div>;
 };
 
 export default ChartPie;
