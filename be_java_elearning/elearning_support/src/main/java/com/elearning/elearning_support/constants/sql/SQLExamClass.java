@@ -19,11 +19,13 @@ public class SQLExamClass {
             "    exClass.code AS code, \n" +
             "    exClass.room_name AS roomName, \n" +
             "    DATE(exClass.examine_time) AS examineDate, \n" +
-            "    TO_CHAR(exClass.examine_time, 'HH24:MI') AS examineTime, \n" +
+            "    exClass.examine_time AS examineTime, \n" +
             "    test.id AS testId, \n" +
             "    test.name AS testName, \n" +
             "    test.duration AS duration, \n" +
+            "    semester.id AS semesterId, \n" +
             "    semester.code AS semester, \n" +
+            "    subject.id AS subjectId, \n" +
             "    subject.title AS subjectTitle, \n" +
             "    examClassParticipantCTE.numStudents AS numberOfStudents, \n" +
             "    examClassParticipantCTE.numSupervisors AS numberOfSupervisors \n" +
