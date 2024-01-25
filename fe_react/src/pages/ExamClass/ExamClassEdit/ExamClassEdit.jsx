@@ -63,8 +63,8 @@ const ExamClassEdit = () => {
             roomName: examClassInfo ? examClassInfo.roomName : null,
             examineTime: examClassInfo.examineTime
               ? dayjs(
-                examClassInfo.examineTime,
-                "YYYY-MM-DD HH:mm"
+                `${examClassInfo.examineTime} ${examClassInfo.examineDate}`,
+                "HH:mm DD-MM-YYYY"
               )
               : "",
             code: examClassInfo ? examClassInfo.code : null,

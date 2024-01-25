@@ -295,7 +295,7 @@ const SubjectList = () => {
         <p>Danh sách học phần</p>
       </div>
       <div className="search-filter-button">
-        <SearchFilter placeholder="Nhập tên học phần hoặc mã HP" onChange={onChange} onSearch={onSearch} />
+        <SearchFilter placeholder="Nhập tên HP hoặc mã HP" onChange={onChange} onSearch={onSearch} />
         <div className="block-button">
           <ModalPopup
             buttonOpenModal={
