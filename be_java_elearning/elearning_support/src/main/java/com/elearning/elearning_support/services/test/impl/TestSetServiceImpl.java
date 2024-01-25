@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -57,7 +58,6 @@ import com.elearning.elearning_support.enums.file_attach.FileTypeEnum;
 import com.elearning.elearning_support.exceptions.BadRequestException;
 import com.elearning.elearning_support.repositories.examClass.ExamClassRepository;
 import com.elearning.elearning_support.repositories.test.test_set.StudentTestSetRepository;
-import com.elearning.elearning_support.repositories.users.UserRepository;
 import com.elearning.elearning_support.services.fileAttach.FileAttachService;
 import com.elearning.elearning_support.utils.StringUtils;
 import com.elearning.elearning_support.utils.file.FileUtils;
@@ -99,12 +99,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class TestSetServiceImpl implements TestSetService {
-
-    private final UserRepository userRepository;
-
     public static final String ANSWERED_SHEETS = "AnsweredSheets";
 
     public static final String SCORED_SHEETS = "ScoredSheets";
+
+    public static final String MAY_BE_WRONG = "MayBeWrong/may_be_wrong.txt";
 
     public static final String FILE_TEMP_SCORED_RESULTS_DATA = "temp_results_%s.json";
 
@@ -387,7 +386,10 @@ public class TestSetServiceImpl implements TestSetService {
     @Override
     public ScoringPreviewResDTO scoreExamClassTestSet(String examClassCode) {
         callAIModelProcessing(examClassCode);
-        return scoreStudentTestSet(examClassCode, loadListStudentScoredSheets(examClassCode));
+        List<String> warningMessages = new ArrayList<>();
+        ScoringPreviewResDTO response = scoreStudentTestSet(examClassCode, loadListStudentScoredSheets(examClassCode, warningMessages));
+        response.setWarningMessages(warningMessages);
+        return response;
     }
 
 
@@ -656,7 +658,7 @@ public class TestSetServiceImpl implements TestSetService {
     /**
      * Load scored student's answer sheets from shared folder
      */
-    private List<StudentHandledTestDTO> loadListStudentScoredSheets(String exClassCode) {
+    private List<StudentHandledTestDTO> loadListStudentScoredSheets(String exClassCode, List<String> warningMessages) {
         List<StudentHandledTestDTO> lstScoredData = new ArrayList<>();
         File scoredSheetsDir;
         String sharedAppDataPath = FileUtils.getSharedAppDirectoryPath();
@@ -672,6 +674,19 @@ public class TestSetServiceImpl implements TestSetService {
                 } catch (IOException e) {
                     log.error(MessageConst.EXCEPTION_LOG_FORMAT, e.getMessage(), e.getCause());
                 }
+            }
+        }
+        // read warning messages
+        File warningFile = new File(String.format("%s/%s/%s/%s", sharedAppDataPath, ANSWERED_SHEETS, exClassCode, MAY_BE_WRONG));
+        if (warningFile.exists() && warningFile.isFile()) {
+            try {
+                Scanner scanner = new Scanner(warningFile);
+//               scanner.useDelimiter("\n");
+                while (scanner.hasNextLine()) {
+                    warningMessages.add(scanner.nextLine());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         return lstScoredData;

@@ -21,4 +21,11 @@ public class ScoringPreviewResDTO {
     @Schema(description = "Chi tiết kết quả chấm ứng với tempCode")
     List<ScoringPreviewItemDTO> previews = new ArrayList<>();
 
+    @Schema(description = "Cảnh báo kết quả chấm")
+    List<String> warningMessages = new ArrayList<>();
+
+    public ScoringPreviewResDTO(String tmpFileCode, List<ScoringPreviewItemDTO> previews) {
+        this.tmpFileCode = tmpFileCode;
+        this.previews = previews;
+    }
 }
