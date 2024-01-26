@@ -3,11 +3,12 @@ import React, { useEffect, useState } from "react";
 import useNotify from "../../../hooks/useNotify";
 import dayjs from "dayjs";
 import { updateExamClassService } from "../../../services/examClassServices";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useExamClasses from "../../../hooks/useExamClass";
 import { Skeleton } from "antd";
 import UpdateExamClassInfoForm from "../components/UpdateExamClassInfoForm/UpdateExamClassInfoForm";
 const ExamClassEdit = () => {
+  const navigate = useNavigate();
   const { getExamClassDetail, examClassInfo, infoLoading } = useExamClasses();
   const [selectedTestId, setSelectedTestId] = useState(null);
   const [lstStudentId, setLstStudentId] = useState([]);
@@ -38,6 +39,7 @@ const ExamClassEdit = () => {
       (res) => {
         setLoading(false);
         notify.success("Cập nhật lớp thi thành công!");
+        navigate("/exam-class-list")
       },
       (error) => {
         setLoading(false);

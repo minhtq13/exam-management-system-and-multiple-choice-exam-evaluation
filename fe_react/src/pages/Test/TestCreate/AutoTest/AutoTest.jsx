@@ -113,10 +113,10 @@ const AutoTest = ({ chapterIds, formKey, subjectId, levelCal, sumQues, subjectOp
   return (
     <div className="test-create-view">
       <div className="question-config-info">
-        <span>{`Dễ: ${levelCal[0]}`}</span>
-        <span>{`Trung bình: ${levelCal[1]}`}</span>
-        <span>{`Khó: ${levelCal[2]}`}</span>
-        <span>{`Tổng: ${sumQues}`}</span>
+        <span className="number-q">{`Dễ: ${levelCal[0]}`}</span>
+        <span className="number-q">{`Trung bình: ${levelCal[1]}`}</span>
+        <span className="number-q">{`Khó: ${levelCal[2]}`}</span>
+        <span className="number-q">{`Tổng: ${sumQues}`}</span>
       </div>
       <Form
         onFinish={onFinish}

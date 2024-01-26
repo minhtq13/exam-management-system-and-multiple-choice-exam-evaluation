@@ -3,7 +3,7 @@ import { Button, Checkbox, Form, Select, Skeleton } from "antd";
 import "./QuestionEdit.scss";
 import { useEffect, useState } from "react";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { updateQuesionsService } from "../../../services/questionServices";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -14,6 +14,7 @@ import useCombo from "../../../hooks/useCombo";
 
 Quill.register("modules/imageResize", ImageResize);
 const QuestionEdit = () => {
+	const navigate = useNavigate();
 	const { getQuestionDetail, questionInfo, infoLoading } = useQuestions();
 	const [checked, setChecked] = useState(false);
 	const [chapterId, setChapterId] = useState(null);
@@ -131,6 +132,7 @@ const QuestionEdit = () => {
 			{ ...values, chapterId: chapterId, level: sentLevel(values.level) },
 			(res) => {
 				notify.success("Cập nhật câu hỏi thành công!");
+				navigate("/question-list")
 			},
 			(error) => {
 				notify.error("Lỗi cập nhật câu hỏi!");

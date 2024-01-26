@@ -3,7 +3,8 @@ import React, { useMemo } from "react";
 import "./ChartPie.scss";
 
 const ChartPie = ({ dataPieChart, resultData }) => {
-  const data = dataPieChart
+  const data = dataPieChart;
+  console.log(data);
 
   const updateValues = (items) => {
     items.forEach((elementA) => {
@@ -24,7 +25,7 @@ const ChartPie = ({ dataPieChart, resultData }) => {
       // { text: "name", style: { fontSize: 12, fontWeight: "bold" } },
       {
         text: (d, i, data) => {
-          if (resultData.length === 0) return;
+          if (resultData.length === 0) return "";
           if (d.value === 0) return "";
           return `${((d.value / data.reduce((a, b) => a + b.value, 0)) * 100).toFixed(2)}%`;
         },
@@ -66,35 +67,28 @@ const ChartPie = ({ dataPieChart, resultData }) => {
                 const { name, value, color } = item;
                 return (
                   <div key={index}>
-                    <h4>{name}</h4>
+                    <div style={{display: "flex", alignItems: "center"}}>
+                      <span
+                        style={{
+                          display: "inline-block",
+                          width: 6,
+                          height: 6,
+                          borderRadius: "50%",
+                          backgroundColor: color,
+                          marginRight: 6,
+                        }}
+                      ></span>
+                      <div style={{fontSize: 16, fontWeight: 600}}>{name}</div>
+                    </div>
+
                     <div style={{ margin: 0, display: "flex", justifyContent: "space-between" }}>
                       <div>
-                        <span
-                          style={{
-                            display: "inline-block",
-                            width: 6,
-                            height: 6,
-                            borderRadius: "50%",
-                            backgroundColor: color,
-                            marginRight: 6,
-                          }}
-                        ></span>
                         <span>Số lượng: </span>
                       </div>
                       <b>{value}</b>
                     </div>
                     <div style={{ margin: 0, display: "flex", justifyContent: "space-between" }}>
                       <div>
-                        <span
-                          style={{
-                            display: "inline-block",
-                            width: 6,
-                            height: 6,
-                            borderRadius: "50%",
-                            backgroundColor: color,
-                            marginRight: 6,
-                          }}
-                        ></span>
                         <span>Phần trăm: </span>
                       </div>
                       <b>

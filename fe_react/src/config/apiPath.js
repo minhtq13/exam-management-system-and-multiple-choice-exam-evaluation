@@ -28,7 +28,7 @@ export const apiPath = {
 	//Subject:
 	allSubjects: BASE_URL + "/subject/list",
 	getSubjectByCode: BASE_URL + "/subject/detail",
-	updateSubject: BASE_URL + "/subject/",
+	updateSubject: BASE_URL + "/subject",
 	addSubject: BASE_URL + "/subject",
 	deleteSubject: BASE_URL + "/subject/disable",
 	//Chapter:

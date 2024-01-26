@@ -1,7 +1,6 @@
 import {
-	AppstoreOutlined,
 	FormOutlined,
-	SearchOutlined,
+	SearchOutlined
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { useEffect, useState } from "react";
@@ -33,36 +32,14 @@ const Sidebar = () => {
 			type: "group",
 			children: [
 				{
-					label: "Tổng quan",
-					key: "dashboard",
-					icon: <AppstoreOutlined style={{ color: "#ffff" }} />,
-					children: [
-						{
-							label: "Tổng quan sinh viên",
-							key: "student-dashboard",
-						},
-						{
-							label: "Tổng quan giáo viên",
-							key: "teacher-dashboard",
-						},
-					],
-				},
-				{
 					label: "Sinh viên",
 					key: "student-list",
 					icon: <FaGraduationCap style={{ color: "#ffff" }} />,
-					// children: [
-					// 	{ label: "Danh sách sinh viên", key: "student-list" },
-					// 	{ label: "Thêm sinh viên", key: "student-add" },
-					// ],
 				},
 				{
 					label: "Giảng viên",
 					key: "teacher-list",
 					icon: <GiTeacher style={{ color: "#ffff" }} />,
-					// children: [
-					// 	{ label: "Danh sách giảng viên", key: "teacher-list" },
-					// ],
 				},
 
 				{
@@ -128,16 +105,6 @@ const Sidebar = () => {
 					key: "automatic-scoring",
 					icon: <SearchOutlined style={{ color: "#ffff" }} />,
 				},
-				// {
-				// 	label: "Thời khóa biểu",
-				// 	key: "time-table",
-				// 	icon: <FaRegCalendarAlt style={{ color: "#ffff" }} />,
-				// },
-				// {
-				// 	label: "Thư viện",
-				// 	key: "library",
-				// 	icon: <VscLibrary style={{ color: "#ffff" }} />,
-				// },
 			],
 		},
 		{

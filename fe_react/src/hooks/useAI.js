@@ -670,6 +670,8 @@ const useAI = () => {
         setLoading(false);
         if (err.response.data.code === "error.test.set.not.found") {
           notify.warning("Không có mã đề thi trong cơ sở dữ liệu!");
+        } else if (err.response.data.code === "error.student.exam.class.not_found") {
+          notify.warning("Mã số sinh viên này không có trong lớp thi!");
         }
       }
     );

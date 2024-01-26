@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useNotify from "../../../hooks/useNotify";
 import { updateSubjectsService } from "../../../services/subjectsService";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useSubjects from "../../../hooks/useSubjects";
 import UpdateSubjectInfoForm from "../components/UpdateSubjectInfoForm/UpdateSubjectInfoForm";
 const SubjectEdit = () => {
@@ -9,6 +9,7 @@ const SubjectEdit = () => {
 	const { getSubjectByCode, subjectInfo, infoLoading } = useSubjects();
 	const notify = useNotify();
 	const location = useLocation();
+	const navigate = useNavigate()
 	const id = location.pathname.split("/")[2];
 	useEffect(() => {
 		getSubjectByCode({}, id);
@@ -28,6 +29,7 @@ const SubjectEdit = () => {
 				setLoading(false);
 				getSubjectByCode({}, location.pathname.split("/")[2]);
 				notify.success("Cập nhật thông tin học phần thành công!");
+				navigate("/subject-list")
 			},
 			(error) => {
 				setLoading(false);

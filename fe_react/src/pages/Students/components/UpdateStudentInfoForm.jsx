@@ -68,7 +68,7 @@ const UpdateStudentInfoForm = ({
               message: errorMessange,
             },
             {
-              pattern: /^(2[0-9]{7}|29[0-9]{6})$/,
+              pattern: /^([0-9]{7}|[0-9]{6})$/,
               message: "Vui lòng điền đúng định dạng. Ví dụ: 20192000",
             },
           ]}

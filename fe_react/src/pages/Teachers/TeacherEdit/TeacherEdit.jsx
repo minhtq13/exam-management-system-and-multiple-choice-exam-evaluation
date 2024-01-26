@@ -1,7 +1,7 @@
 import { Skeleton } from "antd";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useAccount from "../../../hooks/useAccount";
 import useNotify from "../../../hooks/useNotify";
 import { updateUser } from "../../../services/userService";
@@ -14,6 +14,7 @@ const TeacherEdit = () => {
 	const { userInfo, getUserInfoAPI, infoLoading } = useAccount();
 	const notify = useNotify();
 	const location = useLocation();
+	const navigate = useNavigate();
 	const id = location.pathname.split("/")[2];
 	useEffect(() => {
 		getUserInfoAPI(id, {});
@@ -40,6 +41,7 @@ const TeacherEdit = () => {
 				setLoading(false);
 				notify.success("Cập nhật thông tin giảng viên thành công!");
 				getUserInfoAPI(id, {});
+				navigate("/teacher-list")
 			},
 			(error) => {
 				setLoading(false);

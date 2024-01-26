@@ -402,6 +402,7 @@ const UpdateExamClassInfoForm = ({
           rules={[{ required: true, message: "Chưa chọn kỳ thi" }]}
         >
           <Select
+            disabled={true}
             loading={semesterLoading}
             placeholder="Chọn kỳ thi"
             options={getOptions(allSemester, false)}
