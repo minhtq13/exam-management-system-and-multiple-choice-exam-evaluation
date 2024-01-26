@@ -16,7 +16,7 @@ public class SQLQuestion {
             "WHERE \n" +
             "    question.is_enabled = true AND \n" +
             "    question.deleted_flag = 1 AND \n" +
-            "    ('' = :search OR question.content ILIKE ('%' || :search || '%')) AND \n" +
+            "    ('' = :search OR {h-schema}custom_unaccent(question.content) ILIKE ('%' || {h-schema}custom_unaccent(:search) || '%')) AND \n" +
             "    (-1 = :questionLevel OR question.level = :questionLevel) AND \n" +
             "    (-1 = :subjectId OR subject.id = :subjectId) AND \n" +
             "    ('' = :subjectCode OR subject.code = :subjectCode) AND \n" +
