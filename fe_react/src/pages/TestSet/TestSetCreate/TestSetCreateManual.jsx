@@ -122,7 +122,7 @@ const TestSetCreateManual = ({ testId, questionQuantity, lstTest }) => {
     if (!code) {
       setErrCode(true);
     }
-    if(checkedItems.length !== questionQuantity) {
+    if (checkedItems.length !== questionQuantity) {
       setErrorQuantity(true);
     }
     if (code && checkedItems.length === questionQuantity && !isExist) {

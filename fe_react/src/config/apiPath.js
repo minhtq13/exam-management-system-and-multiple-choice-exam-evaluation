@@ -61,6 +61,7 @@ export const apiPath = {
 	updateExamClass: BASE_URL + "/exam-class",
 	getParticipant: BASE_URL + "/exam-class/participant/list",
 	getExamClassResult: BASE_URL + "/std-test-set/result",
+	importStudent: BASE_URL + "/exam-class/participant/student/import",
 	//combo box
 	comboQuestion: BASE_URL + "/combobox/subject",
 	comboChapter: BASE_URL + "/combobox/subject/chapter",

@@ -95,9 +95,6 @@ const ExamClassList = () => {
   const semsOnChange = (value) => {
     setParam({ ...param, semesterId: value });
   };
-  const studentFileChange = (e) => {
-    setStudentFile(e.target.files[0]);
-  }
   const importStudentClass = () => {
     const formData = new FormData();
     formData.append("file", studentFile);
@@ -156,6 +153,9 @@ const ExamClassList = () => {
   });
   const handleExportStudent = () => {
     exportExamClassStudent(classCode);
+  };
+  const studentFileChange = (e) => {
+    setStudentFile(e.target.files[0]);
   };
 
   const renderTab = () => {
@@ -628,7 +628,7 @@ const ExamClassList = () => {
                 <div>{`Mã lớp thi: ${record.code}`}</div>
                 <div>{`Học kỳ: ${record.semester}`}</div>
                 <div>Trạng thái: {" "}
-                  {resultData.length > 0 ? <strong style={{fontSize: 16}}>Đã có điểm thi</strong> : <strong style={{fontSize: 16}}>Chưa có điểm thi</strong>}
+                  {resultData.length > 0 ? <strong style={{ fontSize: 16 }}>Đã có điểm thi</strong> : <strong style={{ fontSize: 16 }}>Chưa có điểm thi</strong>}
                 </div>
               </div>
               <div className="exam-class-participant-right">

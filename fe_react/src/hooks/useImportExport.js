@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL } from "../config/apiPath";
+import { BASE_URL, apiPath } from "../config/apiPath";
 import useNotify from "./useNotify";
 import { useState } from "react";
 import { capitalizeFirstLetter } from "../utils/tools";
@@ -137,16 +137,17 @@ const useImportExport = () => {
 	const importStudent = (file, classId, getdata, roleType) => {
 		setLoadingImport(true);
 		axios
-			.post(`${BASE_URL}/exam-class/participant/student/import/${classId}`, file)
+			.post(
+				`${BASE_URL}/exam-class/participant/student/import/${classId}`,
+				file
+			)
 			.then((response) => {
 				notify.success("Tải file thành công!");
 				setLoadingImport(false);
 				getdata(classId, roleType);
 			})
 			.catch((error) => {
-				notify.error(
-					"Lỗi tải file!"
-				);
+				notify.error("Lỗi tải file!");
 				setLoadingImport(false);
 			});
 	};
@@ -158,7 +159,7 @@ const useImportExport = () => {
 		exportTestList,
 		exportExamClass,
 		exportExamClassStudent,
-		importStudent
+		importStudent,
 	};
 };
 export default useImportExport;
