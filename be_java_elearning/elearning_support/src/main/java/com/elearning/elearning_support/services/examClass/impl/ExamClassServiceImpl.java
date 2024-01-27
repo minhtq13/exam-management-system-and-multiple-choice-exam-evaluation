@@ -232,6 +232,7 @@ public class ExamClassServiceImpl implements ExamClassService {
     }
 
     //TODO: review logic and implement
+    @Transactional
     @Override
     public Set<Long> importStudentExamClass(Long examClassId, MultipartFile fileImport) {
         // check existed exam class
@@ -241,14 +242,14 @@ public class ExamClassServiceImpl implements ExamClassService {
         ImportResponseDTO response = new ImportResponseDTO();
         response.setStatus(ImportResponseEnum.SUCCESS.getStatus());
         response.setMessage(ImportResponseEnum.SUCCESS.getMessage());
-
+        XSSFWorkbook inputWorkbook;
         // Đọc file và import dữ liệu
         try {
             // Validate file sơ bộ
             FileUtils.validateUploadFile(fileImport, Arrays.asList(Excel.XLS, Excel.XLSX));
 
             // Tạo workbook để đọc file import
-            XSSFWorkbook inputWorkbook = new XSSFWorkbook(fileImport.getInputStream());
+            inputWorkbook = new XSSFWorkbook(fileImport.getInputStream());
             XSSFSheet inputSheet = inputWorkbook.getSheetAt(0);
             if (Objects.isNull(inputSheet)) {
                 throw exceptionFactory.fileUploadException(FileAttach.FILE_EXCEL_EMPTY_SHEET_ERROR, Resources.FILE_ATTACHED,
@@ -302,11 +303,11 @@ public class ExamClassServiceImpl implements ExamClassService {
                 }
                 // Validate và mapping vào entity
                 User newStudent = new User(importDTO);
-                userService.generateUsernamePasswordEmail(newStudent);
                 if (!newStudent.getFullName().isEmpty()) {
-                    importDTO.setUsername(newStudent.getUsername());
-                    importDTO.setEmail(newStudent.getEmail());
-                    importDTO.setPasswordRaw(newStudent.getPasswordRaw());
+                    userService.generateUsernamePasswordEmail(newStudent);
+                    importDTO.setUsername(ObjectUtils.isEmpty(importDTO.getUsername()) ? newStudent.getUsername() : importDTO.getUsername());
+                    importDTO.setEmail(ObjectUtils.isEmpty(importDTO.getUsername()) ? newStudent.getEmail() : importDTO.getEmail());
+                    importDTO.setPasswordRaw(ObjectUtils.isEmpty(importDTO.getPasswordRaw()) ? newStudent.getPasswordRaw() : importDTO.getPasswordRaw());
                 }
                 List<String> causeList = new ArrayList<>();
                 ValidatedImportUserDTO validatedResult = userService.validateImportUser(validatorDTO, importDTO, causeList);
@@ -322,7 +323,9 @@ public class ExamClassServiceImpl implements ExamClassService {
                         // if duplicated data and data has already been valid
                         if (validatedResult.getHasDuplicatedField() && !validatedResult.getMissedRequiredField() && ! validatedResult.getHasInvalidFormatField()){
                             Long existedStudentId = userRepository.findStudentByUniqueInfo(importDTO.getCode(), importDTO.getEmail(), importDTO.getUsername());
-                            lstExistedStudentId.add(existedStudentId);
+                            if (Objects.nonNull(existedStudentId)){
+                                lstExistedStudentId.add(existedStudentId);
+                            }
                         }
                         response.getErrorRows().add(new RowErrorDTO(currentRow.getRowNum() + 1, importDTO, causeList));
                         response.setMessage(ImportResponseEnum.EXIST_INVALID_DATA.getMessage());

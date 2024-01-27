@@ -106,7 +106,7 @@ public class SQLExamClass {
 
     public static final String GET_LIST_EXAM_CLASS_PARTICIPANT_ID =
         "SELECT \n" +
-            "   userExClass.user_id AS id, \n" +
+            "   userExClass.user_id AS id \n" +
             "FROM {h-schema}user_exam_class AS userExClass \n" +
             "WHERE userExClass.exam_class_id = :examClassId AND userExClass.role_type = :roleType ";
 
