@@ -112,7 +112,6 @@
       
     }
     .option {
-      // position: relative;
       display: flex;
       align-items: center;
       gap: 24px;
@@ -176,7 +175,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-top: 24px;
       .button-submit-ai {
         width: 150px;
         height: 50px;
@@ -209,10 +207,15 @@
   justify-content: center !important;
 }
 .may-be-wrong-modal {
+  min-width: 50vw;
   .may-be-wrong-content {
     .header-mbw-content {
       margin: 20px 0px;
       font-size: 16px;
+    }
+    .block-mbw-value {
+      max-height: 300px;
+      overflow: scroll;
     }
     .result-mbw {
       font-size: 16px;
@@ -224,7 +227,6 @@
     .hint-mbw {
       color: #a0a0a0;
       font-style: italic;
-      margin-top: 20px;
     }
   }
 }

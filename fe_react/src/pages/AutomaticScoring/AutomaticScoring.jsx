@@ -56,6 +56,7 @@ const AutomaticScoring = () => {
     getModelAI,
     resultAI,
     mayBeWrong,
+    setMayBeWrong,
     loading,
     resetTableResult,
     setResultAI,
@@ -67,7 +68,7 @@ const AutomaticScoring = () => {
   const { examClassCode } = useSelector((state) => state.appReducer);
   const [listExamClassCode, setListExamClassCode] = useState([]);
   const [listMSSV, setListMSSV] = useState([]);
-  const [numberAnswer, setNumberAnswer] = useState(30);
+  const [numberAnswer, setNumberAnswer] = useState(60);
 
   useEffect(() => {
     if (examClassCode) {
@@ -81,6 +82,7 @@ const AutomaticScoring = () => {
     if (imgInFolder.length > 0) {
       resetTableResult({}, false);
       setResultAI([]);
+      setMayBeWrong([])
       getModelAI(examClassCode);
     } else {
       notify.error("Vui lòng tải ảnh lên!");
@@ -90,6 +92,7 @@ const AutomaticScoring = () => {
   const handleReset = () => {
     resetTableResult();
     setResultAI([]);
+    setMayBeWrong([])
   };
   const handleSaveResult = () => {
     saveTableResult();
@@ -193,7 +196,7 @@ const AutomaticScoring = () => {
                 style={{ width: 150 }}
                 placeholder="Nhập số câu muốn hiển thị"
                 showSearch
-                defaultValue={30}
+                defaultValue={60}
               >
                 {numberAnswerOption.map((item, index) => {
                   return (

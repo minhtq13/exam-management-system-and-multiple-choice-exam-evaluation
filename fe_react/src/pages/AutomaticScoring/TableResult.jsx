@@ -7,7 +7,6 @@ import { Spin } from 'antd';
 const TableResult = ({ resultAI, loadingTable, setListExamClassCode, setListMSSV, numberAnswer }) => {
   const [testCodeFilter, setTestCodeFilter] = useState([]);
   const [studentCodeFilter, setStudentCodeFilter] = useState([]);
-  // const numberAnswer = 30;
   const columnsAnswer = [];
   for (var i = 0; i < numberAnswer; i++) {
     columnsAnswer.push({

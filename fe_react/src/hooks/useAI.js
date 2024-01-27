@@ -1,18 +1,23 @@
 import { useState } from "react";
-import { deleteImgInFolderService, getImgInFolderService, getModelAIService, resetTableResultService, saveTableResultService } from "../services/aiServices";
+import {
+  deleteImgInFolderService,
+  getImgInFolderService,
+  getModelAIService,
+  resetTableResultService,
+  saveTableResultService,
+} from "../services/aiServices";
 import useNotify from "./useNotify";
 import { useDispatch } from "react-redux";
 import { setRefreshTableImage } from "../redux/slices/refreshSlice";
 
 const useAI = () => {
   const notify = useNotify();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [resultAI, setResultAI] = useState([]);
   const [tempFileCode, setTempFileCode] = useState();
   const [imgInFolder, setImgInFolder] = useState([]);
   const [mayBeWrong, setMayBeWrong] = useState([]);
   const [loading, setLoading] = useState(false);
-  
 
   const getModelAI = (examClassCode, payload) => {
     setLoading(true);
@@ -26,7 +31,7 @@ const useAI = () => {
         setMayBeWrong(res.data.warningMessages)
       },
       (err) => {
-        console.log(err)
+        console.log(err);
         setLoading(false);
         if (err.response.data.code === "error.test.set.not.found") {
           notify.warning("Không có mã đề thi trong cơ sở dữ liệu!");
@@ -44,14 +49,14 @@ const useAI = () => {
         if (noti) {
           notify.success("Đã xóa dữ liệu của bảng thành công!");
         } else {
-          console.log(res)
+          console.log(res);
         }
       },
       (err) => {
         notify.warning("Không tìm thấy dữ liệu");
       }
     );
-  }
+  };
   const saveTableResult = (payload) => {
     saveTableResultService(
       tempFileCode,
@@ -63,31 +68,31 @@ const useAI = () => {
         notify.warning("Lưu kết quả chấm thất bại!");
       }
     );
-  }
+  };
   const getImgInFolder = (examClassCode, payload) => {
     getImgInFolderService(
       examClassCode,
       payload,
       (res) => {
-        setImgInFolder(res.data)
+        setImgInFolder(res.data);
       },
       (err) => {
         notify.warning("Không tìm thấy ảnh trong folder!");
       }
     );
-  }
+  };
   const deleteImgInFolder = (payload) => {
     deleteImgInFolderService(
       payload,
       (res) => {
         notify.success("Xoá thành công!");
-        dispatch(setRefreshTableImage(Date.now()))
+        dispatch(setRefreshTableImage(Date.now()));
       },
       (err) => {
         notify.warning("Xoá không thành công!");
       }
     );
-  }
+  };
 
   return {
     resultAI,
@@ -95,13 +100,14 @@ const useAI = () => {
     tempFileCode,
     getModelAI,
     mayBeWrong,
+    setMayBeWrong,
     resetTableResult,
     saveTableResult,
     getImgInFolder,
     imgInFolder,
     setImgInFolder,
     deleteImgInFolder,
-    loading
+    loading,
   };
 };
 
