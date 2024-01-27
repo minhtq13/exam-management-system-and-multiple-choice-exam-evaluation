@@ -46,11 +46,12 @@ def get_marker(image, model, filename, folder_code = ""):
                 count_maker1 += 1
             list_marker.append([x1, y1])
             marker_coordinates.append([x1, y1, x2, y2])
-            cv2.rectangle(image, (x1, y1), (x2, y2), green_color if conf > threshold_warning else warning_color,
-                1 if conf > threshold_warning else 2)
-            cv2.putText(image, str(get_class(class_marker)) if conf > threshold_warning else str(f"{get_class(class_marker)}-{conf}"),
-                (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 0.4 if conf > threshold_warning else 0.5,
-                blue_color if conf > threshold_warning else warning_color, 1,cv2.LINE_AA)
+            if (class_marker >= 27):
+                cv2.rectangle(image, (x1, y1), (x2, y2), green_color if conf > threshold_warning else warning_color,
+                    1 if conf > threshold_warning else 2)
+                cv2.putText(image, str(get_class(class_marker)) if conf > threshold_warning else str(f"{get_class(class_marker)}-{conf}"),
+                    (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 0.4 if conf > threshold_warning else 0.5,
+                    blue_color if conf > threshold_warning else warning_color, 1,cv2.LINE_AA)
         # Handle errors
         if count_marker2 != 1 or count_maker1 != 3:
             error_message = f"Ảnh {filename} không nhận diện được đủ marker hoặc có thể bị thiếu góc"
@@ -143,7 +144,7 @@ def predictAnswer(img, model, index, numberAnswer):
                 (point1, point2), cv2.FONT_HERSHEY_SIMPLEX, 0.4 if conf > threshold_warning else 0.5,
                 blue_color if conf > threshold_warning else warning_color, 1,cv2.LINE_AA)
         img_graft = cv2.resize(img, (350, 896), interpolation=cv2.INTER_AREA)
-
+        
     return array_answer, img_graft, maybe_wrong_answer
 
 
@@ -295,7 +296,6 @@ if __name__ == "__main__":
                 list_answer = list_answer + selected_answer
                 array_img_graft.append(img_graft)
                 maybe_wrong_answer_array += maybe_wrong_answer
-
             # ================================= Format file json =============================
             array_result = []
             for key, value in enumerate(list_answer):
@@ -330,11 +330,10 @@ if __name__ == "__main__":
             with open(file_path, "w") as file:
                 json.dump(result, file)
             # =============================== Ghi file cảnh báo có thể sai ==========================
-           
 
         # ========================================= Đo thời gian ==========================
         # print("Thời gian thực thi: ", time.time() - start_time, " giây")
-    if len(maybe_wrong_info) > 0 or len(maybe_wrong_answer_array) > 0 or len(maybe_wrong_marker):
+    if len(maybe_wrong_info) > 0 or len(maybe_wrong_answer_array) > 0 or len(maybe_wrong_marker) > 0:
         with open(f"{folder_maybe_wrong}/may_be_wrong.txt", "w", encoding="utf-8") as f:
             if len(maybe_wrong_marker) > 0:
                 for string in maybe_wrong_marker:
