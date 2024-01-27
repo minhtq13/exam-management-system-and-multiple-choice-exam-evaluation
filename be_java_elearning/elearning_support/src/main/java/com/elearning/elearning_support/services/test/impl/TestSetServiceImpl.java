@@ -62,6 +62,7 @@ import com.elearning.elearning_support.services.fileAttach.FileAttachService;
 import com.elearning.elearning_support.utils.StringUtils;
 import com.elearning.elearning_support.utils.file.FileUtils;
 import com.elearning.elearning_support.utils.object.ObjectUtil;
+import com.elearning.elearning_support.utils.predicateFilter.PredicateFilter;
 import com.elearning.elearning_support.utils.tests.TestUtils;
 import com.elearning.elearning_support.constants.message.errorKey.ErrorKey;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst;
@@ -631,7 +632,9 @@ public class TestSetServiceImpl implements TestSetService {
             }
             if (Objects.equals(option, "SAVE")) {
                 String json = org.apache.commons.io.FileUtils.readFileToString(tempDataFile, StandardCharsets.UTF_8);
-                List<StudentTestSet> saveResults = ObjectMapperUtil.listMapper(json, StudentTestSet.class);
+                List<StudentTestSet> saveResults = ObjectMapperUtil.listMapper(json, StudentTestSet.class).stream()
+                    .filter(PredicateFilter.distinctByKeys(StudentTestSet::getStudentId, StudentTestSet::getTestSetId)).collect(
+                        Collectors.toList());
                 // check if student_test_set_exists -> overwrite
                 List<StudentTestSet> existedStudentTestSet = studentTestSetRepository.findAllByStudentIdInAndTestSetIdIn(
                     saveResults.stream().map(StudentTestSet::getStudentId).collect(Collectors.toSet()),

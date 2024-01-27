@@ -1,6 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS unaccent;
 
--- add column to mark edited question --
+-- function covert vietnamese characters to unaccent characters --
 DROP FUNCTION IF EXISTS "elearning_support_dev"."custom_unaccent"(text);
 CREATE OR REPLACE FUNCTION "elearning_support_dev"."custom_unaccent"(input text)
     RETURNS text AS
