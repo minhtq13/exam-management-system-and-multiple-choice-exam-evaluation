@@ -31,7 +31,7 @@ export const testSetCreateService = async (
 	errorCallback
 ) => {
 	await postRequest(
-		`${apiPath.testSetManual}`,
+		`${apiPath.testSetCreate}`,
 		params,
 		successCallback,
 		errorCallback
