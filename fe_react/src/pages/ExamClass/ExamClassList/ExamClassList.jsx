@@ -45,7 +45,7 @@ const ExamClassList = () => {
   } = useExamClasses();
   const { subLoading, allSubjects, getAllSubjects, allSemester, semesterLoading, getAllSemesters } =
     useCombo();
-  const { exportExamClass, exportExamClassStudent } = useImportExport();
+  const { exportExamClass, exportExamClassStudent, importStudent, loadingImport } = useImportExport();
   const dispatch = useDispatch();
   const [deleteKey, setDeleteKey] = useState(null);
   const [importLoading, setImportLoading] = useState(false);
@@ -58,6 +58,7 @@ const ExamClassList = () => {
   const [classCode, setClassCode] = useState(null);
   const [record, setRecord] = useState({});
   const [pageSize, setPageSize] = useState(10);
+  const [studentFile, setStudentFile] = useState(null);
 
   useEffect(() => {
     if (classId && roleType !== "STATISTIC") {
@@ -94,6 +95,14 @@ const ExamClassList = () => {
   const semsOnChange = (value) => {
     setParam({ ...param, semesterId: value });
   };
+  const studentFileChange = (e) => {
+    setStudentFile(e.target.files[0]);
+  }
+  const importStudentClass = () => {
+    const formData = new FormData();
+    formData.append("file", studentFile);
+    importStudent(formData, classId, getParticipants, roleType);
+  }
   const tabsColumn = [
     {
       title: "Họ tên",
@@ -158,12 +167,12 @@ const ExamClassList = () => {
               <img src={exportIcon} alt="Tải xuống Icon" />
               Tải xuống
             </Button>
-            <Input type="file" name="file" onChange={(e) => handleChange(e)}></Input>
+            <Input type="file" name="file" onChange={(e) => studentFileChange(e)}></Input>
             <Button
               type="primary"
-              //onClick={handleUpload}
-              disabled={!fileList}
-            //loading={loadingImport}
+              onClick={importStudentClass}
+              disabled={!studentFile}
+              loading={loadingImport}
             >
               <ImportOutlined /> Import
             </Button>
@@ -407,6 +416,7 @@ const ExamClassList = () => {
               setRecord(record);
               setClassId(record.id);
               setClassCode(record.code);
+              setStudentFile(null);
               setOpenModal(true);
             }}
           />

@@ -134,6 +134,22 @@ const useImportExport = () => {
 				setLoadingExport(false);
 			});
 	};
+	const importStudent = (file, classId, getdata, roleType) => {
+		setLoadingImport(true);
+		axios
+			.post(`${BASE_URL}/exam-class/participant/student/import/${classId}`, file)
+			.then((response) => {
+				notify.success("Tải file thành công!");
+				setLoadingImport(false);
+				getdata(classId, roleType);
+			})
+			.catch((error) => {
+				notify.error(
+					"Lỗi tải file!"
+				);
+				setLoadingImport(false);
+			});
+	};
 	return {
 		importList,
 		loadingImport,
@@ -142,6 +158,7 @@ const useImportExport = () => {
 		exportTestList,
 		exportExamClass,
 		exportExamClassStudent,
+		importStudent
 	};
 };
 export default useImportExport;

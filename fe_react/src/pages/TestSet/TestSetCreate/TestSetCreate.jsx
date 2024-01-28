@@ -18,9 +18,10 @@ const TestSetCreate = () => {
     {
       key: "manual",
       label: <h3>Thủ công</h3>,
-      children: <TestSetCreateManual testId={testId} questionQuantity={testInfo.questionQuantity} />
+      children: <TestSetCreateManual testId={testId} questionQuantity={testInfo.questionQuantity} lstTest={testInfo.lstTestSetCode}/>
     },
   ]
+  console.log(testInfo.lstTestSetCode);
 
   return (
     <div className="test-set-create">
@@ -37,6 +38,10 @@ const TestSetCreate = () => {
         <div className="test-create-info-row">
           <span>Số câu hỏi:</span>
           <span>{testInfo.questionQuantity}</span>
+        </div>
+        <div className="test-create-info-row">
+          <span>Bộ đề:</span>
+          <span>{testInfo.lstTestSetCode}</span>
         </div>
         <div className="test-create-info-row">
           <span>Thời gian thi:</span>

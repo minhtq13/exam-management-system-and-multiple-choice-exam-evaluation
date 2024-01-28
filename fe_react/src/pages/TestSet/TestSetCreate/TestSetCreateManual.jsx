@@ -8,7 +8,9 @@ import { testSetCreateService } from "../../../services/testServices";
 import { levelOptions } from "../../../utils/constant";
 import { useNavigate } from "react-router-dom";
 
-const TestSetCreateManual = ({ testId, questionQuantity }) => {
+const TestSetCreateManual = ({ testId, questionQuantity, lstTest }) => {
+  const arrTests = lstTest ? lstTest.split(",") : [];
+  console.log(arrTests);
   const navigate = useNavigate();
   const initialParam = {
     subjectId: null,
@@ -49,6 +51,8 @@ const TestSetCreateManual = ({ testId, questionQuantity }) => {
   const [loading, setLoading] = useState(false);
   const [checkedItems, setCheckedItems] = useState([]);
   const [errCode, setErrCode] = useState(false);
+  const [errorQuantity, setErrorQuantity] = useState(false);
+  const [isExist, setIsExist] = useState(false);
   const notify = useNotify();
   useEffect(() => {
     getAllQuestions(param);
@@ -63,7 +67,8 @@ const TestSetCreateManual = ({ testId, questionQuantity }) => {
       result.push(item);
     } else {
       result = result.filter(existingItem => existingItem.id !== item.id);
-    }
+    };
+    setErrorQuantity(result.length !== questionQuantity)
     setCheckedItems(result);
   }
   const questionRender = (item, index, isPreview) => {
@@ -117,7 +122,11 @@ const TestSetCreateManual = ({ testId, questionQuantity }) => {
   const onCreate = () => {
     if (!code) {
       setErrCode(true);
-    } else {
+    }
+    if(checkedItems.length !== questionQuantity) {
+      setErrorQuantity(true);
+    }
+    if (code && checkedItems.length === questionQuantity && !isExist) {
       setLoading(true);
       testSetCreateService(
         {
@@ -151,6 +160,8 @@ const TestSetCreateManual = ({ testId, questionQuantity }) => {
   const onCodeChange = (e) => {
     setCode(e.target.value);
     setErrCode(e.target.value.trim() === "");
+    setIsExist(e.target.value !== "" && arrTests.includes(e.target.value));
+    console.log(e.target.value);
   }
   return (
     <div className="test-set-create-manual">
@@ -222,11 +233,13 @@ const TestSetCreateManual = ({ testId, questionQuantity }) => {
           <div className="manual-preview-code">
             <span className="manual-preview-code-label" style={{ fontSize: 16 }}>Mã đề thi:</span>
             <div className="manual-preview-code-value">
-              <Input type="number" onChange={onCodeChange} placeholder="Nhập mã đề thi" status={errCode ? "error" : ""} />
-              {/* {errCode && <span>Chưa nhập mã đề thi!</span>} */}
+              <Input onChange={(e) => onCodeChange(e)} placeholder="Nhập mã đề thi" status={errCode ? "error" : ""} value={code} />
             </div>
+            {errorQuantity && <div className="error-quantity">{`Vui lòng chọn đúng số lượng ${questionQuantity} câu hỏi!`}</div>}
           </div>
-          <div className="manual-preview-content">
+          {isExist && <span className="error-code">{`Mã đề thi đã tồn tại!`}</span>}
+          {errCode && <span className="error-code">Vui lòng nhập mã đề thi!</span>}
+          <div className={isExist || errCode ? "manual-preview-content error" : "manual-preview-content"}>
             {checkedItems.length > 0 ? checkedItems.map((item, index) => {
               return questionRender(item, index, true);
             }) : <div className="preview-noti">Vui lòng chọn câu hỏi và xem trước đề thi ở đây!</div>}
@@ -239,7 +252,6 @@ const TestSetCreateManual = ({ testId, questionQuantity }) => {
           style={{ minWidth: 100, height: 40 }}
           onClick={onCreate}
           loading={loading}
-          disabled={checkedItems.length > questionQuantity}
         >Tạo đề</Button>
       </div>
     </div>

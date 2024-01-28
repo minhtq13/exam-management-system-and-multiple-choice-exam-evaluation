@@ -174,7 +174,7 @@ const TestEdit = () => {
               <span>{code}</span>
             </div>
             <div className="left-content-item">
-              <span>Số câu hỏi:</span>
+              <span>Số câu:</span>
               <span>{initialValues.length}</span>
             </div>
             <div className={!loadingData ? "check-ques-table" : "check-ques-table check-loading"}>

@@ -292,6 +292,15 @@
   .manual-preview {
     width: 49%;
 
+    .error-code{
+      color: #FF4D4F;
+      padding-left: 82px;
+    }
+
+    .error {
+      height: calc(93% - 22px) !important;
+    }
+
     .manual-preview-content {
       background-color: #ffffff;
       padding: 20px;
@@ -320,6 +329,9 @@
       .manual-preview-code-label {
         font-weight: bold;
         flex-shrink: 0;
+      }
+      .error-quantity{
+        color: #FF4D4F;
       }
 
       .manual-preview-code-value {
