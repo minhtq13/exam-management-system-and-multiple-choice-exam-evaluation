@@ -1,4 +1,3 @@
-
 import "./TestSetCreate.scss";
 import { Tabs } from "antd";
 import TestSetCreateAuto from "./TestSetCreateAuto";
@@ -13,15 +12,20 @@ const TestSetCreate = () => {
     {
       key: "auto",
       label: <h3>Tự động</h3>,
-      children: <TestSetCreateAuto testId={testId} />
+      children: <TestSetCreateAuto testId={testId} />,
     },
     {
       key: "manual",
       label: <h3>Thủ công</h3>,
-      children: <TestSetCreateManual testId={testId} questionQuantity={testInfo.questionQuantity} lstTest={testInfo.lstTestSetCode}/>
+      children: (
+        <TestSetCreateManual
+          testId={testId}
+          questionQuantity={testInfo.questionQuantity}
+          lstTest={testInfo.lstTestSetCode}
+        />
+      ),
     },
-  ]
-  console.log(testInfo.lstTestSetCode);
+  ];
 
   return (
     <div className="test-set-create">
@@ -36,6 +40,12 @@ const TestSetCreate = () => {
           <span>{testInfo.semester}</span>
         </div>
         <div className="test-create-info-row">
+          <span>Thời gian thi:</span>
+          <span>{`${testInfo.duration} phút`}</span>
+        </div>
+      </div>
+      <div className="test-create-info">
+        <div className="test-create-info-row">
           <span>Số câu hỏi:</span>
           <span>{testInfo.questionQuantity}</span>
         </div>
@@ -43,18 +53,9 @@ const TestSetCreate = () => {
           <span>Bộ đề:</span>
           <span>{testInfo.lstTestSetCode}</span>
         </div>
-        <div className="test-create-info-row">
-          <span>Thời gian thi:</span>
-          <span>{`${testInfo.duration} phút`}</span>
-        </div>
-        <span></span>
       </div>
-      <Tabs
-        defaultActiveKey="1"
-        items={items}
-        className="test-content"
-      ></Tabs>
+      <Tabs defaultActiveKey="1" items={items} className="test-content"></Tabs>
     </div>
-  )
-}
+  );
+};
 export default TestSetCreate;

@@ -326,6 +326,15 @@ const TestList = () => {
           onCancel={() => setOpenModal(false)}
           maskClosable={true}
           centered={true}
+          footer={[
+               <Button
+               key="back"
+               type="primary"
+               onClick={() => setOpenModal(false)}
+             >
+               OK
+             </Button>,
+          ]}
         >
           <List
             itemLayout="horizontal"
@@ -352,7 +361,7 @@ const TestList = () => {
               downloadTestPdf(questions, testDetail, testNo);
             }}
             footer={[
-              <Button key="back" onClick={handleEdit}>
+              <Button key="update" type="primary" onClick={handleEdit}>
                 Cập nhật
               </Button>,
               <Button
@@ -364,6 +373,12 @@ const TestList = () => {
               >
                 Tải xuống
               </Button>,
+                 <Button
+                 key="back"
+                 onClick={() => setOpenModalPreview(false)}
+               >
+                 Đóng
+               </Button>,
             ]}
             onCancel={() => setOpenModalPreview(false)}
             maskClosable={true}

@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 
 const TestSetCreateManual = ({ testId, questionQuantity, lstTest }) => {
   const arrTests = lstTest ? lstTest.split(",") : [];
-  console.log(arrTests);
   const navigate = useNavigate();
   const initialParam = {
     subjectId: null,
@@ -161,7 +160,6 @@ const TestSetCreateManual = ({ testId, questionQuantity, lstTest }) => {
     setCode(e.target.value);
     setErrCode(e.target.value.trim() === "");
     setIsExist(e.target.value !== "" && arrTests.includes(e.target.value));
-    console.log(e.target.value);
   }
   return (
     <div className="test-set-create-manual">

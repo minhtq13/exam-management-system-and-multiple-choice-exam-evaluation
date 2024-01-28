@@ -65,7 +65,7 @@ const useAI = () => {
         notify.success("Lưu kết quả chấm thành công!");
       },
       (err) => {
-        notify.warning("Lưu kết quả chấm thất bại!");
+        notify.warning("Đã tồn tại sinh viên có điểm!");
       }
     );
   };

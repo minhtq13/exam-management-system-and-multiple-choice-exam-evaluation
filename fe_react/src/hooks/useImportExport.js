@@ -127,7 +127,7 @@ const useImportExport = () => {
 				document.body.appendChild(link);
 				link.click();
 				setLoadingExport(false);
-				notify.success("Tải xuống kết quả thi thành công!");
+				// notify.success("Tải xuống kết quả thi thành công!");
 			})
 			.catch((error) => {
 				notify.error("Lỗi tải kết quả thi!");

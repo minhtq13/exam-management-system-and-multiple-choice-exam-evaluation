@@ -94,7 +94,7 @@
   height: 85vh;
 
   .ant-modal-content {
-    height: 85vh;
+    height: 86vh;
 
     .ant-modal-body {
       height: 74vh;
@@ -104,11 +104,11 @@
 }
 
 .list-test-modal {
-  height: 70vh;
+  // height: 70vh;
   min-width: 40vw;
   
   .ant-modal-content {
-    height: 70vh;
+    height: 73vh;
     
     .ant-modal-body {
       height: 55vh;
@@ -116,6 +116,6 @@
     }
   }
   .ant-modal-footer {
-    margin-top: 0px !important;
+    margin-top: 20px !important;
   }
 }

@@ -627,8 +627,9 @@ const ExamClassList = () => {
                 <div>{`Môn thi: ${record.subjectTitle}`}</div>
                 <div>{`Mã lớp thi: ${record.code}`}</div>
                 <div>{`Học kỳ: ${record.semester}`}</div>
-                <div>{`Trạng thái: ${resultData.length > 0 ? "Đã có điểm thi" : "Chưa có điểm thi"
-                  }`}</div>
+                <div>Trạng thái: {" "}
+                  {resultData.length > 0 ? <strong style={{fontSize: 16}}>Đã có điểm thi</strong> : <strong style={{fontSize: 16}}>Chưa có điểm thi</strong>}
+                </div>
               </div>
               <div className="exam-class-participant-right">
                 <div>{`Phòng thi: ${record.roomName}`}</div>

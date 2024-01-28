@@ -9,7 +9,6 @@
   .test-set-create-auto {
     display: flex;
     justify-content: space-between;
-    max-height: 60vh;
   }
 
   .ant-tabs-nav {
@@ -159,19 +158,20 @@
 .test-create-info {
   display: flex;
   width: 100%;
-  justify-content: space-between;
   margin-top: 10px;
+  gap: 32px;
 
   .test-create-info-row {
     display: flex;
     gap: 10px;
+    min-width: 350px;
 
-    span:nth-child(1) {
+    span:nth-child(2) {
       font-weight: 600;
     }
 
     span {
-      font-size: 18px;
+      font-size: 16px;
     }
   }
 
