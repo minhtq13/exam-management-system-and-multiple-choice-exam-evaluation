@@ -106,7 +106,7 @@ public class UserController {
 
     @PostMapping(value = "/student/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Import HSSV")
-    public ImportResponseDTO importStudent(@RequestParam("file") MultipartFile fileImport) {
+    public ImportResponseDTO importStudent(@RequestParam("file") MultipartFile fileImport) throws IOException {
         return userService.importStudent(fileImport);
     }
 
@@ -154,7 +154,7 @@ public class UserController {
 
     @PostMapping(value = "/teacher/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Import giáo viên / giảng viên")
-    public ImportResponseDTO importTeacher(@RequestParam("file") MultipartFile fileImport) {
+    public ImportResponseDTO importTeacher(@RequestParam("file") MultipartFile fileImport) throws IOException {
         return userService.importTeacher(fileImport);
     }
 

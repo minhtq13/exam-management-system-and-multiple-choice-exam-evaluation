@@ -9,7 +9,8 @@ public class SQLQuestion {
             "    question.content AS content, \n" +
             "    question.level AS level, \n" +
             "    {h-schema}get_list_file_json_by_ids_id(question.image_ids) AS lstImageJson, \n" +
-            "    {h-schema}get_list_answer_json_by_question_id(question.id) AS lstAnswerJson \n" +
+            "    {h-schema}get_list_answer_json_by_question_id(question.id) AS lstAnswerJson, \n" +
+            "    (select exists (select * from {h-schema}test_set_question where question.id = question_id)) as isUsed \n" +
             "FROM {h-schema}question \n" +
             "    LEFT JOIN {h-schema}chapter ON question.chapter_id = chapter.id \n" +
             "    LEFT JOIN {h-schema}subject ON chapter.subject_id = subject.id \n" +
@@ -44,7 +45,8 @@ public class SQLQuestion {
             "    question.content AS content, \n" +
             "    question.level AS level, \n" +
             "    {h-schema}get_list_file_json_by_ids_id(question.image_ids) AS lstImageJson, \n" +
-            "    {h-schema}get_list_answer_json_by_question_id(question.id) AS lstAnswerJson \n" +
+            "    {h-schema}get_list_answer_json_by_question_id(question.id) AS lstAnswerJson, \n" +
+            "    (select exists (select * from {h-schema}test_set_question where question.id = question_id)) as isUsed \n" +
             "FROM {h-schema}test_question AS testQuest \n" +
             "   JOIN {h-schema}question ON testQuest.question_id = question.id \n" +
             "WHERE \n" +

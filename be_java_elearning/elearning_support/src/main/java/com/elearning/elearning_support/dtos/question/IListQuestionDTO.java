@@ -13,4 +13,6 @@ public interface IListQuestionDTO {
     String getLstImageJson();
 
     String getLstAnswerJson();
+
+    Boolean getIsUsed();
 }

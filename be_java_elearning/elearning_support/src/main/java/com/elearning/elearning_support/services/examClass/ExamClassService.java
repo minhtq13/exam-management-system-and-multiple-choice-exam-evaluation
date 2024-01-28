@@ -65,7 +65,7 @@ public interface ExamClassService {
     /**
      * Import danh sách SV vào lớp thi
      */
-    Set<Long> importStudentExamClass(Long examClassId, MultipartFile fileImport);
+    Set<Long> importStudentExamClass(Long examClassId, MultipartFile fileImport) throws IOException;
 
 
 }

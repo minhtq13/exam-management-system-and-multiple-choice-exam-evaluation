@@ -117,7 +117,7 @@ public class ExamClassController {
     @PostMapping(value = "/participant/student/import/{examClassId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Import thí sinh vào lớp thi")
     public Set<Long> importStudentExamClass(@PathVariable(name = "examClassId") Long examClassId,
-        @RequestParam(name = "file") MultipartFile importFile) {
+        @RequestParam(name = "file") MultipartFile importFile) throws IOException {
         return examClassService.importStudentExamClass(examClassId, importFile);
     }
 

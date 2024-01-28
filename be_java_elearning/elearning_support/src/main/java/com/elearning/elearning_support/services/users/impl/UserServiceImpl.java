@@ -213,19 +213,19 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public ImportResponseDTO importStudent(MultipartFile fileImport) {
+    public ImportResponseDTO importStudent(MultipartFile fileImport) throws IOException {
         // Tạo response mặc định
         ImportResponseDTO response = new ImportResponseDTO();
         response.setStatus(ImportResponseEnum.SUCCESS.getStatus());
         response.setMessage(ImportResponseEnum.SUCCESS.getMessage());
-
+        XSSFWorkbook inputWorkbook = null;
         // Đọc file và import dữ liệu
         try {
             // Validate file sơ bộ
             FileUtils.validateUploadFile(fileImport, Arrays.asList(Excel.XLS, Excel.XLSX));
 
             // Tạo workbook để đọc file import
-            XSSFWorkbook inputWorkbook = new XSSFWorkbook(fileImport.getInputStream());
+            inputWorkbook = new XSSFWorkbook(fileImport.getInputStream());
             XSSFSheet inputSheet = inputWorkbook.getSheetAt(0);
             if (Objects.isNull(inputSheet)) {
                 throw exceptionFactory.fileUploadException(FileAttach.FILE_EXCEL_EMPTY_SHEET_ERROR, Resources.FILE_ATTACHED,
@@ -308,6 +308,9 @@ public class UserServiceImpl implements UserService {
             response.setMessage(ImportResponseEnum.IO_ERROR.getMessage());
             response.setStatus(ImportResponseEnum.IO_ERROR.getStatus());
         } catch (Exception exception) {
+            if (Objects.nonNull(inputWorkbook)) {
+                inputWorkbook.close();
+            }
             response.setMessage(ImportResponseEnum.UNKNOWN_ERROR.getMessage());
             response.setStatus(ImportResponseEnum.UNKNOWN_ERROR.getStatus());
             log.error(MessageConst.EXCEPTION_LOG_FORMAT, exception.getMessage(), exception.getCause());
@@ -334,19 +337,19 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public ImportResponseDTO importTeacher(MultipartFile fileImport) {
+    public ImportResponseDTO importTeacher(MultipartFile fileImport) throws IOException {
         // Tạo response mặc định
         ImportResponseDTO response = new ImportResponseDTO();
         response.setStatus(ImportResponseEnum.SUCCESS.getStatus());
         response.setMessage(ImportResponseEnum.SUCCESS.getMessage());
-
+        XSSFWorkbook inputWorkbook = null;
         // Đọc file và import dữ liệu
         try {
             // Validate file sơ bộ
             FileUtils.validateUploadFile(fileImport, Arrays.asList(Excel.XLS, Excel.XLSX));
 
             // Tạo workbook để đọc file import
-            XSSFWorkbook inputWorkbook = new XSSFWorkbook(fileImport.getInputStream());
+            inputWorkbook = new XSSFWorkbook(fileImport.getInputStream());
             XSSFSheet inputSheet = inputWorkbook.getSheetAt(0);
             if (Objects.isNull(inputSheet)) {
                 throw exceptionFactory.fileUploadException(FileAttach.FILE_EXCEL_EMPTY_SHEET_ERROR, Resources.FILE_ATTACHED,
@@ -427,6 +430,9 @@ public class UserServiceImpl implements UserService {
             response.setMessage(ImportResponseEnum.IO_ERROR.getMessage());
             response.setStatus(ImportResponseEnum.IO_ERROR.getStatus());
         } catch (Exception exception) {
+            if (Objects.nonNull(inputWorkbook)) {
+                inputWorkbook.close();
+            }
             response.setMessage(ImportResponseEnum.UNKNOWN_ERROR.getMessage());
             response.setStatus(ImportResponseEnum.UNKNOWN_ERROR.getStatus());
             log.error(MessageConst.EXCEPTION_LOG_FORMAT, exception.getMessage(), exception.getCause());
@@ -600,7 +606,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(password));
 
         // email
-        user.setEmail(usernameBuilder.toString() + "@" + defaultMailDomain);
+        user.setEmail(usernameBuilder + "@" + defaultMailDomain);
 
     }
 

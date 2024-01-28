@@ -63,6 +63,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<ICommonIdCode> getListIdCodeByCodeAndUserType(Set<String> lstCode, Integer userType);
 
     @Query(nativeQuery = true, value = SQLUser.FIND_STUDENT_ID_BY_UNIQUE_INFO)
-    Long findStudentByUniqueInfo(String code, String email, String username);
+    Set<Long> findStudentByUniqueInfo(String code, String email, String username);
 
 }

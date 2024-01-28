@@ -234,7 +234,7 @@ public class ExamClassServiceImpl implements ExamClassService {
     //TODO: review logic and implement
     @Transactional
     @Override
-    public Set<Long> importStudentExamClass(Long examClassId, MultipartFile fileImport) {
+    public Set<Long> importStudentExamClass(Long examClassId, MultipartFile fileImport) throws IOException {
         // check existed exam class
         ExamClass examClass = findExamClassById(examClassId);
         Set<Long> lstExamClassParticipantIds = examClassRepository.getListExamClassParticipantId(examClass.getId(), UserExamClassRoleEnum.STUDENT.getType());
@@ -242,7 +242,7 @@ public class ExamClassServiceImpl implements ExamClassService {
         ImportResponseDTO response = new ImportResponseDTO();
         response.setStatus(ImportResponseEnum.SUCCESS.getStatus());
         response.setMessage(ImportResponseEnum.SUCCESS.getMessage());
-        XSSFWorkbook inputWorkbook;
+        XSSFWorkbook inputWorkbook = null;
         // Đọc file và import dữ liệu
         try {
             // Validate file sơ bộ
@@ -322,9 +322,9 @@ public class ExamClassServiceImpl implements ExamClassService {
                     } else {
                         // if duplicated data and data has already been valid
                         if (validatedResult.getHasDuplicatedField() && !validatedResult.getMissedRequiredField() && ! validatedResult.getHasInvalidFormatField()){
-                            Long existedStudentId = userRepository.findStudentByUniqueInfo(importDTO.getCode(), importDTO.getEmail(), importDTO.getUsername());
-                            if (Objects.nonNull(existedStudentId)){
-                                lstExistedStudentId.add(existedStudentId);
+                            Set<Long> existedStudentIds = userRepository.findStudentByUniqueInfo(importDTO.getCode(), importDTO.getEmail(), importDTO.getUsername());
+                            if (!ObjectUtils.isEmpty(existedStudentIds)){
+                                lstExistedStudentId.addAll(existedStudentIds);
                             }
                         }
                         response.getErrorRows().add(new RowErrorDTO(currentRow.getRowNum() + 1, importDTO, causeList));
@@ -353,6 +353,9 @@ public class ExamClassServiceImpl implements ExamClassService {
             response.setMessage(ImportResponseEnum.IO_ERROR.getMessage());
             response.setStatus(ImportResponseEnum.IO_ERROR.getStatus());
         } catch (Exception exception) {
+            if (Objects.nonNull(inputWorkbook)) {
+                inputWorkbook.close();
+            }
             response.setMessage(ImportResponseEnum.UNKNOWN_ERROR.getMessage());
             response.setStatus(ImportResponseEnum.UNKNOWN_ERROR.getStatus());
             log.error(MessageConst.EXCEPTION_LOG_FORMAT, exception.getMessage(), exception.getCause());

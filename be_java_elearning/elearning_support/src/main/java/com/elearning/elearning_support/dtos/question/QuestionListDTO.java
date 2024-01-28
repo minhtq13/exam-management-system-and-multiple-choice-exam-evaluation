@@ -39,6 +39,9 @@ public class QuestionListDTO {
     @Schema(description = "Câu trả lời của câu hỏi")
     List<AnswerResDTO> lstAnswer = new ArrayList<>();
 
+    @Schema(description = "Câu hỏi đã được sử dụng trong đề thi nào chưa?")
+    Boolean isUsed = false;
+
     public QuestionListDTO(IListQuestionDTO iListQuestionDTO) {
         BeanUtils.copyProperties(iListQuestionDTO, this);
         this.lstImage = ObjectMapperUtil.listMapper(iListQuestionDTO.getLstImageJson(), FileAttachDTO.class);

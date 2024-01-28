@@ -74,7 +74,7 @@ public interface UserService {
     /**
      * Import danh sách HSSV
      */
-    ImportResponseDTO importStudent(MultipartFile fileImport);
+    ImportResponseDTO importStudent(MultipartFile fileImport) throws IOException;
 
     /**
      * Validate import user
@@ -90,7 +90,7 @@ public interface UserService {
     /**
      * Import danh sách GV
      */
-    ImportResponseDTO importTeacher(MultipartFile fileImport);
+    ImportResponseDTO importTeacher(MultipartFile fileImport) throws IOException;
 
     /**
      * Export danh sách GV
