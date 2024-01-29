@@ -29,12 +29,15 @@ public class CustomUserDetails implements UserDetails {
     public CustomUserDetails(User user) {
         this.user = user;
         this.roles = user.getRoles().stream().map(Role::getCode).collect(Collectors.toSet());
-        List<Permission> lstPermission = new ArrayList<>();
+        List<Permission> permissions = new ArrayList<>();
         for (Role role : user.getRoles()) {
-            lstPermission.addAll(role.getLstPermissions());
+            permissions.addAll(role.getPermissions());
         }
-        this.authorities = lstPermission.stream().map(permission -> new SimpleGrantedAuthority(permission.getCode()))
-            .collect(Collectors.toList());
+        // auth by permission
+//        this.authorities = lstPermission.stream().map(permission -> new SimpleGrantedAuthority(permission.getCode()))
+//            .collect(Collectors.toList());
+        // auth by role
+        this.authorities = this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
     }
 
     public void setUser(User user) {

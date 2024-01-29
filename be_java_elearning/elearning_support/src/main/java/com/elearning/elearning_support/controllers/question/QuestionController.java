@@ -3,6 +3,7 @@ package com.elearning.elearning_support.controllers.question;
 import java.util.List;
 import java.util.Set;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,18 +36,21 @@ public class QuestionController {
 
     @PostMapping
     @Operation(summary = "Tạo bộ câu hỏi")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     public void createQuestion(@RequestBody QuestionListCreateDTO createDTO) {
         questionService.createListQuestion(createDTO);
     }
 
     @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Import câu hỏi")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     public ImportResponseDTO importQuestion(@RequestParam(name = "file") MultipartFile file) {
         return questionService.importQuestion(file);
     }
 
     @GetMapping
     @Operation(summary = "Danh sách câu hỏi")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     public List<QuestionListDTO> getListQuestion(
         @RequestParam(name = "subjectId", required = false, defaultValue = "-1") Long subjectId,
         @RequestParam(name = "subjectCode", required = false, defaultValue = "") String subjectCode,
@@ -60,12 +64,14 @@ public class QuestionController {
 
     @GetMapping("/detail/{questionId}")
     @Operation(summary = "Chi tiết câu hỏi")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     public QuestionDetailsDTO getQuestionDetails(@PathVariable(name = "questionId") Long questionId){
         return questionService.getQuestionDetails(questionId);
     }
 
     @PutMapping("/{questionId}")
     @Operation(summary = "Cập nhật câu hỏi")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     public void updateQuestion(@PathVariable(name = "questionId") Long questionId,
         @RequestBody @Validated QuestionUpdateDTO updateDTO) {
         questionService.updateQuestion(questionId, updateDTO);
@@ -73,6 +79,7 @@ public class QuestionController {
 
     @DeleteMapping("/{questionId}")
     @Operation(summary = "Xóa câu hỏi")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     public void deleteQuestion(@PathVariable(name = "questionId") Long questionId) {
         questionService.deleteQuestion(questionId);
     }

@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,12 +32,14 @@ public class SubjectController {
 
     @PostMapping
     @Operation(summary = "Tạo môn học")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     public void createSubject(@RequestBody @Validated SubjectSaveReqDTO createDTO) {
         subjectService.createSubject(createDTO);
     }
 
     @PutMapping("/{subjectId}")
     @Operation(summary = "Cập nhật môn học")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     public void updateSubject(@PathVariable(name = "subjectId") Long subjectId,
         @RequestBody @Validated SubjectSaveReqDTO updateDTO) {
         subjectService.updateSubject(subjectId, updateDTO);
@@ -44,6 +47,7 @@ public class SubjectController {
 
     @GetMapping("/list")
     @Operation(summary = "Danh sách môn học")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     public Page<ISubjectListDTO> getListSubject(
         @RequestParam(name = "search", required = false, defaultValue = "") String search,
         @RequestParam(name = "departmentId", required = false, defaultValue = "-1") Long departmentId,
@@ -58,6 +62,7 @@ public class SubjectController {
 
     @GetMapping("/detail/{subjectId}")
     @Operation(summary = "Chi tiết môn học môn học")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     public SubjectDetailDTO getSubjectDetail(@PathVariable(name = "subjectId") Long subjectId) {
         return subjectService.getSubjectDetail(subjectId);
     }

@@ -1,5 +1,6 @@
 package com.elearning.elearning_support.controllers.chapter;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,12 +23,14 @@ public class ChapterController {
 
     private final ChapterService chapterService;
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PostMapping
     @Operation(summary = "Tạo các chương của môn học")
     public void createChapter(@RequestBody @Validated SubjectChapterCreateDTO createDTO) {
         chapterService.createListChapter(createDTO);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PutMapping("/{chapterId}")
     @Operation(summary = "Cập nhật chương")
     public void updateChapter(

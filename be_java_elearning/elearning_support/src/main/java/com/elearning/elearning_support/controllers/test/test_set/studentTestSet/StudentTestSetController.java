@@ -6,6 +6,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,12 +27,14 @@ public class StudentTestSetController {
 
     private final StudentTestSetService studentTestSetService;
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @GetMapping("/result/{examClassCode}")
     @Operation(summary = "Lấy kết quả thi theo mã lớp")
     public ExamClassResultStatisticsDTO getStudentTestSetResult(@PathVariable(name = "examClassCode") String examClassCode) {
         return studentTestSetService.getListStudentTestSetResult(examClassCode);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @GetMapping(value = "/result/export/{examClassCode}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Operation(summary = "Export kết quả thi theo lớp")
     public ResponseEntity<InputStreamResource> exportTeacher(@PathVariable(name = "examClassCode") String examClassCode

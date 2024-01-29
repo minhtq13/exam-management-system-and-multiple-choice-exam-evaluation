@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,13 +49,14 @@ public class UserController {
     /*
      *  ================== API dành cho user START =================
      */
-
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @PostMapping
     @Operation(summary = "Tạo người dùng")
     public void createUser(@RequestBody @Validated UserCreateDTO createDTO) {
         userService.createUser(createDTO);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PutMapping("/{userId}")
     @Operation(summary = "Cập nhật thông tin người dùng")
     public void updateUser(
@@ -63,11 +65,14 @@ public class UserController {
         userService.updateUser(userId, updateDTO);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @GetMapping("/{userId}")
     @Operation(summary = "Chi tiết người dùng")
     public UserDetailDTO getUserDetail(@PathVariable(name = "userId") Long userId) {
         return userService.getUserDetail(userId);
     }
+
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @DeleteMapping("/hard/{id}")
     @Operation(summary = "Xóa cứng người dùng")
     public void deleteUserHard(
@@ -83,6 +88,7 @@ public class UserController {
     /*
      *  ================== API dành cho học sinh START =================
      */
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @GetMapping("/student/page")
     @Operation(summary = "Danh sách học sinh / sinh viên dạng phân trang")
     public Page<IGetUserListDTO> getPageStudent(
@@ -95,6 +101,7 @@ public class UserController {
         return userService.getPageStudent(search, courseNums, pageable);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @GetMapping("/student/list")
     @Operation(summary = "Danh sách học sinh / sinh viên danh sách toàn bộ")
     public List<IGetUserListDTO> getListStudent(
@@ -104,12 +111,14 @@ public class UserController {
         return userService.getListStudent(search, courseNums);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PostMapping(value = "/student/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Import HSSV")
     public ImportResponseDTO importStudent(@RequestParam("file") MultipartFile fileImport) throws IOException {
         return userService.importStudent(fileImport);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @GetMapping(value = "/student/export", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Operation(summary = "Export danh sách HSSV")
     public ResponseEntity<InputStreamResource> exportStudent(
@@ -131,7 +140,7 @@ public class UserController {
     /*
      *  ================== API dành cho giáo viên / giảng viên START =================
      */
-
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @GetMapping("/teacher/page")
     @Operation(summary = "Danh sách giáo viên / giảng viên dạng phân trang")
     public Page<IGetUserListDTO> getPageTeacher(
@@ -144,6 +153,7 @@ public class UserController {
         return userService.getPageTeacher(search, pageable);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @GetMapping("/teacher/list")
     @Operation(summary = "Danh sách giáo viên / giảng viên danh sách toàn bộ")
     public List<IGetUserListDTO> getListTeacher(
@@ -152,12 +162,14 @@ public class UserController {
         return userService.getListTeacher(search);
     }
 
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @PostMapping(value = "/teacher/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Import giáo viên / giảng viên")
     public ImportResponseDTO importTeacher(@RequestParam("file") MultipartFile fileImport) throws IOException {
         return userService.importTeacher(fileImport);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @GetMapping(value = "/teacher/export", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Operation(summary = "Export danh sách GV")
     public ResponseEntity<?> exportTeacher(

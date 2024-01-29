@@ -8,6 +8,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,18 +44,21 @@ public class TestSetController {
 
     private final TestSetService testSetService;
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PostMapping("/generate")
     @Operation(summary = "Gen đề thi trong kỳ thi")
     public List<TestSetPreviewDTO> genTestSetFromTest(@RequestBody TestSetGenerateReqDTO generateDTO) {
         return testSetService.generateTestSet(generateDTO);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PostMapping("/create")
     @Operation(summary = "Tạo một đề thi thủ công")
     public TestSetPreviewDTO createTestSet(@RequestBody @Validated TestSetCreateDTO createDTO){
         return testSetService.createTestSet(createDTO);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PostMapping(value = "/export", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Operation(summary = "Export đề thi ra file word")
     public ResponseEntity<InputStreamResource> exportTestSetToWord(@RequestBody TestSetSearchReqDTO searchReqDTO) throws IOException {
@@ -65,6 +69,7 @@ public class TestSetController {
         return ResponseEntity.ok().headers(headers).body(testSetService.exportTestSet(searchReqDTO));
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PostMapping(value = "/html/export", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Operation(summary = "Export đề thi ra file Word từ nội dung HTML")
     public ResponseEntity<InputStreamResource> exportTestSetToWordFromHtml(@RequestParam(name = "fileHtml") MultipartFile fileHtml) {
@@ -75,12 +80,14 @@ public class TestSetController {
         return ResponseEntity.ok().headers(headers).body(resourceRes.getResource());
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PostMapping("/detail")
     @Operation(summary = "Lấy chi tiết đề thi")
     public TestSetDetailDTO getTestSetDetail(@RequestBody TestSetSearchReqDTO searchReqDTO) {
         return testSetService.getTestSetDetail(searchReqDTO);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PutMapping
     @Operation(summary = "Cập nhật đề thi")
     public void updateTestSet(@RequestBody @Validated TestSetUpdateDTO updateDTO) {
@@ -91,18 +98,21 @@ public class TestSetController {
     /*
     ==================================== TEST SET SCORING CONTROLLER =================================
      */
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PostMapping("/scoring")
     @Operation(summary = "Chấm điểm bài thi chắc nghiệm (với dữ liệu có sẵn)")
     public ScoringPreviewResDTO scoringStudentTestSet(@RequestBody @Validated ScoringTestSetReqDTO scoringReqDTO) {
         return testSetService.scoreStudentTestSet(scoringReqDTO.getClassCode(), scoringReqDTO.getHandledTestSets());
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @GetMapping("/scoring/exam-class/{exClassCode}")
     @Operation(summary = "Lấy dữ liệu chấm điểm từ công cụ AI")
     public ResponseEntity<?> loadScoredStudentTestSet(@PathVariable(name = "exClassCode") String exClassCode){
         return ResponseEntity.ok(testSetService.scoreExamClassTestSet(exClassCode));
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PostMapping("/handled-answers/upload/{examClassCode}")
     @Operation(summary = "Upload bài làm theo lớp")
     public void uploadStudentHandledTestSet(
@@ -111,18 +121,21 @@ public class TestSetController {
         testSetService.uploadStudentHandledAnswerSheet(examClassCode, handledFiles);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PostMapping("/handled-answers/delete")
     @Operation(summary = "Xóa các file đã upload trong folder của mã lớp thi")
     public void deleteImagesInClassFolder(@RequestBody @Validated HandledImagesDeleteDTO deleteDTO) throws IOException {
         testSetService.deleteImagesInClassFolder(deleteDTO);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @GetMapping("/handled-answers/uploaded/{examClassCode}")
     @Operation(summary = "Preview các file đã tải lên")
     public List<FileAttachDTO> getListFileInExFolder(@PathVariable(name = "examClassCode") String examClassCode) {
         return testSetService.getListFileInExClassFolder(examClassCode);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PostMapping("/scoring/result/save")
     @Operation(description = "Lưu kết quả chấm điểm vào DB")
     public void saveScoringResult(@RequestParam(name = "tempFileCode") String tempFileCode,

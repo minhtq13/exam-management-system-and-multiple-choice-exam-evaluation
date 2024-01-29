@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,18 +34,21 @@ public class TestController {
 
     private final TestService testService;
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PostMapping("/create")
     @Operation(summary = "Tạo kỳ thi với bộ câu hỏi random trong một môn học")
     public Long createTest(@RequestBody @Validated TestReqDTO createDTO) {
         return testService.createTest(createDTO);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PostMapping("/create/random")
     @Operation(summary = "Tạo kỳ thi với bộ câu hỏi chọn trước")
     public Long createRandomTest(@RequestBody @Validated TestReqDTO createDTO) {
         return testService.createRandomTest(createDTO);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PutMapping("/{testId}")
     @Operation(summary = "Cập nhật kỳ thi")
     public void updateTest(@PathVariable(name = "testId") Long testId,
@@ -52,6 +56,7 @@ public class TestController {
         testService.updateTest(testId, updateDTO);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @GetMapping
     @Operation(summary = "Lấy danh sách các kỳ thi")
     public Page<TestDetailDTO> getListTest(
@@ -70,6 +75,7 @@ public class TestController {
         return testService.getListTest(subjectId, subjectCode, startTime, endTime, semesterId, semesterCode, pageable);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PutMapping("/status/{testId}")
     @Operation(summary = "Đổi trạng thái hiển thị kỳ thi")
     public void switchTestStatus(@PathVariable(name = "testId") Long testId,

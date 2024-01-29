@@ -157,24 +157,24 @@ public class FileUtils {
         String sharedAppDataPath;
         if (SystemConstants.IS_WINDOWS) {
             sharedAppDataPath = SystemConstants.WINDOWS_SHARED_DIR + "/data";
-            log.info("Windows's shared app data {}", SystemConstants.WINDOWS_SHARED_DIR);
+            log.info("Windows's shared app data {}", sharedAppDataPath);
         } else {
             sharedAppDataPath = SystemConstants.LINUX_SHARED_DIR + "/data";
-            log.info("Linux's shared app data {}", SystemConstants.LINUX_SHARED_DIR);
+            log.info("Linux's shared app data {}", sharedAppDataPath);
         }
         return sharedAppDataPath;
     }
 
     public static String getSharedAppDirectorySourcePath(){
-        String sharedAppDataPath;
+        String sharedAppSourcePath;
         if (SystemConstants.IS_WINDOWS) {
-            sharedAppDataPath = SystemConstants.WINDOWS_SHARED_DIR + "/source";
-            log.info("Windows's shared app data {}", SystemConstants.WINDOWS_SHARED_DIR);
+            sharedAppSourcePath = SystemConstants.WINDOWS_SHARED_DIR + "/source";
+            log.info("Windows's shared app source {}", sharedAppSourcePath);
         } else {
-            sharedAppDataPath = SystemConstants.LINUX_SHARED_DIR + "/source";
-            log.info("Linux's shared app data {}", SystemConstants.LINUX_SHARED_DIR);
+            sharedAppSourcePath = SystemConstants.LINUX_SHARED_DIR + "/source";
+            log.info("Linux's shared app source {}", sharedAppSourcePath);
         }
-        return sharedAppDataPath;
+        return sharedAppSourcePath;
     }
 
 

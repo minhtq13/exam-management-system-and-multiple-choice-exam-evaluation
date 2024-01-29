@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,12 +45,14 @@ public class ExamClassController {
 
     private final ExamClassService examClassService;
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PostMapping
     @Operation(summary = "Tạo lớp thi")
     public Long createExamClass(@RequestBody @Validated ExamClassCreateDTO createDTO) {
         return examClassService.createExamClass(createDTO);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @GetMapping("/page")
     @Operation(summary = "Danh sách lớp thi dạng page")
     public Page<ICommonExamClassDTO> getListExamClass(
@@ -65,6 +68,7 @@ public class ExamClassController {
         return examClassService.getPageExamClass(code, semesterId, subjectId, testId, pageable);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @GetMapping("/export")
     @Operation(summary = "Export danh sách lớp thi theo kỳ")
     public ResponseEntity<InputStreamResource> exportExamClass(
@@ -80,22 +84,26 @@ public class ExamClassController {
 
     @GetMapping("/detail/{id}")
     @Operation(summary = "Chi tiết lớp thi")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     public IExamClassDetailDTO getDetailExamClass(@PathVariable(name = "id") Long id) {
         return examClassService.getExamClassDetail(id);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PutMapping("/{id}")
     @Operation(summary = "Cập nhật thông tin lớp thi")
     public void updateExamClass(@PathVariable(name = "id") Long id, @RequestBody @Validated ExamClassSaveReqDTO updateDTO) {
         examClassService.updateExamClass(id, updateDTO);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PutMapping("/participant")
     @Operation(summary = "Cập nhật Giám thị / Thí sinh vào lớp thi")
     public void updateParticipantToExamClass(@RequestBody @Validated UserExamClassDTO userExamClassDTO) {
         examClassService.updateParticipantToExamClass(userExamClassDTO);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @GetMapping("/participant/list/{examClassId}")
     @Operation(summary = "Lấy danh sách Giám thị / Thí sinh trong lớp thi")
     public List<IExamClassParticipantDTO> getListExamClassParticipant(@PathVariable(name = "examClassId") Long examClassId,
@@ -103,6 +111,7 @@ public class ExamClassController {
         return examClassService.getListExamClassParticipant(examClassId, roleType);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @GetMapping("/participant/export/{examClassId}")
     @Operation(summary = "Export danh sách SV / GV lớp thi")
     public ResponseEntity<InputStreamResource> exportExamClassParticipant(@PathVariable(name = "examClassId") Long examClassId,
@@ -114,6 +123,7 @@ public class ExamClassController {
         return ResponseEntity.ok().headers(headers).body(resourceRes.getResource());
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
     @PostMapping(value = "/participant/student/import/{examClassId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Import thí sinh vào lớp thi")
     public Set<Long> importStudentExamClass(@PathVariable(name = "examClassId") Long examClassId,
