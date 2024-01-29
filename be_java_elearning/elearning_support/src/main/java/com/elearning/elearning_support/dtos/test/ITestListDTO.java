@@ -10,18 +10,19 @@ public interface ITestListDTO {
 
     String getName();
 
+    Long getSemesterId();
+
     String getSemester();
 
     Integer getDuration();
 
     Integer getQuestionQuantity();
 
+    Long getSubjectId();
+
     String getSubjectName();
 
     String getSubjectCode();
-
-    @JsonFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_HH_MM_SS, timezone = DateUtils.TIME_ZONE)
-    Date getCreatedAt();
 
     @JsonFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_HH_MM_SS, timezone = DateUtils.TIME_ZONE)
     Date getModifiedAt();
@@ -33,6 +34,8 @@ public interface ITestListDTO {
     Date getEndTime();
 
     String getLstTestSetCode();
+
+    String getGenTestConfig();
 
 
 }

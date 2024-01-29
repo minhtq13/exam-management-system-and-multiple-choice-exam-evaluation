@@ -15,7 +15,7 @@ import org.springframework.util.ObjectUtils;
 import com.elearning.elearning_support.constants.message.errorKey.ErrorKey;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst.Resources;
-import com.elearning.elearning_support.dtos.test.ITestListDTO;
+import com.elearning.elearning_support.dtos.test.TestDetailDTO;
 import com.elearning.elearning_support.dtos.test.TestReqDTO;
 import com.elearning.elearning_support.entities.chapter.Chapter;
 import com.elearning.elearning_support.entities.subject.Subject;
@@ -151,9 +151,10 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public Page<ITestListDTO> getListTest(Long subjectId, String subjectCode, Date startTime, Date endTime, Long semesterId, String semesterCode,
-        Pageable pageable) {
-        return testRepository.getListTest(subjectId, subjectCode, startTime, endTime, semesterId, semesterCode, pageable);
+    public Page<TestDetailDTO> getListTest(Long subjectId, String subjectCode, Date startTime, Date endTime, Long semesterId,
+        String semesterCode, Pageable pageable) {
+        return testRepository.getListTest(subjectId, subjectCode, startTime, endTime, semesterId, semesterCode, pageable)
+            .map(TestDetailDTO::new);
     }
 
     @Override

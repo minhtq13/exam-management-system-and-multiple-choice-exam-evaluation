@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.elearning.elearning_support.dtos.test.ITestListDTO;
+import com.elearning.elearning_support.dtos.test.TestDetailDTO;
 import com.elearning.elearning_support.dtos.test.TestReqDTO;
 import com.elearning.elearning_support.enums.commons.StatusEnum;
 import com.elearning.elearning_support.services.test.TestService;
@@ -54,7 +54,7 @@ public class TestController {
 
     @GetMapping
     @Operation(summary = "Lấy danh sách các kỳ thi")
-    public Page<ITestListDTO> getListTest(
+    public Page<TestDetailDTO> getListTest(
         @RequestParam(name = "subjectId", required = false, defaultValue = "-1") Long subjectId,
         @RequestParam(name = "subjectCode", required = false, defaultValue = "ALL") String subjectCode,
         @DateTimeFormat(pattern = DateUtils.FORMAT_DATE_DD_MM_YYYY_HH_MM, iso = ISO.DATE_TIME)

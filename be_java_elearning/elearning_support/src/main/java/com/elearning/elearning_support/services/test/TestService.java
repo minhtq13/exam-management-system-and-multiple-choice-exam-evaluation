@@ -1,11 +1,10 @@
 package com.elearning.elearning_support.services.test;
 
 import java.util.Date;
-import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import com.elearning.elearning_support.dtos.test.ITestListDTO;
+import com.elearning.elearning_support.dtos.test.TestDetailDTO;
 import com.elearning.elearning_support.dtos.test.TestReqDTO;
 import com.elearning.elearning_support.entities.test.Test;
 import com.elearning.elearning_support.enums.commons.StatusEnum;
@@ -33,7 +32,7 @@ public interface TestService {
     /**
      * Get list test
      */
-    Page<ITestListDTO> getListTest(Long subjectId, String subjectCode, Date startTime, Date endTime, Long semesterId, String semesterCode,
+    Page<TestDetailDTO> getListTest(Long subjectId, String subjectCode, Date startTime, Date endTime, Long semesterId, String semesterCode,
         Pageable pageable);
 
     /**

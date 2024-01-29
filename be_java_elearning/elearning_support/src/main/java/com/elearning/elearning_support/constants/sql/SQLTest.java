@@ -19,10 +19,13 @@ public class SQLTest {
             "    COALESCE(test.modified_at, test.created_at) AS modifiedAt, \n" +
             "    test.start_time AS startTime, \n" +
             "    test.end_time AS endTime, \n" +
+            "    subject.id AS subjectId, \n" +
             "    subject.title AS subjectName, \n" +
             "    subject.code AS subjectCode, \n" +
             "    testSetCTE.lst_test_set_code AS lstTestSetCode, \n" +
-            "    semester.code AS semester \n" +
+            "    semester.id AS semesterId, \n" +
+            "    semester.code AS semester, \n" +
+            "    test.gen_test_config AS genTestConfig \n" +
             "FROM {h-schema}test \n" +
             "    LEFT JOIN {h-schema}subject ON test.subject_id = subject.id \n" +
             "    LEFT JOIN testSetCTE ON testSetCTE.test_id = test.id \n" +
