@@ -175,6 +175,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      margin-top: 20px;
       .button-submit-ai {
         width: 150px;
         height: 50px;
@@ -207,7 +208,7 @@
   justify-content: center !important;
 }
 .may-be-wrong-modal {
-  min-width: 50vw;
+  min-width: 52vw;
   .may-be-wrong-content {
     .header-mbw-content {
       margin: 20px 0px;

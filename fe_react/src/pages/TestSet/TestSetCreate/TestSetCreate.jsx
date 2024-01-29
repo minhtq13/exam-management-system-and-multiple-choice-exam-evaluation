@@ -26,7 +26,6 @@ const TestSetCreate = () => {
       ),
     },
   ];
-
   return (
     <div className="test-set-create">
       <div className="test-set-header">Tạo bộ đề thi</div>
@@ -51,7 +50,7 @@ const TestSetCreate = () => {
         </div>
         <div className="test-create-info-row">
           <span>Bộ đề:</span>
-          <span>{testInfo.lstTestSetCode}</span>
+          <span>{testInfo.lstTestSetCode ? testInfo.lstTestSetCode.split(",").join(", ") : ""}</span>
         </div>
       </div>
       <Tabs defaultActiveKey="1" items={items} className="test-content"></Tabs>

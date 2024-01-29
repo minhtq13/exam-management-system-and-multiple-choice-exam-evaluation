@@ -1,6 +1,5 @@
 import {
 	LogoutOutlined,
-	SettingOutlined,
 	UserOutlined,
 } from "@ant-design/icons";
 import { Avatar, Dropdown } from "antd";
@@ -49,18 +48,18 @@ const Account = () => {
 				navigate("/profile-user");
 			},
 		},
+		// {
+		// 	key: 3,
+		// 	label: (
+		// 		<div className="menu-item">
+		// 			<SettingOutlined />
+		// 			<div className="account-content">Cài đặt</div>
+		// 		</div>
+		// 	),
+		// 	onClick: () => {},
+		// },
 		{
 			key: 3,
-			label: (
-				<div className="menu-item">
-					<SettingOutlined />
-					<div className="account-content">Cài đặt</div>
-				</div>
-			),
-			onClick: () => {},
-		},
-		{
-			key: 4,
 			label: (
 				<div className="menu-item">
 					<LogoutOutlined />

@@ -156,7 +156,7 @@ const TestSetCreateManual = ({ testId, questionQuantity, lstTest }) => {
       )
     }
   }
-  const onCodeChange = (e) => {
+  const handleChangeTestSetCode = (e) => {
     setCode(e.target.value);
     setErrCode(e.target.value.trim() === "");
     setIsExist(e.target.value !== "" && arrTests.includes(e.target.value));
@@ -228,15 +228,16 @@ const TestSetCreateManual = ({ testId, questionQuantity, lstTest }) => {
           </Spin>
         </div>
         <div className="manual-preview">
+          {isExist && <span className="error-code">{`Mã đề thi đã tồn tại!`}</span>}
+          {errCode && <span className="error-code">Vui lòng nhập mã đề thi!</span>}
           <div className="manual-preview-code">
             <span className="manual-preview-code-label" style={{ fontSize: 16 }}>Mã đề thi:</span>
             <div className="manual-preview-code-value">
-              <Input onChange={(e) => onCodeChange(e)} placeholder="Nhập mã đề thi" status={errCode ? "error" : ""} value={code} />
+              <Input type="text" showCount maxLength={3} onChange={handleChangeTestSetCode} placeholder="Nhập mã đề thi" status={errCode ? "error" : ""} />
             </div>
             {errorQuantity && <div className="error-quantity">{`Vui lòng chọn đúng số lượng ${questionQuantity} câu hỏi!`}</div>}
           </div>
-          {isExist && <span className="error-code">{`Mã đề thi đã tồn tại!`}</span>}
-          {errCode && <span className="error-code">Vui lòng nhập mã đề thi!</span>}
+ 
           <div className={isExist || errCode ? "manual-preview-content error" : "manual-preview-content"}>
             {checkedItems.length > 0 ? checkedItems.map((item, index) => {
               return questionRender(item, index, true);

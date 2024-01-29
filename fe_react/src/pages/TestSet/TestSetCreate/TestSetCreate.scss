@@ -291,15 +291,14 @@
 
   .manual-preview {
     width: 49%;
-
+    position: relative;
     .error-code{
       color: #FF4D4F;
-      padding-left: 82px;
+      position: absolute;
+      top: -25px;
+      left: 82px;
     }
 
-    .error {
-      height: calc(93% - 22px) !important;
-    }
 
     .manual-preview-content {
       background-color: #ffffff;
@@ -419,4 +418,7 @@
 
 .select-level-q {
   min-width: 150px;
+}
+.ant-input-show-count-suffix {
+  color: #000 !important;
 }
