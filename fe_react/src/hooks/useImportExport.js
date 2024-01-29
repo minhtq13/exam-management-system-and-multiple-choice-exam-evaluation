@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL, apiPath } from "../config/apiPath";
+import { BASE_URL } from "../config/apiPath";
 import useNotify from "./useNotify";
 import { useState } from "react";
 import { capitalizeFirstLetter } from "../utils/tools";

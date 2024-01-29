@@ -52,6 +52,7 @@ const ExamClassEdit = () => {
       <Skeleton active loading={infoLoading}>
         <UpdateExamClassInfoForm
           infoHeader="Cập nhật lớp thi"
+          semesterDisabled={true}
           onFinish={onFinish}
           btnText="Cập nhật"
           initialValues={{

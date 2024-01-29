@@ -59,7 +59,7 @@ const ExamClassList = () => {
   const [record, setRecord] = useState({});
   const [pageSize, setPageSize] = useState(10);
   const [studentFile, setStudentFile] = useState(null);
-
+  const fileInputRef = useRef(null);
   useEffect(() => {
     if (classId && roleType !== "STATISTIC") {
       getParticipants(classId, roleType);
@@ -156,8 +156,9 @@ const ExamClassList = () => {
   };
   const studentFileChange = (e) => {
     setStudentFile(e.target.files[0]);
+    console.log(e);
   };
-
+  console.log(studentFile);
   const renderTab = () => {
     return (
       <div className="exam-class-tabs">
@@ -167,7 +168,7 @@ const ExamClassList = () => {
               <img src={exportIcon} alt="Tải xuống Icon" />
               Tải xuống
             </Button>
-            <Input type="file" name="file" onChange={(e) => studentFileChange(e)}></Input>
+            <input type="file" name="file" id="student-file" ref={fileInputRef} onChange={(e) => studentFileChange(e)} ></input>
             <Button
               type="primary"
               onClick={importStudentClass}
@@ -418,6 +419,9 @@ const ExamClassList = () => {
               setClassCode(record.code);
               setStudentFile(null);
               setOpenModal(true);
+              if (fileInputRef.current) {
+                fileInputRef.current.value = "";
+              }
             }}
           />
           <ActionButton icon="edit" handleClick={() => handleEdit(record)} />

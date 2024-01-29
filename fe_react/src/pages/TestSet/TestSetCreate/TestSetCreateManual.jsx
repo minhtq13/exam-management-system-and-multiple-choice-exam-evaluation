@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import useQuestions from "../../../hooks/useQuestion";
 import ReactQuill from "react-quill";
 import useNotify from "../../../hooks/useNotify";
-import { testSetCreateService } from "../../../services/testServices";
+import { createTestSetService } from "../../../services/testServices";
 import { levelOptions } from "../../../utils/constant";
 import { useNavigate } from "react-router-dom";
 
@@ -127,7 +127,7 @@ const TestSetCreateManual = ({ testId, questionQuantity, lstTest }) => {
     }
     if (code && checkedItems.length === questionQuantity && !isExist) {
       setLoading(true);
-      testSetCreateService(
+      createTestSetService(
         {
           testSetCode: code,
           testId: Number(testId),

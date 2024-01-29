@@ -35,6 +35,7 @@ const UpdateExamClassInfoForm = ({
   testDisplay,
   lstStudentId,
   lstSupervisorId,
+  semesterDisabled
 }) => {
   const {
     allSemester,
@@ -402,7 +403,7 @@ const UpdateExamClassInfoForm = ({
           rules={[{ required: true, message: "Chưa chọn kỳ thi" }]}
         >
           <Select
-            disabled={true}
+            disabled={semesterDisabled}
             loading={semesterLoading}
             placeholder="Chọn kỳ thi"
             options={getOptions(allSemester, false)}
