@@ -153,13 +153,25 @@ public class FileUtils {
         };
     }
 
-    public static String getSharedAppDirectoryPath(){
+    public static String getSharedAppDirectoryDataPath(){
         String sharedAppDataPath;
         if (SystemConstants.IS_WINDOWS) {
             sharedAppDataPath = SystemConstants.WINDOWS_SHARED_DIR + "/data";
             log.info("Windows's shared app data {}", SystemConstants.WINDOWS_SHARED_DIR);
         } else {
             sharedAppDataPath = SystemConstants.LINUX_SHARED_DIR + "/data";
+            log.info("Linux's shared app data {}", SystemConstants.LINUX_SHARED_DIR);
+        }
+        return sharedAppDataPath;
+    }
+
+    public static String getSharedAppDirectorySourcePath(){
+        String sharedAppDataPath;
+        if (SystemConstants.IS_WINDOWS) {
+            sharedAppDataPath = SystemConstants.WINDOWS_SHARED_DIR + "/source";
+            log.info("Windows's shared app data {}", SystemConstants.WINDOWS_SHARED_DIR);
+        } else {
+            sharedAppDataPath = SystemConstants.LINUX_SHARED_DIR + "/source";
             log.info("Linux's shared app data {}", SystemConstants.LINUX_SHARED_DIR);
         }
         return sharedAppDataPath;

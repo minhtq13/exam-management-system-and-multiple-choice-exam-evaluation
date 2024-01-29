@@ -543,7 +543,7 @@ public class TestSetServiceImpl implements TestSetService {
 
         // Check system os
         File sharedAppDataDir;
-        String sharedAppDataPath = FileUtils.getSharedAppDirectoryPath();
+        String sharedAppDataPath = FileUtils.getSharedAppDirectoryDataPath();
         sharedAppDataDir = new File(sharedAppDataPath);
         if (!sharedAppDataDir.exists()) {
             log.info("Make sharedAppDataDir {}", sharedAppDataDir.mkdirs() ? "successfully" : "fail");
@@ -576,7 +576,7 @@ public class TestSetServiceImpl implements TestSetService {
 
     @Override
     public void deleteImagesInClassFolder(HandledImagesDeleteDTO deleteDTO) throws IOException {
-        String sharedAppDataPath = FileUtils.getSharedAppDirectoryPath();
+        String sharedAppDataPath = FileUtils.getSharedAppDirectoryDataPath();
         File examClassStoredDir = new File(String.format("%s/%s/%s/", sharedAppDataPath, ANSWERED_SHEETS, deleteDTO.getExamClassCode()));
         int numFileDeleted = 0;
         if (examClassStoredDir.exists()) {
@@ -599,7 +599,7 @@ public class TestSetServiceImpl implements TestSetService {
 
     @Override
     public List<FileAttachDTO> getListFileInExClassFolder(String examClassCode) {
-        String sharedAppDataPath = FileUtils.getSharedAppDirectoryPath();
+        String sharedAppDataPath = FileUtils.getSharedAppDirectoryDataPath();
         File examClassStoredDir = new File(String.format("%s/%s/%s/", sharedAppDataPath, ANSWERED_SHEETS, examClassCode));
         List<FileAttachDTO> lstFileInFolder = new ArrayList<>();
         if (examClassStoredDir.exists()) {
@@ -664,7 +664,7 @@ public class TestSetServiceImpl implements TestSetService {
     private List<StudentHandledTestDTO> loadListStudentScoredSheets(String exClassCode, List<String> warningMessages) {
         List<StudentHandledTestDTO> lstScoredData = new ArrayList<>();
         File scoredSheetsDir;
-        String sharedAppDataPath = FileUtils.getSharedAppDirectoryPath();
+        String sharedAppDataPath = FileUtils.getSharedAppDirectoryDataPath();
         scoredSheetsDir = new File(String.format("%s/%s/%s/%s", sharedAppDataPath, ANSWERED_SHEETS, exClassCode, SCORED_SHEETS));
         if (scoredSheetsDir.exists() && scoredSheetsDir.isDirectory()) {
             for (File scoredDataFile : Objects.requireNonNull(scoredSheetsDir.listFiles())) {
