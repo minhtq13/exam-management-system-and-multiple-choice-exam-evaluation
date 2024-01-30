@@ -137,9 +137,9 @@ public class User extends BaseEntity implements Serializable {
         this.firstName = nameParts.size() == 2 ? nameParts.get(1) : "";
         this.gender = GenderEnum.getGenderByEngName(importDTO.getGenderRaw());
         this.setCreatedBy(AuthUtils.getCurrentUserId());
-        this.setUserType(importDTO.getUserType());
+        this.userType = importDTO.getUserType();
         this.createdSource = 0;
-        this.setBirthDate(DateUtils.parseWithDefault(importDTO.getBirthDateRaw(), DateUtils.FORMAT_YYYY_MM_DD, null));
+        this.birthDate = DateUtils.parseWithDefault(importDTO.getBirthDateRaw(), DateUtils.FORMAT_YYYY_MM_DD, null);
         this.status = StatusEnum.ENABLED.getStatus();
         this.departmentId = -1L;
     }

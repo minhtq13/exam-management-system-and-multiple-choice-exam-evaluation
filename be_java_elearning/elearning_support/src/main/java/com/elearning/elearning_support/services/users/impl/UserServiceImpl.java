@@ -68,6 +68,8 @@ import com.elearning.elearning_support.utils.auth.AuthUtils;
 import com.elearning.elearning_support.utils.excelFile.ExcelFileUtils;
 import com.elearning.elearning_support.utils.excelFile.ExcelValidationUtils;
 import com.elearning.elearning_support.utils.file.FileUtils;
+import com.elearning.elearning_support.utils.object.ObjectMapperUtil;
+import com.elearning.elearning_support.utils.object.ObjectUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -180,7 +182,7 @@ public class UserServiceImpl implements UserService {
                 studentTestSetRepository.deleteAll(lstStudentTestSet);
             }
             // xóa users_roles
-            userRoleRepository.deleteAllByUserId(userId);
+            userRoleRepository.deleteAllByUserIdNative(userId);
             // xóa user_exam_class
             userExamClassRepository.deleteAllByUserId(userId);
             // xóa users
@@ -263,7 +265,7 @@ public class UserServiceImpl implements UserService {
                     continue;
                 }
                 // Duyệt các cell trong row
-                CommonUserImportDTO importDTO = new StudentImportDTO();
+                StudentImportDTO importDTO = new StudentImportDTO();
                 importDTO.setUserType(UserTypeEnum.STUDENT.getType());
                 for (Cell cell : currentRow) {
                     String columnKey = mapIndexColumnKey.get(cell.getColumnIndex());
@@ -282,6 +284,8 @@ public class UserServiceImpl implements UserService {
                 if (!isEmptyRow) {
                     if (ObjectUtils.isEmpty(causeList)) {
                         User newStudent = new User(importDTO);
+                        newStudent.setMetaData(ObjectMapperUtil.mapping(
+                            String.format("{\"courseNum\" : %d}", Integer.valueOf(ObjectUtil.getOrDefault(importDTO.getCourse(), "0"))), Object.class));
                         newStudent.setPassword(passwordEncoder.encode(importDTO.getPasswordRaw()));
                         lstNewStudent.add(newStudent);
                         // add username/email/code to validators
@@ -596,8 +600,9 @@ public class UserServiceImpl implements UserService {
             }
         }
         //Set username
-        Integer userLikeExisted = userRepository.countByUsername(usernameBuilder.toString());
-        usernameBuilder.append(userLikeExisted == 0 ? "" : String.valueOf(userLikeExisted + 1));
+//        Integer userLikeExisted = userRepository.countByUsername(usernameBuilder.toString());
+//        usernameBuilder.append(userLikeExisted == 0 ? "" : String.valueOf(userLikeExisted + 1));
+        usernameBuilder.append(".").append(user.getCode());
         user.setUsername(usernameBuilder.toString());
 
         // password

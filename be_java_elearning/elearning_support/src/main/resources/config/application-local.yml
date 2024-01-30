@@ -23,6 +23,7 @@ spring:
         show_sql: true
         use_sql_comment: true
         format_sql: true
+        default_schema: elearning_support_dev
   #Cấu hình servlet : upload multipart file
   servlet:
     multipart:

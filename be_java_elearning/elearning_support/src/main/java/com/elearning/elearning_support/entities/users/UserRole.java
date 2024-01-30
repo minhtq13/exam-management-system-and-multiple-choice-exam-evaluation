@@ -19,8 +19,8 @@ public class UserRole {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "row_id", nullable = false, unique = true)
-    private Long rowId;
+    @Column(name = "id", nullable = false, unique = true)
+    private Long id;
 
     @Column(name = "user_id", nullable = false)
     private Long userId;

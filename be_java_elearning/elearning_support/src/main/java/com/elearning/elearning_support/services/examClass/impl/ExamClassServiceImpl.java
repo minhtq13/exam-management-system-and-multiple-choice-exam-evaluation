@@ -43,7 +43,6 @@ import com.elearning.elearning_support.dtos.examClass.UserExamClassDTO;
 import com.elearning.elearning_support.dtos.fileAttach.importFile.ImportResponseDTO;
 import com.elearning.elearning_support.dtos.fileAttach.importFile.RowErrorDTO;
 import com.elearning.elearning_support.dtos.users.ImportUserValidatorDTO;
-import com.elearning.elearning_support.dtos.users.importUser.CommonUserImportDTO;
 import com.elearning.elearning_support.dtos.users.importUser.ValidatedImportUserDTO;
 import com.elearning.elearning_support.dtos.users.student.StudentImportDTO;
 import com.elearning.elearning_support.entities.exam_class.ExamClass;
@@ -66,6 +65,8 @@ import com.elearning.elearning_support.services.users.UserService;
 import com.elearning.elearning_support.utils.auth.AuthUtils;
 import com.elearning.elearning_support.utils.excelFile.ExcelFileUtils;
 import com.elearning.elearning_support.utils.file.FileUtils;
+import com.elearning.elearning_support.utils.object.ObjectMapperUtil;
+import com.elearning.elearning_support.utils.object.ObjectUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -288,7 +289,7 @@ public class ExamClassServiceImpl implements ExamClassService {
                     continue;
                 }
                 // Duyệt các cell trong row
-                CommonUserImportDTO importDTO = new StudentImportDTO();
+                StudentImportDTO importDTO = new StudentImportDTO();
                 importDTO.setUserType(UserTypeEnum.STUDENT.getType());
                 for (Cell cell : currentRow) {
                     String columnKey = mapIndexColumnKey.get(cell.getColumnIndex());
@@ -313,7 +314,11 @@ public class ExamClassServiceImpl implements ExamClassService {
                 ValidatedImportUserDTO validatedResult = userService.validateImportUser(validatorDTO, importDTO, causeList);
                 if (!isEmptyRow) {
                     if (ObjectUtils.isEmpty(causeList)) {
+                        newStudent.setUsername(importDTO.getUsername());
+                        newStudent.setEmail(importDTO.getEmail());
                         newStudent.setPassword(passwordEncoder.encode(importDTO.getPasswordRaw()));
+                        newStudent.setMetaData(ObjectMapperUtil.mapping(
+                            String.format("{\"courseNum\" : %d}", Integer.valueOf(ObjectUtil.getOrDefault(importDTO.getCourse(), "0"))), Object.class));
                         lstNewStudent.add(newStudent);
                         // add username/email/code to validators
                         validatorDTO.getLstExistedUsername().add(newStudent.getUsername());
