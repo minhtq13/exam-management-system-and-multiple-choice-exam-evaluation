@@ -17,15 +17,30 @@ const ModalSelectedImage = ({ loading, imgInFolder }) => {
   const [open, setOpen] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [arrayImage, setArrayImage] = useState([]);
+  const [selectedImages, setSelectedImages] = useState([]);
+
   const showModal = () => {
+    setSelectedRowKeys([]);
     setOpen(true);
+    resetInputFile()
   };
   const handleOk = () => {
+    setSelectedRowKeys([])
     setOpen(false);
+    resetInputFile()
   };
   const handleCancel = () => {
+    setSelectedRowKeys([])
     setOpen(false);
+    resetInputFile()
   };
+  const resetInputFile = () => {
+    const inputUpload = document.querySelector(".input-upload-scoring");
+    if (inputUpload) {
+      inputUpload.value = null;
+    }
+    setSelectedImages([])
+  }
   const handleDownload = (srcImage, imageName) => {
     fetch(srcImage)
       .then((response) => response.blob())
@@ -117,6 +132,13 @@ const ModalSelectedImage = ({ loading, imgInFolder }) => {
     selections: [Table.SELECTION_ALL, Table.SELECTION_NONE],
     onSelect: (record, selected, selectedRows, nativeEvent) => {
       if (selected) {
+        setLstFileName([...lstFileName, record.fileName]);
+      } else {
+        setLstFileName(lstFileName.filter((fileName) => fileName !== record.fileName));
+      }
+    },
+    onSelectAll: (selected, selectedRows, changeRows) => {
+      if (selected) {
         setLstFileName(selectedRows.map((item) => item.fileName));
       } else {
         setLstFileName([]);
@@ -131,6 +153,7 @@ const ModalSelectedImage = ({ loading, imgInFolder }) => {
     deleteImgInFolder(params)
     setSelectedRowKeys([])
   };
+
 
   return (
     <div className="modal-selected-image-component">
@@ -156,10 +179,8 @@ const ModalSelectedImage = ({ loading, imgInFolder }) => {
       >
         <div>
           <div style={{ marginBottom: 16 }} className="header-table-selected-image">
-            <div className="block-upload">
-              <ImageUpload />
-            </div>
-            <div className="delete-button">
+            <div className="header-button">
+              <ImageUpload setSelectedImages={setSelectedImages} selectedImages={selectedImages} />
               <Button
                 danger
                 style={{ display: "flex", alignItems: "center" }}

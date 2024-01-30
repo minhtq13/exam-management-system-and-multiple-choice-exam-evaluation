@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { BASE_URL } from '../../config/apiPath';
-import { setRefreshTableImage } from '../../redux/slices/refreshSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import "./ImageUpload.scss"
-import useNotify from '../../hooks/useNotify';
+import axios from "axios";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { BASE_URL } from "../../config/apiPath";
+import useNotify from "../../hooks/useNotify";
+import { setRefreshTableImage } from "../../redux/slices/refreshSlice";
+import "./ImageUpload.scss";
 
-const ImageUpload = () => {
+const ImageUpload = ({ selectedImages, setSelectedImages }) => {
   const dispatch = useDispatch();
-  const notify = useNotify()
-  const [selectedImages, setSelectedImages] = useState([]);
+  const notify = useNotify();
+  // const [selectedImages, setSelectedImages] = useState([]);
   const { examClassCode } = useSelector((state) => state.appReducer);
   const isImage = (file) => {
-    return file.type.startsWith('image/');
+    return file.type.startsWith("image/");
   };
 
   const handleImageChange = (e) => {
@@ -25,10 +25,9 @@ const ImageUpload = () => {
       setSelectedImages([]);
     }
   };
-
   const handleImageUpload = async () => {
     if (selectedImages.length === 0) {
-      console.error('No images selected');
+      console.error("No images selected");
       return;
     }
     try {
@@ -37,35 +36,38 @@ const ImageUpload = () => {
         formData.append("files", image);
       });
       // eslint-disable-next-line no-unused-vars
-      const response = await axios.post(`${BASE_URL}/test-set/handled-answers/upload/${examClassCode}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      notify.success('Upload thành công!')
-      dispatch(setRefreshTableImage(Date.now()))
+      const response = await axios.post(
+        `${BASE_URL}/test-set/handled-answers/upload/${examClassCode}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      notify.success("Upload thành công!");
+      dispatch(setRefreshTableImage(Date.now()));
     } catch (error) {
-      notify.error('Upload thất bại!')
+      notify.error("Upload thất bại!");
     }
   };
-  // eslint-disable-next-line no-unused-vars
-  const handleClear = () => {
-    setSelectedImages([]);
-  }
   return (
-    <div className='image-upload-component'>
-      <div style={{marginRight: 12}}>Upload file ảnh:</div>
-      <input type="file" onChange={handleImageChange} accept="image/*" multiple className='input-upload'/>
+    <div className="image-upload-component">
+      <div style={{ marginRight: 12 }}><strong>Upload file ảnh:</strong></div>
+      <input
+        type="file"
+        onChange={handleImageChange}
+        accept="image/*"
+        multiple
+        className="input-upload-scoring"
+      />
       {selectedImages.length > 0 && (
         <div>
-          <button className="upload-btn" onClick={handleImageUpload}>Tải lên ảnh</button>
+          <button className="upload-btn" onClick={handleImageUpload}>
+            Tải lên ảnh
+          </button>
         </div>
       )}
-      {/* {selectedImages.length > 0 && (
-        <div>
-          <button className="clear-btn" onClick={handleClear}>Clear</button>
-        </div>
-      )} */}
     </div>
   );
 };

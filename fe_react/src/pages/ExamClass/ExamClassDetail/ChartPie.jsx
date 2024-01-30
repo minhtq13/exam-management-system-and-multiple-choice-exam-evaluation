@@ -4,7 +4,6 @@ import "./ChartPie.scss";
 
 const ChartPie = ({ dataPieChart, resultData }) => {
   const data = dataPieChart;
-  console.log(data);
 
   const updateValues = (items) => {
     items.forEach((elementA) => {

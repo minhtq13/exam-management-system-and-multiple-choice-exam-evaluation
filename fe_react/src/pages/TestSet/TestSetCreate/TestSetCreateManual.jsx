@@ -233,7 +233,7 @@ const TestSetCreateManual = ({ testId, questionQuantity, lstTest }) => {
           <div className="manual-preview-code">
             <span className="manual-preview-code-label" style={{ fontSize: 16 }}>Mã đề thi:</span>
             <div className="manual-preview-code-value">
-              <Input type="text" showCount maxLength={3} onChange={handleChangeTestSetCode} placeholder="Nhập mã đề thi" status={errCode ? "error" : ""} />
+              <Input style={{width: 175}} showCount maxLength={3} onChange={handleChangeTestSetCode} placeholder="Nhập mã đề thi" status={errCode ? "error" : ""} />
             </div>
             {errorQuantity && <div className="error-quantity">{`Vui lòng chọn đúng số lượng ${questionQuantity} câu hỏi!`}</div>}
           </div>

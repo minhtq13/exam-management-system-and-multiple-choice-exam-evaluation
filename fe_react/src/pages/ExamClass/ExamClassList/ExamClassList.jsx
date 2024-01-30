@@ -156,9 +156,7 @@ const ExamClassList = () => {
   };
   const studentFileChange = (e) => {
     setStudentFile(e.target.files[0]);
-    console.log(e);
   };
-  console.log(studentFile);
   const renderTab = () => {
     return (
       <div className="exam-class-tabs">

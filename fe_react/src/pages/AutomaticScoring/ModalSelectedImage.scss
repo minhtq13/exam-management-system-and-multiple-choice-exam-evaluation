@@ -17,8 +17,9 @@
   .header-table-selected-image {
     margin-bottom: 16px;
     min-height: 50px;
-    .delete-button {
-      justify-content: flex-end;
+    .header-button {
+      margin-top: 20px;
+      justify-content: space-between;
       display: flex;
       margin-right: 24px;  
       align-items: center;
@@ -27,11 +28,6 @@
         align-items: center;
         padding: 0px 16px;
       }
-    }
-    .block-upload {
-      max-width: 100%;
-      overflow: auto;
-      padding-bottom: 8px;
     }
   }
   .ant-pagination {
