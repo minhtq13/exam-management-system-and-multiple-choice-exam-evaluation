@@ -118,6 +118,7 @@ public class UserServiceImpl implements UserService {
         // Tạo user mới
         User newUser = new User();
         org.springframework.beans.BeanUtils.copyProperties(createDTO, newUser);
+        newUser.setMetaData(Objects.equals(createDTO.getUserType(), UserTypeEnum.STUDENT.getType()) ? createDTO.getMetaData() : null);
         newUser.setCreatedAt(new Date());
         newUser.setCreatedBy(AuthUtils.getCurrentUserId());
         newUser.setPassword(passwordEncoder.encode(createDTO.getPassword()));
@@ -142,6 +143,7 @@ public class UserServiceImpl implements UserService {
 
         // Update fields
         org.springframework.beans.BeanUtils.copyProperties(updateDTO, user, IGNORE_COPY_USER_PROPERTIES);
+        user.setMetaData(Objects.equals(updateDTO.getUserType(), UserTypeEnum.STUDENT.getType()) ? updateDTO.getMetaData() : null);
         user.setGender(updateDTO.getGenderType().getType());
         user.setModifiedAt(new Date());
         user.setModifiedBy(AuthUtils.getCurrentUserId());
