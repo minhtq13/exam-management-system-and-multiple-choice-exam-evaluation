@@ -180,26 +180,40 @@ public class TestSetServiceImpl implements TestSetService {
             TestSetQuestionMapDTO mapDTO = new TestSetQuestionMapDTO();
             mapDTO.setTestSetId(testSet.getId());
             mapDTO.setTotalPoint(test.getTotalPoint());
-            // Trộn các câu hỏi ở mức độ dễ
+            int missingNumOfQuestion = 0;
+
+            // Trộn các câu hỏi ở mức độ dễ và đưa vào đề
             int numberEasyQuestion = Math.min(genTestConfig.getNumEasyQuestion(), lstEasyQuestion.size());
             if (numberEasyQuestion > 0) {
                 Collections.shuffle(lstEasyQuestion);
                 mapDTO.getLstQuestionAnswer().addAll(lstEasyQuestion.subList(0, numberEasyQuestion));
             }
-            // Trộn các câu hỏi mức trung bình
-            Collections.shuffle(lstEasyQuestion);
-            int numberMediumQuestion = Math.min(genTestConfig.getNumMediumQuestion(), lstMediumQuestion.size());
+            if (numberEasyQuestion < genTestConfig.getNumEasyQuestion()){
+                missingNumOfQuestion = genTestConfig.getNumEasyQuestion() - numberEasyQuestion;
+            }
+
+            // Trộn các câu hỏi mức trung bình và đưa vào đề
+            int numberMediumQuestion = Math.min(genTestConfig.getNumMediumQuestion() + missingNumOfQuestion, lstMediumQuestion.size());
             if (numberMediumQuestion > 0) {
                 Collections.shuffle(lstMediumQuestion);
                 mapDTO.getLstQuestionAnswer().addAll(lstMediumQuestion.subList(0, numberMediumQuestion));
             }
+            if (numberMediumQuestion < genTestConfig.getNumMediumQuestion()){
+                missingNumOfQuestion = genTestConfig.getNumMediumQuestion() + missingNumOfQuestion - numberMediumQuestion;
+            }
 
-            // Trộn các câu hỏi mức trung bình
-            Collections.shuffle(lstEasyQuestion);
-            int numberHardQuestion = Math.min(genTestConfig.getNumHardQuestion(), lstHardQuestion.size());
+            // Trộn các câu hỏi mức khó và đưa vào đề
+            int numberHardQuestion = Math.min(genTestConfig.getNumHardQuestion() + missingNumOfQuestion, lstHardQuestion.size());
             if (numberHardQuestion > 0) {
                 Collections.shuffle(lstHardQuestion);
                 mapDTO.getLstQuestionAnswer().addAll(lstHardQuestion.subList(0, numberHardQuestion));
+            }
+            if (numberMediumQuestion < genTestConfig.getNumHardQuestion()){
+                missingNumOfQuestion = genTestConfig.getNumHardQuestion() + missingNumOfQuestion - numberHardQuestion;
+            }
+
+            if (missingNumOfQuestion > 0){
+                log.info("TEST SET {} IS MISSING {}", testSet.getId(), missingNumOfQuestion);
             }
             lstMapTestQuestionDTO.add(mapDTO);
         }

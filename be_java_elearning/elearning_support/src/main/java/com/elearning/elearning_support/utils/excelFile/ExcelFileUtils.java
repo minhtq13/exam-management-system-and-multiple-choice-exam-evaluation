@@ -48,6 +48,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ExcelFileUtils {
 
+    private static final SimpleDateFormat formatter = new SimpleDateFormat(DateUtils.FORMAT_YYYY_MM_DD);
+
     /**
      * Map<Integer, Pair<String, String>> = {Integer : columnIdx, Pair<headerName, methodName>}
      */
@@ -174,9 +176,13 @@ public class ExcelFileUtils {
             case STRING:
                 return cell.getStringCellValue().trim();
             case NUMERIC:
-                double cellNumberVal = cell.getNumericCellValue();
-                return cellNumberVal != Math.floor(cellNumberVal) ? String.valueOf(cellNumberVal).trim() : String.format("%.0f", cellNumberVal)
-                    .trim();
+                if (org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted(cell)) { // check cell date format
+                    return formatter.format(cell.getDateCellValue());
+                } else {
+                    double cellNumValue = cell.getNumericCellValue();
+                    return cellNumValue != Math.floor(cellNumValue) ? String.valueOf(cellNumValue).trim()
+                        : String.format("%.0f", cellNumValue).trim(); // check cell number type
+                }
             case BOOLEAN:
                 return String.valueOf(cell.getBooleanCellValue()).trim();
             case FORMULA:

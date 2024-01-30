@@ -318,7 +318,7 @@ public class ExamClassServiceImpl implements ExamClassService {
                         newStudent.setEmail(importDTO.getEmail());
                         newStudent.setPassword(passwordEncoder.encode(importDTO.getPasswordRaw()));
                         newStudent.setMetaData(ObjectMapperUtil.mapping(
-                            String.format("{\"courseNum\" : %d}", Integer.valueOf(ObjectUtil.getOrDefault(importDTO.getCourse(), "0"))), Object.class));
+                            String.format("{\"courseNum\" : %d}", Integer.valueOf(ObjectUtil.getOrDefault(importDTO.getCourseRaw(), "0"))), Object.class));
                         lstNewStudent.add(newStudent);
                         // add username/email/code to validators
                         validatorDTO.getLstExistedUsername().add(newStudent.getUsername());

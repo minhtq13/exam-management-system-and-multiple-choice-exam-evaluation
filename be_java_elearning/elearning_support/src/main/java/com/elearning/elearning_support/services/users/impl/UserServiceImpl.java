@@ -285,7 +285,7 @@ public class UserServiceImpl implements UserService {
                     if (ObjectUtils.isEmpty(causeList)) {
                         User newStudent = new User(importDTO);
                         newStudent.setMetaData(ObjectMapperUtil.mapping(
-                            String.format("{\"courseNum\" : %d}", Integer.valueOf(ObjectUtil.getOrDefault(importDTO.getCourse(), "0"))), Object.class));
+                            String.format("{\"courseNum\" : %d}", Integer.valueOf(ObjectUtil.getOrDefault(importDTO.getCourseRaw(), "0"))), Object.class));
                         newStudent.setPassword(passwordEncoder.encode(importDTO.getPasswordRaw()));
                         lstNewStudent.add(newStudent);
                         // add username/email/code to validators
