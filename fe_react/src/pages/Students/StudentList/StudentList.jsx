@@ -181,6 +181,7 @@ const StudentList = () => {
   }, 3000);
   const handleDelete = () => {
     deleteUser(deleteKey, { userType: "STUDENT" }, getAllStudents, param);
+    setSelectedRowKeys([])
   };
   const handleExport = () => {
     const params = {

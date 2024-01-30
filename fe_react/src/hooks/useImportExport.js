@@ -20,7 +20,7 @@ const useImportExport = () => {
 			})
 			.catch((error) => {
 				notify.error(
-					capitalizeFirstLetter(error.response.data.message)
+					capitalizeFirstLetter("Đã tồn tại user trong hệ thống!")
 				);
 				setLoadingImport(false);
 			});

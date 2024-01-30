@@ -163,6 +163,7 @@ const TeacherList = () => {
   };
   const handleDelete = () => {
     deleteUser(deleteKey, { userType: "TEACHER" }, getAllTeachers, param);
+    setSelectedRowKeys([])
   };
   const handleExport = () => {
     const params = {
