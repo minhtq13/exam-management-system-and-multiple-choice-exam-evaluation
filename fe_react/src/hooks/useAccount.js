@@ -9,7 +9,7 @@ import useNotify from "./useNotify";
 import { logOut } from "../api/apiCaller";
 import { setUserId } from "../redux/slices/userSlice";
 import { useDispatch } from "react-redux";
-import { getInfoUserService } from "../services/userService";
+import { deleteUserService, getInfoUserService } from "../services/userService";
 
 const useAccount = () => {
 	const [authenticResult, setAuthenticResult] = useState("");
@@ -17,6 +17,7 @@ const useAccount = () => {
 	const [profileUser, setProfileUser] = useState({});
 	const [loading, setLoading] = useState(false);
 	const [infoLoading, setInfoLoading] = useState(true);
+	const [deleLoading, setDeleLoading] = useState(false);
 	const navigate = useNavigate();
 	const notify = useNotify();
 	const dispatch = useDispatch();
@@ -62,6 +63,30 @@ const useAccount = () => {
 			}
 		);
 	};
+	const deleteUser = (userId, params, getData, payload) => {
+		setDeleLoading(true);
+		deleteUserService(
+			userId,
+			params.userType,
+			(res) => {
+				setDeleLoading(false);
+				notify.success(
+					params.userType === "STUDENT"
+						? "Xóa sinh viên thành công!"
+						: "Xóa giảng viên thành công!"
+				);
+				getData(payload);
+			},
+			(error) => {
+				setDeleLoading(false);
+				notify.error(
+					params.userType === "STUDENT"
+						? "Lỗi xóa sinh viên!"
+						: "Lỗi xóa giảng viên!"
+				);
+			}
+		);
+	};
 	return {
 		authenticResult,
 		authenticAction,
@@ -72,6 +97,8 @@ const useAccount = () => {
 		userInfo,
 		getUserInfoAPI,
 		infoLoading,
+		deleLoading,
+		deleteUser,
 	};
 };
 

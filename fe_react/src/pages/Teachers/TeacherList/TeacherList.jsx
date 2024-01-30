@@ -10,15 +10,14 @@ import ActionButton from "../../../components/ActionButton/ActionButton";
 import ModalPopup from "../../../components/ModalPopup/ModalPopup";
 import { appPath } from "../../../config/appPath";
 import useImportExport from "../../../hooks/useImportExport";
-import useNotify from "../../../hooks/useNotify";
 import useTeachers from "../../../hooks/useTeachers";
 import { setSelectedItem } from "../../../redux/slices/appSlice";
-import { deleteTeachersService } from "../../../services/teachersServices";
 import { convertGender } from "../../../utils/tools";
 import "./TeacherList.scss";
 import SearchFilter from "../../../components/SearchFilter/SearchFilter";
 import debounce from "lodash.debounce";
 import { ImportOutlined } from "@ant-design/icons";
+import useAccount from "../../../hooks/useAccount";
 
 const TeacherList = () => {
   const initialParam = {
@@ -28,6 +27,7 @@ const TeacherList = () => {
     size: 10,
     sort: "lastModifiedAt",
   };
+  const { deleLoading, deleteUser } = useAccount();
   const [param, setParam] = useState(initialParam);
   const [deleteDisable, setDeleteDisable] = useState(true);
   const [deleteKey, setDeleteKey] = useState(null);
@@ -60,7 +60,6 @@ const TeacherList = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param, loadingImport]);
-  const notify = useNotify();
   const navigate = useNavigate();
   const columns = [
     {
@@ -163,18 +162,7 @@ const TeacherList = () => {
     selections: [Table.SELECTION_ALL],
   };
   const handleDelete = () => {
-    deleteTeachersService(
-      deleteKey,
-      null,
-      (res) => {
-        notify.success("Xoá giảng viên thành công!");
-        getAllTeachers();
-        setSelectedRowKeys([]);
-      },
-      (error) => {
-        notify.error("Lỗi xoá giảng viên!");
-      }
-    );
+    deleteUser(deleteKey, { userType: "TEACHER" }, getAllTeachers, param);
   };
   const handleExport = () => {
     const params = {
@@ -211,6 +199,7 @@ const TeacherList = () => {
             icon={deletePopUpIcon}
             ok={"Đồng ý"}
             onAccept={handleDelete}
+            loading={deleLoading}
           />
           <Button className="options" onClick={handleExport}>
             <img src={exportIcon} alt="Tải xuống Icon" />
@@ -223,7 +212,7 @@ const TeacherList = () => {
             disabled={!fileList}
             loading={loadingImport}
           >
-            <ImportOutlined/> Import
+            <ImportOutlined /> Import
           </Button>
         </div>
       </div>

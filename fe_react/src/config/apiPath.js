@@ -74,4 +74,5 @@ export const apiPath = {
 	createUser: BASE_URL + "/user",
 	updateUser: BASE_URL + "/user",
 	infoUser: BASE_URL + "/user",
+	deleteUser: BASE_URL + "/user/hard",
 };

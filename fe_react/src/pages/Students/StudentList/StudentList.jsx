@@ -10,16 +10,15 @@ import ActionButton from "../../../components/ActionButton/ActionButton";
 import ModalPopup from "../../../components/ModalPopup/ModalPopup";
 import { appPath } from "../../../config/appPath";
 import useImportExport from "../../../hooks/useImportExport";
-import useNotify from "../../../hooks/useNotify";
 import useStudents from "../../../hooks/useStudents";
 import { setSelectedItem } from "../../../redux/slices/appSlice";
-import { deleteStudentsService } from "../../../services/studentsService";
 import { convertGender, customPaginationText } from "../../../utils/tools";
 import SearchFilter from "../../../components/SearchFilter/SearchFilter";
 import "./StudentList.scss";
 import debounce from "lodash.debounce";
 import { ImportOutlined } from "@ant-design/icons";
 import { courseNumOptions } from "../../../utils/constant";
+import useAccount from "../../../hooks/useAccount";
 
 const StudentList = () => {
   const initialParam = {
@@ -30,6 +29,7 @@ const StudentList = () => {
     sort: "lastModifiedAt",
   };
   const [deleteDisable, setDeleteDisable] = useState(true);
+  const { deleteUser, deleLoading } = useAccount();
   const {
     allStudents,
     getAllStudents,
@@ -63,7 +63,6 @@ const StudentList = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param, loadingImport]);
-  const notify = useNotify();
   const navigate = useNavigate();
   const handleEdit = (record) => {
     navigate(`${appPath.studentEdit}/${record.id}`);
@@ -181,18 +180,7 @@ const StudentList = () => {
     setParam({ ...param, search: _e.target.value })
   }, 3000);
   const handleDelete = () => {
-    deleteStudentsService(
-      deleteKey,
-      null,
-      (res) => {
-        notify.success("Xoá sinh viên thành công!");
-        getAllStudents();
-        setSelectedRowKeys([]);
-      },
-      (error) => {
-        notify.error("Lỗi xoá sinh viên!");
-      }
-    );
+    deleteUser(deleteKey, { userType: "STUDENT" }, getAllStudents, param);
   };
   const handleExport = () => {
     const params = {
@@ -228,6 +216,7 @@ const StudentList = () => {
             confirmMessage={"Thao tác này không thể hoàn tác"}
             ok={"Đồng ý"}
             icon={deletePopUpIcon}
+            loading={deleLoading}
             onAccept={handleDelete}
           />
           <Button className="options" onClick={handleExport}>
