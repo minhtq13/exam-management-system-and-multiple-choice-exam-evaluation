@@ -67,10 +67,6 @@ const UpdateStudentInfoForm = ({
               required: true,
               message: errorMessange,
             },
-            {
-              pattern: /^([0-9]{7}|[0-9]{6})$/,
-              message: "Vui lòng điền đúng định dạng. Ví dụ: 20192000",
-            },
           ]}
         >
           <Input placeholder="Nhập MSSV" />
@@ -116,7 +112,6 @@ const UpdateStudentInfoForm = ({
           name="birthDate"
           label="Ngày sinh"
           colon={true}
-          rules={[{ required: true, message: errorMessange }]}
         >
           <DatePicker
             format={dateFormat}
@@ -130,10 +125,6 @@ const UpdateStudentInfoForm = ({
             {
               pattern: /^(0|\+84)[1-9]\d{8}$/,
               message: "Vui lòng nhập đúng định dạng. Ví dụ: 0369841000",
-            },
-            {
-              required: true,
-              message: errorMessange,
             },
           ]}
         >

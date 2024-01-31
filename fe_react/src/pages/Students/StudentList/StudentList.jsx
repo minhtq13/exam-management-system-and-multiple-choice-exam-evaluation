@@ -96,11 +96,11 @@ const StudentList = () => {
       key: "email",
       width: "22%",
     },
-    {
-      title: "Số điện thoại",
-      dataIndex: "phoneNumber",
-      key: "phoneNumber",
-    },
+    // {
+    //   title: "Số điện thoại",
+    //   dataIndex: "phoneNumber",
+    //   key: "phoneNumber",
+    // },
     {
       title: "Giới tính",
       key: "gender",

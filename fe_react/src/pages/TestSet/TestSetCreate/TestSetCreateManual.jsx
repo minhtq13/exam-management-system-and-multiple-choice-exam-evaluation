@@ -67,7 +67,11 @@ const TestSetCreateManual = ({ testId, questionQuantity, lstTest }) => {
     } else {
       result = result.filter(existingItem => existingItem.id !== item.id);
     };
-    setErrorQuantity(result.length !== questionQuantity)
+    if (result.length !== questionQuantity) {
+      setErrorQuantity(true);
+    } else {
+      setErrorQuantity(false);
+    }
     setCheckedItems(result);
   }
   const questionRender = (item, index, isPreview) => {
