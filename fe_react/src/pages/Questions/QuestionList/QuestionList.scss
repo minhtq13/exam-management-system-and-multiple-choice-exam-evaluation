@@ -96,7 +96,7 @@
     .topic-remove {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
 
       .btn-space {
         display: flex;
@@ -107,9 +107,10 @@
 
     .topic-level {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
+      justify-content: space-between;
       gap: 20px;
-      width: 80%;
+      width: 92%;
     }
 
     .question-topic {

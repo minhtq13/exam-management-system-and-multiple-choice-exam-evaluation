@@ -81,6 +81,7 @@ const TeacherList = () => {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      render: (text) => <a href={`mailto:${text}`}>{text}</a>,
       width: "22%",
     },
     {

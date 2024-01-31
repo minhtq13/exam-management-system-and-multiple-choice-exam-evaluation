@@ -5,6 +5,7 @@ import TestView from "./TestView/TestView";
 import useCombo from "../../../../hooks/useCombo";
 import debounce from "lodash.debounce";
 import { levelOptions } from "../../../../utils/constant";
+import { disabledDate } from "../../../../utils/tools";
 
 const ManualTest = ({ questionList, quesLoading, subjectId, subjectOptions, onSelectLevel, onChangeSearch }) => {
   const [startTime, setStartTime] = useState(null);
@@ -67,6 +68,7 @@ const ManualTest = ({ questionList, quesLoading, subjectId, subjectOptions, onSe
             <DatePicker
               format={"YYYY-MM-DD HH:mm"}
               showTime={{ format: "HH:mm" }}
+              disabledDate={disabledDate}
               onChange={(value) => setStartTime(value)}
             ></DatePicker>
           </div>
