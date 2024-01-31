@@ -200,6 +200,8 @@ public class TestSetServiceImpl implements TestSetService {
             }
             if (numberMediumQuestion < genTestConfig.getNumMediumQuestion() + missingNumOfQuestion){
                 missingNumOfQuestion = genTestConfig.getNumMediumQuestion() + missingNumOfQuestion - numberMediumQuestion;
+            } else {
+                missingNumOfQuestion = 0;
             }
 
             // Trộn các câu hỏi mức khó và đưa vào đề
@@ -210,6 +212,8 @@ public class TestSetServiceImpl implements TestSetService {
             }
             if (numberMediumQuestion < genTestConfig.getNumHardQuestion() + missingNumOfQuestion){
                 missingNumOfQuestion = genTestConfig.getNumHardQuestion() + missingNumOfQuestion - numberHardQuestion;
+            } else {
+                missingNumOfQuestion = 0;
             }
 
             if (missingNumOfQuestion > 0){
