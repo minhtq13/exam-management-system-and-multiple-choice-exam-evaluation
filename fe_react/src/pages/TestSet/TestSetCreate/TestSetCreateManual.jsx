@@ -7,6 +7,7 @@ import useNotify from "../../../hooks/useNotify";
 import { createTestSetService } from "../../../services/testServices";
 import { levelOptions } from "../../../utils/constant";
 import { useNavigate } from "react-router-dom";
+import { CheckCircleFilled, WarningFilled } from "@ant-design/icons";
 
 const TestSetCreateManual = ({ testId, questionQuantity, lstTest }) => {
   const arrTests = lstTest ? lstTest.split(",") : [];
@@ -67,7 +68,7 @@ const TestSetCreateManual = ({ testId, questionQuantity, lstTest }) => {
     } else {
       result = result.filter(existingItem => existingItem.id !== item.id);
     };
-    if (result.length !== questionQuantity) {
+    if (result.length !== Number(questionQuantity)) {
       setErrorQuantity(true);
     } else {
       setErrorQuantity(false);
@@ -237,11 +238,12 @@ const TestSetCreateManual = ({ testId, questionQuantity, lstTest }) => {
           <div className="manual-preview-code">
             <span className="manual-preview-code-label" style={{ fontSize: 16 }}>Mã đề thi:</span>
             <div className="manual-preview-code-value">
-              <Input style={{width: 175}} showCount maxLength={3} onChange={handleChangeTestSetCode} placeholder="Nhập mã đề thi" status={errCode ? "error" : ""} />
+              <Input style={{ width: 175 }} showCount maxLength={3} onChange={handleChangeTestSetCode} placeholder="Nhập mã đề thi" status={errCode ? "error" : ""} />
             </div>
-            {errorQuantity && <div className="error-quantity">{`Vui lòng chọn đúng số lượng ${questionQuantity} câu hỏi!`}</div>}
+            <div className={errorQuantity ? "error-quantity" : "correct-quantity"}>{`Đã chọn ${checkedItems.length}/${questionQuantity} câu hỏi`}</div>
+            {errorQuantity ? <WarningFilled style={{ color: "red" }} /> : <CheckCircleFilled style={{ color: "#03787c" }} />}
           </div>
- 
+
           <div className={isExist || errCode ? "manual-preview-content error" : "manual-preview-content"}>
             {checkedItems.length > 0 ? checkedItems.map((item, index) => {
               return questionRender(item, index, true);

@@ -292,7 +292,8 @@
   .manual-preview {
     width: 49%;
     position: relative;
-    .error-code{
+
+    .error-code {
       color: #FF4D4F;
       position: absolute;
       top: -25px;
@@ -325,6 +326,10 @@
         color: #FF4D4F;
       }
 
+      .correct-quantity {
+        color: var(--add-color);
+      }
+
       input {
         width: 200px;
       }
@@ -332,9 +337,6 @@
       .manual-preview-code-label {
         font-weight: bold;
         flex-shrink: 0;
-      }
-      .error-quantity{
-        color: #FF4D4F;
       }
 
       .manual-preview-code-value {
@@ -420,6 +422,7 @@
 .select-level-q {
   min-width: 150px;
 }
+
 .ant-input-show-count-suffix {
   color: #000 !important;
 }

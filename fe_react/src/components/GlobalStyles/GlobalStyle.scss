@@ -93,20 +93,24 @@ button:focus {
 .btn-info:active {
   background-color: #ffffff !important;
 }
+
 .ant-modal-header {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 12px;
+
   .ant-modal-title {
     font-size: 20px;
   }
 }
+
 .ant-modal-footer {
   button {
     min-width: 100px;
   }
 }
+
 .ant-select-selector {
   cursor: pointer !important;
 }
