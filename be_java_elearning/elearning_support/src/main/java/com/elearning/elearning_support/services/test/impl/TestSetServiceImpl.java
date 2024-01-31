@@ -198,7 +198,7 @@ public class TestSetServiceImpl implements TestSetService {
                 Collections.shuffle(lstMediumQuestion);
                 mapDTO.getLstQuestionAnswer().addAll(lstMediumQuestion.subList(0, numberMediumQuestion));
             }
-            if (numberMediumQuestion < genTestConfig.getNumMediumQuestion()){
+            if (numberMediumQuestion < genTestConfig.getNumMediumQuestion() + missingNumOfQuestion){
                 missingNumOfQuestion = genTestConfig.getNumMediumQuestion() + missingNumOfQuestion - numberMediumQuestion;
             }
 
@@ -208,7 +208,7 @@ public class TestSetServiceImpl implements TestSetService {
                 Collections.shuffle(lstHardQuestion);
                 mapDTO.getLstQuestionAnswer().addAll(lstHardQuestion.subList(0, numberHardQuestion));
             }
-            if (numberMediumQuestion < genTestConfig.getNumHardQuestion()){
+            if (numberMediumQuestion < genTestConfig.getNumHardQuestion() + missingNumOfQuestion){
                 missingNumOfQuestion = genTestConfig.getNumHardQuestion() + missingNumOfQuestion - numberHardQuestion;
             }
 
