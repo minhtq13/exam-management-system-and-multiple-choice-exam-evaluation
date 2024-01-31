@@ -1,4 +1,4 @@
-import { Button, Input, Table, Tabs } from "antd";
+import { Button, Input, Table, Tabs, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import exportIcon from "../../../assets/images/svg/export-icon.svg";
 import useExamClasses from "../../../hooks/useExamClass";
@@ -114,20 +114,23 @@ const ExamClassDetail = () => {
     return (
       <div className="exam-class-tabs">
         {roleType === "STUDENT" && (
-          <div className="tab-button">
-            <Button className="options" onClick={handleExportStudent}>
-              <img src={exportIcon} alt="Tải xuống Icon" />
-              Tải xuống
-            </Button>
-            <Input type="file" name="file" onChange={(e) => handleChange(e)}></Input>
-            <Button
-              type="primary"
-              //onClick={handleUpload}
-              disabled={!fileList}
-              //loading={loadingImport}
-            >
-              <ImportOutlined /> Import
-            </Button>
+          <div className="tab-button" style={{ marginBottom: 20 }}>
+            <Tooltip title="Export">
+              <Button className="options" onClick={handleExportStudent}>
+                <img src={exportIcon} alt="Tải xuống Icon" />
+              </Button>
+            </Tooltip>
+            <Input style={{maxWidth: 300}} type="file" name="file" onChange={(e) => handleChange(e)}></Input>
+            <Tooltip title="Import">
+              <Button
+                type="primary"
+                //onClick={handleUpload}
+                disabled={!fileList}
+                //loading={loadingImport}
+              >
+                <ImportOutlined />
+              </Button>
+            </Tooltip>
           </div>
         )}
         <Table

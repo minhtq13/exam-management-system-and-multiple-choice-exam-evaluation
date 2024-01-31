@@ -4,7 +4,9 @@ import useNotify from "../../../hooks/useNotify";
 import { addExamClassService } from "../../../services/examClassServices";
 import UpdateExamClassInfoForm from "../components/UpdateExamClassInfoForm/UpdateExamClassInfoForm"
 import "./ExamClassCreate.scss";
+import { useNavigate } from "react-router-dom";
 const ExamClassAdd = () => {
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(false);
   const [selectedTestId, setSelectedTestId] = useState(null);
   const [lstStudentId, setLstStudentId] = useState([]);
@@ -25,6 +27,7 @@ const ExamClassAdd = () => {
       (res) => {
         setLoading(false);
         notify.success("Thêm mới lớp thi thành công!");
+        navigate("/exam-class/list")
       },
       (error) => {
         setLoading(false);

@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Button, Input, Space, Table, Tag } from "antd";
+import { Button, Input, Space, Table, Tag, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -203,13 +203,14 @@ const StudentList = () => {
         <div className="block-button">
           <ModalPopup
             buttonOpenModal={
-              <Button
-                className="options"
-                disabled={deleteDisable}
-              >
-                <img src={deleteIcon} alt="Delete Icon" />
-                Xóa
-              </Button>
+              <Tooltip title="Xoá sinh viên">
+                  <Button
+                    className="options"
+                    disabled={deleteDisable}
+                  >
+                    <img src={deleteIcon} alt="Delete Icon" />
+                  </Button>
+              </Tooltip>
             }
             buttonDisable={deleteDisable}
             title="Delete Student"
@@ -220,23 +221,26 @@ const StudentList = () => {
             loading={deleLoading}
             onAccept={handleDelete}
           />
-          <Button className="options" onClick={handleExport}>
-            <img src={exportIcon} alt="Tải xuống Icon" />
-            Tải xuống
-          </Button>
+          <Tooltip title="Export danh sách sinh viên">
+            <Button className="options" onClick={handleExport}>
+              <img src={exportIcon} alt="Tải xuống Icon" />
+            </Button>
+          </Tooltip>
           <Input
             type="file"
             name="file"
             onChange={(e) => handleChange(e)}
           ></Input>
-          <Button
-            type="primary"
-            onClick={handleUpload}
-            disabled={!fileList}
-            loading={loadingImport}
-          >
-            <ImportOutlined /> Import
-          </Button>
+          <Tooltip title="Import danh sách sinh viên">
+            <Button
+              type="primary"
+              onClick={handleUpload}
+              disabled={!fileList}
+              loading={loadingImport}
+            >
+              <ImportOutlined />
+            </Button>
+          </Tooltip>
         </div>
       </div>
       <div className="student-list-wrapper">

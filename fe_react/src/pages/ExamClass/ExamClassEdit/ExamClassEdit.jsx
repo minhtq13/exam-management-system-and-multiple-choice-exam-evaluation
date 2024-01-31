@@ -32,9 +32,9 @@ const ExamClassEdit = () => {
           "HH:mm DD/MM/YYYY"
         ),
         lstStudentId: lstStudentId && lstStudentId.length > 0 ? lstStudentId :
-          (examClassInfo.lstStudentId ? examClassInfo.lstStudentId.split(",").map(Number) : null),
+          (examClassInfo.lstStudentId ? examClassInfo.lstStudentId.split(",").map(Number) : []),
         lstSupervisorId: lstSupervisorId && lstSupervisorId.length > 0 ? lstSupervisorId
-          : (examClassInfo.lstSupervisorId ? examClassInfo.lstSupervisorId.split(",").map(Number) : null)
+          : (examClassInfo.lstSupervisorId ? examClassInfo.lstSupervisorId.split(",").map(Number) : [])
       },
       (res) => {
         setLoading(false);

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import {
   Button,
@@ -297,7 +298,7 @@ const SubjectList = () => {
       <div className="search-filter-button">
         <SearchFilter placeholder="Nhập tên HP hoặc mã HP" onChange={onChange} onSearch={onSearch} />
         <div className="block-button">
-          <ModalPopup
+          {/* <ModalPopup
             buttonOpenModal={
               <Button
                 className="options"
@@ -315,10 +316,10 @@ const SubjectList = () => {
             icon={deletePopUpIcon}
             ok={"Đồng ý"}
             onAccept={handleDelete}
-          />
+          /> */}
           <Button className="options" onClick={handleClickAddSubject}>
             <img src={addIcon} alt="Add Icon" />
-            Thêm chương
+            Thêm học phần
           </Button>
         </div>
       </div>
@@ -329,7 +330,7 @@ const SubjectList = () => {
           className="subject-list-table"
           columns={columns}
           dataSource={dataFetch}
-          rowSelection={rowSelection}
+          // rowSelection={rowSelection}
           onRow={onRow}
           loading={tableLoading}
           pagination={{

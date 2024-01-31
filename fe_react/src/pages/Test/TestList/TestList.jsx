@@ -257,7 +257,7 @@ const TestList = () => {
             </div>
           </div>
           <div className="block-button">
-            <ModalPopup
+            {/* <ModalPopup
               buttonOpenModal={
                 <Button className="options" disabled={deleteDisable}>
                   <img src={deleteIcon} alt="Delete Icon" />
@@ -270,7 +270,7 @@ const TestList = () => {
               icon={deletePopUpIcon}
               ok={"Đồng ý"}
               onAccept={handleDelete}
-            />
+            /> */}
             <Button className="options" onClick={handleClickAddTest}>
               <img src={addIcon} alt="Add Icon" />
               Thêm đề thi
@@ -284,7 +284,7 @@ const TestList = () => {
           className="test-list-table"
           columns={columns}
           dataSource={dataFetch}
-          rowSelection={rowSelection}
+          // rowSelection={rowSelection}
           onRow={onRow}
           loading={tableLoading}
           pagination={{
