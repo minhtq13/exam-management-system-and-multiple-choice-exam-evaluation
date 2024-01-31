@@ -117,11 +117,14 @@ public class StudentTestSetServiceImpl implements StudentTestSetService {
         // add to result
         List<StudentTestSetResultDTO> results = examClassParticipants.stream().map(participant -> {
             IStudentTestSetResultDTO studentResult = mapResult.get(participant.getId());
+            StudentTestSetResultDTO studentResultItem;
             if (Objects.nonNull(studentResult)) {
-                return new StudentTestSetResultDTO(studentResult, examClass.getId(), examClass.getCode());
+                studentResultItem = new StudentTestSetResultDTO(studentResult, examClass.getId(), examClass.getCode());
             } else {
-                return new StudentTestSetResultDTO(participant.getId(), participant.getName(), participant.getCode());
+                studentResultItem = new StudentTestSetResultDTO(participant.getId(), participant.getName(), participant.getCode());
+                studentResultItem.setExamClassCode(examClass.getCode());
             }
+            return studentResultItem;
         }).collect(Collectors.toList());
 
         // map structure
