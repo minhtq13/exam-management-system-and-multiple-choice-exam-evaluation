@@ -114,7 +114,7 @@ const ViewImage = ({ dataArray, index }) => {
                     <div>
                       Điểm:{" "}
                       <strong className="value" style={{ color: "#e7e727" }}>
-                        {item.totalScore}
+                        {Math.round(item.totalScore * 100) / 100}
                       </strong>
                     </div>
                   </div>

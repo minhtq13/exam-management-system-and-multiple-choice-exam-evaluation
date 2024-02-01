@@ -144,7 +144,7 @@ const ExamClassList = () => {
         name: itemA.name,
         code: itemA.code,
         testSetCode: correspondingItemB ? correspondingItemB.testSetCode : null,
-        totalPoints: correspondingItemB ? correspondingItemB.totalPoints : "Không có bài",
+        totalPoints: correspondingItemB ? Math.round(correspondingItemB.totalPoints * 100) / 100 : "Không có bài",
       };
     } else {
       return {

@@ -115,7 +115,7 @@ const TableResult = ({ resultAI, loadingTable, setListExamClassCode, setListMSSV
           examClassCode: item.examClassCode,
           studentCode: item.studentCode,
           testSetCode: item.testSetCode,
-          totalScore: item.totalScore,
+          totalScore: Math.round(item.totalScore * 100) / 100,
           imgHandle: true,
           children: [{}],
         };

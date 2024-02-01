@@ -9,17 +9,19 @@ import useAccount from "../../../../hooks/useAccount";
 import { clearInfoLocalStorage, getToken } from "../../../../utils/storage";
 import "./Account.scss";
 import AvatarMinhTQ from "../../../../assets/images/png-jpg/TaQuangMinh20193021.jpg"
+import { useSelector } from "react-redux";
 
 
 
 const Account = () => {
+  const refreshUserInfo = useSelector((state) => state.refreshReducer);
 	const navigate = useNavigate();
 	const token = getToken()
 	const {getProfileUser, profileUser} = useAccount();
 	useEffect(() => {
     getProfileUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+  }, [token, refreshUserInfo]);
 	const items = [
 		{
 			key: 1,

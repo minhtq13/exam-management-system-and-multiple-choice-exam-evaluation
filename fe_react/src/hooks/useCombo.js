@@ -127,7 +127,7 @@ const useCombo = () => {
 				setExamClassLoading(false);
 			},
 			(error) => {
-				notify.error("Không thể lấy danh sách kỳ thi!");
+				notify.error("Không thể lấy danh sách lớp thi!");
 			}
 		);
 	};

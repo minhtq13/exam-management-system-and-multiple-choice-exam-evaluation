@@ -1,17 +1,19 @@
 import moment from "moment";
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useAccount from "../../hooks/useAccount";
 import useNotify from "../../hooks/useNotify";
 import { updateUser } from "../../services/userService";
 import { formatDateParam } from "../../utils/tools";
 import UpdateUserInfoForm from "./UpdateUserInfoForm";
 import { ROLE_ADMIN, ROLE_ID_ADMIN, ROLE_ID_TEACHER, ROLE_STUDENT, ROLE_TEACHER } from "../../utils/constant";
+import { setRefreshUserInfo } from "../../redux/slices/refreshSlice";
 
 const ProfileUser = () => {
 	const { userId } = useSelector((state) => state.userReducer);
 	const notify = useNotify();
-	const { getUserInfoAPI, userInfo } = useAccount();
+	const { getUserInfoAPI, userInfo, profileUser } = useAccount();
+	const dispatch = useDispatch()
 	useEffect(() => {
 		if (userId) {
 			getUserInfoAPI(userId, {});
@@ -31,6 +33,7 @@ const ProfileUser = () => {
 				(res) => {
 					notify.success("Cập nhật người dùng thành công!");
 					getUserInfoAPI(userId, {});
+					dispatch(setRefreshUserInfo(Date.now()))
 				},
 				(error) => {
 					notify.error("Lỗi Cập nhật người dùng!");
@@ -38,7 +41,6 @@ const ProfileUser = () => {
 			);
 		}
 	};
-
 	return (
 		<div className="profile-user">
 			<UpdateUserInfoForm
@@ -50,7 +52,7 @@ const ProfileUser = () => {
 					lastName: userInfo.lastName,
 					email: userInfo.email,
 					birthDate: moment(userInfo.birthDate, "DD/MM/YYYY"),
-					// userName: profileUser.userName,
+					userName: profileUser.userName,
 					phoneNumber: userInfo.phoneNumber,
 					code: userInfo.code,
 					userType: userInfo.userType,
