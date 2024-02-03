@@ -11,4 +11,4 @@ services:
       dockerfile: Dockerfile
       context: elearning_support
     ports:
-      - '443:8088' # AWS EC2 instance mapping port
+      - '80:8088' # AWS EC2 instance mapping port
