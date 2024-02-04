@@ -64,8 +64,13 @@ const TestCreate = () => {
     setFormKey((prev) => prev + 1);
   };
   const chapterOnchange = (values) => {
-    setParam({ ...param, chapterIds: values });
-    setChapterIds(values);
+    if (values.includes(0)) {
+      setParam({ ...param, chapterIds: chapterOptions.filter(item => item !== 0).map(item => item.value) })
+      setChapterIds(chapterOptions.filter(item => item !== 0).map(item => item.value))
+    } else {
+      setParam({ ...param, chapterIds: values });
+      setChapterIds(values);
+    }
   };
   const tabOnchange = (value) => {
     setTabKey(value);
@@ -146,7 +151,7 @@ const TestCreate = () => {
               (option?.label ?? "").includes(input)
             }
             optionLabelProp="label"
-            options={chapterOptions}
+            options={[{ value: 0, label: "Chọn tất cả" }, ...chapterOptions]}
             onChange={chapterOnchange}
             value={chapterIds}
             loading={chapterLoading}

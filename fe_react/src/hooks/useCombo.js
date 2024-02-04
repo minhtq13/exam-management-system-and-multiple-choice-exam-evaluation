@@ -36,7 +36,7 @@ const useCombo = () => {
 			},
 			(error) => {
 				setSubLoading(false);
-				notify.error("Chưa chọn môn học để hiển thị câu hỏi!");
+				notify.error("Lỗi lấy danh sách học phần!");
 			}
 		);
 	};
@@ -131,7 +131,7 @@ const useCombo = () => {
 			}
 		);
 	};
-	
+
 	return {
 		subLoading,
 		chapterLoading,
@@ -153,7 +153,7 @@ const useCombo = () => {
 		allTest,
 		getAllExamClass,
 		examClass,
-		examClassLoading
+		examClassLoading,
 	};
 };
 export default useCombo;

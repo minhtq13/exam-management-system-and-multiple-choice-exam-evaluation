@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./TestView.scss";
 import { Checkbox, Button, Modal, Tag, Spin } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -27,6 +27,7 @@ const TestView = ({
   const [loading, setLoading] = useState(false);
   const [testId, setTestId] = useState(null);
   const [levelCounts, setLevelCounts] = useState({ 0: 0, 1: 0, 2: 0 });
+  const [isCheckAll, setIsCheckAll] = useState(false);
   const getLevelCounts = (arr) => {
     let levelCount = { 0: 0, 1: 0, 2: 0 };
 
@@ -36,6 +37,9 @@ const TestView = ({
 
     return levelCount;
   };
+  useEffect(() => {
+    setIsCheckAll(false);
+  }, [questionList]);
   const navigate = useNavigate();
   const notify = useNotify();
   const onCreate = () => {
@@ -80,16 +84,29 @@ const TestView = ({
       return "KHÓ";
     }
   };
+  const questions = questionList.map(item => {
+    return { ...item, checked: false };
+  })
   const onChange = (checkValues, item) => {
     let result = [...checkedItems];
     if (checkValues.target.checked) {
-      result.push(item);
+      result.push({ ...item, checked: true });
     } else {
       result = result.filter(existingItem => existingItem.id !== item.id);
     }
     setCheckedItems(result);
     setLevelCounts(getLevelCounts(result));
     onSelectConfig(getLevelCounts(result));
+  }
+  const selectAllOnchange = (e) => {
+    const checked = [...checkedItems]
+    if (e.target.checked) {
+      const result = questions.filter(item => !checkedItems.includes(item))
+      setCheckedItems([...checked, ...result]);
+    } else {
+      setCheckedItems(checked)
+    }
+    setIsCheckAll(e.target.checked);
   }
   return (
     <div className="test-view">
@@ -104,6 +121,11 @@ const TestView = ({
           <div className="number-ques-item">{`Tổng: ${checkedItems.length}`}</div>
         </div>
         <Spin spinning={quesLoading} tip="Đang tải">
+          {questions.length > 0 &&
+            <div className="question-select-all">
+              <Checkbox onChange={(e) => selectAllOnchange(e)} checked={isCheckAll} />
+              <span className="select-all">Chọn tất cả</span>
+            </div>}
           {
             questionList.map((item, index) => (
               <div className="question-items" key={index}>

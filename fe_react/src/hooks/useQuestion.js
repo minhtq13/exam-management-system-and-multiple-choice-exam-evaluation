@@ -30,7 +30,7 @@ const useQuestions = () => {
 				setQuesLoading(false);
 			},
 			(error) => {
-				notify.error("Chưa chọn môn học để hiển thị câu hỏi!");
+				notify.error("Lỗi lấy danh sách câu hỏi!");
 				setQuesLoading(true);
 			}
 		);

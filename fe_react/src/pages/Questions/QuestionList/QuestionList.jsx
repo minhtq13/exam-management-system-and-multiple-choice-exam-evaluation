@@ -41,7 +41,7 @@ const QuestionList = () => {
   } = useCombo();
   const [param, setParam] = useState(initialParam);
   const [subjectId, setSubjectId] = useState(null);
-  const [chapterId, setChapterId] = useState([]);
+  const [chapterIds, setChapterIds] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -82,11 +82,16 @@ const QuestionList = () => {
   const subjectOnChange = (value) => {
     setSubjectId(value);
     setParam({ ...param, subjectId: value, chapterIds: [] });
-    setChapterId([]);
+    setChapterIds([]);
   };
   const chapterOnchange = (values) => {
-    setParam({ ...param, chapterIds: values });
-    setChapterId(values);
+    if (values.includes(0)) {
+      setParam({ ...param, chapterIds: chapterOptions.filter(item => item !== 0).map(item => item.value) })
+      setChapterIds(chapterOptions.filter(item => item !== 0).map(item => item.value))
+    } else {
+      setParam({ ...param, chapterIds: values });
+      setChapterIds(values);
+    }
   };
   const onRemove = (id) => {
     deleteQuestion(id, null);
@@ -150,10 +155,10 @@ const QuestionList = () => {
                 )
               }
               optionLabelProp="label"
-              options={chapterOptions}
+              options={[{ value: 0, label: "Chọn tất cả" }, ...chapterOptions]}
               onChange={chapterOnchange}
               loading={chapterLoading}
-              value={chapterId}
+              value={chapterIds}
             />
           </div>
         </div>
