@@ -9,6 +9,7 @@ import { appPath } from "../../../../../config/appPath";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { setDetailTest } from "../../../../../utils/storage";
+import { renderTag, tagRender } from "../../../../../utils/tools";
 const TestView = ({
   questionList,
   startTime,
@@ -67,23 +68,7 @@ const TestView = ({
       }
     );
   };
-  const tagRender = (value, color) => {
-    if (value === 0) {
-      color = "green";
-    } else if (value === 1) {
-      color = "geekblue";
-    } else color = "volcano";
-    return color;
-  };
-  const renderTag = (item) => {
-    if (item.level === 0) {
-      return "DỄ";
-    } else if (item.level === 1) {
-      return "TRUNG BÌNH";
-    } else {
-      return "KHÓ";
-    }
-  };
+
   const questions = questionList.map(item => {
     return { ...item, checked: false };
   })
@@ -104,7 +89,7 @@ const TestView = ({
       const result = questions.filter(item => !checkedItems.includes(item))
       setCheckedItems([...checked, ...result]);
     } else {
-      setCheckedItems(checked)
+      setCheckedItems([])
     }
     setIsCheckAll(e.target.checked);
   }

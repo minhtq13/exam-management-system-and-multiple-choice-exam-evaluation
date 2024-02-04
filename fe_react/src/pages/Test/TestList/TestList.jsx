@@ -162,6 +162,7 @@ const TestList = () => {
     testSetNos: obj.testSetNos,
     lstTestSetCode: obj.lstTestSetCode,
     numberOfTestSet: obj.lstTestSetCode !== null ? obj.lstTestSetCode.split(",").length : 0,
+    genTestConfig: obj.genTestConfig
   }));
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const onSelectChange = (newSelectedRowKeys) => {

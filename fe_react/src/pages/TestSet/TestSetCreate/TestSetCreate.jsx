@@ -4,10 +4,12 @@ import TestSetCreateAuto from "./TestSetCreateAuto";
 import { useLocation } from "react-router-dom";
 import TestSetCreateManual from "./TestSetCreateManual";
 import { getDetailTest } from "../../../utils/storage";
+import { useState } from "react";
 const TestSetCreate = () => {
   const location = useLocation();
   const testId = location.pathname.split("/")[2];
   const testInfo = getDetailTest();
+  const [tabs, setTabs] = useState("auto");
   const items = [
     {
       key: "auto",
@@ -26,6 +28,9 @@ const TestSetCreate = () => {
       ),
     },
   ];
+  const handleChange = (e) => {
+    setTabs(e);
+  };
   return (
     <div className="test-set-create">
       <div className="test-set-header">Tạo bộ đề thi</div>
@@ -46,14 +51,27 @@ const TestSetCreate = () => {
       <div className="test-create-info">
         <div className="test-create-info-row">
           <span>Số câu hỏi:</span>
-          <span>{testInfo.questionQuantity}</span>
+          <span>
+            {testInfo.questionQuantity}{" "}
+            {tabs === "auto"
+              ? `(${testInfo.genTestConfig.numEasyQuestion} dễ, 
+              ${testInfo.genTestConfig.numMediumQuestion} trung bình, ${testInfo.genTestConfig.numHardQuestion} khó)`
+              : ""}
+          </span>
         </div>
         <div className="test-create-info-row">
           <span>Bộ đề:</span>
-          <span>{testInfo.lstTestSetCode ? testInfo.lstTestSetCode.split(",").join(", ") : ""}</span>
+          <span>
+            {testInfo.lstTestSetCode ? testInfo.lstTestSetCode.split(",").join(", ") : ""}
+          </span>
         </div>
       </div>
-      <Tabs defaultActiveKey="1" items={items} className="test-content"></Tabs>
+      <Tabs
+        defaultActiveKey="1"
+        items={items}
+        className="test-content"
+        onChange={handleChange}
+      ></Tabs>
     </div>
   );
 };

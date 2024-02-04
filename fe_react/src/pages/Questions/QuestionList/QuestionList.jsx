@@ -14,6 +14,7 @@ import useCombo from "../../../hooks/useCombo";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { levelOptions } from "../../../utils/constant";
+import { renderTag, tagRender } from "../../../utils/tools";
 
 const QuestionList = () => {
   const initialParam = {
@@ -71,14 +72,7 @@ const QuestionList = () => {
     return { value: item.id, label: item.name };
   });
 
-  const tagRender = (value, color) => {
-    if (value === 0) {
-      color = "green";
-    } else if (value === 1) {
-      color = "geekblue";
-    } else color = "volcano";
-    return color;
-  };
+
   const subjectOnChange = (value) => {
     setSubjectId(value);
     setParam({ ...param, subjectId: value, chapterIds: [] });
@@ -99,15 +93,6 @@ const QuestionList = () => {
   const onEdit = (item) => {
     navigate(`${appPath.questionEdit}/${item.id}`);
     dispatch(setQuestionItem(item));
-  };
-  const renderTag = (item) => {
-    if (item.level === 0) {
-      return "DỄ";
-    } else if (item.level === 1) {
-      return "TRUNG BÌNH";
-    } else {
-      return "KHÓ";
-    }
   };
   const levelOnchange = (value) => {
     setParam({ ...param, level: value });

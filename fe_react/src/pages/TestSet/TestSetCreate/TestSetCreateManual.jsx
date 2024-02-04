@@ -8,6 +8,7 @@ import { createTestSetService } from "../../../services/testServices";
 import { levelOptions } from "../../../utils/constant";
 import { useNavigate } from "react-router-dom";
 import { CheckCircleFilled, WarningFilled } from "@ant-design/icons";
+import { renderTag, tagRender } from "../../../utils/tools";
 
 const TestSetCreateManual = ({ testId, questionQuantity, lstTest }) => {
   const arrTests = lstTest ? lstTest.split(",") : [];
@@ -22,23 +23,6 @@ const TestSetCreateManual = ({ testId, questionQuantity, lstTest }) => {
     testId: testId
   };
 
-  const tagRender = (value, color) => {
-    if (value === 0) {
-      color = "green";
-    } else if (value === 1) {
-      color = "geekblue";
-    } else color = "volcano";
-    return color;
-  };
-  const renderTag = (item) => {
-    if (item.level === 0) {
-      return "DỄ";
-    } else if (item.level === 1) {
-      return "TRUNG BÌNH";
-    } else {
-      return "KHÓ";
-    }
-  };
   const onSearch = (value, _e, info) => {
     setParam({ ...param, search: value })
   };

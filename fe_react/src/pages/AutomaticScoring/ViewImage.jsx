@@ -86,7 +86,7 @@ const ViewImage = ({ dataArray, index }) => {
                       Mã đề thi: <strong className="value">{item.testSetCode}</strong>
                     </div>
                     <div>
-                      Mã số sinh viên: <strong className="value">{item.studentCode}</strong>
+                      MSSV: <strong className="value">{item.studentCode}</strong>
                     </div>
                     <div>
                       Mã lớp thi: <strong className="value">{item.examClassCode}</strong>

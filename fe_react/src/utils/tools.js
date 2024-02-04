@@ -142,5 +142,22 @@ export const disabledDate = (current) => {
 };
 
 export const nextday = nextDay.setDate(minDate.getDate() + 1);
-
+// RENDER TAG LEVEL QUESTION: EASY, MEDIUM, HARD
+export const tagRender = (value, color) => {
+	if (value === 0) {
+		color = "green";
+	} else if (value === 1) {
+		color = "geekblue";
+	} else color = "volcano";
+	return color;
+};
+export const renderTag = (item) => {
+	if (item.level === 0) {
+		return "DỄ";
+	} else if (item.level === 1) {
+		return "TRUNG BÌNH";
+	} else {
+		return "KHÓ";
+	}
+};
 
