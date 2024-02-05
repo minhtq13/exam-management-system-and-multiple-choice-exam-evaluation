@@ -1,11 +1,11 @@
-import { DatePicker, Input, Spin, Select } from "antd";
-import "./ManualTest.scss";
-import { useEffect, useState } from "react";
-import TestView from "./TestView/TestView";
-import useCombo from "../../../../hooks/useCombo";
+import { DatePicker, Input, Select } from "antd";
 import debounce from "lodash.debounce";
+import { useEffect, useState } from "react";
+import useCombo from "../../../../hooks/useCombo";
 import { levelOptions } from "../../../../utils/constant";
 import { disabledDate } from "../../../../utils/tools";
+import "./ManualTest.scss";
+import TestView from "./TestView/TestView";
 
 const ManualTest = ({ questionList, quesLoading, subjectId, subjectOptions, onSelectLevel, onChangeSearch }) => {
   const [startTime, setStartTime] = useState(null);
@@ -18,6 +18,7 @@ const ManualTest = ({ questionList, quesLoading, subjectId, subjectOptions, onSe
   // eslint-disable-next-line no-unused-vars
   const [semesterId, setSemesterId] = useState(null);
   const [config, setConfig] = useState({ 0: 0, 1: 0, 2: 0 });
+  const [filter, setFilter] = useState({ level: "ALL", search: '' });
   const { allSemester, semesterLoading, getAllSemesters } = useCombo();
   useEffect(() => {
     getAllSemesters({ search: "" });
@@ -31,6 +32,7 @@ const ManualTest = ({ questionList, quesLoading, subjectId, subjectOptions, onSe
       })
       : [];
   const levelOnchange = (value) => {
+    setFilter({ ...filter, level: value });
     onSelectLevel(value);
   };
 
@@ -38,8 +40,9 @@ const ManualTest = ({ questionList, quesLoading, subjectId, subjectOptions, onSe
     onChangeSearch(value)
   };
   const onChange = debounce((_e) => {
+    setFilter({ ...filter, search: _e.target.value });
     onChangeSearch(_e.target.value)
-  }, 3000)
+  }, 1000)
   const check = (config[0] + config[1] + config[2]) <= 0;
   return (
     <div className="manual-test">
@@ -70,6 +73,7 @@ const ManualTest = ({ questionList, quesLoading, subjectId, subjectOptions, onSe
               showTime={{ format: "HH:mm" }}
               disabledDate={disabledDate}
               onChange={(value) => setStartTime(value)}
+              placeholder="Chọn thời gian bắt đầu"
             ></DatePicker>
           </div>
           <div className="manual-item manual-duration">
@@ -93,6 +97,7 @@ const ManualTest = ({ questionList, quesLoading, subjectId, subjectOptions, onSe
                   placeholder="Nhập số câu hỏi"
                   onChange={(_e) => setQuestionQuantity(_e.target.value)}
                   disabled={check}
+                  required={true}
                 />
                 {questionQuantity > (config[0] + config[1] + config[2]) && <div className="error-message">{errorMessage}</div>}
               </div>
@@ -167,7 +172,6 @@ const ManualTest = ({ questionList, quesLoading, subjectId, subjectOptions, onSe
         </div>
       </div>
       <div className="test-re-view">
-        <Spin tip="Đang tải..." spinning={false}>
           <TestView
             questionList={questionList}
             startTime={startTime}
@@ -185,9 +189,10 @@ const ManualTest = ({ questionList, quesLoading, subjectId, subjectOptions, onSe
             subjectOptions={subjectOptions}
             semesterOptions={options}
             quesLoading={quesLoading}
-            onSelectConfig={(item) => setConfig(item)}
+            onSelectConfigLevelQuestion={(item) => setConfig(item)}
+            levelQuestion={config}
+            filter={filter}
           />
-        </Spin>
       </div>
     </div>
   );

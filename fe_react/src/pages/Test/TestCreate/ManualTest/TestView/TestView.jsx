@@ -21,13 +21,14 @@ const TestView = ({
   subjectOptions,
   semesterOptions,
   quesLoading,
-  onSelectConfig
+  onSelectConfigLevelQuestion,
+  levelQuestion,
+  filter
 }) => {
   const [checkedItems, setCheckedItems] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [testId, setTestId] = useState(null);
-  const [levelCounts, setLevelCounts] = useState({ 0: 0, 1: 0, 2: 0 });
   const [isCheckAll, setIsCheckAll] = useState(false);
   const getLevelCounts = (arr) => {
     let levelCount = { 0: 0, 1: 0, 2: 0 };
@@ -35,7 +36,6 @@ const TestView = ({
     arr.forEach(item => {
       levelCount[item.level]++;
     });
-
     return levelCount;
   };
   useEffect(() => {
@@ -69,26 +69,27 @@ const TestView = ({
     );
   };
 
-  const questions = questionList.map(item => {
-    return { ...item, checked: false };
-  })
   const onChange = (checkValues, item) => {
     let result = [...checkedItems];
     if (checkValues.target.checked) {
-      result.push({ ...item, checked: true });
+      result.push(item);
     } else {
       result = result.filter(existingItem => existingItem.id !== item.id);
     }
-    setCheckedItems(result);
-    setLevelCounts(getLevelCounts(result));
-    onSelectConfig(getLevelCounts(result));
-  }
-  const selectAllOnchange = (e) => {
-    const checked = [...checkedItems]
-    if (e.target.checked) {
-      const result = questions.filter(item => !checkedItems.includes(item))
-      setCheckedItems([...checked, ...result]);
+    if (result.length === questionList.length) {
+      setIsCheckAll(true);
     } else {
+      setIsCheckAll(false);
+    }
+    setCheckedItems(result);
+    onSelectConfigLevelQuestion(getLevelCounts(result));
+  };
+  const selectAllOnchange = (e) => {
+    if (e.target.checked) {
+      setCheckedItems(questionList);
+      onSelectConfigLevelQuestion(getLevelCounts(questionList));
+    } else {
+      onSelectConfigLevelQuestion({ 0: 0, 1: 0, 2: 0 });
       setCheckedItems([])
     }
     setIsCheckAll(e.target.checked);
@@ -100,17 +101,17 @@ const TestView = ({
           Chọn bộ câu hỏi dưới đây để sử dụng cho kỳ thi:
         </div>
         <div className="number-ques">
-          <div className="number-ques-item">{`Dễ: ${levelCounts[0]}`}</div>
-          <div className="number-ques-item">{`Trung bình: ${levelCounts[1]}`}</div>
-          <div className="number-ques-item">{`Khó: ${levelCounts[2]}`}</div>
+          <div className="number-ques-item">{`Dễ: ${levelQuestion[0]}`}</div>
+          <div className="number-ques-item">{`Trung bình: ${levelQuestion[1]}`}</div>
+          <div className="number-ques-item">{`Khó: ${levelQuestion[2]}`}</div>
           <div className="number-ques-item">{`Tổng: ${checkedItems.length}`}</div>
         </div>
         <Spin spinning={quesLoading} tip="Đang tải">
-          {questions.length > 0 &&
+          {questionList.length > 0 && (filter.search === '' && filter.level === "ALL") ?
             <div className="question-select-all">
               <Checkbox onChange={(e) => selectAllOnchange(e)} checked={isCheckAll} />
-              <span className="select-all">Chọn tất cả</span>
-            </div>}
+              <div className="select-all">Chọn tất cả</div>
+            </div> : ""}
           {
             questionList.map((item, index) => (
               <div className="question-items" key={index}>
@@ -159,7 +160,7 @@ const TestView = ({
       <Button
         loading={loading}
         type="primary"
-        style={{ width: 100, height: 40 }}
+        style={{ width: 120, height: 46}}
         onClick={onCreate}
       >
         Tạo đề

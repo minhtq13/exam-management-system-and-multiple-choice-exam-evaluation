@@ -100,6 +100,7 @@ const UpdateTeacherInfoForm = ({
         >
           <DatePicker
             format={dateFormat}
+            placeholder="Chọn ngày sinh"
           ></DatePicker>
         </Form.Item>
         <Form.Item

@@ -163,6 +163,7 @@ const AutoTest = ({ chapterIds, formKey, subjectId, levelCal, sumQues, subjectOp
             showTime={{ format: "HH:mm" }}
             disabledDate={disabledDate}
             disabled={!chapterIds.length > 0}
+            placeholder="Chọn thời gian bắt đầu"
           ></DatePicker>
         </Form.Item>
 
