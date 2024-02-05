@@ -175,7 +175,8 @@ const TestView = ({
             duration: duration,
             questionQuantity: generateConfig.numTotalQuestion,
             subjectName: subjectOptions && subjectOptions.length > 0 ? (subjectOptions.find(item => item.value === subjectId) || {}).label : null,
-            semester: semesterOptions ? semesterOptions.find(item => item.value === semesterId).label : null
+            semester: semesterOptions ? semesterOptions.find(item => item.value === semesterId).label : null,
+            generateConfig: generateConfig
           })
         }
         }

@@ -31,6 +31,14 @@ const TestSetCreate = () => {
   const handleChange = (e) => {
     setTabs(e);
   };
+  const renderLevel = () => {
+    if (tabs === "auto") {
+      if (testInfo.generateConfig) {
+        return `(${testInfo.generateConfig?.numEasyQuestion} dễ, 
+          ${testInfo.generateConfig?.numMediumQuestion} trung bình, ${testInfo.generateConfig?.numHardQuestion} khó)`
+      }
+    } else return ""
+  }
   return (
     <div className="test-set-create">
       <div className="test-set-header">Tạo bộ đề thi</div>
@@ -53,10 +61,7 @@ const TestSetCreate = () => {
           <span>Số câu hỏi:</span>
           <span>
             {testInfo.questionQuantity}{" "}
-            {tabs === "auto"
-              ? `(${testInfo.genTestConfig.numEasyQuestion} dễ, 
-              ${testInfo.genTestConfig.numMediumQuestion} trung bình, ${testInfo.genTestConfig.numHardQuestion} khó)`
-              : ""}
+            {renderLevel()}
           </span>
         </div>
         <div className="test-create-info-row">

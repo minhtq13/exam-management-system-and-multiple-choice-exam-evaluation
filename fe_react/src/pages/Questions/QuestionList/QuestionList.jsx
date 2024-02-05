@@ -163,7 +163,7 @@ const QuestionList = () => {
           </div>
         </div>
       </div>
-      <Spin spinning={quesLoading} tip="Đang tải...">
+      <Spin  spinning={quesLoading} tip="Đang tải...">
         {allQuestions.map((item, index) => {
           return (
             <div

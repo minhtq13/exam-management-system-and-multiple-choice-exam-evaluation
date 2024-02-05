@@ -301,7 +301,8 @@ const AutoTest = ({ chapterIds, formKey, subjectId, levelCal, sumQues, subjectOp
               duration: formValue.duration,
               questionQuantity: formValue.questionQuantity,
               subjectName: subjectOptions && subjectOptions.length > 0 ? (subjectOptions.find(item => item.value === subjectId) || {}).label : null,
-              semester: options.find(item => item.value === formValue.semesterId).label
+              semester: options.find(item => item.value === formValue.semesterId).label,
+              generateConfig: formValue.generateConfig
             }
           )
         }

@@ -1,14 +1,11 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable jsx-a11y/anchor-is-valid */
+
 import { Button, List, Modal, Select, Space, Spin, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { AiFillEye } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import addIcon from "../../../assets/images/svg/add-icon.svg";
-import deleteIcon from "../../../assets/images/svg/delete-icon.svg";
-import deletePopUpIcon from "../../../assets/images/svg/delete-popup-icon.svg";
-import ModalPopup from "../../../components/ModalPopup/ModalPopup";
+import ActionButton from "../../../components/ActionButton/ActionButton";
 import TestPreview from "../../../components/TestPreview/TestPreview";
 import { appPath } from "../../../config/appPath";
 import useCombo from "../../../hooks/useCombo";
@@ -16,20 +13,16 @@ import useImportExport from "../../../hooks/useImportExport";
 import useNotify from "../../../hooks/useNotify";
 import useTest from "../../../hooks/useTest";
 import { setSelectedItem } from "../../../redux/slices/appSlice";
-import { deleteTestService, testSetDetailService } from "../../../services/testServices";
-import "./TestList.scss";
-import { customPaginationText, downloadTestPdf } from "../../../utils/tools";
+import { testSetDetailService } from "../../../services/testServices";
 import { HUST_COLOR } from "../../../utils/constant";
-import ActionButton from "../../../components/ActionButton/ActionButton";
-import { setDetailTest } from "../../../utils/storage";
+import { customPaginationText, downloadTestPdf } from "../../../utils/tools";
+import "./TestList.scss";
 const TestList = () => {
-  const [deleteDisable, setDeleteDisable] = useState(true);
   const { allTest, getAllTests, tableLoading, pagination } = useTest();
   const { subLoading, allSubjects, getAllSubjects, allSemester, semesterLoading, getAllSemesters } =
     useCombo();
   const initialParam = { jectId: null, semesterId: null, page: 0, size: 10 };
   const { loadingExport } = useImportExport();
-  const [deleteKey, setDeleteKey] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [openModalPreview, setOpenModalPreview] = useState(false);
   const [questions, setQuestions] = useState([]);
@@ -39,10 +32,7 @@ const TestList = () => {
   const [testItem, setTestItem] = useState({});
   const [testSetNos, setTestSetNos] = useState([]);
   const [param, setParam] = useState(initialParam);
-  const handleCreate = (record) => {
-    setDetailTest(record);
-    navigate(`${appPath.testSetCreate}/${record.id}`);
-  };
+
   useEffect(() => {
     getAllTests(param);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -144,7 +134,8 @@ const TestList = () => {
               );
               setOpenModal(true);
             }} />
-            <ActionButton icon="create-test-set" handleClick={() => handleCreate(record)} />
+            <ActionButton icon="create-test-set" handleClick={() => 
+              (record)} />
           </Space>
         </>
       ),
@@ -162,39 +153,10 @@ const TestList = () => {
     testSetNos: obj.testSetNos,
     lstTestSetCode: obj.lstTestSetCode,
     numberOfTestSet: obj.lstTestSetCode !== null ? obj.lstTestSetCode.split(",").length : 0,
-    genTestConfig: obj.genTestConfig
+    generateConfig: obj.genTestConfig
   }));
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const onSelectChange = (newSelectedRowKeys) => {
-    setSelectedRowKeys(newSelectedRowKeys);
-    if (newSelectedRowKeys.length === 1) {
-      setDeleteKey(dataFetch.find((item) => item.key === newSelectedRowKeys[0]).id);
-      setDeleteDisable(false);
-    } else {
-      setDeleteDisable(true);
-    }
-  };
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-    selections: [Table.SELECTION_ALL, Table.SELECTION_NONE],
-  };
   const handleClickAddTest = () => {
     navigate("/test-create");
-  };
-  const handleDelete = () => {
-    deleteTestService(
-      deleteKey,
-      null,
-      (res) => {
-        notify.success("Xoá đề thi thành công!");
-        getAllTests();
-        setSelectedRowKeys([]);
-      },
-      (error) => {
-        notify.error("Lỗi xoá đề thi!");
-      }
-    );
   };
 
   const handleView = (item) => {
@@ -258,20 +220,6 @@ const TestList = () => {
             </div>
           </div>
           <div className="block-button">
-            {/* <ModalPopup
-              buttonOpenModal={
-                <Button className="options" disabled={deleteDisable}>
-                  <img src={deleteIcon} alt="Delete Icon" />
-                  Xóa
-                </Button>
-              }
-              title="Xóa đề thi"
-              message={"Bạn chắc chắn muốn xóa đề thi này không? "}
-              confirmMessage={"Thao tác này không thể hoàn tác"}
-              icon={deletePopUpIcon}
-              ok={"Đồng ý"}
-              onAccept={handleDelete}
-            /> */}
             <Button className="options" onClick={handleClickAddTest}>
               <img src={addIcon} alt="Add Icon" />
               Thêm đề thi
@@ -285,7 +233,6 @@ const TestList = () => {
           className="test-list-table"
           columns={columns}
           dataSource={dataFetch}
-          // rowSelection={rowSelection}
           onRow={onRow}
           loading={tableLoading}
           pagination={{

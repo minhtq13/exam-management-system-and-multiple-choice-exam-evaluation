@@ -8,6 +8,7 @@ import "./AddQuestions.scss";
 import { addQuestionService } from "../../../services/questionServices";
 import useNotify from "../../../hooks/useNotify";
 import useCombo from "../../../hooks/useCombo";
+import { levelOptions } from "../../../utils/constant";
 
 Quill.register("modules/imageResize", ImageResize);
 const AddQuestions = () => {
@@ -142,20 +143,7 @@ const AddQuestions = () => {
   const onChange = (checkValues) => {
     setChecked(checkValues.target.checked);
   };
-  const levelOption = [
-    {
-      value: "EASY",
-      label: "Dễ",
-    },
-    {
-      value: "MEDIUM",
-      label: "Trung bình",
-    },
-    {
-      value: "HARD",
-      label: "Khó",
-    },
-  ];
+
   return (
     <div className="question-add">
       <div className="question-add-header">Thêm câu hỏi</div>
@@ -201,10 +189,7 @@ const AddQuestions = () => {
                 <div
                   key={parentIndex}
                   className="question-list"
-                  name={[
-                    parentField.name,
-                    `fragQuetion${parentField.key}`,
-                  ]}
+                  name={[ parentField.name, `fragQuetion${parentField.key}`,]}
                 >
                   <div className="question-text">
                     <Form.Item
@@ -212,13 +197,7 @@ const AddQuestions = () => {
                       {...parentField}
                       label={`Câu ${parentIndex + 1}:`}
                       name={[parentField.name, `content`]}
-                      rules={[
-                        {
-                          required: true,
-                          message:
-                            "Chưa nhập câu hỏi!",
-                        },
-                      ]}
+                      rules={[{ required: true, message: "Chưa nhập câu hỏi!"}]}
                     >
                       <ReactQuill
                         className="question-content-text"
@@ -233,28 +212,18 @@ const AddQuestions = () => {
                       {...parentField}
                       label={"Mức độ"}
                       name={[parentField.name, `level`]}
-                      rules={[
-                        {
-                          required: true,
-                          message:
-                            "Chưa chọn mức độ câu hỏi!",
-                        },
-                      ]}
+                      rules={[{ required: true, message: "Chưa chọn mức độ câu hỏi!"}]}
                       initialValue={"EASY"}
                     >
                       <Select
-                        options={levelOption}
+                        options={levelOptions}
                         style={{ width: 120 }}
                       ></Select>
                     </Form.Item>
                     <div className="btn-remove">
                       <Button
                         type="dashed"
-                        onClick={() =>
-                          parentListOperations.remove(
-                            parentIndex
-                          )
-                        }
+                        onClick={() => parentListOperations.remove(parentIndex)}
                         icon={<DeleteOutlined />}
                       ></Button>
                     </div>
@@ -262,16 +231,7 @@ const AddQuestions = () => {
                   <Form.List
                     {...parentField}
                     name={[parentField.name, `lstAnswer`]}
-                    initialValue={[
-                      {
-                        content: "",
-                        isCorrect: undefined,
-                      },
-                      {
-                        content: "",
-                        isCorrect: undefined,
-                      },
-                    ]}
+                    initialValue={[{ content: "", isCorrect: undefined }, { content: "", isCorrect: undefined }]}
                   >
                     {(childFields, childListOperations) => (
                       <div className="answers">
@@ -286,10 +246,7 @@ const AddQuestions = () => {
                                 <div className="answer-checkbox">
                                   <Form.Item
                                     {...childField}
-                                    name={[
-                                      childField.name,
-                                      `isCorrect`,
-                                    ]}
+                                    name={[childField.name, `isCorrect` ]}
                                     valuePropName="checked"
                                   >
                                     <Checkbox
@@ -300,13 +257,7 @@ const AddQuestions = () => {
                                   <Form.Item
                                     {...childField}
                                     name={[childField.name, `content`,]}
-                                    rules={[
-                                      {
-                                        required: true,
-                                        message:
-                                          "Chưa điền câu trả lời",
-                                      },
-                                    ]}
+                                    rules={[{required: true, message: "Chưa điền câu trả lời" }]}
                                     className="answers-item"
                                   >
                                     <ReactQuill
@@ -346,12 +297,7 @@ const AddQuestions = () => {
                     )}
                   </Form.List>
                   <span
-                    style={{
-                      color: "red",
-                      display: errorStates[parentIndex]
-                        ? "block"
-                        : "none",
-                    }}
+                    style={{ color: "red", display: errorStates[parentIndex] ? "block" : "none" }}
                   >
                     Chưa chọn đáp án đúng cho câu hỏi!
                   </span>

@@ -10,7 +10,7 @@ import useNotify from "../../../hooks/useNotify";
 const SubjectView = () => {
 	const { getSubjectByCode, subjectInfo, infoLoading } = useSubjects();
 	const [btnLoading, setBtnLoading] = useState(false);
-	const [formKey, setFormKey] = useState(0);
+	const [formKey, setFormKey] = useState();
 	const notify = useNotify();
 	const onFinish = (values) => {
 		if (values.chaptersAdd.length > 0) {
