@@ -137,7 +137,8 @@ const TestList = () => {
                 record.lstTestSetCode.split(",") : []);
               setOpenModal(true);
             }} />
-            <ActionButton icon="create-test-set" handleClick={() => handleCreate(record)} />
+            <ActionButton icon="create-test-set" handleClick={() => 
+              (record)} />
           </Space>
         </>
       ),
