@@ -29,10 +29,10 @@ public class ElearningSupportApplication {
         File sharedDataFolder = new File(FileUtils.getSharedAppDirectoryDataPath());
         File sharedSourceFolder = new File(FileUtils.getSharedAppDirectorySourcePath());
         if (!sharedDataFolder.exists()) {
-            sharedDataFolder.mkdir();
+            sharedDataFolder.mkdirs();
         }
         if (!sharedSourceFolder.exists()) {
-            sharedSourceFolder.mkdir();
+            sharedSourceFolder.mkdirs();
         }
         log.info("========= INITIALIZED SHARED DATA AND SOURCE FOLDER =========");
     }
