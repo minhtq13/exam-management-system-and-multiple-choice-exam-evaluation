@@ -58,6 +58,7 @@ const AutomaticScoring = () => {
     mayBeWrong,
     setMayBeWrong,
     loading,
+    loadingSaveResult,
     resetTableResult,
     setResultAI,
     saveTableResult,
@@ -223,7 +224,7 @@ const AutomaticScoring = () => {
             <Button
               type="primary"
               onClick={handleSaveResult}
-              loading={loading}
+              loading={loadingSaveResult}
               disabled={resultAI.length === 0}
               className="button-submit-ai"
             >

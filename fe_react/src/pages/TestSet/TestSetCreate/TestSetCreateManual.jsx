@@ -5,7 +5,7 @@ import useQuestions from "../../../hooks/useQuestion";
 import ReactQuill from "react-quill";
 import useNotify from "../../../hooks/useNotify";
 import { createTestSetService } from "../../../services/testServices";
-import { levelOptions } from "../../../utils/constant";
+import { levelOptions, searchTimeDebounce } from "../../../utils/constant";
 import { useNavigate } from "react-router-dom";
 import { CheckCircleFilled, WarningFilled } from "@ant-design/icons";
 import { renderTag, tagRender } from "../../../utils/tools";
@@ -28,7 +28,7 @@ const TestSetCreateManual = ({ testId, questionQuantity, lstTest }) => {
   };
   const onChange = debounce((_e) => {
     setParam({ ...param, search: _e.target.value })
-  }, 3000)
+  }, searchTimeDebounce)
   const { getAllQuestions, quesLoading, allQuestions } = useQuestions();
   const [param, setParam] = useState(initialParam);
   const [code, setCode] = useState(null);

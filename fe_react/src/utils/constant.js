@@ -46,3 +46,5 @@ export const courseNumOptions = [
 		label: "67",
 	},
 ];
+
+export const searchTimeDebounce = 1000;

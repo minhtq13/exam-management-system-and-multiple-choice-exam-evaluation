@@ -93,6 +93,9 @@ const AddQuestions = () => {
     }
     setChapterId(values);
   };
+  const handleClickButtonAddQuestion = (childListOperations) => {
+    childListOperations.add()
+  }
   const notify = useNotify();
   const onFinish = (values) => {
     const isValid =
@@ -233,7 +236,8 @@ const AddQuestions = () => {
                     name={[parentField.name, `lstAnswer`]}
                     initialValue={[{ content: "", isCorrect: undefined }, { content: "", isCorrect: undefined }]}
                   >
-                    {(childFields, childListOperations) => (
+                    {(childFields, childListOperations) => {
+                    return (
                       <div className="answers">
                         {childFields.map((childField, childIndex) => {
                           return (
@@ -286,7 +290,7 @@ const AddQuestions = () => {
                         {childFields.length < 4 && (
                           <Form.Item className="add-answer-btn">
                             <Button
-                              onClick={() => childListOperations.add()}
+                              onClick={() => handleClickButtonAddQuestion(childListOperations)}
                               icon={<PlusOutlined />}
                             >
                               Thêm tùy chọn
@@ -294,7 +298,11 @@ const AddQuestions = () => {
                           </Form.Item>
                         )}
                       </div>
-                    )}
+                      )
+                    
+            
+                    
+                    }}
                   </Form.List>
                   <span
                     style={{ color: "red", display: errorStates[parentIndex] ? "block" : "none" }}

@@ -2,7 +2,7 @@ import { DatePicker, Input, Select } from "antd";
 import debounce from "lodash.debounce";
 import { useEffect, useState } from "react";
 import useCombo from "../../../../hooks/useCombo";
-import { levelOptions } from "../../../../utils/constant";
+import { levelOptions, searchTimeDebounce } from "../../../../utils/constant";
 import { disabledDate } from "../../../../utils/tools";
 import "./ManualTest.scss";
 import TestView from "./TestView/TestView";
@@ -42,7 +42,7 @@ const ManualTest = ({ questionList, quesLoading, subjectId, subjectOptions, onSe
   const onChange = debounce((_e) => {
     setFilter({ ...filter, search: _e.target.value });
     onChangeSearch(_e.target.value)
-  }, 1000)
+  }, searchTimeDebounce)
   const check = (config[0] + config[1] + config[2]) <= 0;
   return (
     <div className="manual-test">

@@ -1,34 +1,29 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable jsx-a11y/anchor-is-valid */
+
 import {
   Button,
+  Form,
   Input,
+  InputNumber,
   Modal,
+  Popconfirm,
   Space,
   Table,
-  Form,
-  Popconfirm,
-  InputNumber,
 } from "antd";
+import debounce from "lodash.debounce";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import addIcon from "../../../assets/images/svg/add-icon.svg";
-import deleteIcon from "../../../assets/images/svg/delete-icon.svg";
-import deletePopUpIcon from "../../../assets/images/svg/delete-popup-icon.svg";
+import ActionButton from "../../../components/ActionButton/ActionButton";
+import SearchFilter from "../../../components/SearchFilter/SearchFilter";
 import { appPath } from "../../../config/appPath";
 import useNotify from "../../../hooks/useNotify";
 import useSubjects from "../../../hooks/useSubjects";
 import { setSelectedItem } from "../../../redux/slices/appSlice";
-import "./SubjectList.scss";
-
-import ModalPopup from "../../../components/ModalPopup/ModalPopup";
-import { deleteSubjectsService } from "../../../services/subjectsService";
 import { updateChapterService } from "../../../services/chapterServices";
+import { searchTimeDebounce } from "../../../utils/constant";
 import { customPaginationText } from "../../../utils/tools";
-import ActionButton from "../../../components/ActionButton/ActionButton";
-import SearchFilter from "../../../components/SearchFilter/SearchFilter";
-import debounce from "lodash.debounce";
+import "./SubjectList.scss";
 
 const SubjectList = () => {
   const initialParam = {
@@ -38,7 +33,6 @@ const SubjectList = () => {
     sort: "code",
   };
   const [form] = Form.useForm();
-  const [deleteDisable, setDeleteDisable] = useState(true);
   const [editingKey, setEditingKey] = useState("");
   const isEditing = (record) => record.id === editingKey;
   const {
@@ -50,7 +44,6 @@ const SubjectList = () => {
     getSubjectByCode,
     infoLoading,
   } = useSubjects();
-  const [deleteKey, setDeleteKey] = useState(null);
   const [param, setParam] = useState(initialParam);
   const [openModal, setOpenModal] = useState(false);
   const [subjectId, setSubjectId] = useState(null);
@@ -250,46 +243,15 @@ const SubjectList = () => {
     code: obj.code,
     id: obj.id,
   }));
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const onSelectChange = (newSelectedRowKeys) => {
-    setSelectedRowKeys(newSelectedRowKeys);
-    if (newSelectedRowKeys.length === 1) {
-      setDeleteKey(
-        dataFetch.find((item) => item.key === newSelectedRowKeys[0]).id
-      );
-      setDeleteDisable(false);
-    } else {
-      setDeleteDisable(true);
-    }
-  };
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-    selections: [Table.SELECTION_ALL],
-  };
   const handleClickAddSubject = () => {
     navigate("/subject-add");
-  };
-  const handleDelete = () => {
-    deleteSubjectsService(
-      deleteKey,
-      null,
-      (res) => {
-        notify.success("Xoá học phần thành công!");
-        getAllSubjects();
-        setSelectedRowKeys([]);
-      },
-      (error) => {
-        notify.error("Lỗi xoá học phần!");
-      }
-    );
   };
   const onSearch = (value, _e, info) => {
     setParam({ ...param, search: value })
   };
   const onChange = debounce((_e) => {
     setParam({ ...param, search: _e.target.value })
-  }, 3000);
+  }, searchTimeDebounce);
   return (
     <div className="subject-list">
       <div className="header-subject-list">
@@ -298,25 +260,6 @@ const SubjectList = () => {
       <div className="search-filter-button">
         <SearchFilter placeholder="Nhập tên HP hoặc mã HP" onChange={onChange} onSearch={onSearch} />
         <div className="block-button">
-          {/* <ModalPopup
-            buttonOpenModal={
-              <Button
-                className="options"
-                disabled={deleteDisable}
-              >
-                <img src={deleteIcon} alt="Delete Icon" />
-                Xóa
-              </Button>
-            }
-            title="Xóa học phần"
-            message={
-              "Bạn có chắc chắn muốn xóa học phần này không? "
-            }
-            confirmMessage={"Thao tác này không thể hoàn tác"}
-            icon={deletePopUpIcon}
-            ok={"Đồng ý"}
-            onAccept={handleDelete}
-          /> */}
           <Button className="options" onClick={handleClickAddSubject}>
             <img src={addIcon} alt="Add Icon" />
             Thêm học phần

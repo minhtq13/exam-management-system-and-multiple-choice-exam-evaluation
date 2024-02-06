@@ -18,6 +18,7 @@ import SearchFilter from "../../../components/SearchFilter/SearchFilter";
 import debounce from "lodash.debounce";
 import { ImportOutlined } from "@ant-design/icons";
 import useAccount from "../../../hooks/useAccount";
+import { searchTimeDebounce } from "../../../utils/constant";
 
 const TeacherList = () => {
   const initialParam = {
@@ -178,7 +179,7 @@ const TeacherList = () => {
   };
   const onChange = debounce((_e) => {
     setParam({ ...param, search: _e.target.value })
-  }, 3000);
+  }, searchTimeDebounce);
   return (
     <div className="teacher-list">
       <div className="header-teacher-list">

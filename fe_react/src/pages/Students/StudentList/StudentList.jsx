@@ -17,7 +17,7 @@ import SearchFilter from "../../../components/SearchFilter/SearchFilter";
 import "./StudentList.scss";
 import debounce from "lodash.debounce";
 import { ImportOutlined } from "@ant-design/icons";
-import { courseNumOptions } from "../../../utils/constant";
+import { courseNumOptions, searchTimeDebounce } from "../../../utils/constant";
 import useAccount from "../../../hooks/useAccount";
 
 const StudentList = () => {
@@ -179,7 +179,7 @@ const StudentList = () => {
   }
   const onChange = debounce((_e) => {
     setParam({ ...param, search: _e.target.value })
-  }, 3000);
+  }, searchTimeDebounce);
   const handleDelete = () => {
     deleteUser(deleteKey, { userType: "STUDENT" }, getAllStudents, param);
     setSelectedRowKeys([])

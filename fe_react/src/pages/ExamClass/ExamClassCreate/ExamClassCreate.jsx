@@ -27,7 +27,7 @@ const ExamClassAdd = () => {
       (res) => {
         setLoading(false);
         notify.success("Thêm mới lớp thi thành công!");
-        navigate("/exam-class/list")
+        navigate("/exam-class-list")
       },
       (error) => {
         setLoading(false);

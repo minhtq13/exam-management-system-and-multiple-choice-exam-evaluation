@@ -96,7 +96,6 @@ const UpdateTeacherInfoForm = ({
           name="birthDate"
           label="Ngày sinh"
           colon={true}
-          rules={[{ required: true, message: errorMessange }]}
         >
           <DatePicker
             format={dateFormat}

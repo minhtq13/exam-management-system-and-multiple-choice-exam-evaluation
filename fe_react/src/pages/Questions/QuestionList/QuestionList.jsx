@@ -13,7 +13,7 @@ import debounce from "lodash.debounce";
 import useCombo from "../../../hooks/useCombo";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { levelOptions } from "../../../utils/constant";
+import { levelOptions, searchTimeDebounce } from "../../../utils/constant";
 import { renderTag, tagRender } from "../../../utils/tools";
 
 const QuestionList = () => {
@@ -102,7 +102,7 @@ const QuestionList = () => {
   };
   const onChange = debounce((_e) => {
     setParam({ ...param, search: _e.target.value })
-  }, 3000)
+  }, searchTimeDebounce)
   return (
     <div className="question-list">
       <div className="subject-chapters-top">
@@ -163,7 +163,7 @@ const QuestionList = () => {
           </div>
         </div>
       </div>
-      <Spin  spinning={quesLoading} tip="Đang tải...">
+      <Spin className="all-question-container"  spinning={quesLoading} tip="Đang tải...">
         {allQuestions.map((item, index) => {
           return (
             <div

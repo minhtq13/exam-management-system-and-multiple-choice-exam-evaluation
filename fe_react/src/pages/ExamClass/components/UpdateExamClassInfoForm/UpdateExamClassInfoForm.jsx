@@ -22,7 +22,7 @@ import useStudents from "../../../../hooks/useStudents";
 import { customPaginationText, disabledDate } from "../../../../utils/tools";
 import SearchFilter from "../../../../components/SearchFilter/SearchFilter";
 import debounce from "lodash.debounce";
-import { courseNumOptions } from "../../../../utils/constant";
+import { courseNumOptions, searchTimeDebounce } from "../../../../utils/constant";
 const UpdateExamClassInfoForm = ({
   onFinish,
   initialValues,
@@ -97,9 +97,8 @@ const UpdateExamClassInfoForm = ({
   const [teacherSelected, setTeacherSelected] = useState(
     lstSupervisorId ?? []
   );
-  // const [testId, setTestId] = useState(null);
-  const [studentSelectedPerPage, setStudentSelectedPerPage] = useState({ "1": lstStudentId } ?? {});
-  const [teacherSelectedPerPage, setTeacherSelectedPerPage] = useState({ "1": lstSupervisorId } ?? {});
+  const [studentSelectedPerPage, setStudentSelectedPerPage] = useState({});
+  const [teacherSelectedPerPage, setTeacherSelectedPerPage] = useState({});
   const notify = useNotify();
   useEffect(() => {
     if (openTeacherModal) {
@@ -276,16 +275,20 @@ const UpdateExamClassInfoForm = ({
       ),
     },
   ];
+  function removeDuplicates(arr) {
+    return arr.filter((value, index, self) => {
+        return self.indexOf(value) === index;
+    });
+}
   const studentSelectChange = (newSelectedRowKeys) => {
     setStudentSelectedPerPage({
       ...studentSelectedPerPage,
       [paginationStudent.current]: newSelectedRowKeys,
     });
-    setStudentSelected(
-      Object.values({
-        ...studentSelectedPerPage,
-        [paginationStudent.current]: newSelectedRowKeys,
-      }).reduce((acc, arr) => acc.concat(arr), [])
+    setStudentSelected(removeDuplicates(Object.values({
+      ...studentSelectedPerPage,
+      [paginationStudent.current]: newSelectedRowKeys,
+    }).reduce((acc, arr) => acc.concat(arr), []))
     );
     onSelectStudents(
       Object.values({
@@ -296,7 +299,7 @@ const UpdateExamClassInfoForm = ({
   };
   const rowStudentSelection = {
     selectedRowKeys:
-      studentSelectedPerPage[paginationStudent.current],
+      studentSelected,
     onChange: studentSelectChange,
   };
   const teacherSelectChange = (newSelectedRowKeys) => {
@@ -304,11 +307,11 @@ const UpdateExamClassInfoForm = ({
       ...teacherSelectedPerPage,
       [paginationTeacher.current]: newSelectedRowKeys,
     });
-    setTeacherSelected(
-      Object.values({
-        ...teacherSelectedPerPage,
-        [paginationTeacher.current]: newSelectedRowKeys,
-      }).reduce((acc, arr) => acc.concat(arr), [])
+    setTeacherSelected(removeDuplicates(Object.values({
+      ...teacherSelectedPerPage,
+      [paginationTeacher.current]: newSelectedRowKeys,
+    }).reduce((acc, arr) => acc.concat(arr), []))
+   
     );
     onSelectTeachers(
       Object.values({
@@ -319,13 +322,13 @@ const UpdateExamClassInfoForm = ({
   };
   const rowTeacherSelection = {
     selectedRowKeys:
-      teacherSelectedPerPage[paginationTeacher.current],
+      teacherSelected,
     onChange: teacherSelectChange,
   };
 
   const onStudentChange = debounce((_e) => {
     setStudentParam({ ...studentParam, search: _e.target.value })
-  }, 3000);
+  }, searchTimeDebounce);
   const onStudentSearch = (value, _e, info) => {
     setStudentParam({ ...studentParam, search: value });
   }
@@ -334,7 +337,7 @@ const UpdateExamClassInfoForm = ({
   }
   const onTeacherChange = debounce((_e) => {
     setTeacherParam({ ...teacherParam, search: _e.target.value })
-  }, 3000);
+  }, searchTimeDebounce);
   const onTeacherSearch = (value, _e, info) => {
     setTeacherParam({ ...teacherParam, search: value });
   }
