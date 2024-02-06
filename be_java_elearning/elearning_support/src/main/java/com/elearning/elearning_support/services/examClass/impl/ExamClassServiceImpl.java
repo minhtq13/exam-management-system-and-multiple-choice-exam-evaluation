@@ -138,9 +138,15 @@ public class ExamClassServiceImpl implements ExamClassService {
     public void updateExamClass(Long id, ExamClassSaveReqDTO updateDTO) {
         // Get exam class and test
         ExamClass examClass = findExamClassById(id);
+        // check existed another class_code
+        if (!Objects.equals(examClass.getCode(), updateDTO.getCode()) && examClassRepository.existsByCode(updateDTO.getCode())) {
+            throw exceptionFactory.resourceExistedException(MessageConst.ExamClass.EXISTED_BY_CODE, Resources.EXAM_CLASS, MessageConst.RESOURCE_EXISTED, updateDTO.getCode());
+        }
+        // check existed test_id
         if (!Objects.equals(examClass.getTestId(), updateDTO.getTestId())) {
             testService.checkExistedById(updateDTO.getTestId());
         }
+
         // Update exam class
         BeanUtils.copyProperties(updateDTO, examClass);
         examClass.setModifiedAt(new Date());

@@ -18,6 +18,8 @@ public interface IGetDetailUserDTO {
 
     String getLastName();
 
+    String getUsername();
+
     String getCode();
 
     String getIdentificationNum();

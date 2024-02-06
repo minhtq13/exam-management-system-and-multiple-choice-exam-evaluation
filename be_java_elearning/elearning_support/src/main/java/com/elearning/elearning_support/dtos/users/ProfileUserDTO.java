@@ -42,7 +42,7 @@ public class ProfileUserDTO {
 
     String email;
 
-    String userName;
+    String username;
 
     String role;
 

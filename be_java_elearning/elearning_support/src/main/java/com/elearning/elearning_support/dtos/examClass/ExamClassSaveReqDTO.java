@@ -3,6 +3,7 @@ package com.elearning.elearning_support.dtos.examClass;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import com.elearning.elearning_support.utils.DateUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -18,6 +19,11 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ExamClassSaveReqDTO {
+
+    @NotNull
+    @NotBlank
+    @Schema(description = "Mã lớp thi")
+    String code;
 
     @Schema(description = "Phòng thi")
     String roomName;

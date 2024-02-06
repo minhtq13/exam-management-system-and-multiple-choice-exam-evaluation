@@ -16,6 +16,7 @@ public class SQLUser {
             "           WHEN users.identity_type = 2 THEN 'Hộ chiếu' \n" +
             "           ELSE '' \n" +
             "     END AS identityType, \n" +
+            "     users.username as username, \n"+
             "     users.birth_date AS birthDate, \n" +
             "     users.phone_number AS phoneNumber, \n" +
             "     users.address AS address, \n" +
