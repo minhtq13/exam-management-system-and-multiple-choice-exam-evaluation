@@ -6,6 +6,30 @@ export const ROLE_STUDENT = 1;
 export const ROLE_ID_ADMIN = 1;
 export const ROLE_ID_TEACHER = 3;
 export const ROLE_ID_STUDENT = 2;
+export const genderOption = [
+	{
+		value: "MALE",
+		label: "Nam",
+	},
+	{
+		value: "FEMALE",
+		label: "Nữ",
+	},
+];
+export const roleOption = [
+	{
+		value: ROLE_ADMIN,
+		label: "Admin",
+	},
+	{
+		value: ROLE_TEACHER,
+		label: "Giảng viên",
+	},
+	{
+		value: ROLE_STUDENT,
+		label: "Sinh viên",
+	},
+];
 export const levelOptions = [
   {
     value: "ALL",

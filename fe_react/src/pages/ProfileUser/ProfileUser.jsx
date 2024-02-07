@@ -12,11 +12,12 @@ import { setRefreshUserInfo } from "../../redux/slices/refreshSlice";
 const ProfileUser = () => {
 	const { userId } = useSelector((state) => state.userReducer);
 	const notify = useNotify();
-	const { getUserInfoAPI, userInfo, profileUser } = useAccount();
+	const { getUserInfoAPI, userInfo, getProfileUser, profileUser } = useAccount();
 	const dispatch = useDispatch()
 	useEffect(() => {
 		if (userId) {
 			getUserInfoAPI(userId, {});
+			getProfileUser();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [userId]);
@@ -41,6 +42,7 @@ const ProfileUser = () => {
 			);
 		}
 	};
+	console.log("profileUser", profileUser);
 	return (
 		<div className="profile-user">
 			<UpdateUserInfoForm
@@ -52,7 +54,7 @@ const ProfileUser = () => {
 					lastName: userInfo.lastName,
 					email: userInfo.email,
 					birthDate: moment(userInfo.birthDate, "DD/MM/YYYY"),
-					userName: profileUser.userName,
+					username: profileUser.username,
 					phoneNumber: userInfo.phoneNumber,
 					code: userInfo.code,
 					userType: userInfo.userType,

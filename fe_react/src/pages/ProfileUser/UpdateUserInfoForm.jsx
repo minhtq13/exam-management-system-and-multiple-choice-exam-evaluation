@@ -1,7 +1,7 @@
 import { Button, DatePicker, Form, Input, Select } from "antd";
 import React, { useEffect } from "react";
+import { genderOption, roleOption } from "../../utils/constant";
 import "./UpdateUserInfoForm.scss";
-import { ROLE_ADMIN, ROLE_STUDENT, ROLE_TEACHER } from "../../utils/constant";
 const UpdateUserInfoForm = ({
   onFinish,
   initialValues,
@@ -12,30 +12,6 @@ const UpdateUserInfoForm = ({
   isPasswordDisplay,
   isUserNameDisplay,
 }) => {
-  const genderOption = [
-    {
-      value: "MALE",
-      label: "Nam",
-    },
-    {
-      value: "FEMALE",
-      label: "Nữ",
-    },
-  ];
-  const roleOption = [
-    {
-      value: ROLE_ADMIN,
-      label: "Admin",
-    },
-    {
-      value: ROLE_TEACHER,
-      label: "Giảng viên",
-    },
-    {
-      value: ROLE_STUDENT,
-      label: "Sinh viên",
-    },
-  ];
   const dateFormat = "DD/MM/YYYY";
   const messageRequired = "Trường này là bắt buộc!"
   // Patch value to form
@@ -105,7 +81,7 @@ const UpdateUserInfoForm = ({
             }
             ]}
           >
-            <Input placeholder="Nhập tên người dùng" />
+            <Input    disabled={true} placeholder="Nhập tên người dùng" />
           </Form.Item>
         )}
         <Form.Item
