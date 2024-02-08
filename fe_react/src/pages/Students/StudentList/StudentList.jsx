@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Button, Input, Space, Table, Tag, Tooltip } from "antd";
+import { Button, Space, Table, Tag, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -40,15 +40,23 @@ const StudentList = () => {
   const [deleteKey, setDeleteKey] = useState(null);
   const [fileList, setFileList] = useState(null);
   const [param, setParam] = useState(initialParam);
+  const dispatch = useDispatch();
   const handleUpload = async () => {
     const formData = new FormData();
     formData.append("file", fileList);
     importList(formData, "student", getAllStudents, initialParam);
+    resetInputFile()
   };
   const handleChange = (e) => {
     setFileList(e.target.files[0]);
   };
-  const dispatch = useDispatch();
+  const resetInputFile = () => {
+    const inputUpload = document.getElementById("input-import-student");
+    if (inputUpload) {
+      inputUpload.value = null;
+    }
+    setFileList([])
+  }
   const onRow = (record) => {
     return {
       onClick: () => {
@@ -142,7 +150,7 @@ const StudentList = () => {
     },
   ];
   const dataFetch = allStudents.map((obj, index) => ({
-    key: (index + 1).toString(),
+    key: obj.id,
     identityType: obj.identityType,
     name: obj.lastName + " " + obj.firstName,
     firstName: obj.firstName,
@@ -177,7 +185,7 @@ const StudentList = () => {
   const onSeletCourse = (options) => {
     setParam({ ...param, courseNums: options })
   }
-  const onChange = debounce((_e) => {
+  const handleSearchChangeFilter = debounce((_e) => {
     setParam({ ...param, search: _e.target.value })
   }, searchTimeDebounce);
   const handleDelete = () => {
@@ -200,7 +208,8 @@ const StudentList = () => {
         <p>Danh sách sinh viên</p>
       </div>
       <div className="search-filter-button">
-        <SearchFilter displayFilter placeholder="Nhập tên hoặc MSSV" options={courseNumOptions} onSearch={onSearch} onChange={onChange} onSelect={onSeletCourse} />
+        <SearchFilter displayFilter placeholder="Nhập tên hoặc MSSV" options={courseNumOptions} onSearch={onSearch}
+          onChange={handleSearchChangeFilter} onSelect={onSeletCourse} />
         <div className="block-button">
           <ModalPopup
             buttonOpenModal={
@@ -227,11 +236,12 @@ const StudentList = () => {
               <img src={exportIcon} alt="Tải xuống Icon" />
             </Button>
           </Tooltip>
-          <Input
+          <input
+            id="input-import-student"
             type="file"
             name="file"
             onChange={(e) => handleChange(e)}
-          ></Input>
+          />
           <Tooltip title="Import danh sách sinh viên">
             <Button
               type="primary"

@@ -72,4 +72,18 @@
       }
     }
   }
+  input[type="file"]::file-selector-button {
+    cursor: pointer;
+    color: #fff;
+    border: 1px solid #8c1515;
+    padding: 0.2em 0.4em;
+    border-radius: 0.2em !important;
+    background-color: #8c1515;
+    transition: 1s;
+    padding: 3px 10px;
+  }
+}
+#input-import-teacher {
+  border: 1px dashed #ccc;
+  cursor: pointer;
 }
