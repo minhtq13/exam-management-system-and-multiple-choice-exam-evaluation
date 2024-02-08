@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Button, Input, Space, Table, Tag, Tooltip } from "antd";
+import { Button, Space, Table, Tag, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -39,6 +39,7 @@ const TeacherList = () => {
     const formData = new FormData();
     formData.append("file", fileList);
     importList(formData, "teacher");
+    resetInputFile()
   };
   const handleChange = (e) => {
     setFileList(e.target.files[0]);
@@ -139,7 +140,7 @@ const TeacherList = () => {
     },
   ];
   const dataFetch = allTeachers.map((obj, index) => ({
-    key: (index + 1).toString(),
+    key: obj.id,
     identityType: obj.identityType,
     name: obj.lastName + " " + obj.firstName,
     email: obj.email,
@@ -177,16 +178,24 @@ const TeacherList = () => {
   const onSearch = (value, _e, info) => {
     setParam({ ...param, search: value })
   };
-  const onChange = debounce((_e) => {
+  const handleSearchChangeFilter = debounce((_e) => {
     setParam({ ...param, search: _e.target.value })
   }, searchTimeDebounce);
+  const resetInputFile = () => {
+    const inputUpload = document.getElementById("input-import-teacher");
+    if (inputUpload) {
+      inputUpload.value = null;
+    }
+    setFileList([])
+  }
   return (
     <div className="teacher-list">
       <div className="header-teacher-list">
         <p>Danh sách giảng viên</p>
       </div>
       <div className="search-filter-button">
-        <SearchFilter displayFilter={false} placeholder="Nhập tên hoặc mã cán bộ" onSearch={onSearch} onChange={onChange} />
+        <SearchFilter displayFilter={false} placeholder="Nhập tên hoặc mã cán bộ" onSearch={onSearch}
+          onChange={handleSearchChangeFilter} />
         <div className="block-button">
           <ModalPopup
             buttonOpenModal={
@@ -210,7 +219,7 @@ const TeacherList = () => {
               <img src={exportIcon} alt="Tải xuống Icon" />
             </Button>
           </Tooltip>
-          <Input type="file" name="file" onChange={(e) => handleChange(e)}></Input>
+          <input id="input-import-teacher" type="file" name="file" onChange={(e) => handleChange(e)}/>
           <Tooltip title="Import danh sách giảng viên">
             <Button
               type="primary"

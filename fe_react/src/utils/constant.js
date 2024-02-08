@@ -70,5 +70,30 @@ export const courseNumOptions = [
 		label: "67",
 	},
 ];
-
+export const numberAnswerOption = [
+  {
+    text: "15 câu",
+    value: 15,
+  },
+  {
+    text: "20 câu",
+    value: 20,
+  },
+  {
+    text: "25 câu",
+    value: 25,
+  },
+  {
+    text: "30 câu",
+    value: 30,
+  },
+  {
+    text: "40 câu",
+    value: 40,
+  },
+  {
+    text: "60 câu",
+    value: 60,
+  },
+];
 export const searchTimeDebounce = 1000;
