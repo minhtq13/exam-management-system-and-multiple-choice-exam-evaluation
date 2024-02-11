@@ -49,21 +49,21 @@ const ExamClassDetail = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [classCode, roleType]);
-  const tabsData = participants.map((itemA, index) => {
-    const correspondingItemB = resultData.find((itemB) => itemB.studentId === itemA.id);
+  const tabsData = participants.map((item, index) => {
+    const rowItem = resultData.find((subItem) => subItem.studentId === item.id);
     if (resultData.length > 0) {
       return {
         key: (index + 1).toString(),
-        name: itemA.name,
-        code: itemA.code,
-        testSetCode: correspondingItemB ? correspondingItemB.testSetCode : null,
-        totalPoints: correspondingItemB ? correspondingItemB.totalPoints : "Không có bài",
+        name: item.name,
+        code: item.code,
+        testSetCode: rowItem ? rowItem.testSetCode : null,
+        totalPoints: rowItem ? Math.round(rowItem.totalPoints * 100) / 100 : "Không có bài",
       };
     } else {
       return {
         key: (index + 1).toString(),
-        name: itemA.name,
-        code: itemA.code,
+        name: item.name,
+        code: item.code,
       };
     }
   });

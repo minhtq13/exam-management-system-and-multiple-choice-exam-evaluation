@@ -1,26 +1,21 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import { ImportOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Modal, Select, Space, Table, Tabs, Tooltip } from "antd";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import deleteIcon from "../../../assets/images/svg/delete-icon.svg";
-import deletePopUpIcon from "../../../assets/images/svg/delete-popup-icon.svg";
+import addIcon from "../../../assets/images/svg/add-icon.svg";
 import exportIcon from "../../../assets/images/svg/export-icon.svg";
 import ActionButton from "../../../components/ActionButton/ActionButton";
-import ModalPopup from "../../../components/ModalPopup/ModalPopup";
 import { appPath } from "../../../config/appPath";
 import useCombo from "../../../hooks/useCombo";
 import useExamClasses from "../../../hooks/useExamClass";
 import useImportExport from "../../../hooks/useImportExport";
 import useNotify from "../../../hooks/useNotify";
 import { setSelectedItem } from "../../../redux/slices/appSlice";
-import { deleteExamClassService } from "../../../services/examClassServices";
 import { setDetailExamClass } from "../../../utils/storage";
 import { customPaginationText } from "../../../utils/tools";
-import addIcon from "../../../assets/images/svg/add-icon.svg";
 import "./ExamClassList.scss";
 
 
@@ -33,7 +28,6 @@ const ExamClassList = () => {
     size: 10,
     sort: "id",
   };
-  const [deleteDisable, setDeleteDisable] = useState(true);
   const {
     allExamClasses,
     getAllExamClasses,
@@ -48,9 +42,8 @@ const ExamClassList = () => {
   } = useExamClasses();
   const { subLoading, allSubjects, getAllSubjects, allSemester, semesterLoading, getAllSemesters } =
     useCombo();
-  const { exportExamClass, exportExamClassStudent, importStudent, loadingImport } = useImportExport();
+  const { exportExamClass, exportExamClassStudent } = useImportExport();
   const dispatch = useDispatch();
-  const [deleteKey, setDeleteKey] = useState(null);
   const [importLoading, setImportLoading] = useState(false);
   const [param, setParam] = useState(initialParam);
   const searchInput = useRef(null);
@@ -61,7 +54,6 @@ const ExamClassList = () => {
   const [classCode, setClassCode] = useState(null);
   const [record, setRecord] = useState({});
   const [pageSize, setPageSize] = useState(10);
-  const [studentFile, setStudentFile] = useState(null);
   const fileInputRef = useRef(null);
   useEffect(() => {
     if (classId && roleType !== "STATISTIC") {
@@ -98,11 +90,7 @@ const ExamClassList = () => {
   const semsOnChange = (value) => {
     setParam({ ...param, semesterId: value });
   };
-  const importStudentClass = () => {
-    const formData = new FormData();
-    formData.append("file", studentFile);
-    importStudent(formData, classId, getParticipants, roleType);
-  }
+
   const tabsColumn = [
     {
       title: "Họ tên",
@@ -157,20 +145,23 @@ const ExamClassList = () => {
   const handleExportStudent = () => {
     exportExamClassStudent(classCode);
   };
-  const studentFileChange = (e) => {
-    setStudentFile(e.target.files[0]);
-  };
+
   const renderTab = () => {
     return (
       <div className="exam-class-tabs">
         {roleType === "STUDENT" && (
-          <div className="tab-button">
+          <div className="tab-button" style={{paddingBottom: 8}}>
             <Tooltip title="Export">
               <Button className="options" onClick={handleExportStudent}>
                 <img src={exportIcon} alt="Tải xuống Icon" />
               </Button>
             </Tooltip>
-            <Input style={{maxWidth: 300, padding: "2px 11px"}} type="file" name="file" onChange={(e) => handleChange(e)}></Input>
+            <input
+              id="input-import-dslt"
+              type="file"
+              name="file"
+              onChange={(e) => handleChange(e)}
+            />
             <Tooltip title="Import">
               <Button
                 type="primary"
@@ -366,7 +357,7 @@ const ExamClassList = () => {
       title: "Phòng thi",
       dataIndex: "roomName",
       key: "roomName",
-      render: (text) => <a>{text}</a>,
+      render: (text) => <div>{text}</div>,
       width: "8%",
       align: "center",
     },
@@ -421,7 +412,6 @@ const ExamClassList = () => {
               setRecord(record);
               setClassId(record.id);
               setClassCode(record.code);
-              setStudentFile(null);
               setOpenModal(true);
               if (fileInputRef.current) {
                 fileInputRef.current.value = "";
@@ -461,41 +451,13 @@ const ExamClassList = () => {
     numberOfSupervisors: obj.numberOfSupervisors ?? 0,
     id: obj.id,
   }));
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const onSelectChange = (newSelectedRowKeys) => {
-    setSelectedRowKeys(newSelectedRowKeys);
-    if (newSelectedRowKeys.length === 1) {
-      setDeleteKey(dataFetch.find((item) => item.key === newSelectedRowKeys[0]).id);
-      setDeleteDisable(false);
-    } else {
-      setDeleteDisable(true);
-    }
-  };
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-    selections: [Table.SELECTION_ALL],
-  };
-  // const handleDelete = () => {
-  //   deleteExamClassService(
-  //     deleteKey,
-  //     null,
-  //     (res) => {
-  //       notify.success("Xoá lớp thi thành công!");
-  //       getAllExamClasses();
-  //       setSelectedRowKeys([]);
-  //     },
-  //     (error) => {
-  //       notify.error("Lỗi xoá lớp thi!");
-  //     }
-  //   );
-  // };
+
   const handleDetail = () => {
     navigate(`${appPath.examClassDetail}/${classId}`);
   };
-  const handleExport = () => {
-    exportExamClass(param.semesterId, "exam-class");
-  };
+  // const handleExport = () => {
+  //   exportExamClass(param.semesterId, "exam-class");
+  // };
   const handleClickAddExamClass = () => {
     navigate(`${appPath.examClassCreate}`);
   }
@@ -539,32 +501,21 @@ const ExamClassList = () => {
           </div>
         </div>
         <div className="block-button">
-
-          {/* <ModalPopup
-            buttonOpenModal={
-              <Button className="options" disabled={deleteDisable}>
-                <img src={deleteIcon} alt="Delete Icon" />
-                Xóa
-              </Button>
-            }
-            buttonDisable={deleteDisable}
-            title="Xóa lớp thi"
-            message={"Bạn chắc chắn muốn xóa lớp thi này không? "}
-            confirmMessage={"Thao tác này không thể hoàn tác"}
-            ok={"Đồng ý"}
-            icon={deletePopUpIcon}
-            onAccept={handleDelete}
-          /> */}
             <Button className="options" onClick={handleClickAddExamClass}>
               <img src={addIcon} alt="Add Icon" />
               Thêm lớp thi
             </Button>
-          <Tooltip title="Export danh sách lớp thi">
+          {/* <Tooltip title="Export danh sách lớp thi">
             <Button className="options" onClick={handleExport}>
               <img src={exportIcon} alt="Tải xuống Icon" />
             </Button>
           </Tooltip>
-          <Input type="file" name="file" onChange={(e) => handleChange(e)}></Input>
+          <input
+            id="input-import"
+            type="file"
+            name="file"
+            onChange={(e) => handleChange(e)}
+          />
           <Tooltip title="Import danh sách lớp thi">
             <Button
               type="primary"
@@ -574,7 +525,7 @@ const ExamClassList = () => {
             >
               <ImportOutlined />
             </Button>
-          </Tooltip>
+          </Tooltip> */}
         </div>
       </div>
 

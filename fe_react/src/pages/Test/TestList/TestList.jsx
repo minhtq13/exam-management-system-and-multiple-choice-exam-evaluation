@@ -17,6 +17,7 @@ import { testSetDetailService } from "../../../services/testServices";
 import { HUST_COLOR } from "../../../utils/constant";
 import { customPaginationText, downloadTestPdf } from "../../../utils/tools";
 import "./TestList.scss";
+import { setDetailTest } from "../../../utils/storage";
 const TestList = () => {
   const { allTest, getAllTests, tableLoading, pagination } = useTest();
   const { subLoading, allSubjects, getAllSubjects, allSemester, semesterLoading, getAllSemesters } =
@@ -69,6 +70,10 @@ const TestList = () => {
         dispatch(setSelectedItem(record));
       },
     };
+  };
+  const handleCreate = (record) => {
+    setDetailTest(record);
+    navigate(`${appPath.testSetCreate}/${record.id}`);
   };
   const columns = [
     {
@@ -128,14 +133,11 @@ const TestList = () => {
             <ActionButton icon="view-test-set" handleClick={() => {
               setTestItem(record);
               setTestSetNos(
-                record.lstTestSetCode && record.lstTestSetCode.length > 0
-                  ? record.lstTestSetCode.split(",")
-                  : []
-              );
+                record.lstTestSetCode && record.lstTestSetCode.length > 0 ? 
+                record.lstTestSetCode.split(",") : []);
               setOpenModal(true);
             }} />
-            <ActionButton icon="create-test-set" handleClick={() => 
-              (record)} />
+            <ActionButton icon="create-test-set" handleClick={() => handleCreate(record)} />
           </Space>
         </>
       ),
@@ -275,13 +277,20 @@ const TestList = () => {
           maskClosable={true}
           centered={true}
           footer={[
-               <Button
-               key="back"
-               type="primary"
-               onClick={() => setOpenModal(false)}
-             >
-               OK
+                  <Button
+                  key="create-test-list"
+                  onClick={() => handleCreate(testItem)}
+                >
+                  Tạo bộ đề
+              </Button>,
+              <Button
+                key="back"
+                type="primary"
+                onClick={() => setOpenModal(false)}
+              >
+                OK
              </Button>,
+     
           ]}
         >
           <List
