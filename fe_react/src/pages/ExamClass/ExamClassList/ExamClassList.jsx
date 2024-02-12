@@ -149,6 +149,10 @@ const ExamClassList = () => {
     const formData = new FormData();
     formData.append("file", fileList);
     importStudent(formData, classId, getParticipants, roleType);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+    setFileList(null);
   }
 
   const renderTab = () => {
