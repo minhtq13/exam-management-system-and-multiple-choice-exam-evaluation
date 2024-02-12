@@ -170,7 +170,7 @@ const TestEdit = () => {
           <div className="left-header">Thông tin</div>
           <div className="left-content">
             <div className="left-content-item">
-              <span>Mã đề thi:</span>
+              <span>Mã đề :</span>
               <span>{code}</span>
             </div>
             <div className="left-content-item">

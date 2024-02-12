@@ -42,7 +42,7 @@ const ExamClassList = () => {
   } = useExamClasses();
   const { subLoading, allSubjects, getAllSubjects, allSemester, semesterLoading, getAllSemesters } =
     useCombo();
-  const { exportExamClass, exportExamClassStudent } = useImportExport();
+  const { exportExamClass, exportExamClassStudent, importStudent, loadingImport } = useImportExport();
   const dispatch = useDispatch();
   const [importLoading, setImportLoading] = useState(false);
   const [param, setParam] = useState(initialParam);
@@ -145,6 +145,11 @@ const ExamClassList = () => {
   const handleExportStudent = () => {
     exportExamClassStudent(classCode);
   };
+  const importStudentClass = () => {
+    const formData = new FormData();
+    formData.append("file", fileList);
+    importStudent(formData, classId, getParticipants, roleType);
+  }
 
   const renderTab = () => {
     return (
@@ -161,13 +166,14 @@ const ExamClassList = () => {
               type="file"
               name="file"
               onChange={(e) => handleChange(e)}
+              ref={fileInputRef}
             />
             <Tooltip title="Import">
               <Button
                 type="primary"
-                //onClick={handleUpload}
+                onClick={importStudentClass}
                 disabled={!fileList}
-                //loading={loadingImport}
+                loading={loadingImport}
               >
                 <ImportOutlined />
               </Button>
@@ -218,25 +224,6 @@ const ExamClassList = () => {
     },
   ];
 
-  const handleUpload = async () => {
-    const formData = new FormData();
-    formData.append("file", fileList);
-    setImportLoading(true);
-    try {
-      const response = await axios.post(
-        "http://localhost:8088/e-learning/api/exam-class/import",
-        formData
-      );
-      if (response.status === 200) {
-        notify.success("Tải lên file thành công!");
-        getAllExamClasses();
-        setImportLoading(false);
-      }
-    } catch (error) {
-      setImportLoading(false);
-      notify.error("Lỗi tải file!");
-    }
-  };
   const handleChange = (e) => {
     setFileList(e.target.files[0]);
   };
@@ -412,6 +399,10 @@ const ExamClassList = () => {
               setRecord(record);
               setClassId(record.id);
               setClassCode(record.code);
+              if (fileInputRef.current) {
+                fileInputRef.current.value = "";
+              }
+              setFileList(null);
               setOpenModal(true);
               if (fileInputRef.current) {
                 fileInputRef.current.value = "";
@@ -455,9 +446,9 @@ const ExamClassList = () => {
   const handleDetail = () => {
     navigate(`${appPath.examClassDetail}/${classId}`);
   };
-  // const handleExport = () => {
-  //   exportExamClass(param.semesterId, "exam-class");
-  // };
+  const handleExport = () => {
+    exportExamClass(param.semesterId, "exam-class");
+  };
   const handleClickAddExamClass = () => {
     navigate(`${appPath.examClassCreate}`);
   }
@@ -505,27 +496,11 @@ const ExamClassList = () => {
               <img src={addIcon} alt="Add Icon" />
               Thêm lớp thi
             </Button>
-          {/* <Tooltip title="Export danh sách lớp thi">
+          <Tooltip title="Export danh sách lớp thi">
             <Button className="options" onClick={handleExport}>
               <img src={exportIcon} alt="Tải xuống Icon" />
             </Button>
           </Tooltip>
-          <input
-            id="input-import"
-            type="file"
-            name="file"
-            onChange={(e) => handleChange(e)}
-          />
-          <Tooltip title="Import danh sách lớp thi">
-            <Button
-              type="primary"
-              onClick={handleUpload}
-              disabled={!fileList}
-              loading={importLoading}
-            >
-              <ImportOutlined />
-            </Button>
-          </Tooltip> */}
         </div>
       </div>
 
@@ -577,7 +552,7 @@ const ExamClassList = () => {
           onOk={() => setOpenModal(false)}
           onCancel={() => setOpenModal(false)}
           footer={[
-            <Button key="statistic" onClick={handleDetail}>Thống kê</Button>,
+            <Button key="statistic" disabled={resultData.length === 0} onClick={handleDetail}>Thống kê</Button>,
             <Button key="update" type="primary" onClick={() => {
               navigate(`${appPath.examClassEdit}/${record.id}`)
             }}>

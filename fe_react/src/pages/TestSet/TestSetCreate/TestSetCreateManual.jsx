@@ -114,7 +114,7 @@ const TestSetCreateManual = ({ testId, questionQuantity, lstTest }) => {
     if (checkedItems.length !== questionQuantity) {
       setErrorQuantity(true);
     }
-    if (code && checkedItems.length === questionQuantity && !isExist) {
+    if (code && checkedItems.length === Number(questionQuantity) && !isExist) {
       setLoading(true);
       createTestSetService(
         {

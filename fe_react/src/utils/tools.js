@@ -77,9 +77,9 @@ export const downloadTestPdf = (questions, testDetail, testNo) => {
 	questions.length > 0 &&
 		questions.forEach((question, index) => {
 			// Nối chuỗi câu hỏi
-			combinedString += `<div style="display: flex; gap: 5px; margin-top: 8px;"><p style="flex-shrink:0; font-family: 'Times New Roman', Times, serif;">Câu ${
+			combinedString += `<div style="display: flex; gap: 5px; margin-top: 8px;font-weight:bold"><p style="flex-shrink:0; font-family: 'Times New Roman', Times, serif;font-weight:bold">Câu ${
 				index + 1
-			}: </p><div style="display: flex; flex-direction: column">${
+			}: </p><div style="display: flex; flex-direction: column; font-weight:bold">${
 				question.content
 			}</div></div>`;
 			// Nối chuỗi câu trả lời

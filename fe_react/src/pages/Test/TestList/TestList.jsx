@@ -81,13 +81,13 @@ const TestList = () => {
       dataIndex: "semester",
       key: "semester",
       align: "center",
-      width: "12%",
+      width: "8%",
     },
     {
       title: "Học phần",
       dataIndex: "subjectName",
       key: "subjectName",
-      width: "22%",
+      width: "25%",
     },
     {
       title: "Số câu hỏi",
