@@ -223,7 +223,7 @@ const StudentList = () => {
               </Tooltip>
             }
             buttonDisable={deleteDisable}
-            title="Delete Student"
+            title="Xóa sinh viên"
             message={"Bạn chắc chắn muốn xóa sinh viên này không? "}
             confirmMessage={"Thao tác này không thể hoàn tác"}
             ok={"Đồng ý"}

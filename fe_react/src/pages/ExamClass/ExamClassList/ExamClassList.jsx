@@ -399,9 +399,6 @@ const ExamClassList = () => {
               setRecord(record);
               setClassId(record.id);
               setClassCode(record.code);
-              if (fileInputRef.current) {
-                fileInputRef.current.value = "";
-              }
               setFileList(null);
               setOpenModal(true);
               if (fileInputRef.current) {
