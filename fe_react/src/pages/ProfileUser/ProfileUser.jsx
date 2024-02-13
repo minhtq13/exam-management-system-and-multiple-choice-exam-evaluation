@@ -42,6 +42,7 @@ const ProfileUser = () => {
 			);
 		}
 	};
+	console.log("profileUser", profileUser);
 	return (
 		<div className="profile-user">
 			<UpdateUserInfoForm
