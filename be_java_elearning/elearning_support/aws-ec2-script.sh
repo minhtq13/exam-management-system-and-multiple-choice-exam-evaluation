@@ -7,4 +7,4 @@ docker build -f ./Dockerfile --tag=elearning_support_backend:1.0.0 .
 # run container
 docker compose -f docker-compose-aws.yml up -d
 # logs
-docker logs elearning_support_backend --tail 500 -f
+docker logs -f elearning_support_backend --tail 500
