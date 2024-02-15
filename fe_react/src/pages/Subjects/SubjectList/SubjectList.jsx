@@ -47,6 +47,7 @@ const SubjectList = () => {
   const [param, setParam] = useState(initialParam);
   const [openModal, setOpenModal] = useState(false);
   const [subjectId, setSubjectId] = useState(null);
+  const [subjectTitle, setSubjectTitle] = useState(null);
   const errorMessange = "Chưa điền đầy đủ thông tin";
   const EditableCell = ({
     editing,
@@ -89,6 +90,7 @@ const SubjectList = () => {
     setOpenModal(true);
     getSubjectByCode({}, record.id);
     setSubjectId(record.id);
+    setSubjectTitle(record.title)
   };
   useEffect(() => {
     getAllSubjects(param);
@@ -310,7 +312,7 @@ const SubjectList = () => {
         <Modal
           className="subject-list-content-modal"
           open={openModal}
-          title="Nội dung"
+          title={subjectTitle}
           onOk={() => navigate(`${appPath.subjectView}/${subjectId}`)}
           cancelText="Đóng"
           okText="Thêm chương"
@@ -324,7 +326,6 @@ const SubjectList = () => {
           <Form form={form} component={false}>
             <Table
               size="small"
-              scroll={{ y: 396 }}
               loading={infoLoading}
               components={{
                 body: {
