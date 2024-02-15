@@ -2,9 +2,9 @@
 # remove current container and image
 docker rm -f elearning_support_backend
 docker rmi elearning_support_backend:1.0.0
-# build image
+# rebuild image
 docker build -f ./Dockerfile --tag=elearning_support_backend:1.0.0 .
-# run container
+# run the container using docker-compose
 docker compose -f docker-compose-aws.yml up -d
-# logs
+# view logs after running the container
 docker logs -f elearning_support_backend --tail 500

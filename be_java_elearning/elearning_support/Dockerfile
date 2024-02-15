@@ -2,6 +2,7 @@
 # Maven build stage
 FROM maven:3.8.1-jdk-11 AS build
 COPY . .
+RUN mvn dependency:purge-local-repository -DactTransitively=false
 RUN mvn clean package -Dprod -DskipTests
 
 # Docker build image stage

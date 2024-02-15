@@ -1,6 +1,7 @@
 package com.elearning.elearning_support;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.TimeZone;
 import javax.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
@@ -22,8 +23,8 @@ public class ElearningSupportApplication {
     @PostConstruct
     public void init() {
         // set time zone default
-        TimeZone.setDefault(TimeZone.getTimeZone(DateUtils.TIME_ZONE));
-        log.info("========= INITIALIZED TIMEZONE {} =========", DateUtils.TIME_ZONE);
+//        TimeZone.setDefault(TimeZone.getTimeZone(DateUtils.TIME_ZONE));
+        log.info("========= INITIALIZED TIMEZONE {} =========", Calendar.getInstance().getTimeZone().getID());
 
         // init shared app folder
         File sharedDataFolder = new File(FileUtils.getSharedAppDirectoryDataPath());
