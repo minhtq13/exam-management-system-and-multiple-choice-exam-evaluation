@@ -214,12 +214,12 @@ const StudentList = () => {
           <ModalPopup
             buttonOpenModal={
               <Tooltip title="Xoá sinh viên">
-                  <Button
-                    className="options"
-                    disabled={deleteDisable}
-                  >
-                    <img src={deleteIcon} alt="Delete Icon" />
-                  </Button>
+                <Button
+                  className="options"
+                  disabled={deleteDisable}
+                >
+                  <img src={deleteIcon} alt="Delete Icon" />
+                </Button>
               </Tooltip>
             }
             buttonDisable={deleteDisable}

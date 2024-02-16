@@ -84,10 +84,9 @@ const useImportExport = () => {
 		// object = "exam-class"
 		setLoadingExport(true);
 		axios({
-			url: `${BASE_URL}/${object}/export`,
+			url: `${BASE_URL}/${object}/export/${params}`,
 			method: "GET",
 			responseType: "blob",
-			data: params,
 		})
 			.then((response) => {
 				const url = window.URL.createObjectURL(

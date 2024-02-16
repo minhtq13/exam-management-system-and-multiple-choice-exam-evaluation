@@ -71,7 +71,7 @@ const ExamClassEdit = () => {
               )
               : "",
             code: examClassInfo ? examClassInfo.code : null,
-            testId: examClassInfo ? examClassInfo.id : null,
+            testId: examClassInfo ? examClassInfo.testId : null,
           }}
           testDisplay={`${examClassInfo.testName} - ${examClassInfo.duration ?? 0} phút - ${examClassInfo.lstTestSetCode ? examClassInfo.lstTestSetCode.split(",").length : 0} mã đề`}
           lstStudentId={
@@ -87,6 +87,7 @@ const ExamClassEdit = () => {
               : []
           }
           loading={loading}
+          testId={examClassInfo.testId}
           onSelectTestId={(id) => setSelectedTestId(id)}
           onSelectStudents={(ids) => setLstStudentId(ids)}
           onSelectTeachers={(ids) => setLstSupervisorId(ids)}

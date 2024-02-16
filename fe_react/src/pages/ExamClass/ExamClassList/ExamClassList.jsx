@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { ImportOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Modal, Select, Space, Table, Tabs, Tooltip } from "antd";
-import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -12,11 +11,13 @@ import { appPath } from "../../../config/appPath";
 import useCombo from "../../../hooks/useCombo";
 import useExamClasses from "../../../hooks/useExamClass";
 import useImportExport from "../../../hooks/useImportExport";
-import useNotify from "../../../hooks/useNotify";
 import { setSelectedItem } from "../../../redux/slices/appSlice";
 import { setDetailExamClass } from "../../../utils/storage";
 import { customPaginationText } from "../../../utils/tools";
 import "./ExamClassList.scss";
+import SearchFilter from "../../../components/SearchFilter/SearchFilter";
+import debounce from "lodash.debounce";
+import { searchTimeDebounce } from "../../../utils/constant";
 
 
 const ExamClassList = () => {
@@ -44,7 +45,6 @@ const ExamClassList = () => {
     useCombo();
   const { exportExamClass, exportExamClassStudent, importStudent, loadingImport } = useImportExport();
   const dispatch = useDispatch();
-  const [importLoading, setImportLoading] = useState(false);
   const [param, setParam] = useState(initialParam);
   const searchInput = useRef(null);
   const [fileList, setFileList] = useState(null);
@@ -159,7 +159,7 @@ const ExamClassList = () => {
     return (
       <div className="exam-class-tabs">
         {roleType === "STUDENT" && (
-          <div className="tab-button" style={{paddingBottom: 8}}>
+          <div className="tab-button" style={{ paddingBottom: 8 }}>
             <Tooltip title="Export">
               <Button className="options" onClick={handleExportStudent}>
                 <img src={exportIcon} alt="Tải xuống Icon" />
@@ -234,83 +234,6 @@ const ExamClassList = () => {
   const handleReset = (clearFilters) => {
     clearFilters();
   };
-  const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
-      <div
-        style={{
-          padding: 8,
-        }}
-        onKeyDown={(e) => e.stopPropagation()}
-      >
-        <Input
-          ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) => {
-            setSelectedKeys(e.target.value ? [e.target.value] : []);
-            setParam({
-              ...param,
-              [dataIndex]: e.target.value,
-              page: 0,
-            });
-          }}
-          onPressEnter={() => getAllExamClasses(param)}
-          style={{
-            marginBottom: 8,
-            display: "block",
-          }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => getAllExamClasses({ ...param, page: 0 })}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Tìm kiếm
-          </Button>
-          <Button
-            onClick={() => {
-              clearFilters && handleReset(clearFilters);
-              setParam(initialParam);
-            }}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Đặt lại
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              close();
-            }}
-          >
-            Đóng
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: (filtered) => (
-      <SearchOutlined
-        style={{
-          color: filtered ? "#1677ff" : undefined,
-        }}
-      />
-    ),
-    onFilter: (value, record) =>
-      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-    onFilterDropdownOpenChange: (visible) => {
-      if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100);
-      }
-    },
-  });
   const onRow = (record) => {
     return {
       onClick: () => {
@@ -325,7 +248,6 @@ const ExamClassList = () => {
     getAllExamClasses(param);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param]);
-  const notify = useNotify();
   const navigate = useNavigate();
 
   const columns = [
@@ -333,7 +255,6 @@ const ExamClassList = () => {
       title: "Mã lớp thi",
       dataIndex: "code",
       key: "code",
-      ...getColumnSearchProps("code"),
       width: "10%",
       align: "center",
     },
@@ -453,6 +374,12 @@ const ExamClassList = () => {
   const handleClickAddExamClass = () => {
     navigate(`${appPath.examClassCreate}`);
   }
+  const onSearch = (value, _e, info) => {
+    setParam({ ...param, code: value })
+  };
+  const handleSearchChangeFilter = debounce((_e) => {
+    setParam({ ...param, code: _e.target.value })
+  }, searchTimeDebounce);
 
   return (
     <div className="exam-class-list">
@@ -460,6 +387,8 @@ const ExamClassList = () => {
         <p>Danh sách lớp thi</p>
       </div>
       <div className="search-filter-button">
+        <SearchFilter placeholder="Nhập mã lớp thi" onSearch={onSearch}
+          onChange={handleSearchChangeFilter} />
         <div className="examclass-subject-semester">
           <div className="examclass-select examclass-select-semester">
             <span className="select-label">Kỳ thi:</span>
@@ -493,10 +422,10 @@ const ExamClassList = () => {
           </div>
         </div>
         <div className="block-button">
-            <Button className="options" onClick={handleClickAddExamClass}>
-              <img src={addIcon} alt="Add Icon" />
-              Thêm lớp thi
-            </Button>
+          <Button className="options" onClick={handleClickAddExamClass}>
+            <img src={addIcon} alt="Add Icon" />
+            Thêm lớp thi
+          </Button>
           <Tooltip title="Export danh sách lớp thi">
             <Button className="options" onClick={handleExport}>
               <img src={exportIcon} alt="Tải xuống Icon" />

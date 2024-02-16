@@ -5,7 +5,6 @@ import {
   Select,
   Button,
   Modal,
-  Space,
   Table,
   Spin,
   Popover,
@@ -35,7 +34,8 @@ const UpdateExamClassInfoForm = ({
   testDisplay,
   lstStudentId,
   lstSupervisorId,
-  semesterDisabled
+  semesterDisabled,
+  testId,
 }) => {
   const {
     allSemester,
@@ -90,6 +90,7 @@ const UpdateExamClassInfoForm = ({
   const [viewLoading, setViewLoading] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [testDetail, setTestDetail] = useState({});
+  const [testSelectedId, setTestSelectedId] = useState([testId]);
   const [openModalPreview, setOpenModalPreview] = useState(false);
   const [openStudentModal, setOpenStudentModal] = useState(false);
   const [openTeacherModal, setOpenTeacherModal] = useState(false);
@@ -250,36 +251,25 @@ const UpdateExamClassInfoForm = ({
       align: "center",
       render: (text) => <span>{text} phút</span>,
     },
-    {
-      title: "Thao tác",
-      key: "action",
-      align: "center",
-      render: (_, record) => (
-        <>
-          <Space size="small" style={{ cursor: "pointer" }}>
-            <Button
-              size="small"
-              onClick={() => {
-                setTestValue(
-                  `${record.name} - ${record.duration} phút - ${record.testSet} mã đề`
-                );
-                form.setFieldsValue({ testId: record.id });
-                setOpenModal(false);
-                onSelectTestId(record.id);
-              }}
-            >
-              Chọn
-            </Button>
-          </Space>
-        </>
-      ),
-    },
   ];
+  const rowTestChange = (recordKeys, records) => {
+    setTestSelectedId(recordKeys);
+    setTestValue(
+      `${records[0].name} - ${records[0].duration} phút - ${records[0].testSet} mã đề`
+    );
+    form.setFieldsValue({ testId: records[0].id });
+    onSelectTestId(records[0].id);
+  }
+  const rowTestSelection = {
+    selectedRowKeys: testSelectedId,
+    onChange: rowTestChange,
+    type: "radio"
+  }
   function removeDuplicates(arr) {
     return arr.filter((value, index, self) => {
-        return self.indexOf(value) === index;
+      return self.indexOf(value) === index;
     });
-}
+  }
   const studentSelectChange = (newSelectedRowKeys) => {
     setStudentSelectedPerPage({
       ...studentSelectedPerPage,
@@ -311,7 +301,7 @@ const UpdateExamClassInfoForm = ({
       ...teacherSelectedPerPage,
       [paginationTeacher.current]: newSelectedRowKeys,
     }).reduce((acc, arr) => acc.concat(arr), []))
-   
+
     );
     onSelectTeachers(
       Object.values({
@@ -360,7 +350,7 @@ const UpdateExamClassInfoForm = ({
   };
   const dataFetch = allTest?.map((obj, index) => ({
     name: obj.name,
-    key: (index + 1).toString(),
+    key: obj.id,
     questionQuantity: obj.questionQuantity,
     subjectName: obj.subjectName,
     duration: obj.duration,
@@ -554,6 +544,7 @@ const UpdateExamClassInfoForm = ({
           columns={columns}
           dataSource={dataFetch}
           loading={tableLoading}
+          rowSelection={rowTestSelection}
           expandable={{
             expandedRowRender: (record) => (
               <div className="test-set-item-examclass">
