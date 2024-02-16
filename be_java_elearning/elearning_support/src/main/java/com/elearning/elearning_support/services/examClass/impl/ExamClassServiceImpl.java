@@ -167,8 +167,8 @@ public class ExamClassServiceImpl implements ExamClassService {
     }
 
     @Override
-    public CustomInputStreamResource exportListExamClass(Long semesterId, Long testId) throws IOException {
-        List<ICommonExamClassDTO> lstExamClass = examClassRepository.getListExamClass("", semesterId, -1L, testId);
+    public CustomInputStreamResource exportListExamClass(Long semesterId, Long testId, Long subjectId) throws IOException {
+        List<ICommonExamClassDTO> lstExamClass = examClassRepository.getListExamClass("", semesterId, subjectId, testId);
         String fileName = String.format("ExamClass_%s.xlsx", LocalDateTime.now());
         String sheetName = "exam_class";
         if (!ObjectUtils.isEmpty(lstExamClass)) {

@@ -40,7 +40,7 @@ public interface ExamClassService {
     /**
      * Danh sách lớp thi trong kỳ thi/ kỳ học
      */
-    CustomInputStreamResource exportListExamClass(Long semesterId, Long testId) throws IOException;
+    CustomInputStreamResource exportListExamClass(Long semesterId, Long testId, Long subjectId) throws IOException;
 
     /**
      * Lấy chi tiết lớp thi

@@ -73,10 +73,11 @@ public class ExamClassController {
     @Operation(summary = "Export danh sách lớp thi theo kỳ")
     public ResponseEntity<InputStreamResource> exportExamClass(
         @RequestParam(name = "semesterId", required = false, defaultValue = "-1") Long semesterId,
-        @RequestParam(name = "testId", required = false, defaultValue = "-1") Long testId
+        @RequestParam(name = "testId", required = false, defaultValue = "-1") Long testId,
+        @RequestParam(name = "subjectId", required = false, defaultValue = "-1") Long subjectId
     ) throws IOException {
         HttpHeaders headers = new HttpHeaders();
-        CustomInputStreamResource resourceRes = examClassService.exportListExamClass(semesterId, testId);
+        CustomInputStreamResource resourceRes = examClassService.exportListExamClass(semesterId, testId, subjectId);
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.parseMediaType(String.join(";", Arrays.asList(Excel.CONTENT_TYPES))).toString());
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resourceRes.getFileName());
         return ResponseEntity.ok().headers(headers).body(resourceRes.getResource());
