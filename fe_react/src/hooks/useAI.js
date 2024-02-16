@@ -43,32 +43,32 @@ const useAI = () => {
     );
   };
   const resetTableResult = (payload, noti = true) => {
-    setLoadingSaveResult(true)
     resetTableResultService(
       tempFileCode,
       payload,
       (res) => {
         if (noti) {
-          setLoadingSaveResult(false)
           notify.success("Đã xóa dữ liệu của bảng thành công!");
         } else {
           console.log(res);
         }
       },
       (err) => {
-        setLoadingSaveResult(false)
         notify.warning("Không tìm thấy dữ liệu");
       }
     );
   };
   const saveTableResult = (payload) => {
+    setLoadingSaveResult(true)
     saveTableResultService(
       tempFileCode,
       payload,
       (res) => {
+        setLoadingSaveResult(false)
         notify.success("Lưu kết quả chấm thành công!");
       },
       (err) => {
+        setLoadingSaveResult(false)
         notify.warning("Đã tồn tại sinh viên có điểm!");
       }
     );
