@@ -7,7 +7,7 @@ networks:
 services:
   fe_app:
     container_name: elearning_support_fe
-    image: elearning_support_fe:1.0.0
+    image: leopepe2012/elearning_support_fe:latest
     environment:
       - "NODE_ENV=development"
     networks:
