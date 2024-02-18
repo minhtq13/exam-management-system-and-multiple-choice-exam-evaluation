@@ -98,8 +98,6 @@ const UpdateExamClassInfoForm = ({
   const [teacherSelected, setTeacherSelected] = useState(
     lstSupervisorId ?? []
   );
-  const [studentSelectedPerPage, setStudentSelectedPerPage] = useState({});
-  const [teacherSelectedPerPage, setTeacherSelectedPerPage] = useState({});
   const notify = useNotify();
   useEffect(() => {
     if (openTeacherModal) {
@@ -265,55 +263,34 @@ const UpdateExamClassInfoForm = ({
     onChange: rowTestChange,
     type: "radio"
   }
-  function removeDuplicates(arr) {
-    return arr.filter((value, index, self) => {
-      return self.indexOf(value) === index;
-    });
-  }
-  const studentSelectChange = (newSelectedRowKeys) => {
-    setStudentSelectedPerPage({
-      ...studentSelectedPerPage,
-      [paginationStudent.current]: newSelectedRowKeys,
-    });
-    setStudentSelected(removeDuplicates(Object.values({
-      ...studentSelectedPerPage,
-      [paginationStudent.current]: newSelectedRowKeys,
-    }).reduce((acc, arr) => acc.concat(arr), []))
-    );
-    onSelectStudents(
-      Object.values({
-        ...studentSelectedPerPage,
-        [paginationStudent.current]: newSelectedRowKeys,
-      }).reduce((acc, arr) => acc.concat(arr), [])
-    );
-  };
-  const rowStudentSelection = {
-    selectedRowKeys:
-      studentSelected,
-    onChange: studentSelectChange,
-  };
-  const teacherSelectChange = (newSelectedRowKeys) => {
-    setTeacherSelectedPerPage({
-      ...teacherSelectedPerPage,
-      [paginationTeacher.current]: newSelectedRowKeys,
-    });
-    setTeacherSelected(removeDuplicates(Object.values({
-      ...teacherSelectedPerPage,
-      [paginationTeacher.current]: newSelectedRowKeys,
-    }).reduce((acc, arr) => acc.concat(arr), []))
+  const handleStudentSelect = (record, selected) => {
+    const updatedSelectedRows = selected
+      ? [...studentSelected, record.id]
+      : studentSelected.filter(existingItem => existingItem !== record.id);
 
-    );
-    onSelectTeachers(
-      Object.values({
-        ...teacherSelectedPerPage,
-        [paginationTeacher.current]: newSelectedRowKeys,
-      }).reduce((acc, arr) => acc.concat(arr), [])
-    );
+    setStudentSelected(updatedSelectedRows);
+    onSelectStudents(updatedSelectedRows);
   };
+
+
+  const rowStudentSelection = {
+    selectedRowKeys: studentSelected,
+    onSelect: handleStudentSelect,
+    hideSelectAll: true
+  };
+  const handleTeacherSelect = (record, selected) => {
+    const updatedSelectedRows = selected
+    ? [...teacherSelected, record.id]
+    : teacherSelected.filter(existingItem => existingItem !== record.id);
+
+  setTeacherSelected(updatedSelectedRows);
+  onSelectTeachers(updatedSelectedRows);
+  }
   const rowTeacherSelection = {
     selectedRowKeys:
       teacherSelected,
-    onChange: teacherSelectChange,
+    onSelect: handleTeacherSelect,
+    hideSelectAll: true
   };
 
   const onStudentChange = debounce((_e) => {
@@ -396,11 +373,19 @@ const UpdateExamClassInfoForm = ({
           rules={[{ required: true, message: "Chưa chọn kỳ thi" }]}
         >
           <Select
+          showSearch
             disabled={semesterDisabled}
             loading={semesterLoading}
             placeholder="Chọn kỳ thi"
             options={getOptions(allSemester, false)}
             style={{ height: 45 }}
+            optionFilterProp="children"
+            filterOption={(input, option) =>
+              (option?.label.toLowerCase() ?? "").includes(
+                input.toLowerCase()
+              )
+            }
+            optionLabelProp="label"     
             onChange={(value) =>
               setParam({ ...param, semesterId: value })
             }
@@ -420,11 +405,19 @@ const UpdateExamClassInfoForm = ({
           <Select
             placeholder="Chọn môn thi"
             loading={subLoading}
+            showSearch
             options={getOptions(allSubjects)}
             style={{ height: 45 }}
             onChange={(value) =>
               setParam({ ...param, subjectId: value })
             }
+            optionFilterProp="children"
+            filterOption={(input, option) =>
+              (option?.label.toLowerCase() ?? "").includes(
+                input.toLowerCase()
+              )
+            }
+            optionLabelProp="label"           
           ></Select>
         </Form.Item>
         <Form.Item

@@ -1,7 +1,7 @@
-// export const BASE_URL =
-// 	"http://localhost:8088/e-learning/api";
 export const BASE_URL =
-	"http://ec2-13-229-127-1.ap-southeast-1.compute.amazonaws.com:80/e-learning/api";
+	"http://localhost:8088/e-learning/api";
+// export const BASE_URL =
+// 	"http://ec2-13-229-127-1.ap-southeast-1.compute.amazonaws.com:80/e-learning/api";
 
 export const apiPath = {
 	// Authentication

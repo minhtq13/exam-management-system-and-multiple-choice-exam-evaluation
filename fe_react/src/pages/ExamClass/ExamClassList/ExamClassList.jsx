@@ -369,7 +369,7 @@ const ExamClassList = () => {
     navigate(`${appPath.examClassDetail}/${classId}`);
   };
   const handleExport = () => {
-    exportExamClass(param.semesterId, "exam-class");
+    exportExamClass(param.semesterId, param.subjectId, "exam-class");
   };
   const handleClickAddExamClass = () => {
     navigate(`${appPath.examClassCreate}`);

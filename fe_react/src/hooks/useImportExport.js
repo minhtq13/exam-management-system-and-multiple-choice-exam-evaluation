@@ -80,13 +80,17 @@ const useImportExport = () => {
 				setLoadingExport(false);
 			});
 	};
-	const exportExamClass = (params, object) => {
+	const exportExamClass = (semesterId, subjectId, object) => {
 		// object = "exam-class"
 		setLoadingExport(true);
 		axios({
-			url: `${BASE_URL}/${object}/export/${params}`,
+			url: `${BASE_URL}/${object}/export`,
 			method: "GET",
 			responseType: "blob",
+			params: {
+				semesterId: semesterId,
+				subjectId: subjectId
+			  }
 		})
 			.then((response) => {
 				const url = window.URL.createObjectURL(
