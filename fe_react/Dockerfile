@@ -4,10 +4,10 @@ WORKDIR /usr/local/app
 ARG WORK_DIR=/usr/local/app
 COPY package*.json ${WORK_DIR}
 COPY yarn*.lock ${WORK_DIR}
-RUN yarn install
+RUN npm install
 COPY . .
-RUN yarn build
+RUN npm build
 EXPOSE 3000
-ENTRYPOINT ["yarn", "start"]
+ENTRYPOINT ["npm", "start"]
 
 
