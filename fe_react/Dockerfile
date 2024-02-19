@@ -1,4 +1,4 @@
-FROM node:17.9.1-alpine as build
+FROM node:18.19.1-alpine as build
 MAINTAINER chiendao1808
 WORKDIR /usr/local/app
 ARG WORK_DIR=/usr/local/app
