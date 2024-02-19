@@ -17,4 +17,4 @@ services:
       context: elearning_support_fe
       network: e_learning_support
     ports:
-      - '80:3000' # aws ec2 mount port
+      - '3000:3000' # aws ec2 mount port
