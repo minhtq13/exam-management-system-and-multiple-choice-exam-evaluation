@@ -1,12 +1,14 @@
 export const DOMAIN_LOCAL = "http://localhost:8088/e-learning/api";
 
 // domain: http://ec2-13-229-127-1.ap-southeast-1.compute.amazonaws.com
-export const DOMAIN_AWS = "http://13.229.127.1:8088";
+export const DOMAIN_AWS_HTTP = "http://13.229.127.1:8088";
+
+export const DOMAIN_AWS_HTTPS = "https://13.229.127.1.sslip.io";
 
 export const DEFAULT_API_PATH = "/e-learning/api";
 
 // check BASE_URL in different envs
-export const BASE_URL = (process.env.NODE_ENV === "production" ? DOMAIN_AWS : DOMAIN_LOCAL) + DEFAULT_API_PATH;
+export const BASE_URL = (process.env.NODE_ENV === "production" ? DOMAIN_AWS_HTTPS : DOMAIN_LOCAL) + DEFAULT_API_PATH;
 
 
 export const apiPath = {
