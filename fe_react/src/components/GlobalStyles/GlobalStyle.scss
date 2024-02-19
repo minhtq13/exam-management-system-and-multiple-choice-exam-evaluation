@@ -132,3 +132,29 @@ input[type="file"]::file-selector-button {
   cursor: pointer;
   border-radius: 6px;
 }
+.go-to-top-button {
+  position: fixed;
+  bottom: 100px;
+  right: 100px;
+  z-index: 1000;
+  background-color: #ecd7d7;
+  border-radius: 100px;
+  padding: 12px;
+  cursor: pointer;
+  &:hover {
+    background-color: #ddc7c7;
+    transition: linear 0.25s;
+    .go-to-top-icon {
+      svg {
+        color: #a01f1f;
+      }
+    }
+  }
+  .go-to-top-icon {
+    svg {
+      font-size: 40px;
+      color: #8c1515;
+    }
+  }
+}
+

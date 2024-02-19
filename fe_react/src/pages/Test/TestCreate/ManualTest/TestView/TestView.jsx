@@ -10,6 +10,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { setDetailTest } from "../../../../../utils/storage";
 import { renderTag, tagRender } from "../../../../../utils/tools";
+import ScrollToTop from "../../../../../components/ScrollToTop/ScrollToTop";
 const TestView = ({
   questionList,
   startTime,
@@ -106,6 +107,7 @@ const TestView = ({
           <div className="number-ques-item">{`Khó: ${levelQuestion[2]}`}</div>
           <div className="number-ques-item">{`Tổng: ${checkedItems.length}`}</div>
         </div>
+        <ScrollToTop />
         <Spin spinning={quesLoading} tip="Đang tải">
           {questionList.length > 0 && (filter.search === '' && filter.level === "ALL") ?
             <div className="question-select-all">

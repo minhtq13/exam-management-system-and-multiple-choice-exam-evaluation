@@ -15,6 +15,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { levelOptions, searchTimeDebounce } from "../../../utils/constant";
 import { renderTag, tagRender } from "../../../utils/tools";
+import ScrollToTop from "../../../components/ScrollToTop/ScrollToTop";
 
 const QuestionList = () => {
   const initialParam = {
@@ -159,10 +160,11 @@ const QuestionList = () => {
               optionLabelProp="label"
               options={levelOptions}
               onChange={levelOnchange}
-            />
+          />
           </div>
         </div>
       </div>
+      <ScrollToTop />
       <Spin className="all-question-container"  spinning={quesLoading} tip="Đang tải...">
         {allQuestions.map((item, index) => {
           return (
