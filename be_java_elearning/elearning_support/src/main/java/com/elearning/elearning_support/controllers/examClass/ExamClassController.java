@@ -52,7 +52,7 @@ public class ExamClassController {
         return examClassService.createExamClass(createDTO);
     }
 
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER', 'STUDENT')")
     @GetMapping("/page")
     @Operation(summary = "Danh sách lớp thi dạng page")
     public Page<ICommonExamClassDTO> getListExamClass(
@@ -104,7 +104,7 @@ public class ExamClassController {
         examClassService.updateParticipantToExamClass(userExamClassDTO);
     }
 
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER', 'STUDENT')")
     @GetMapping("/participant/list/{examClassId}")
     @Operation(summary = "Lấy danh sách Giám thị / Thí sinh trong lớp thi")
     public List<IExamClassParticipantDTO> getListExamClassParticipant(@PathVariable(name = "examClassId") Long examClassId,

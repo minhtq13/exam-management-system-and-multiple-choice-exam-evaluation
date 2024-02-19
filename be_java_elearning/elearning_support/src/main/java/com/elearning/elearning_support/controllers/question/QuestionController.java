@@ -50,7 +50,7 @@ public class QuestionController {
 
     @GetMapping
     @Operation(summary = "Danh sách câu hỏi")
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER', 'STUDENT')")
     public List<QuestionListDTO> getListQuestion(
         @RequestParam(name = "subjectId", required = false, defaultValue = "-1") Long subjectId,
         @RequestParam(name = "subjectCode", required = false, defaultValue = "") String subjectCode,
@@ -64,7 +64,7 @@ public class QuestionController {
 
     @GetMapping("/detail/{questionId}")
     @Operation(summary = "Chi tiết câu hỏi")
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER', 'STUDENT')")
     public QuestionDetailsDTO getQuestionDetails(@PathVariable(name = "questionId") Long questionId){
         return questionService.getQuestionDetails(questionId);
     }

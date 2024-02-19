@@ -65,7 +65,7 @@ public class UserController {
         userService.updateUser(userId, updateDTO);
     }
 
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER', 'STUDENT')")
     @GetMapping("/{userId}")
     @Operation(summary = "Chi tiết người dùng")
     public UserDetailDTO getUserDetail(@PathVariable(name = "userId") Long userId) {
@@ -101,7 +101,7 @@ public class UserController {
         return userService.getPageStudent(search, courseNums, pageable);
     }
 
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER', 'STUDENT')")
     @GetMapping("/student/list")
     @Operation(summary = "Danh sách học sinh / sinh viên danh sách toàn bộ")
     public List<IGetUserListDTO> getListStudent(
@@ -153,7 +153,7 @@ public class UserController {
         return userService.getPageTeacher(search, pageable);
     }
 
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER', 'STUDENT')")
     @GetMapping("/teacher/list")
     @Operation(summary = "Danh sách giáo viên / giảng viên danh sách toàn bộ")
     public List<IGetUserListDTO> getListTeacher(

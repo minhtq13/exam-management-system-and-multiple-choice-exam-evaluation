@@ -47,7 +47,7 @@ public class SubjectController {
 
     @GetMapping("/list")
     @Operation(summary = "Danh sách môn học")
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER', 'STUDENT')")
     public Page<ISubjectListDTO> getListSubject(
         @RequestParam(name = "search", required = false, defaultValue = "") String search,
         @RequestParam(name = "departmentId", required = false, defaultValue = "-1") Long departmentId,
