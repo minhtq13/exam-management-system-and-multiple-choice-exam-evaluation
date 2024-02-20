@@ -247,7 +247,7 @@ public class QuestionServiceImpl implements QuestionService {
                     if (ObjectUtils.isEmpty(causeList)) {
                         // create new question
                         Question newQuestion = new Question();
-                        newQuestion.setContent(importDTO.getContent());
+                        newQuestion.setContent(String.format("<p>%s</p>", importDTO.getContent()));
                         Long subjectId = mapSubjectCodeId.get(importDTO.getSubjectCode());
                         Long chapterId = mapSubjectChapters.get(Pair.create(subjectId, importDTO.getChapterNo()));
                         newQuestion.setChapterId(chapterId);
@@ -259,10 +259,10 @@ public class QuestionServiceImpl implements QuestionService {
                         List<Answer> lstAnswer = new ArrayList<>();
                         Set<Integer> correctAnswerNo = StringUtils.convertStrIntegerToSet(String.format("{%s}", importDTO.getCorrectAnswers()));
                         // Set answers
-                        lstAnswer.add(new Answer(new AnswerReqDTO(importDTO.getFirstAnswer(), correctAnswerNo.contains(1), null)));
-                        lstAnswer.add(new Answer(new AnswerReqDTO(importDTO.getSecondAnswer(), correctAnswerNo.contains(2), null)));
-                        lstAnswer.add(new Answer(new AnswerReqDTO(importDTO.getThirdAnswer(), correctAnswerNo.contains(3), null)));
-                        lstAnswer.add(new Answer(new AnswerReqDTO(importDTO.getFourthAnswer(), correctAnswerNo.contains(4), null)));
+                        lstAnswer.add(new Answer(new AnswerReqDTO(String.format("<p>%s</p>", importDTO.getFirstAnswer()), correctAnswerNo.contains(1), null)));
+                        lstAnswer.add(new Answer(new AnswerReqDTO(String.format("<p>%s</p>", importDTO.getSecondAnswer()), correctAnswerNo.contains(2), null)));
+                        lstAnswer.add(new Answer(new AnswerReqDTO(String.format("<p>%s</p>", importDTO.getThirdAnswer()), correctAnswerNo.contains(3), null)));
+                        lstAnswer.add(new Answer(new AnswerReqDTO(String.format("<p>%s</p>", importDTO.getFourthAnswer()), correctAnswerNo.contains(4), null)));
                         newQuestion.setLstAnswer(lstAnswer);
                         // Add question to list
                         lstQuestions.add(newQuestion);
