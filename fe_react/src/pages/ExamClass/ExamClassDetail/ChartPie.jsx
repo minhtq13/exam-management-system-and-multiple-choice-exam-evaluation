@@ -29,7 +29,7 @@ const ChartPie = ({ dataPieChart, resultData }) => {
           return `${((d.value / data.reduce((a, b) => a + b.value, 0)) * 100).toFixed(2)}%`;
         },
         style: {
-          fontSize: 10,
+          fontSize: 12,
           dy: 12,
         },
       },

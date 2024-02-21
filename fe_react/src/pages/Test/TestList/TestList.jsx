@@ -138,7 +138,7 @@ const TestList = () => {
               setOpenModal(true);
             }} />
             <ActionButton icon="create-test-set" handleClick={() => 
-              (record)} />
+              handleCreate(record)} />
           </Space>
         </>
       ),

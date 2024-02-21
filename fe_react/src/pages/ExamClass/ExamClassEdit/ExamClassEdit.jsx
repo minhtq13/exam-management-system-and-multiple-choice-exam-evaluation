@@ -11,7 +11,7 @@ const ExamClassEdit = () => {
   const navigate = useNavigate();
   const { getExamClassDetail, examClassInfo, infoLoading } = useExamClasses();
   const [selectedTestId, setSelectedTestId] = useState(null);
-  const [lstStudentId, setLstStudentId] = useState([]);
+  const [lstStudentId, setLstStudentId] = useState(null);
   const [lstSupervisorId, setLstSupervisorId] = useState([]);
   const [loading, setLoading] = useState(false);
   const notify = useNotify();
@@ -31,7 +31,7 @@ const ExamClassEdit = () => {
         examineTime: dayjs(value.examineTime).format(
           "HH:mm DD/MM/YYYY"
         ),
-        lstStudentId: lstStudentId && lstStudentId.length > 0 ? lstStudentId :
+        lstStudentId: lstStudentId  ? lstStudentId :
           (examClassInfo.lstStudentId ? examClassInfo.lstStudentId.split(",").map(Number) : []),
         lstSupervisorId: lstSupervisorId && lstSupervisorId.length > 0 ? lstSupervisorId
           : (examClassInfo.lstSupervisorId ? examClassInfo.lstSupervisorId.split(",").map(Number) : [])

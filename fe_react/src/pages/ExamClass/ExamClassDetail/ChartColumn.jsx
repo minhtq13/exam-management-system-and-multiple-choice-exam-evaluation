@@ -13,17 +13,19 @@ const ChartColumn = ({dataColumnChart, resultData}) => {
       style: {
         fill: "#FFFFFF",
         opacity: 1,
+        size: 12
       },
     },
     style: {
       maxWidth: 25,
       fill: ({ name }) => {
-        if (Number(name) <= 3) {
+        const nameReplaced = name.replace(",", ".");
+        if (Number(nameReplaced) <= 3) {
           return "#d74858";
-        } else if (Number(name) > 3 && Number(name) <= 5) return "#fc9362";
-         else if (Number(name) > 5 && Number(name) <= 7) return "#fee291";
-         else if (Number(name) > 7 && Number(name) <= 8) return "#e7f69d";
-         else if (Number(name) > 8 && Number(name) <= 9) return "#9ed79a";
+        } else if (Number(nameReplaced) > 3 && Number(nameReplaced) <= 5) return "#fc9362";
+         else if (Number(nameReplaced) > 5 && Number(nameReplaced) <= 7) return "#fee291";
+         else if (Number(nameReplaced) > 7 && Number(nameReplaced) <= 8) return "#e7f69d";
+         else if (Number(nameReplaced) > 8 && Number(nameReplaced) <= 9) return "#9ed79a";
         return '#3c8ec1';
       },
     },

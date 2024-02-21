@@ -57,7 +57,7 @@ const ExamClassDetail = () => {
         name: item.name,
         code: item.code,
         testSetCode: rowItem ? rowItem.testSetCode : null,
-        totalPoints: rowItem ? Math.round(rowItem.totalPoints * 100) / 100 : "Không có bài",
+        totalPoints: rowItem ? Math.round(rowItem.totalPoints * 100) / 100 : "",
       };
     } else {
       return {

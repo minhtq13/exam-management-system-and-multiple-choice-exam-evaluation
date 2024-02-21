@@ -132,7 +132,7 @@ const ExamClassList = () => {
         name: itemA.name,
         code: itemA.code,
         testSetCode: correspondingItemB ? correspondingItemB.testSetCode : null,
-        totalPoints: correspondingItemB ? Math.round(correspondingItemB.totalPoints * 100) / 100 : "Không có bài",
+        totalPoints: correspondingItemB ? Math.round(correspondingItemB.totalPoints * 100) / 100 : "",
       };
     } else {
       return {
@@ -482,7 +482,7 @@ const ExamClassList = () => {
           onOk={() => setOpenModal(false)}
           onCancel={() => setOpenModal(false)}
           footer={[
-            <Button key="statistic" disabled={resultData.length === 0} onClick={handleDetail}>Thống kê</Button>,
+            <Button key="statistic"  onClick={handleDetail}>Thống kê</Button>,
             <Button key="update" type="primary" onClick={() => {
               navigate(`${appPath.examClassEdit}/${record.id}`)
             }}>

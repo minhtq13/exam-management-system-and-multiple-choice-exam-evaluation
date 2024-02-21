@@ -1,4 +1,4 @@
-export const DOMAIN_LOCAL = "http://localhost:8088/e-learning/api";
+export const DOMAIN_LOCAL = "http://localhost:8088";
 
 // domain: http://ec2-13-229-127-1.ap-southeast-1.compute.amazonaws.com
 export const DOMAIN_AWS_HTTP = "http://13.229.127.1:8088";
