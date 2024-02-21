@@ -21,6 +21,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.ObjectUtils;
 import com.elearning.elearning_support.dtos.users.importUser.CommonUserImportDTO;
 import com.elearning.elearning_support.entities.BaseEntity;
 import com.elearning.elearning_support.entities.role.Role;
@@ -135,7 +136,7 @@ public class User extends BaseEntity implements Serializable {
         List<String> nameParts = StringUtils.parseNameParts(importDTO.getFullNameRaw());
         this.lastName = !nameParts.isEmpty() ? nameParts.get(0) : "";
         this.firstName = nameParts.size() == 2 ? nameParts.get(1) : "";
-        this.gender = GenderEnum.getGenderByEngName(importDTO.getGenderRaw());
+        this.gender = GenderEnum.getGenderByEngName(ObjectUtils.isEmpty(importDTO.getGenderRaw()) ? "MALE" : importDTO.getGenderRaw());
         this.setCreatedBy(AuthUtils.getCurrentUserId());
         this.userType = importDTO.getUserType();
         this.createdSource = 0;
