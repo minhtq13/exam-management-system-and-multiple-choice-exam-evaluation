@@ -19,6 +19,7 @@ import debounce from "lodash.debounce";
 import { ImportOutlined } from "@ant-design/icons";
 import useAccount from "../../../hooks/useAccount";
 import { searchTimeDebounce } from "../../../utils/constant";
+import { getRole } from "../../../utils/storage";
 
 const TeacherList = () => {
   const initialParam = {
@@ -35,6 +36,10 @@ const TeacherList = () => {
   const [fileList, setFileList] = useState(null);
   const { allTeachers, getAllTeachers, tableTeacherLoading, paginationTeacher } = useTeachers();
   const { exportList, importList, loadingImport } = useImportExport();
+  const [role, setRole] = useState()
+  useEffect(()=> {
+    setRole(getRole())
+  }, [role])
   const handleUpload = async () => {
     const formData = new FormData();
     formData.append("file", fileList);
@@ -132,11 +137,15 @@ const TeacherList = () => {
       title: "Thao tác",
       key: "action",
       align: "center",
-      render: (_, record) => (
+      render: (_, record) => {
+        return (
         <Space size="middle" style={{ cursor: "pointer" }}>
+          {role === "ROLE_TEACHER" ? "" : 
           <ActionButton icon="edit" handleClick={() => handleEdit(record)} />
+          }
         </Space>
-      ),
+        )
+      },
     },
   ];
   const dataFetch = allTeachers.map((obj, index) => ({
@@ -196,41 +205,44 @@ const TeacherList = () => {
       <div className="search-filter-button">
         <SearchFilter displayFilter={false} placeholder="Nhập tên hoặc mã cán bộ" onSearch={onSearch}
           onChange={handleSearchChangeFilter} />
-        <div className="block-button">
-          <ModalPopup
-            buttonOpenModal={
-              <Tooltip title="Xoá giảng viên">
-                <Button className="options" disabled={deleteDisable}>
-                  <img src={deleteIcon} alt="Delete Icon" />
-                </Button>
-              </Tooltip>
-            }
-            buttonDisable={deleteDisable}
-            title="Xóa giảng viên"
-            message={"Bạn chắc chắn muốn xóa giảng viên này không? "}
-            confirmMessage={"Thao tác này không thể hoàn tác"}
-            icon={deletePopUpIcon}
-            ok={"Đồng ý"}
-            onAccept={handleDelete}
-            loading={deleLoading}
-          />
-          <Tooltip title="Export danh sách giảng viên">
-            <Button className="options" onClick={handleExport}>
-              <img src={exportIcon} alt="Tải xuống Icon" />
-            </Button>
-          </Tooltip>
-          <input id="input-import-teacher" type="file" name="file" onChange={(e) => handleChange(e)}/>
-          <Tooltip title="Import danh sách giảng viên">
-            <Button
-              type="primary"
-              onClick={handleUpload}
-              disabled={!fileList}
-              loading={loadingImport}
-            >
-              <ImportOutlined />
-            </Button>
-          </Tooltip>
-        </div>
+        {role === "ROLE_TEACHER" ? "" :
+         <div className="block-button">
+         <ModalPopup
+           buttonOpenModal={
+             <Tooltip title="Xoá giảng viên">
+               <Button className="options" disabled={deleteDisable}>
+                 <img src={deleteIcon} alt="Delete Icon" />
+               </Button>
+             </Tooltip>
+           }
+           buttonDisable={deleteDisable}
+           title="Xóa giảng viên"
+           message={"Bạn chắc chắn muốn xóa giảng viên này không? "}
+           confirmMessage={"Thao tác này không thể hoàn tác"}
+           icon={deletePopUpIcon}
+           ok={"Đồng ý"}
+           onAccept={handleDelete}
+           loading={deleLoading}
+         />
+         <Tooltip title="Export danh sách giảng viên">
+           <Button className="options" onClick={handleExport}>
+             <img src={exportIcon} alt="Tải xuống Icon" />
+           </Button>
+         </Tooltip>
+         <input id="input-import-teacher" type="file" name="file" onChange={(e) => handleChange(e)}/>
+         <Tooltip title="Import danh sách giảng viên">
+           <Button
+             type="primary"
+             onClick={handleUpload}
+             disabled={!fileList}
+             loading={loadingImport}
+           >
+             <ImportOutlined />
+           </Button>
+         </Tooltip>
+       </div>
+        }
+       
       </div>
       <div className="teacher-list-wrapper">
         <Table

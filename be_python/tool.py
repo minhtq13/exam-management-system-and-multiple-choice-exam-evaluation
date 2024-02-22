@@ -9,7 +9,7 @@ warning_color = (78, 173, 240)
 blue_color = (255, 0, 0)
 red_color = (0, 0, 255)
 green_color = (0, 255, 0)
-threshold_warning = 0.8
+threshold_warning = 0.79
 
 # ============================================ FUNCTION =======================================
 
@@ -56,7 +56,7 @@ def generate_output(image: np.array, corners: list, scale: tuple = None, resize_
 # Get string class from number class
 def get_class(argument):
     if argument == 0:
-        return ""
+        return "x"
     elif argument == 1:
         return "A"
     elif argument == 2:
@@ -169,13 +169,13 @@ def remove_elements_marker(arr):
 def get_coordinates(x1, y1, x2, y2, class1):
     point1 = x1
     point2 = y1
-    point3 = y1
+    point3 = x2
     point4 = y2
-    if class1 == "":
+    if class1 == "x":
         point1 = x1
         point2 = y1
-        point3 = x1
-        point4 = y1
+        point3 = x2
+        point4 = y2
     elif class1 == "A":
         point1 = x1 - 5
         point2 = y1 - 2
@@ -202,7 +202,7 @@ def get_coordinates(x1, y1, x2, y2, class1):
 def get_coordinates_info(x1, y1, x2, y2, class1):
     point1 = x1
     point2 = y1
-    point3 = y1
+    point3 = x2
     point4 = y2
     if class1 == "0":
         point1 = x1
