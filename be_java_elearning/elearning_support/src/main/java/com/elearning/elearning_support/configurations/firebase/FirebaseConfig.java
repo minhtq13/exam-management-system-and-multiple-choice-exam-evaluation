@@ -32,7 +32,7 @@ public class FirebaseConfig {
             FirebaseApp app = FirebaseApp.initializeApp(firebaseOptions, appName);
             log.info(" === LOG : { Initialize FirebaseApp successfully! } ===");
             return FirebaseMessaging.getInstance(app);
-        } catch (IOException exception) {
+        } catch (Exception exception) {
             log.error("==== ERROR : { Initialize FirebaseApp fail } ===");
             return null;
         }

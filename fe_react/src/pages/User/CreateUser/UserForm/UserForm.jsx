@@ -1,6 +1,7 @@
 import { DatePicker, Form, Input, Select, Button } from "antd";
 import "./UserForm.scss";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import { getRole } from "../../../../utils/storage";
 const UserForm = ({
 	onFinish,
 	initialValues,
@@ -13,6 +14,10 @@ const UserForm = ({
 	isUserNameDisplay,
 	formKey
 }) => {
+	const [role, setRole] = useState()
+	useEffect(()=> {
+	  setRole(getRole())
+	}, [role])
 	const genderOption = [
 		{
 			value: "MALE",
@@ -21,6 +26,12 @@ const UserForm = ({
 		{
 			value: "FEMALE",
 			label: "Nữ",
+		},
+	];
+	const roleOptionTeacher = [
+		{
+			value: 1,
+			label: "Sinh viên",
 		},
 	];
 	const roleOption = [
@@ -35,9 +46,9 @@ const UserForm = ({
 	];
 	const dateFormat = "DD/MM/YYYY";
 	const messageRequired = "Trường này là bắt buộc!"
-	const [role, setRole] = useState(-1)
+	const [roleSelect, setRoleSelect] = useState(-1)
 	const handleOnChange = (value) => {
-		setRole(value)
+		setRoleSelect(value)
 	}
 	return (
 		<div className="user-form-component">
@@ -89,12 +100,12 @@ const UserForm = ({
 				>
 					<Select
 						placeholder="Chọn vai trò"
-						options={roleOption}
+						options={role === "ROLE_TEACHER" ? roleOptionTeacher : roleOption}
 						style={{ height: 45 }}
 						onChange={handleOnChange}
 					></Select>
 				</Form.Item>
-				{role === 1 && (
+				{roleSelect === 1 && (
 						<Form.Item
 							name="metaData"
 							label="Khoá"

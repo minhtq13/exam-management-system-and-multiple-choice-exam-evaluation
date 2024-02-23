@@ -14,7 +14,7 @@ import { ImportOutlined } from "@ant-design/icons";
 const ExamClassDetail = () => {
   const detailExamClass = getDetailExamClass();
   const [fileList, setFileList] = useState(null);
-  const [roleType, setRoleType] = useState("STATISTIC");
+  const [roleType, setRoleType] = useState("STUDENT");
   const classId = detailExamClass.classId;
   const record = detailExamClass.record;
   const classCode = detailExamClass.classCode;
@@ -44,13 +44,15 @@ const ExamClassDetail = () => {
     setFileList(e.target.files[0]);
   };
   useEffect(() => {
-    if (classCode && roleType === "STATISTIC") {
+    if (classCode) {
       getResult(classCode, {});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [classCode, roleType]);
   const tabsData = participants.map((item, index) => {
     const rowItem = resultData.find((subItem) => subItem.studentId === item.id);
+    // console.log("rowItem", rowItem);
+    // console.log(resultData);
     if (resultData.length > 0) {
       return {
         key: (index + 1).toString(),
@@ -166,11 +168,6 @@ const ExamClassDetail = () => {
   };
   const tabsOptions = [
     {
-      key: "STATISTIC",
-      label: <h3>Thống kê</h3>,
-      children: renderTabStatistic(),
-    },
-    {
       key: "STUDENT",
       label: <h3>Sinh viên</h3>,
       children: renderTab(),
@@ -179,6 +176,11 @@ const ExamClassDetail = () => {
       key: "SUPERVISOR",
       label: <h3>Giám thị</h3>,
       children: renderTab(),
+    },
+    {
+      key: "STATISTIC",
+      label: <h3>Thống kê</h3>,
+      children: renderTabStatistic(),
     },
   ];
   return (
@@ -212,7 +214,7 @@ const ExamClassDetail = () => {
           </div>
         </div>
         <Tabs
-          defaultActiveKey="STATISTIC"
+          defaultActiveKey="STUDENT"
           items={tabsOptions}
           onChange={(key) => setRoleType(key)}
         />

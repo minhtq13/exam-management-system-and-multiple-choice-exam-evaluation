@@ -123,7 +123,7 @@ const ExamClassList = () => {
       align: "center",
     },
   ];
-
+  console.log("resutleData", resultData)
   const tabsData = participants.map((itemA, index) => {
     const correspondingItemB = resultData.find((itemB) => itemB.studentId === itemA.id);
     if (resultData.length > 0) {

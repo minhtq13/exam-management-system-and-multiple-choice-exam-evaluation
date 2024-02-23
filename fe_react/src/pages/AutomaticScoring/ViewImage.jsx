@@ -15,7 +15,9 @@ const ViewImage = ({ dataArray, index }) => {
     speed: 300,
     slidesToShow: 1,
     slidesToScroll: 1,
-    afterChange: (slideIndex) => setCurrentSlide(slideIndex),
+    afterChange: (slideIndex) => {
+      setCurrentSlide(slideIndex)
+    },
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -24,9 +26,11 @@ const ViewImage = ({ dataArray, index }) => {
   };
   const handleNext = () => {
     sliderRef.current.slickNext();
+    setCurrentSlide(prevState => prevState + 1)
   };
   const handleBack = () => {
     sliderRef.current.slickPrev();
+    setCurrentSlide(prevState => prevState - 1)
   };
   const handleCancel = () => {
     setIsModalOpen(false);
