@@ -49,8 +49,8 @@ public class FileUtils {
             if (Objects.isNull(multipartFile) || Objects.isNull(multipartFile.getOriginalFilename())) {
                 return null;
             }
-            File convertedFile = new File(tempPath + getFileBodyName(multipartFile.getOriginalFilename()) + formatter.format(new Date()) +
-                getFileExt(multipartFile.getOriginalFilename()));
+            String orgFileName = multipartFile.getOriginalFilename().replace(" ", "_");
+            File convertedFile = new File(tempPath + getFileBodyName(orgFileName) + "_" + formatter.format(new Date()) + "." + getFileExt(orgFileName));
             FileOutputStream fos = new FileOutputStream(convertedFile);
             fos.write(multipartFile.getBytes());
             fos.close();
@@ -77,8 +77,9 @@ public class FileUtils {
      * Get file's extension from fileName
      */
     public static String getFileExt(String fileName) {
-        if (ObjectUtils.isEmpty(fileName))
+        if (ObjectUtils.isEmpty(fileName)) {
             return "";
+        }
         return fileName.substring(fileName.lastIndexOf('.') + 1);
     }
 
@@ -88,7 +89,7 @@ public class FileUtils {
     public static String getFileBodyName(File file) {
         if (file.exists() && file.isFile()) {
             int extIndex = file.getName().lastIndexOf('.');
-            return file.getName().substring(extIndex - 1);
+            return file.getName().substring(0, extIndex);
         }
         return "";
     }
@@ -97,9 +98,10 @@ public class FileUtils {
      * Get file's name without extension (arg = fileName)
      */
     public static String getFileBodyName(String fileName) {
-        if (ObjectUtils.isEmpty(fileName))
+        if (ObjectUtils.isEmpty(fileName)) {
             return "";
-        return fileName.substring(fileName.lastIndexOf('.') - 1);
+        }
+        return fileName.substring(0, fileName.lastIndexOf('.'));
     }
 
     public static Integer getFileType(String fileExtension) {
@@ -158,10 +160,10 @@ public class FileUtils {
 
     public static class Excel {
 
-        public static final String[] EXTENSIONS = new String[] {
-          "xlsx", "xls"
+        public static final String[] EXTENSIONS = new String[]{
+            "xlsx", "xls"
         };
-        public static final String[] CONTENT_TYPES = new String[] {
+        public static final String[] CONTENT_TYPES = new String[]{
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.ms-excel"
         };
     }
@@ -176,7 +178,7 @@ public class FileUtils {
         };
     }
 
-    public static String getSharedAppDirectoryDataPath(){
+    public static String getSharedAppDirectoryDataPath() {
         String sharedAppDataPath;
         if (SystemConstants.IS_WINDOWS) {
             sharedAppDataPath = SystemConstants.WINDOWS_SHARED_DIR + "/data";
@@ -188,7 +190,7 @@ public class FileUtils {
         return sharedAppDataPath;
     }
 
-    public static String getSharedAppDirectorySourcePath(){
+    public static String getSharedAppDirectorySourcePath() {
         String sharedAppSourcePath;
         if (SystemConstants.IS_WINDOWS) {
             sharedAppSourcePath = SystemConstants.WINDOWS_SHARED_DIR + "/source";
@@ -199,7 +201,6 @@ public class FileUtils {
         }
         return sharedAppSourcePath;
     }
-
 
 
 }
