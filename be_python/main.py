@@ -138,17 +138,17 @@ def predictAnswer(img, model, index, numberAnswer):
             maybe_wrong_answer.append(f'Nhãn "{get_class(class_answer)}" câu {i+1}, ảnh {filename}, xác suất: {conf}')
         for char in str(get_class(class_answer)):
             point1, point2, point3, point4 = get_coordinates(x1, y1, x2, y2, char)
-            if char == "x":
-                if conf < threshold_warning:
-                    cv2.rectangle(img, (point1, point2), (point3, point4), warning_color, 2)
-                    cv2.putText(img, str(f"{get_class(class_answer)}-{conf}"),
-                        (point1, point2), cv2.FONT_HERSHEY_SIMPLEX, 0.5, warning_color, 1,cv2.LINE_AA)
-            else:
-                cv2.rectangle(img, (point1, point2), (point3, point4), green_color if conf > threshold_warning else warning_color,
-                    1 if conf > threshold_warning else 2)
-                cv2.putText(img, str(char) if conf > threshold_warning else str(f"{get_class(class_answer)}-{conf}"),
-                    (point1, point2), cv2.FONT_HERSHEY_SIMPLEX, 0.4 if conf > threshold_warning else 0.5,
-                    blue_color if conf > threshold_warning else warning_color, 1,cv2.LINE_AA)
+            # if char == "x":
+            #     if conf < threshold_warning:
+            #         cv2.rectangle(img, (point1, point2), (point3, point4), warning_color, 2)
+            #         cv2.putText(img, str(f"{get_class(class_answer)}-{conf}"),
+            #             (point1, point2), cv2.FONT_HERSHEY_SIMPLEX, 0.5, warning_color, 1,cv2.LINE_AA)
+            # else:
+            cv2.rectangle(img, (point1, point2), (point3, point4), green_color if conf > threshold_warning else warning_color,
+                1 if conf > threshold_warning else 2)
+            cv2.putText(img, str(char) if conf > threshold_warning else str(f"{get_class(class_answer)}-{conf}"),
+                (point1, point2), cv2.FONT_HERSHEY_SIMPLEX, 0.4 if conf > threshold_warning else 0.5,
+                blue_color if conf > threshold_warning else warning_color, 1,cv2.LINE_AA)
         img_graft = cv2.resize(img, (350, 896), interpolation=cv2.INTER_AREA)
         
     return array_answer, img_graft, maybe_wrong_answer

@@ -56,7 +56,7 @@ def generate_output(image: np.array, corners: list, scale: tuple = None, resize_
 # Get string class from number class
 def get_class(argument):
     if argument == 0:
-        return "x"
+        return ""
     elif argument == 1:
         return "A"
     elif argument == 2:
@@ -171,7 +171,7 @@ def get_coordinates(x1, y1, x2, y2, class1):
     point2 = y1
     point3 = x2
     point4 = y2
-    if class1 == "x":
+    if class1 == "":
         point1 = x1
         point2 = y1
         point3 = x2
