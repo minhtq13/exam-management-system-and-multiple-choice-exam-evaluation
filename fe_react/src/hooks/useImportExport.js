@@ -19,9 +19,9 @@ const useImportExport = () => {
 				getdata(param);
 			})
 			.catch((error) => {
-				notify.error(
-					capitalizeFirstLetter("Đã tồn tại user trong hệ thống!")
-				);
+				// notify.error(
+				// 	capitalizeFirstLetter("Đã tồn tại user trong hệ thống!")
+				// );
 				setLoadingImport(false);
 			});
 	};

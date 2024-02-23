@@ -142,7 +142,7 @@ const QuestionEdit = () => {
 	return (
 		<Skeleton active loading={infoLoading}>
 			<div className="question-edit">
-				<div className="question-edit-title">Question Edit</div>
+				<div className="question-edit-title">Chỉnh sửa câu hỏi</div>
 				<div className="question-subject-chapter">
 					<div className="question-subject">
 						<span className="question-select-title">
