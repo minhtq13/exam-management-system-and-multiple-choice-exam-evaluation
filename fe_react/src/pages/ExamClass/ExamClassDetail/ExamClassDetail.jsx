@@ -51,8 +51,6 @@ const ExamClassDetail = () => {
   }, [classCode, roleType]);
   const tabsData = participants.map((item, index) => {
     const rowItem = resultData.find((subItem) => subItem.studentId === item.id);
-    // console.log("rowItem", rowItem);
-    // console.log(resultData);
     if (resultData.length > 0) {
       return {
         key: (index + 1).toString(),
