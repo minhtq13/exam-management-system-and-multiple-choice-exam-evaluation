@@ -508,12 +508,12 @@ public class TestSetServiceImpl implements TestSetService {
             // upload scored image
             String handledImgPath = handledItem.getHandledScoredImg();
             FileUploadResDTO handledUploadFile = new FileUploadResDTO();
-            if(Objects.nonNull(handledImgPath)){
+            if (Objects.nonNull(handledImgPath)) {
                 handledUploadFile = fileAttachService.uploadFileToCloudinary(new File(handledItem.getHandledScoredImg()),
                     FileTypeEnum.IMAGE);
             }
             // create student test set
-            studentTestSet.setHandedTestFile(handledUploadFile.getId());
+            studentTestSet.setHandedTestFile(handledUploadFile.getFileAttachDB());
             studentTestSet.setMarked(handledItem.getAnswers().size() - numNotMarkedQuestions);
             studentTestSet.setMarkerRate(((double) (studentTestSet.getMarked()) / (handledItem.getAnswers().size())) * 100.0);
             studentTestSet.setLstStudentTestSetDetail(lstDetails);

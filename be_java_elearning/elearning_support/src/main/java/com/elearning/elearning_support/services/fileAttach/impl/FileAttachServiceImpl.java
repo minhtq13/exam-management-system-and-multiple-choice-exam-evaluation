@@ -67,7 +67,7 @@ public class FileAttachServiceImpl implements FileAttachService {
             fileAttach = fileAttachRepository.save(fileAttach);
             // Delete file after upload cloudinary
             boolean isDeleted = uploadFile.delete();
-            return new FileUploadResDTO(fileAttach.getId(), fileAttach.getName(), fileAttach.getExternalLink(), fileAttach.getType());
+            return new FileUploadResDTO(fileAttach.getId(), fileAttach.getName(), fileAttach.getExternalLink(), fileAttach.getType(), fileAttach);
         } catch (IOException ex) {
             ex.printStackTrace();
             return null;
@@ -91,7 +91,7 @@ public class FileAttachServiceImpl implements FileAttachService {
                     MessageConst.UPLOAD_FAILED);
             }
 
-            // Creat file attach in db
+            // Create file attach to store in DB
             FileAttach fileAttach = FileAttach.builder()
                 .extension(FileUtils.getFileExt(file))
                 .type(fileType.getType())
@@ -102,10 +102,11 @@ public class FileAttachServiceImpl implements FileAttachService {
                 .createdAt(LocalDateTime.now())
                 .createdBy(AuthUtils.getCurrentUserId())
                 .build();
-            fileAttach = fileAttachRepository.save(fileAttach);
+//            fileAttach = fileAttachRepository.save(fileAttach);
             // Delete file after upload cloudinary (temp not delete file after uploading)
-            // boolean isDeleted = file.delete();
-            return new FileUploadResDTO(fileAttach.getId(), fileAttach.getName(), fileAttach.getExternalLink(), fileAttach.getType());
+//            boolean isDeleted = file.delete();
+            return new FileUploadResDTO(fileAttach.getId(), fileAttach.getName(), fileAttach.getExternalLink(), fileAttach.getType(),
+                fileAttach);
         } catch (IOException ex) {
             ex.printStackTrace();
             return null;
@@ -133,7 +134,7 @@ public class FileAttachServiceImpl implements FileAttachService {
             .createdBy(AuthUtils.getCurrentUserId())
             .build();
         fileAttach = fileAttachRepository.save(fileAttach);
-        return new FileUploadResDTO(fileAttach.getId(), fileAttach.getName(), fileAttach.getFilePath(), fileAttach.getType());
+        return new FileUploadResDTO(fileAttach.getId(), fileAttach.getName(), fileAttach.getFilePath(), fileAttach.getType(), fileAttach);
     }
 
 

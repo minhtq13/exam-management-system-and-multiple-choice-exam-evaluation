@@ -1,5 +1,6 @@
 package com.elearning.elearning_support.dtos.fileAttach;
 
+import com.elearning.elearning_support.entities.file_attach.FileAttach;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,4 +19,6 @@ public class FileUploadResDTO {
     String fileName;
     String filePath;
     Integer type;
+
+    FileAttach fileAttachDB;
 }

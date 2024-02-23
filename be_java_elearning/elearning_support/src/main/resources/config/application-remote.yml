@@ -70,7 +70,7 @@ app:
     location-path: classpath:/upload/files/ #classpath: <=> ../resources/
     resource-path: /resources/upload/files/**
     detail-path: /elearning_support/src/main/resources/upload/files/
-  root-domain: http://ec2-13-229-127-1.ap-southeast-1.compute.amazonaws.com:80/e-learning
+  root-domain: https://13.229.127.1.sslip.io/e-learning
 
 # Cấu hình firebase
 firebase:

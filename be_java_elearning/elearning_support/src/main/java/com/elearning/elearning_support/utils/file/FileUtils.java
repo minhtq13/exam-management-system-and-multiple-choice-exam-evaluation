@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 import com.elearning.elearning_support.constants.FileConstants;
 import com.elearning.elearning_support.constants.FileConstants.Extension;
@@ -48,7 +49,8 @@ public class FileUtils {
             if (Objects.isNull(multipartFile) || Objects.isNull(multipartFile.getOriginalFilename())) {
                 return null;
             }
-            File convertedFile = new File(tempPath + formatter.format(new Date()) + "_" + multipartFile.getOriginalFilename().replace(" ", "_"));
+            File convertedFile = new File(tempPath + getFileBodyName(multipartFile.getOriginalFilename()) + formatter.format(new Date()) +
+                getFileExt(multipartFile.getOriginalFilename()));
             FileOutputStream fos = new FileOutputStream(convertedFile);
             fos.write(multipartFile.getBytes());
             fos.close();
@@ -71,12 +73,33 @@ public class FileUtils {
         return "";
     }
 
+    /**
+     * Get file's extension from fileName
+     */
+    public static String getFileExt(String fileName) {
+        if (ObjectUtils.isEmpty(fileName))
+            return "";
+        return fileName.substring(fileName.lastIndexOf('.') + 1);
+    }
+
+    /**
+     * Get file's name without extension (arg = file)
+     */
     public static String getFileBodyName(File file) {
         if (file.exists() && file.isFile()) {
             int extIndex = file.getName().lastIndexOf('.');
             return file.getName().substring(extIndex - 1);
         }
         return "";
+    }
+
+    /**
+     * Get file's name without extension (arg = fileName)
+     */
+    public static String getFileBodyName(String fileName) {
+        if (ObjectUtils.isEmpty(fileName))
+            return "";
+        return fileName.substring(fileName.lastIndexOf('.') - 1);
     }
 
     public static Integer getFileType(String fileExtension) {

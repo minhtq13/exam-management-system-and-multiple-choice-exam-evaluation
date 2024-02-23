@@ -11,10 +11,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import com.elearning.elearning_support.entities.BaseEntity;
+import com.elearning.elearning_support.entities.file_attach.FileAttach;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -57,8 +60,9 @@ public class StudentTestSet extends BaseEntity {
     @Column(name = "test_type")
     private Integer testType;
 
-    @Column(name = "handed_test_file")
-    private Long handedTestFile;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "handled_test_file", referencedColumnName = "id")
+    private FileAttach handedTestFile;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "student_test_set_id", referencedColumnName = "id")
