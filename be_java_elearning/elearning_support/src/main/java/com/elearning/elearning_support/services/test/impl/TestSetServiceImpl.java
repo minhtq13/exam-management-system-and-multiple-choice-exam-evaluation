@@ -15,11 +15,13 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.apache.commons.collections4.CollectionUtils;
@@ -658,12 +660,11 @@ public class TestSetServiceImpl implements TestSetService {
                     saveResults.stream().map(StudentTestSet::getStudentId).collect(Collectors.toSet()),
                     saveResults.stream().map(StudentTestSet::getTestSetId).collect(Collectors.toSet()));
                 // remove if not contained both student_id and test_set_id
-                for (StudentTestSet saveItem : saveResults) {
-                    existedStudentTestSet.removeIf(item -> !(Objects.equals(item.getTestSetId(), saveItem.getTestSetId()) &&
-                        Objects.equals(item.getStudentId(), saveItem.getStudentId())));
-                }
+                Map<Pair<Long, Long>, Boolean> mapStdTestSetKeyPair = new LinkedHashMap<>();
+                saveResults.forEach(item -> mapStdTestSetKeyPair.put(Pair.create(item.getStudentId(), item.getTestSetId()), Boolean.TRUE));
+                existedStudentTestSet.removeIf(item -> !mapStdTestSetKeyPair.get(Pair.create(item.getStudentId(), item.getTestSetId())));
                 studentTestSetRepository.deleteAllInBatch(existedStudentTestSet);
-                // save new results
+                // save new results in other thread
                 studentTestSetRepository.saveAll(saveResults);
                 boolean deletedFile = tempDataFile.delete();
             } else if (Objects.equals(option, "DELETE")) {

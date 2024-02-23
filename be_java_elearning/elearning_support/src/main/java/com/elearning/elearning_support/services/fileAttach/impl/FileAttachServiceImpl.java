@@ -3,6 +3,7 @@ package com.elearning.elearning_support.services.fileAttach.impl;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -61,7 +62,7 @@ public class FileAttachServiceImpl implements FileAttachService {
                 .externalLink(location)
                 .storedType(FileStoredTypeEnum.EXTERNAL_SERVER.getType())
                 .size(multipartFile.getSize())
-                .createdAt(LocalDateTime.now())
+                .createdAt(new Date())
                 .createdBy(AuthUtils.getCurrentUserId())
                 .build();
             fileAttach = fileAttachRepository.save(fileAttach);
@@ -99,7 +100,7 @@ public class FileAttachServiceImpl implements FileAttachService {
                 .externalLink(location)
                 .storedType(FileStoredTypeEnum.EXTERNAL_SERVER.getType())
                 .size(file.getTotalSpace())
-                .createdAt(LocalDateTime.now())
+                .createdAt(new Date())
                 .createdBy(AuthUtils.getCurrentUserId())
                 .build();
 //            fileAttach = fileAttachRepository.save(fileAttach);
@@ -130,7 +131,7 @@ public class FileAttachServiceImpl implements FileAttachService {
             .filePath(location)
             .size(multipartFile.getSize())
             .storedType(FileStoredTypeEnum.INTERNAL_SERVER.getType())
-            .createdAt(LocalDateTime.now())
+            .createdAt(new Date())
             .createdBy(AuthUtils.getCurrentUserId())
             .build();
         fileAttach = fileAttachRepository.save(fileAttach);
