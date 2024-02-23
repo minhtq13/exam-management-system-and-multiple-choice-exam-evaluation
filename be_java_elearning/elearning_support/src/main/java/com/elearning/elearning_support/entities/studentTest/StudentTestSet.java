@@ -61,7 +61,7 @@ public class StudentTestSet extends BaseEntity {
     private Integer testType;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "handled_test_file", referencedColumnName = "id")
+    @JoinColumn(name = "handled_test_file_id", referencedColumnName = "id")
     private FileAttach handedTestFile;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
