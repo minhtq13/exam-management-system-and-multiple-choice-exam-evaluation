@@ -56,7 +56,7 @@ public class TestController {
         testService.updateTest(testId, updateDTO);
     }
 
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER','STUDENT')")
     @GetMapping
     @Operation(summary = "Lấy danh sách các kỳ thi")
     public Page<TestDetailDTO> getListTest(

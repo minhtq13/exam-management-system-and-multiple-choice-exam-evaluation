@@ -80,7 +80,7 @@ public class TestSetController {
         return ResponseEntity.ok().headers(headers).body(resourceRes.getResource());
     }
 
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'TEACHER','STUDENT')")
     @PostMapping("/detail")
     @Operation(summary = "Lấy chi tiết đề thi")
     public TestSetDetailDTO getTestSetDetail(@RequestBody TestSetSearchReqDTO searchReqDTO) {
