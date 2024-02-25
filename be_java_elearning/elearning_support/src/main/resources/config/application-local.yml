@@ -6,7 +6,7 @@ server:
 
 # Cấu hình spring
 spring:
-  #Cấu hình datasource remote : AWS Neon
+  #Cấu hình datasource remote : AWS Neon/AWS RDS
   datasource:
     driverClassName: org.postgresql.Driver
 #    url: jdbc:postgresql://chiendao-postgres.czsy4rh1cpjk.ap-southeast-1.rds.amazonaws.com:5432/elearning_support_db

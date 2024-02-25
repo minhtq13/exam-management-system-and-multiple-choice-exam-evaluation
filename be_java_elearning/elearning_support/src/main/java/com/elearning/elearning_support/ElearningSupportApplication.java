@@ -22,8 +22,6 @@ public class ElearningSupportApplication {
 
     @PostConstruct
     public void init() {
-        // set time zone default
-//        TimeZone.setDefault(TimeZone.getTimeZone(DateUtils.TIME_ZONE));
         log.info("========= INITIALIZED TIMEZONE {} =========", Calendar.getInstance().getTimeZone().getID());
 
         // init shared app folder

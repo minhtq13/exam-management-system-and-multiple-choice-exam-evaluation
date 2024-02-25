@@ -8,6 +8,8 @@ services:
   backend_app:
     container_name: elearning_support_backend
     image: elearning_support_backend:1.0.0
+    volumes:
+      - app_data:/root
     environment:
       - "SPRING_PROFILES_ACTIVE=local"
       - "TZ=Asia/Ho_Chi_Minh"
@@ -19,3 +21,7 @@ services:
       network: e_learning_support
     ports:
       - '8088:8088' # local
+volumes:
+  app_data:
+    name: els_app_shared_data
+    driver: local
