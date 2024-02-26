@@ -19,7 +19,7 @@ services:
       context: elearning_support
       network: e_learning_support_network
     ports:
-      - '8088:8088' # AWS EC2 instance mapping port (open port 8088 as custom TCP)
+      - '443:8088' # AWS EC2 instance mapping port (open port 8088 as custom TCP)
 volumes:
   app_data:
     name: els_app_shared_data

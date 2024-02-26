@@ -190,7 +190,7 @@ public class FileUtils {
         return sharedAppDataPath;
     }
 
-    public static String getSharedAppDirectorySourcePath() {
+    public static String getSharedAppDirectoryPath() {
         String sharedAppSourcePath;
         if (SystemConstants.IS_WINDOWS) {
             sharedAppSourcePath = SystemConstants.WINDOWS_SHARED_DIR + "/source";

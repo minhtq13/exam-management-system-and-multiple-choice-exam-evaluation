@@ -25,15 +25,22 @@ public class ElearningSupportApplication {
         log.info("========= INITIALIZED TIMEZONE {} =========", Calendar.getInstance().getTimeZone().getID());
 
         // init shared app folder
+        // data folder
         File sharedDataFolder = new File(FileUtils.getSharedAppDirectoryDataPath());
-        File sharedSourceFolder = new File(FileUtils.getSharedAppDirectorySourcePath());
         if (!sharedDataFolder.exists()) {
             sharedDataFolder.mkdirs();
         }
+        // source folder
+        File sharedSourceFolder = new File(FileUtils.getSharedAppDirectoryPath() + "/source");
         if (!sharedSourceFolder.exists()) {
             sharedSourceFolder.mkdirs();
         }
-        log.info("========= INITIALIZED SHARED DATA AND SOURCE FOLDER =========");
+        // logs folder
+        File sharedLogsFolder = new File(FileUtils.getSharedAppDirectoryPath() + "/logs");
+        if (!sharedLogsFolder.exists()) {
+            sharedLogsFolder.mkdirs();
+        }
+        log.info("========= INITIALIZED SHARED DATA, SOURCE AND LOGS FOLDER =========");
     }
 
 }
