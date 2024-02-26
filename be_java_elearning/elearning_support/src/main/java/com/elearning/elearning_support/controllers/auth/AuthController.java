@@ -17,14 +17,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.elearning.elearning_support.constants.SystemConstants;
 import com.elearning.elearning_support.constants.message.errorKey.ErrorKey;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst;
+import com.elearning.elearning_support.dtos.auth.AuthValidationDTO;
 import com.elearning.elearning_support.dtos.auth.login.LoginRequest;
 import com.elearning.elearning_support.dtos.auth.login.LoginResponse;
 import com.elearning.elearning_support.dtos.auth.refresh.RefreshTokenResDTO;
 import com.elearning.elearning_support.dtos.users.ProfileUserDTO;
-import com.elearning.elearning_support.entities.auth.AuthInfo;
 import com.elearning.elearning_support.exceptions.CustomBadCredentialsException;
 import com.elearning.elearning_support.security.models.CustomUserDetails;
 import com.elearning.elearning_support.services.auth.AuthInfoService;
@@ -67,17 +66,16 @@ public class AuthController {
         // Init request values
         String ipAddress = AuthUtils.getIpAddress(request);
         // update auth info in db
-        AuthInfo authInfo = authInfoService.saveLoginAuthInfo(userDetails.getUser(), ipAddress);
+        AuthValidationDTO authInfo = authInfoService.saveLoginAuthInfo(userDetails.getUser(), ipAddress);
 
-        if (Objects.isNull(authInfo.getToken()) || Objects.isNull(authInfo.getRefreshToken())) {
+        if (Objects.isNull(authInfo.getAccessToken()) || Objects.isNull(authInfo.getRefreshToken())) {
             throw new CustomBadCredentialsException(MessageConst.AuthInfo.WRONG_USERNAME_PASSWORD, MessageConst.UNAUTHORIZED,
                 String.format("%s/%s", ErrorKey.AuthInfo.USERNAME, ErrorKey.AuthInfo.PASSWORD));
         }
-        System.out.println(SystemConstants.WINDOWS_SHARED_DIR);
         Set<String> roles = userDetails.getRoles();
         return ResponseEntity.ok(LoginResponse.builder()
             .issuedAt(new Date())
-            .accessToken(authInfo.getToken())
+            .accessToken(authInfo.getAccessToken())
             .refreshToken(authInfo.getRefreshToken())
             .roles(roles)
             .build());

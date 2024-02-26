@@ -5,10 +5,12 @@ import java.util.Date;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import com.elearning.elearning_support.constants.message.errorKey.ErrorKey;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst;
 import com.elearning.elearning_support.constants.message.messageConst.MessageConst.Resources;
+import com.elearning.elearning_support.dtos.auth.AuthValidationDTO;
 import com.elearning.elearning_support.dtos.auth.refresh.RefreshTokenResDTO;
 import com.elearning.elearning_support.entities.auth.AuthInfo;
 import com.elearning.elearning_support.entities.users.User;
@@ -21,6 +23,9 @@ import com.elearning.elearning_support.utils.DateUtils;
 
 @Service
 public class AuthServiceImpl implements AuthInfoService {
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
     private AuthInfoRepository authInfoRepository;
@@ -38,34 +43,45 @@ public class AuthServiceImpl implements AuthInfoService {
 
     public static final Integer TOKEN_VALID_STATUS = 1;
 
+    public static final String AUTH_KEY_PREFIX = "AUTH_USER_ID";
+
     @Override
-    public AuthInfo saveLoginAuthInfo(User user, String ip) {
-        AuthInfo currentAuthInfo = authInfoRepository.findFirstByUserIdOrderByCreatedAtDesc(user.getId()).orElse(null);
-        String accessToken = jwtUtils.generateJwt(user);
-        String refreshToken = jwtUtils.generateRefreshToken(user);
-        boolean tokenIsValid = jwtUtils.validateToken(accessToken);
-        if (Objects.isNull(currentAuthInfo)) {
-            AuthInfo newAuthInfo = AuthInfo.builder()
-                .userId(user.getId())
-                .token(accessToken)
-                .ipAddress(ip)
-                .status(TOKEN_VALID_STATUS)
-                .createdAt(LocalDateTime.now())
-                .lastLoginAt(LocalDateTime.now())
-                .refreshToken(refreshToken)
-                .rfTokenExpiredAt(new Date(DateUtils.getCurrentDateTime().getTime() + refreshTokenExpiredMs))
-                .build();
-            authInfoRepository.save(newAuthInfo);
-            return newAuthInfo;
+    public AuthValidationDTO saveLoginAuthInfo(User user, String ip) {
+        // === CHECK TOKEN IN REDIS =====
+        AuthValidationDTO redisAuth = (AuthValidationDTO) redisTemplate.opsForValue().get(AUTH_KEY_PREFIX + user.getId());
+        if (Objects.isNull(redisAuth) || !jwtUtils.validateToken(redisAuth.getAccessToken())) {
+            AuthInfo currentAuthInfo = authInfoRepository.findFirstByUserIdOrderByCreatedAtDesc(user.getId()).orElse(null);
+            String accessToken = jwtUtils.generateJwt(user);
+            String refreshToken = jwtUtils.generateRefreshToken(user);
+            AuthValidationDTO authValidationDTO;
+            if (Objects.isNull(currentAuthInfo)) { // not exist login history
+                AuthInfo newAuthInfo = AuthInfo.builder()
+                    .userId(user.getId())
+                    .token(accessToken)
+                    .ipAddress(ip)
+                    .status(TOKEN_VALID_STATUS)
+                    .createdAt(LocalDateTime.now())
+                    .lastLoginAt(LocalDateTime.now())
+                    .refreshToken(refreshToken)
+                    .rfTokenExpiredAt(new Date(DateUtils.getCurrentDateTime().getTime() + refreshTokenExpiredMs))
+                    .build();
+                authInfoRepository.save(newAuthInfo);
+                authValidationDTO = new AuthValidationDTO(newAuthInfo.getToken(), newAuthInfo.getRefreshToken(), newAuthInfo.getStatus());
+            } else { // existed login history
+                currentAuthInfo.setToken(!jwtUtils.validateToken(currentAuthInfo.getToken()) ? accessToken : currentAuthInfo.getToken()); // set status valid
+                currentAuthInfo.setRefreshToken(refreshToken);
+                currentAuthInfo.setRfTokenExpiredAt(new Date(DateUtils.getCurrentDateTime().getTime() + refreshTokenExpiredMs));
+                currentAuthInfo.setStatus(TOKEN_VALID_STATUS);
+                currentAuthInfo.setLastLoginAt(LocalDateTime.now());
+                currentAuthInfo = authInfoRepository.save(currentAuthInfo);
+                authValidationDTO = new AuthValidationDTO(currentAuthInfo.getToken(), currentAuthInfo.getRefreshToken(),
+                    currentAuthInfo.getStatus());
+            }
+            redisTemplate.opsForValue().set(AUTH_KEY_PREFIX + user.getId(), authValidationDTO);
+            return authValidationDTO;
         } else {
-            currentAuthInfo.setToken(tokenIsValid ? accessToken : currentAuthInfo.getToken()); // set status valid
-            currentAuthInfo.setRefreshToken(refreshToken);
-            currentAuthInfo.setRfTokenExpiredAt(new Date(DateUtils.getCurrentDateTime().getTime() + refreshTokenExpiredMs));
-            currentAuthInfo.setStatus(TOKEN_VALID_STATUS);
-            currentAuthInfo.setLastLoginAt(LocalDateTime.now());
+            return redisAuth;
         }
-        currentAuthInfo = authInfoRepository.save(currentAuthInfo);
-        return currentAuthInfo;
     }
 
     @Override
@@ -87,8 +103,10 @@ public class AuthServiceImpl implements AuthInfoService {
                 throw new CustomBadCredentialsException(MessageConst.AuthInfo.REFRESH_TOKEN_EXPIRED, Resources.AUTH_INFORMATION,
                     ErrorKey.AuthInfo.REFRESH_TOKEN);
             }
+            authInfo = authInfoRepository.save(authInfo);
+            redisTemplate.opsForValue()
+                .set(AUTH_KEY_PREFIX + user.getId(), new AuthValidationDTO(authInfo.getToken(), authInfo.getRefreshToken(), authInfo.getStatus()));
         }
-        authInfo = authInfoRepository.save(authInfo);
         return new RefreshTokenResDTO(authInfo.getToken(), authInfo.getRefreshToken());
     }
 }

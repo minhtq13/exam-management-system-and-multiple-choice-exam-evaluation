@@ -1,5 +1,6 @@
 package com.elearning.elearning_support.entities.auth;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 import javax.persistence.CascadeType;
@@ -24,7 +25,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Table(name = "auth_info")
-public class AuthInfo {
+public class AuthInfo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
