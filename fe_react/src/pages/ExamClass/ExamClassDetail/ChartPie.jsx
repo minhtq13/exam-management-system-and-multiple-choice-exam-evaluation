@@ -63,31 +63,37 @@ const ChartPie = ({ dataPieChart, resultData }) => {
           return (
             <div key={title} style={{ minWidth: 150 }}>
               {items.map((item, index) => {
-                const { name, value, color } = item;
+                const { value, color } = item;
                 return (
                   <div key={index}>
-                    <div style={{display: "flex", alignItems: "center"}}>
-                      <span
-                        style={{
-                          display: "inline-block",
-                          width: 6,
-                          height: 6,
-                          borderRadius: "50%",
-                          backgroundColor: color,
-                          marginRight: 6,
-                        }}
-                      ></span>
-                      <div style={{fontSize: 16, fontWeight: 600}}>{name}</div>
-                    </div>
-
                     <div style={{ margin: 0, display: "flex", justifyContent: "space-between" }}>
-                      <div>
+                      <div style={{display: "flex", alignItems: "center"}}>
+                        <span
+                          style={{
+                            display: "inline-block",
+                            width: 6,
+                            height: 6,
+                            borderRadius: "50%",
+                            backgroundColor: color,
+                            marginRight: 6,
+                          }}
+                        ></span>
                         <span>Số lượng: </span>
                       </div>
                       <b>{value}</b>
                     </div>
                     <div style={{ margin: 0, display: "flex", justifyContent: "space-between" }}>
-                      <div>
+                      <div style={{display: "flex", alignItems: "center"}}>
+                        <span
+                          style={{
+                            display: "inline-block",
+                            width: 6,
+                            height: 6,
+                            borderRadius: "50%",
+                            backgroundColor: color,
+                            marginRight: 6,
+                          }}
+                        ></span>
                         <span>Phần trăm: </span>
                       </div>
                       <b>

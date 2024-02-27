@@ -190,13 +190,13 @@ public class FileUtils {
         return sharedAppDataPath;
     }
 
-    public static String getSharedAppDirectorySourcePath() {
+    public static String getSharedAppDirectoryPath() {
         String sharedAppSourcePath;
         if (SystemConstants.IS_WINDOWS) {
-            sharedAppSourcePath = SystemConstants.WINDOWS_SHARED_DIR + "/source";
+            sharedAppSourcePath = SystemConstants.WINDOWS_SHARED_DIR;
             log.info("Windows's shared app source {}", sharedAppSourcePath);
         } else {
-            sharedAppSourcePath = SystemConstants.LINUX_SHARED_DIR + "/source";
+            sharedAppSourcePath = SystemConstants.LINUX_SHARED_DIR;
             log.info("Linux's shared app source {}", sharedAppSourcePath);
         }
         return sharedAppSourcePath;

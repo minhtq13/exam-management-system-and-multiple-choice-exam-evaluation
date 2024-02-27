@@ -22,20 +22,25 @@ public class ElearningSupportApplication {
 
     @PostConstruct
     public void init() {
-        // set time zone default
-//        TimeZone.setDefault(TimeZone.getTimeZone(DateUtils.TIME_ZONE));
         log.info("========= INITIALIZED TIMEZONE {} =========", Calendar.getInstance().getTimeZone().getID());
 
         // init shared app folder
+        // data folder
         File sharedDataFolder = new File(FileUtils.getSharedAppDirectoryDataPath());
-        File sharedSourceFolder = new File(FileUtils.getSharedAppDirectorySourcePath());
         if (!sharedDataFolder.exists()) {
             sharedDataFolder.mkdirs();
         }
+        // source folder
+        File sharedSourceFolder = new File(FileUtils.getSharedAppDirectoryPath() + "/source");
         if (!sharedSourceFolder.exists()) {
             sharedSourceFolder.mkdirs();
         }
-        log.info("========= INITIALIZED SHARED DATA AND SOURCE FOLDER =========");
+        // logs folder
+        File sharedLogsFolder = new File(FileUtils.getSharedAppDirectoryPath() + "/logs");
+        if (!sharedLogsFolder.exists()) {
+            sharedLogsFolder.mkdirs();
+        }
+        log.info("========= INITIALIZED SHARED DATA, SOURCE AND LOGS FOLDER =========");
     }
 
 }

@@ -6,7 +6,7 @@ server:
 
 # Cấu hình spring
 spring:
-  #Cấu hình datasource remote : AWS Neon
+  #Cấu hình datasource remote: AWS RDS
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://chiendao-postgres.czsy4rh1cpjk.ap-southeast-1.rds.amazonaws.com:5432/elearning_support_db
@@ -50,12 +50,20 @@ spring:
 #          socketFactory:
 #            port: 465
 #            class: javax.net.ssl.SSLSocketFactory
+  redis:
+    host: redis-12600.c1.ap-southeast-1-1.ec2.cloud.redislabs.com
+    port: 12600
+    connect-timeout: 10000
+    username: default
+    password: iY1yV1tF8rtf23DGZjBTO0wTAMUw89T1
+    database: 0 #elearning-auth-registry
 
 # Cấu hình Json Web Token
 jwt:
   secretKey: ELEARNINGKsu295JdkjKHJJHW2349gfbnaf23cheh34HIMAde24
   accessTokenExpiredMs: 100000000
   refreshTokenExpiredMs: 100000000000
+
 
 # Cấu hình Server Cloudinary
 cloudinary:
