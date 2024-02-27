@@ -123,8 +123,9 @@ public class ProfileTeacherFragment extends Fragment {
                     SpannableString phoneUnderLine = new SpannableString(phone);
                     phoneUnderLine.setSpan(new UnderlineSpan(), 0, phone.length(), 0);
                     teacherSDT.setText(phoneUnderLine);
+                    teacherGender.setText("Nam");
 
-                    teacherGender.setText(teacherProfileFragment.getIdentityType());
+//                    teacherGender.setText(teacherProfileFragment.getIdentityType());
 //                    String genderTmp = teacherProfileFragment.ge();
 //                    if(genderTmp.equals("MALE")){
 //                        teacherGender.setText("Nam");
@@ -133,11 +134,11 @@ public class ProfileTeacherFragment extends Fragment {
 //                    }
                     AccountSharedPreferences accountSharedPreferences = new AccountSharedPreferences(getContext());
                     List<String> role = accountSharedPreferences.getRoles();
-                    if ("SUPER_ADMIN".equals(role) || role == null) {
+                    if ("ROLE_SUPER_ADMIN".equals(role) || role == null) {
                         teacherRole.setText("Quản trị viên");
-                    }else if ("TEACHER".equals(role)) {
+                    }else if ("ROLE_TEACHER".equals(role)) {
                         teacherRole.setText("Giảng viên");
-                    } else if ("STUDENT".equals(role)) {
+                    } else if ("ROLE_STUDENT".equals(role)) {
                         teacherRole.setText("Sinh viên");
                     }
                 } else {

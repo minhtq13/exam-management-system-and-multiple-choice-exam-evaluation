@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/normalPadding"
-    android:background="@drawable/img_background"
     android:orientation="vertical"
     tools:context=".Teacher.ProfileUser.teacher.TeacherProfileUpdateActivity">
 
@@ -28,7 +27,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="12dp"
-        android:src="@drawable/ic_arrow_back_24"
+        android:src="@drawable/ic_arrowback_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.01"
         app:layout_constraintStart_toStartOf="parent"
@@ -179,6 +178,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_background_green"
                 android:textColor="@color/white"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:enabled="true"
                 android:layout_gravity="center"
                 android:layout_marginTop="32dp"

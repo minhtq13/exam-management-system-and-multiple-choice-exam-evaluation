@@ -63,7 +63,7 @@ public class SubjectActivity extends AppCompatActivity {
         subjectRecyclerView.setAdapter(subjectAdapter);
         AccountSharedPreferences accountSharedPreferences = new AccountSharedPreferences(this);
         List<String> userRoles = accountSharedPreferences.getRoles();
-        if (userRoles.contains("STUDENT")) {
+        if (userRoles.contains("ROLE_STUDENT")) {
             // If the user is a student, hide the buttons
             fabAdd.setVisibility(View.GONE);
         }

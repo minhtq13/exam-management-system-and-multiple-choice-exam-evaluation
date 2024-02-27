@@ -40,6 +40,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     private String examClassCode;
     private List<FileAttachDTO> fileAttachDTOS;
     Context context;
+
+    public void clearImages() {
+        this.list.clear();
+        notifyDataSetChanged();
+    }
     public ImageAdapter(ArrayList<Uri> list, Context context) {
         this.list = list;
         this.context = context;

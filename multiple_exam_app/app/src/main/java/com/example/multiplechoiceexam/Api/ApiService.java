@@ -26,6 +26,7 @@ import com.example.multiplechoiceexam.dto.question.QuestionUpdateDTO;
 import com.example.multiplechoiceexam.dto.student.StudentRequest;
 import com.example.multiplechoiceexam.dto.student.StudentResponse;
 import com.example.multiplechoiceexam.dto.student.StudentUpdateRequest;
+import com.example.multiplechoiceexam.dto.studentTest.ExamClassResultStatisticsDTO;
 import com.example.multiplechoiceexam.dto.studentTest.HandledImagesDeleteDTO;
 import com.example.multiplechoiceexam.dto.studentTest.StudentTestSetResultDTO;
 import com.example.multiplechoiceexam.dto.subject.SubjectRequest;
@@ -44,6 +45,7 @@ import com.example.multiplechoiceexam.dto.upload.ResponseMessage;
 import com.example.multiplechoiceexam.dto.upload.ScoringPreviewResDTO;
 
 import java.util.List;
+import java.util.Set;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -178,7 +180,12 @@ public interface ApiService {
     @PUT("api/exam-class/participant")
     Call<Void> updateParticipantToExamClass(@Body UserExamClassDTO userExamClassDTO);
 
-
+    @Multipart
+    @POST("api/exam-class/participant/student/import/{examClassId}")
+    Call<Set<Long>> importStudents(
+            @Path("examClassId") Long examClassId,
+            @Part MultipartBody.Part file
+    );
     @POST("api/exam-class")
     Call<Long> createClass(@Body ClassRequest classRequest);
     @PUT("api/exam-class/{id}")
@@ -187,7 +194,7 @@ public interface ApiService {
 
     @GET("api/exam-class/participant/export/{examClassId}")
     Call<ResponseBody> exportStudentTestExcel(@Path("examClassId") Long examClassId,
-                                              @Query("roleType") String roleType);
+                                              @Query("roleType") UserExamClassRoleEnum roleType);
 
     @DELETE("api/v1/class/disable/{id}")
     Call<ResponseMessage> disableClassRoomExam(@Path("id") Long classRoom);
@@ -221,10 +228,10 @@ public interface ApiService {
     Call<ScoringPreviewResDTO> loadScoredStudentTestSet(@Path("exClassCode") String exClassCode);
 
     @GET("api/std-test-set/result/{examClassCode}")
-    Call<List<StudentTestSetResultDTO>> getStudentTestSetResult(@Path("examClassCode") String examClassCode);
+    Call<ExamClassResultStatisticsDTO> getStudentTestSetResult(@Path("examClassCode") String examClassCode);
 
     @GET("api/std-test-set/result/export/{examClassCode}")
-    Call<ResponseBody> exportTeacher(@Path("examClassCode") String examClassCode);
+    Call<ResponseBody> exportStudentTestScoring(@Path("examClassCode") String examClassCode);
 
     @GET("api/test-set/handled-answers/uploaded/{examClassCode}")
     Call<List<FileAttachDTO>> getListFileInExFolder(@Path("examClassCode") String examClassCode);
@@ -301,14 +308,9 @@ public interface ApiService {
             @Query("search") String search
     );
 
-//    @Multipart
-//    @POST("api/v1/class/import/students")
-//    Call<ResponseMessage> importStudents(
-//            @Part("classCode") RequestBody classCode,
-//            @Part MultipartBody.Part file
-//    );
 
 
-//    @DELETE("api/v1/test/disable/{id}")
-//    Call<ResponseMessage> disableTestById(@Path("id") Integer testId);
+
+    @DELETE("api/v1/test/disable/{id}")
+    Call<ResponseMessage> disableTestById(@Path("id") Integer testId);
 }

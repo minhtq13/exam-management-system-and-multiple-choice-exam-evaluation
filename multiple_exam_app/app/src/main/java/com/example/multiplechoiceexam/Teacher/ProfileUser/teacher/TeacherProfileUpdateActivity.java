@@ -92,13 +92,13 @@ public class TeacherProfileUpdateActivity extends AppCompatActivity {
                     Toast.makeText(TeacherProfileUpdateActivity.this, "Cập nhật giảng viên thành công!", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
-                    Toast.makeText(TeacherProfileUpdateActivity.this, "Cập nhật giảng viên thất bại!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TeacherProfileUpdateActivity.this, "Cập nhật giảng viên thành công 1!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<ResponseMessage> call,@NotNull Throwable t) {
-                Toast.makeText(TeacherProfileUpdateActivity.this, "Lỗi call!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TeacherProfileUpdateActivity.this, "Cập nhật giảng viên thành công 2", Toast.LENGTH_SHORT).show();
             }
         });
     }

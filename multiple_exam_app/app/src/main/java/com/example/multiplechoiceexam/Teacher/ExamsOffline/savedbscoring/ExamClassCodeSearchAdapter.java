@@ -16,7 +16,6 @@ import java.util.List;
 
 public class ExamClassCodeSearchAdapter extends RecyclerView.Adapter<ExamClassCodeSearchAdapter.SemesterViewHolder> {
     private final Context context;
-
     private OnItemClickListener onItemClickListener;
     private final List<ICommonIdCode> iCommonIdCodeNames;
 

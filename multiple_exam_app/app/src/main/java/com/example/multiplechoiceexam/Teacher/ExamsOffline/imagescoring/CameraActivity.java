@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -166,6 +167,10 @@ public class CameraActivity extends AppCompatActivity implements EasyPermissions
             options.inJustDecodeBounds = false;
             options.inSampleSize = calculateSampleSize(options);
             selectedBitmap = BitmapFactory.decodeFile(tempFile.getPath(), options);
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+            Bitmap rotatedBitmap = Bitmap.createBitmap(selectedBitmap, 0, 0, selectedBitmap.getWidth(), selectedBitmap.getHeight(), matrix, true);
+            selectedBitmap = rotatedBitmap;
         } else if (requestCode == REQUEST_CODE_SELECT_ALBUM && data != null) {
             handleMultipleImages(data);
             return;
@@ -234,8 +239,8 @@ public class CameraActivity extends AppCompatActivity implements EasyPermissions
         int outHeight = options.outHeight;
         int outWidth = options.outWidth;
         int sampleSize = 1;
-        int destHeight = 1000;
-        int destWidth = 1000;
+        int destHeight = 1500;
+        int destWidth = 1500;
         if (outHeight > destHeight || outWidth > destHeight) {
             if (outHeight > outWidth) {
                 sampleSize = outHeight / destHeight;

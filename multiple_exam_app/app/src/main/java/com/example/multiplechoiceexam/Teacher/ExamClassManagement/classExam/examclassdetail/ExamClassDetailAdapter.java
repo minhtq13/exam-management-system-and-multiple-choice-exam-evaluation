@@ -10,9 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.multiplechoiceexam.R;
+import com.example.multiplechoiceexam.SharedPreferences.AccountSharedPreferences;
 import com.example.multiplechoiceexam.dto.examClass.IExamClassParticipantDTO;
 import com.example.multiplechoiceexam.dto.studentTest.StudentTestSetResultDTO;
 import com.example.multiplechoiceexam.viewmodel.ExamClassDetailStudentViewModel;
+
 import java.util.List;
 
 public class ExamClassDetailAdapter extends RecyclerView.Adapter<ExamClassDetailAdapter.ExamClassDetailViewHolder> {
@@ -41,6 +43,8 @@ public class ExamClassDetailAdapter extends RecyclerView.Adapter<ExamClassDetail
         holder.txtId.setText(String.valueOf(position + 1));
         holder.txtName.setText(iExamClassParticipantDTOS.get(position).getName());
         holder.txtMssv.setText(iExamClassParticipantDTOS.get(position).getCode());
+        AccountSharedPreferences accountSharedPreferences = new AccountSharedPreferences(context);
+        List<String> userRoles = accountSharedPreferences.getRoles();
         if(flag == 1){
             holder.textView2.setVisibility(View.INVISIBLE);
             holder.textTestSet.setVisibility(View.GONE);
@@ -49,17 +53,37 @@ public class ExamClassDetailAdapter extends RecyclerView.Adapter<ExamClassDetail
             holder.textViewTeacherTest.setVisibility(View.GONE);
             holder.textView10.setVisibility(View.VISIBLE);
         }
+        if(userRoles.contains("ROLE_STUDENT") ){
+            holder.textTestSet.setVisibility(View.GONE);
+            holder.txtGrade.setVisibility(View.GONE);
+            holder.textViewTeacherGrade.setVisibility(View.GONE);
+            holder.textViewTeacherTest.setVisibility(View.GONE);
+        }
+
         holder.txtExamClassCode.setText(iExamClassParticipantDTOS.get(position).getExamClassCode());
 
+        Integer studentId = iExamClassParticipantDTOS.get(position).getId();
         viewModel.getStudentTestSetResult(iExamClassParticipantDTOS.get(position).getExamClassCode())
                 .observeForever(studentTestSetResultDTOList -> {
                     if (studentTestSetResultDTOList != null && !studentTestSetResultDTOList.isEmpty()) {
-                        StudentTestSetResultDTO resultDTO = studentTestSetResultDTOList.get(position);
-
-                        holder.textTestSet.setText(resultDTO.getTestSetCode());
-                        holder.txtGrade.setText(String.valueOf(resultDTO.getTotalPoints()));
+                        for (StudentTestSetResultDTO resultDTO : studentTestSetResultDTOList) {
+                            if (resultDTO.getStudentId().equals(Long.valueOf(studentId))) {
+                                holder.textTestSet.setText(resultDTO.getTestSetCode());
+                                holder.txtGrade.setText(String.format("%.2f", resultDTO.getTotalPoints()));
+                                break;
+                            }
+                        }
                     }
                 });
+//        viewModel.getStudentTestSetResult(iExamClassParticipantDTOS.get(position).getExamClassCode())
+//                .observeForever(studentTestSetResultDTOList -> {
+//                    if (studentTestSetResultDTOList != null && !studentTestSetResultDTOList.isEmpty()) {
+//                        StudentTestSetResultDTO resultDTO = studentTestSetResultDTOList.get(position);
+//
+//                        holder.textTestSet.setText(resultDTO.getTestSetCode());
+//                        holder.txtGrade.setText(String.valueOf(resultDTO.getTotalPoints()));
+//                    }
+//                });
     }
 
     @Override

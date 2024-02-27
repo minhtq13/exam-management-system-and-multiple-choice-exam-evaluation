@@ -31,7 +31,7 @@ public class HtmlUtils {
                     // Kiểm tra xem bitmap có null hay không
                     if (bitmap != null) {
                         // Scaling bitmap
-                        bitmap = Bitmap.createScaledBitmap(bitmap, 400, 200, true);
+                        bitmap = Bitmap.createScaledBitmap(bitmap, 600, 400, true);
 
                         // Tạo drawable từ bitmap
                         Drawable drawable = new BitmapDrawable(textView.getResources(), bitmap);

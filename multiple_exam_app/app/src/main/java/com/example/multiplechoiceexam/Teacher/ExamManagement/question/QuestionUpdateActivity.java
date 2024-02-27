@@ -39,6 +39,7 @@ import com.example.multiplechoiceexam.Api.ApiService;
 import com.example.multiplechoiceexam.Api.RetrofitClient;
 import com.example.multiplechoiceexam.R;
 import com.example.multiplechoiceexam.Utils.HtmlUtils;
+import com.example.multiplechoiceexam.Utils.UpdateInterface;
 import com.example.multiplechoiceexam.dto.answer.AnswerRequest;
 import com.example.multiplechoiceexam.dto.answer.AnswerResponse;
 import com.example.multiplechoiceexam.dto.question.QuestionLevelEnum;
@@ -53,6 +54,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.IOException;
@@ -88,7 +90,7 @@ public class QuestionUpdateActivity extends AppCompatActivity {
     private CheckBox checkBox;
     Long chapterNo, questionId;
     private List<AnswerResponse> answers;
-    private ImageView voiceInputButton, voiceInputButtonAnswer;
+    private ImageView voiceInputButton, voiceInputButtonAnswer,removeImageButtonUpdate;
     private String currentPhotoPathUpdate,userEnteredHtmlContentAnswerUpdate, imageBase64AnswerUpdate,userEnteredHtmlContentUpdate,imageBase64Update,answerText;
     private QuestionLevelEnum selectedLevelUpdate;
     private ProgressDialog progressDialog;
@@ -123,10 +125,13 @@ public class QuestionUpdateActivity extends AppCompatActivity {
         chooseImageBtnUpdate = findViewById(R.id.chooseImageBtnUpdate);
         levelSpinnerUpdate = findViewById(R.id.levelSpinnerUpdate);
         voiceInputButton = findViewById(R.id.voiceInputButtonUpdate);
+        removeImageButtonUpdate = findViewById(R.id.removeImageButtonUpdate);
         questionEditTextUpdate = findViewById(R.id.questionEditTextUpdate);
         answerLayoutUpdate = findViewById(R.id.answerLayoutUpdate);
         addAnswerButtonUpdate = findViewById(R.id.addAnswerButtonUpdate);
         saveQuestionButtonUpdate = findViewById(R.id.saveQuestionButtonUpdate);
+
+        removeImageButtonUpdate.setOnClickListener(v -> removeImageUpdate());
 
         voiceInputButton.setOnClickListener(v -> {
             if (ContextCompat.checkSelfPermission(QuestionUpdateActivity.this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
@@ -161,6 +166,13 @@ public class QuestionUpdateActivity extends AppCompatActivity {
         levelDropdownUpdate();
     }
 
+    private void removeImageUpdate() {
+        imageViewQuestionUpdate.setVisibility(View.GONE);
+        removeImageButtonUpdate.setVisibility(View.GONE);
+        currentPhotoPathUpdate = null;
+        imageBase64Update = null;
+    }
+
     private void startVoiceRecognitionUpdate() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -186,12 +198,28 @@ public class QuestionUpdateActivity extends AppCompatActivity {
                     String htmlTransfer = questionResponse.getContent();
                     Document doc = Jsoup.parse(htmlTransfer, "", Parser.xmlParser());
 
-                    Element firstParagraph = doc.select("p").first();
-                    if (firstParagraph != null) {
-                        questionEditTextUpdate.setText(firstParagraph.text());
+                    List<String> paragraphTexts = new ArrayList<>();
+                    Elements paragraphElements = doc.select("p");
+                    for (Element paragraphElement : paragraphElements) {
+                        String paragraphText = paragraphElement.text();
+                        paragraphTexts.add(paragraphText);
+                    }
+
+                    if (!paragraphTexts.isEmpty()) {
+                        StringBuilder combinedText = new StringBuilder();
+                        for (String paragraphText : paragraphTexts) {
+                            combinedText.append(paragraphText).append("\n");
+                        }
+                        questionEditTextUpdate.setText(combinedText.toString());
                     } else {
                         questionEditTextUpdate.setText(doc.text());
                     }
+//                    Element firstParagraph = doc.select("p").first();
+//                    if (firstParagraph != null) {
+//                        questionEditTextUpdate.setText(firstParagraph.text());
+//                    } else {
+//                        questionEditTextUpdate.setText(doc.text());
+//                    }
 
                     Element img = doc.select("img").first();
                     imageBase64Update = "";

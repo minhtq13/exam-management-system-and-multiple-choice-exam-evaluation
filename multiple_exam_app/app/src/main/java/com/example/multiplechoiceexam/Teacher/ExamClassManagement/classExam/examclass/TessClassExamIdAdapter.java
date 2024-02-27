@@ -43,8 +43,8 @@ public class TessClassExamIdAdapter extends RecyclerView.Adapter<TessClassExamId
     @Override
     public void onBindViewHolder(@NonNull TessClassExamIdAdapter.TessClassExamIdViewHolder holder, int position) {
         TestClassResponse.TestItem classResponse = classResponses.get(position);
-        holder.classTitle.setText(classResponse.getSubjectName());
-        holder.classCode.setText(classResponse.getSubjectCode());
+        holder.classTitle.setText(classResponse.getName());
+        holder.classCode.setText(classResponse.getSubjectName());
 
     }
 

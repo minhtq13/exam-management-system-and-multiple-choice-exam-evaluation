@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">Hỗ trợ đánh giá kết quả thi trắc nghiệm</string>
-    <string name="forget_password_tv"><u>Forget Password</u></string>
-    <string name="create_your_account_tv"><u>Create your Account</u></string>
+    <string name="app_name">HUSTAssistantWise</string>
+    <string name="forget_password_tv"><u>Quên mật khẩu</u></string>
+    <string name="create_your_account_tv"><u>Tạo tài khoản mới</u></string>
     <string name="sign_in_tv"><u>Sign In</u></string>
-    <string name="title_signIn">Welcome to \n MultipleChoice Exam</string>
+    <string name="title_signIn">Welcome to \n HUSTAssistantWise</string>
     <string name="title_activity_menu_teacher_drawer">MenuTeacherDrawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

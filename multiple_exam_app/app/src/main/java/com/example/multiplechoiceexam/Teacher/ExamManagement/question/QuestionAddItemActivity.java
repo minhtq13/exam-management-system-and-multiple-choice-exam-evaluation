@@ -37,6 +37,7 @@ import com.example.multiplechoiceexam.Api.ApiService;
 import com.example.multiplechoiceexam.Api.RetrofitClient;
 import com.example.multiplechoiceexam.R;
 import com.example.multiplechoiceexam.Utils.HtmlUtils;
+import com.example.multiplechoiceexam.Utils.UpdateInterface;
 import com.example.multiplechoiceexam.Utils.Utility;
 import com.example.multiplechoiceexam.dto.answer.AnswerRequest;
 import com.example.multiplechoiceexam.dto.question.MultiQuestionRequest;
@@ -83,7 +84,9 @@ public class QuestionAddItemActivity extends AppCompatActivity {
     private QuestionLevelEnum selectedLevel;
     String  imageBase64,imageBase64Answer;
     private Long chapterNo;
-    private ImageView voiceInputButton, voiceInputButtonAnswer;
+    private ImageView voiceInputButton, voiceInputButtonAnswer, removeImageButton;
+    private UpdateInterface updateInterface;
+
     boolean checkQuestion = false;
     private ProgressDialog progressDialog;
     private String permissions[] = {
@@ -108,6 +111,7 @@ public class QuestionAddItemActivity extends AppCompatActivity {
         addAnswerButton = findViewById(R.id.addAnswerButton);
         levelSpinner = findViewById(R.id.levelSpinner);
         voiceInputButton = findViewById(R.id.voiceInputButton);
+        removeImageButton = findViewById(R.id.removeImageButton);
         imageViewQuestion = findViewById(R.id.image_view_question);
         selectButton = findViewById(R.id.chooseImageBtn);
         progressDialog = new ProgressDialog(QuestionAddItemActivity.this);
@@ -126,6 +130,8 @@ public class QuestionAddItemActivity extends AppCompatActivity {
             }
         });
 
+        removeImageButton.setOnClickListener(v -> removeImage());
+        
         selectButton.setOnClickListener(view -> {
             checkQuestion = true;
             Dialog dialog = new Dialog(QuestionAddItemActivity.this);
@@ -210,6 +216,13 @@ public class QuestionAddItemActivity extends AppCompatActivity {
         });
 
         addAnswerButton.setOnClickListener(v -> addAnswerField());
+    }
+
+    private void removeImage() {
+        imageViewQuestion.setVisibility(View.GONE);
+        removeImageButton.setVisibility(View.GONE);
+        currentPhotoPath = null;
+        imageBase64 = null;
     }
 
     private void startVoiceRecognition() {
@@ -452,6 +465,7 @@ public class QuestionAddItemActivity extends AppCompatActivity {
             if (checkQuestion) {
                 Picasso.get().load(croppedUri).into(imageViewQuestion);
                 imageViewQuestion.setVisibility(View.VISIBLE);
+                removeImageButton.setVisibility(View.VISIBLE);
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), croppedUri);
                 imageBase64 = HtmlUtils.convertBitmapToBase64(bitmap);
             } else {
@@ -517,6 +531,7 @@ public class QuestionAddItemActivity extends AppCompatActivity {
             public void onResponse(@NotNull Call<Void> call,@NotNull Response<Void> response) {
                 if (response.isSuccessful()) {
                     progressDialog.dismiss();
+                    setResult(RESULT_OK);
                     finish();
                     Toast.makeText(QuestionAddItemActivity.this, "Thành công", Toast.LENGTH_SHORT).show();
                 } else {
@@ -535,6 +550,5 @@ public class QuestionAddItemActivity extends AppCompatActivity {
         });
 
     }
-
 
 }

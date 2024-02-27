@@ -25,25 +25,33 @@ public class TeacherProfileActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void getDataFromIntent() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            binding.textviewDetailTeacherName.setText(intent.getStringExtra("teacher_name_1"));
+            binding.textviewDetailTeacherDob.setText(intent.getStringExtra("teacher_birth_1"));
+            binding.textviewDetailTeacherId.setText(intent.getStringExtra("teacher_code_1"));
 
-        binding.textviewDetailTeacherName.setText(getIntent().getStringExtra("teacher_name_1"));
-        binding.textviewDetailTeacherDob.setText(getIntent().getStringExtra("teacher_birth_1"));
-        binding.textviewDetailTeacherId.setText(getIntent().getStringExtra("teacher_code_1"));
-        String email = getIntent().getStringExtra("teacher_email_1");
-        SpannableString emailUnderLine = new SpannableString(email);
-        emailUnderLine.setSpan(new UnderlineSpan(), 0, email.length(), 0);
-        binding.textviewDetailTeacherEmail.setText(emailUnderLine);
+            String email = intent.getStringExtra("teacher_email_1");
+            if (email != null) {
+                SpannableString emailUnderLine = new SpannableString(email);
+                emailUnderLine.setSpan(new UnderlineSpan(), 0, email.length(), 0);
+                binding.textviewDetailTeacherEmail.setText(emailUnderLine);
+            }
 
-        String genderTmp = getIntent().getStringExtra("teacher_gender_1");
-        if (genderTmp == null || genderTmp.equals("MALE")) {
-            binding.textviewDetailTeacherSex.setText("Nam");
-        } else {
-            binding.textviewDetailTeacherSex.setText("Nữ");
+            String genderTmp = intent.getStringExtra("teacher_gender_1");
+            if (genderTmp == null || genderTmp.equals("MALE")) {
+                binding.textviewDetailTeacherSex.setText("Nam");
+            } else {
+                binding.textviewDetailTeacherSex.setText("Nữ");
+            }
+
+            String phone = intent.getStringExtra("teacher_phone_1");
+            if (phone != null) {
+                SpannableString phoneUnderLine = new SpannableString(phone);
+                phoneUnderLine.setSpan(new UnderlineSpan(), 0, phone.length(), 0);
+                binding.textviewDetailTeacherPhone.setText(phoneUnderLine);
+            }
         }
-        String phone = getIntent().getStringExtra("teacher_phone_1");
-        SpannableString phoneUnderLine = new SpannableString(phone);
-        phoneUnderLine.setSpan(new UnderlineSpan(), 0, phone.length(), 0);
-        binding.textviewDetailTeacherPhone.setText(phoneUnderLine);
     }
 
     private void initEvent() {

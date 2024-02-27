@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,20 +53,22 @@ public class ExamsOfflineFragment extends Fragment {
         //   ImageView uploadImg = root.findViewById(R.id.offline_upload);
         ImageView previewExam = root.findViewById(R.id.offline_preview);
         ImageView imageClassExam = root.findViewById(R.id.exam_class_image);
+        LinearLayout setVisiableStudent = root.findViewById(R.id.student_role_invisible);
         userName = root.findViewById(R.id.username1);
         TextView role = root.findViewById(R.id.role1);
         @SuppressLint("UseRequireInsteadOfGet") AccountSharedPreferences accountSharedPreferences = new AccountSharedPreferences(Objects.requireNonNull(getContext()));
         List<String> roles = accountSharedPreferences.getRoles();
         if (roles == null || roles.isEmpty()) {
             role.setText("Quản trị viên");
-        } else if (roles.contains("SUPER_ADMIN")) {
+        } else if (roles.contains("ROLE_SUPER_ADMIN")) {
             role.setText("Quản trị viên");
-        } else if (roles.contains("TEACHER")) {
+        } else if (roles.contains("ROLE_TEACHER")) {
             role.setText("Giảng viên");
-        } else if (roles.contains("STUDENT")) {
+        } else if (roles.contains("ROLE_STUDENT")) {
             role.setText("Sinh viên");
+            setVisiableStudent.setVisibility(View.GONE);
         } else {
-            role.setText("Không xác định");
+            role.setText("Giảng viên");
         }
         apiService.userProfile().enqueue(new Callback<ProfileUserDTO>() {
             @SuppressLint("SetTextI18n")
@@ -109,7 +112,7 @@ public class ExamsOfflineFragment extends Fragment {
     private boolean isStudentRole() {
         AccountSharedPreferences accountSharedPreferences = new AccountSharedPreferences(requireContext());
         List<String> roles = accountSharedPreferences.getRoles();
-        return roles != null && roles.contains("STUDENT");
+        return roles != null && roles.contains("ROLE_STUDENT");
     }
 
 }

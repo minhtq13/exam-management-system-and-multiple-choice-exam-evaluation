@@ -77,6 +77,7 @@ public class SubjectUpdateActivity extends AppCompatActivity {
         editTextCode.setText(subjectCode);
         editTextCredit.setText(String.valueOf(subjectCredit));
         editTextTitle.setText(subjectTitle);
+        editTextDescription.setText(subjectTitle);
     }
 
     private void initCustom() {

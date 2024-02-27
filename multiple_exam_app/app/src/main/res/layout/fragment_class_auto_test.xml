@@ -18,7 +18,7 @@
             android:id="@+id/icon_close_dt"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_arrow_back_24" />
+            android:src="@drawable/ic_arrowback_24" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -303,6 +303,8 @@
                 android:layout_marginTop="@dimen/all_margin_12"
                 android:background="@drawable/button_background_green"
                 android:enabled="true"
+                android:paddingEnd="30dp"
+                android:paddingStart="30dp"
                 android:textColor="@color/white"
                 android:text="Xác nhận"
                 android:textAllCaps="false" />

@@ -61,15 +61,16 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         String title = subjectResponseList.get(position).getTitle();
         holder.subjectCode.setText(code);
         holder.subjectTitle.setText(title);
-        holder.subjectCredit.setText(subjectResponseList.get(position).getCredit());
+        holder.subjectCredit.setText(String.valueOf(subjectResponseList.get(position).getCredit()));
 //        holder.subjectChapter.setText(subjectResponseList.get(position).getDepartmentName());
 
         AccountSharedPreferences accountSharedPreferences = new AccountSharedPreferences(context);
         List<String> userRoles = accountSharedPreferences.getRoles();
 
         // Check if the "STUDENT" role is present
-        if (userRoles.contains("STUDENT")) {
+        if (userRoles.contains("ROLE_STUDENT")) {
             holder.imageDelete.setVisibility(View.GONE);
+            holder.imageUpdate.setVisibility(View.GONE);
         } else {
             holder.imageDelete.setVisibility(View.GONE);
 

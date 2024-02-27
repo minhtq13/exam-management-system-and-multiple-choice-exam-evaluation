@@ -32,27 +32,36 @@ public class StudentProfileActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void getDataFromIntent() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            binding.textviewDetailStudentName.setText(intent.getStringExtra("student_name"));
+            binding.textviewDetailStudentDob.setText(intent.getStringExtra("student_birth"));
+            binding.textviewDetailStudentId.setText(intent.getStringExtra("student_code"));
+            binding.textviewDetailStudentK.setText("K" + intent.getIntExtra("student_course", 0));
 
-        binding.textviewDetailStudentName.setText(getIntent().getStringExtra("student_name"));
-        binding.textviewDetailStudentDob.setText(getIntent().getStringExtra("student_birth"));
-        binding.textviewDetailStudentId.setText(getIntent().getStringExtra("student_code"));
-        binding.textviewDetailStudentK.setText("K" + getIntent().getIntExtra("student_course",0));
-        String email = getIntent().getStringExtra("student_email");
-        SpannableString emailUnderLine = new SpannableString(email);
-        emailUnderLine.setSpan(new UnderlineSpan(), 0, email.length(), 0);
-        binding.textviewDetailStudentEmail.setText(emailUnderLine);
+            String email = intent.getStringExtra("student_email");
+            if (email != null) {
+                SpannableString emailUnderLine = new SpannableString(email);
+                emailUnderLine.setSpan(new UnderlineSpan(), 0, email.length(), 0);
+                binding.textviewDetailStudentEmail.setText(emailUnderLine);
+            }
 
-        String genderTmp = getIntent().getStringExtra("student_gender");
-        if (genderTmp == null || genderTmp.equals("MALE")) {
-            binding.textviewDetailStudentSex.setText("Nam");
-        } else {
-            binding.textviewDetailStudentSex.setText("Nữ");
+            String genderTmp = intent.getStringExtra("student_gender");
+            if (genderTmp == null || genderTmp.equals("MALE")) {
+                binding.textviewDetailStudentSex.setText("Nam");
+            } else {
+                binding.textviewDetailStudentSex.setText("Nữ");
+            }
+
+            String phone = intent.getStringExtra("student_phone");
+            if (phone != null) {
+                SpannableString phoneUnderLine = new SpannableString(phone);
+                phoneUnderLine.setSpan(new UnderlineSpan(), 0, phone.length(), 0);
+                binding.textviewDetailStudentPhone.setText(phoneUnderLine);
+            }
         }
-        String phone = getIntent().getStringExtra("student_phone");
-        SpannableString phoneUnderLine = new SpannableString(phone);
-        phoneUnderLine.setSpan(new UnderlineSpan(), 0, phone.length(), 0);
-        binding.textviewDetailStudentPhone.setText(phoneUnderLine);
     }
+
 
     private void initEvent() {
         binding.textviewDetailStudentPhone.setOnClickListener(v -> {

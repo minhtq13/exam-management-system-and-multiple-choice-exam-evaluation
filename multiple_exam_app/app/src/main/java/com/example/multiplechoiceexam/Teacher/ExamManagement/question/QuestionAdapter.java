@@ -36,7 +36,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,6 +53,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
     List<QuestionListDTO> questionResponseList;
     private Long chapterId = -1L;
     private UpdateInterface updateInterface;
+    private static final int UPDATE_QUESTION_REQUEST_CODE = 1;
 
     public void setChapterId(Long chapterId) {
         this.chapterId = chapterId;
@@ -81,14 +84,14 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             doc = Jsoup.parse(htmlTransfer, "", Parser.xmlParser());
         }
 
-        String textContent = "";
-        String base64Image = "";  // Di chuyển khai báo ra khỏi block if
+        //String textContent = "";
+        List<String> paragraphTexts = new ArrayList<>();
+        String base64Image = "";
         if (doc != null) {
-            Element paragraphElement = doc.select("p").first();
-            if (paragraphElement != null) {
-                textContent = paragraphElement.text();
-            } else {
-                textContent = doc.text();
+            Elements paragraphElements = doc.select("p");
+            for (Element paragraphElement : paragraphElements) {
+                String paragraphText = paragraphElement.text();
+                paragraphTexts.add(paragraphText);
             }
 
             Element img = doc.select("img").first();
@@ -102,13 +105,23 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             }
         }
 
-        holder.questionTitle.setText(textContent);
+        if (!paragraphTexts.isEmpty()) {
+            StringBuilder combinedText = new StringBuilder();
+            for (String paragraphText : paragraphTexts) {
+                combinedText.append(paragraphText).append("\n");
+            }
+            holder.questionTitle.setText(combinedText.toString());
+        } else {
+            assert doc != null;
+            holder.questionTitle.setText(doc.text());
+        }
+        //holder.questionTitle.setText(textContent);
 
         AccountSharedPreferences accountSharedPreferences = new AccountSharedPreferences(context);
         List<String> userRoles = accountSharedPreferences.getRoles();
 
         // If user has the STUDENT role, hide update and delete buttons
-        if (userRoles.contains("STUDENT") || chapterId == -1L) {
+        if (userRoles.contains("ROLE_STUDENT") || chapterId == -1L) {
             holder.editQuestion.setVisibility(View.GONE);
             holder.deleteQuestion.setVisibility(View.GONE);
         } else {

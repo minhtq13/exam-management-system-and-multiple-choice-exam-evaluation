@@ -62,7 +62,7 @@ public class ClassTestExamListActivity extends AppCompatActivity {
 
         AccountSharedPreferences accountSharedPreferences = new AccountSharedPreferences(this);
         List<String> userRoles = accountSharedPreferences.getRoles();
-        if (userRoles.contains("STUDENT")) {
+        if (userRoles.contains("ROLE_STUDENT")) {
 
             btnClassTestAdd.setVisibility(View.GONE);
         }

@@ -19,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import com.example.multiplechoiceexam.Teacher.ExamsOffline.classTest.createTest.
 import com.example.multiplechoiceexam.Utils.ValidateInputData;
 import com.example.multiplechoiceexam.dto.examClass.ICommonIdCode;
 import com.example.multiplechoiceexam.dto.fileAttach.FileAttachDTO;
+import com.example.multiplechoiceexam.dto.studentTest.ExamClassResultStatisticsDTO;
 import com.example.multiplechoiceexam.dto.studentTest.StudentTestSetResultDTO;
 import com.example.multiplechoiceexam.dto.subject.SubjectResponse;
 import com.example.multiplechoiceexam.dto.test.semeter.SemesterBox;
@@ -53,14 +55,15 @@ import retrofit2.Response;
 public class StudentSaveScoringDBActivity extends AppCompatActivity {
     private RecyclerView recyclerViewScoring;
     private StudentTestSetResultAdapter studentTestSetResultAdapter;
-    private List<StudentTestSetResultDTO> studentTestSetResultDTO;
+    private ExamClassResultStatisticsDTO examClassResultStatisticsDTO;
     private List<FileAttachDTO> fileAttachDTOS;
     private TextInputEditText txtSemester,txtSubject,editTextClassCode;
     private Button btnCheck, btnDBNoScoring, btnExport;
+    private ImageView imageBack;
     private ApiService apiService;
     private String examClassCode;
     private Long semesterId,subjectId;
-    private ProgressDialog progressDialog;
+    private ProgressDialog progressDialog, progressDialogDownload;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -68,7 +71,6 @@ public class StudentSaveScoringDBActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_save_scoring_dbactivity);
         apiService = RetrofitClient.getApiService(getApplicationContext());
-        studentTestSetResultDTO = new ArrayList<>();
         fileAttachDTOS = new ArrayList<>();
 
         editTextClassCode = findViewById(R.id.editTextScoringSaveDB);
@@ -78,10 +80,15 @@ public class StudentSaveScoringDBActivity extends AppCompatActivity {
         txtSemester = findViewById(R.id.txt_semester_test_search);
         btnDBNoScoring = findViewById(R.id.btn_scoring_saveDB_no_scoring);
         recyclerViewScoring = findViewById(R.id.recycler_scoring_db);
+        imageBack = findViewById(R.id.imageView_save_scoring_back);
         progressDialog = new ProgressDialog(StudentSaveScoringDBActivity.this);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Đang lấy bài thi...");
+        progressDialogDownload = new ProgressDialog(StudentSaveScoringDBActivity.this);
+        progressDialogDownload.setCancelable(false);
+        progressDialogDownload.setMessage("Đang tải danh sách sinh viên...");
 
+        imageBack.setOnClickListener(view -> finish());
         editTextClassCode.setOnClickListener(view -> getListExamClass());
         txtSubject.setOnClickListener(view -> choseSubjectId());
         txtSemester.setOnClickListener(view -> choseSemesterId());
@@ -127,13 +134,13 @@ public class StudentSaveScoringDBActivity extends AppCompatActivity {
             if(!ValidateInputData.stringNotNull(examClassCode, editTextClassCode)){
                 return;
             }
-            progressDialog.show();
-            exportTeachers(examClassCode);
+            progressDialogDownload.show();
+            exportStudentTestScoring(examClassCode);
         });
     }
 
-    private void exportTeachers(String examClassCode) {
-        Call<ResponseBody> call = apiService.exportTeacher(examClassCode);
+    private void exportStudentTestScoring(String examClassCode) {
+        Call<ResponseBody> call = apiService.exportStudentTestScoring(examClassCode);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call,@NotNull Response<ResponseBody> response) {
@@ -141,21 +148,22 @@ public class StudentSaveScoringDBActivity extends AppCompatActivity {
                     ResponseBody customInputStreamResource = response.body();
                     if (customInputStreamResource != null) {
                         String randomDateTime = generateRandomDateTime();
-                        downloadFile(customInputStreamResource, "Teacher_Exam_" + randomDateTime + ".xlsx");
-                        progressDialog.dismiss();
+                        downloadFile(customInputStreamResource, "Student_Exam_" + examClassCode+"_" + randomDateTime + ".xlsx");
+                        progressDialogDownload.dismiss();
                     } else {
+                        progressDialogDownload.dismiss();
                         Toast.makeText(getApplicationContext(), "Phản hồi từ server rỗng.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), "Gọi API không thành công. Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
+                    progressDialogDownload.dismiss();
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<ResponseBody> call,@NotNull Throwable t) {
                 Toast.makeText(getApplicationContext(), "Looix !", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
+                progressDialogDownload.dismiss();
             }
         });
     }
@@ -285,13 +293,14 @@ public class StudentSaveScoringDBActivity extends AppCompatActivity {
 
 
     private void searchScoringMultiExam(String examClassCode) {
-        apiService.getStudentTestSetResult(examClassCode).enqueue(new Callback<List<StudentTestSetResultDTO>>() {
+        apiService.getStudentTestSetResult(examClassCode).enqueue(new Callback<ExamClassResultStatisticsDTO>() {
             @Override
-            public void onResponse(@NotNull Call<List<StudentTestSetResultDTO>> call,@NotNull Response<List<StudentTestSetResultDTO>> response) {
+            public void onResponse(@NotNull Call<ExamClassResultStatisticsDTO> call,@NotNull Response<ExamClassResultStatisticsDTO> response) {
                 if (response.isSuccessful()) {
                     progressDialog.dismiss();
-                    studentTestSetResultDTO = response.body();
-                    if (studentTestSetResultDTO != null) {
+                    examClassResultStatisticsDTO = response.body();
+                    if (examClassResultStatisticsDTO != null) {
+                        List<StudentTestSetResultDTO> studentTestSetResultDTO= examClassResultStatisticsDTO.getResults();
                         setupRecyclerView(studentTestSetResultDTO);
                         btnExport.setVisibility(View.VISIBLE);
                         Toast.makeText(StudentSaveScoringDBActivity.this, " thanh cong", Toast.LENGTH_SHORT).show();
@@ -304,7 +313,7 @@ public class StudentSaveScoringDBActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(@NotNull Call<List<StudentTestSetResultDTO>> call,@NotNull Throwable t) {
+            public void onFailure(@NotNull Call<ExamClassResultStatisticsDTO> call,@NotNull Throwable t) {
                 progressDialog.dismiss();
                 Toast.makeText(StudentSaveScoringDBActivity.this, "lỗi", Toast.LENGTH_SHORT).show();
 

@@ -1,5 +1,7 @@
 package com.example.multiplechoiceexam.Teacher.ExamClassManagement.classExam.examclass;
 
+import static com.example.multiplechoiceexam.Utils.DateUtils.generateRandomDateTime;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -70,7 +72,7 @@ public class ExamClassAdapter extends RecyclerView.Adapter<ExamClassAdapter.Exam
         AccountSharedPreferences accountSharedPreferences = new AccountSharedPreferences(context);
         List<String> userRoles = accountSharedPreferences.getRoles();
 
-        if (userRoles.contains("STUDENT")) {
+        if (userRoles.contains("ROLE_STUDENT")) {
             holder.disableClass.setVisibility(View.GONE);
             holder.classDownload.setVisibility(View.GONE);
             holder.classUpdate.setVisibility(View.GONE);
@@ -86,7 +88,7 @@ public class ExamClassAdapter extends RecyclerView.Adapter<ExamClassAdapter.Exam
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 builder.setTitle("Xác nhận");
                 builder.setMessage("Bạn có chắc chắn muốn tải xuống tập tin không?");
-                builder.setPositiveButton("Có", (dialogInterface, i) -> downloadFileWithConfirmation(examClass.getId()));
+                builder.setPositiveButton("Có", (dialogInterface, i) -> downloadFileWithConfirmation(examClass.getId(),examClass.getCode()));
                 builder.setNegativeButton("Không", null);
                 builder.show();
             });
@@ -149,16 +151,17 @@ public class ExamClassAdapter extends RecyclerView.Adapter<ExamClassAdapter.Exam
         });
     }
 
-    private void downloadFileWithConfirmation(Long id) {
+    private void downloadFileWithConfirmation(Long id, String classCode) {
         ApiService apiService = RetrofitClient.getApiService(context.getApplicationContext());
-        Call<ResponseBody> call = apiService.exportStudentTestExcel(3L, String.valueOf(UserExamClassRoleEnum.STUDENT));
+        Call<ResponseBody> call = apiService.exportStudentTestExcel(id, UserExamClassRoleEnum.STUDENT);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call,@NotNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     ResponseBody body = response.body();
                     if (body != null) {
-                        downloadFile(body, "StudentTest_" + id + ".xlsx");
+                        String randomDateTime = generateRandomDateTime();
+                        downloadFile(body, "StudentTest_" + classCode +"_"+ randomDateTime+ ".xlsx");
                     } else {
                         Toast.makeText(context, "Phản hồi từ server rỗng.", Toast.LENGTH_SHORT).show();
                     }

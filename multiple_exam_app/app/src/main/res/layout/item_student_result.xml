@@ -146,8 +146,10 @@
                     android:text="56"
                     android:textSize="17sp"
                     android:gravity="right"/>
+
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/total_ques_student"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="/60"
                     android:textSize="17sp"

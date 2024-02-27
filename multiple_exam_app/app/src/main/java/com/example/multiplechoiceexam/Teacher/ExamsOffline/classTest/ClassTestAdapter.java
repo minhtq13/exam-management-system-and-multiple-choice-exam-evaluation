@@ -1,8 +1,10 @@
 package com.example.multiplechoiceexam.Teacher.ExamsOffline.classTest;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -30,6 +32,7 @@ import com.example.multiplechoiceexam.Utils.UpdateInterface;
 import com.example.multiplechoiceexam.dto.test.TestClassResponse;
 import com.example.multiplechoiceexam.dto.test.TestSetGenerateReqDTO;
 import com.example.multiplechoiceexam.dto.test.TestSetPreviewDTO;
+import com.example.multiplechoiceexam.dto.upload.ResponseMessage;
 
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
@@ -75,7 +78,7 @@ public class ClassTestAdapter extends RecyclerView.Adapter<ClassTestAdapter.Clas
 
         AccountSharedPreferences accountSharedPreferences = new AccountSharedPreferences(context);
         List<String> userRoles = accountSharedPreferences.getRoles();
-        if (userRoles.contains("STUDENT")) {
+        if (userRoles.contains("ROLE_STUDENT")) {
             // If the user is a student, hide the buttons
             holder.testCreate.setVisibility(View.GONE);
             holder.btnDelete.setVisibility(View.GONE);
@@ -99,58 +102,43 @@ public class ClassTestAdapter extends RecyclerView.Adapter<ClassTestAdapter.Clas
             selectedPosition = position;
             showPopupClassExamCreate(testClassResponse, view);
         });
-//
-//        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                showDeleteConfirmationDialog(testClassResponse, position);
-//            }
-//        });
+
+        holder.btnDelete.setOnClickListener(view -> showDeleteConfirmationDialog(testClassResponse, position));
     }
 
-    //    private void showDeleteConfirmationDialog(TestClassResponse testClassResponse, int position) {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//        builder.setTitle("Xác nhận xóa");
-//        builder.setMessage("Bạn có chắc chắn muốn xóa?");
-//
-//        // Nút Xóa
-//        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                deleteItem(testClassResponse.getId(), position);
-//            }
-//        });
-//
-//        // Nút Hủy
-//        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.dismiss();
-//            }
-//        });
-//
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
-//    }
-//
-//    private void deleteItem(Integer id, int position) {
-//        RetrofitClient.getApiService(context.getApplicationContext()).disableTestById(id).enqueue(new Callback<ResponseMessage>() {
-//            @Override
-//            public void onResponse(@NotNull Call<ResponseMessage> call,@NotNull Response<ResponseMessage> response) {
-//                if (response.isSuccessful()) {
-//                    Toast.makeText(context, "thành công", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    Toast.makeText(context, "thất bại", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(@NotNull Call<ResponseMessage> call,@NotNull Throwable t) {
-//                Toast.makeText(context, "lỗi gọi", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-//
+        private void showDeleteConfirmationDialog(TestClassResponse.TestItem testClassResponse, int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Xác nhận xóa");
+        builder.setMessage("Bạn có chắc chắn muốn xóa?");
+
+        // Nút Xóa
+        builder.setPositiveButton("Xóa", (dialog, which) -> deleteItem(testClassResponse.getId(), position));
+
+        // Nút Hủy
+        builder.setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void deleteItem(Integer id, int position) {
+        RetrofitClient.getApiService(context.getApplicationContext()).disableTestById(id).enqueue(new Callback<ResponseMessage>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseMessage> call,@NotNull Response<ResponseMessage> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(context, "thành công", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "thất bại", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseMessage> call,@NotNull Throwable t) {
+                Toast.makeText(context, "lỗi gọi", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void showPopupClassExamCreate(TestClassResponse.TestItem testClassResponse, View view) {
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.layout_popup_class_test_add);
@@ -249,7 +237,7 @@ public class ClassTestAdapter extends RecyclerView.Adapter<ClassTestAdapter.Clas
             constraintLayout = itemView.findViewById(R.id.expandableLayout);
             testView = itemView.findViewById(R.id.test_view);
             testCreate = itemView.findViewById(R.id.test_create);
-//            btnDelete = itemView.findViewById(R.id.test_delete);
+            btnDelete = itemView.findViewById(R.id.test_delete);
 
             headerFrame.setOnClickListener(view -> {
                 TestClassResponse.TestItem testClassResponse = testResponses.get(getAdapterPosition());

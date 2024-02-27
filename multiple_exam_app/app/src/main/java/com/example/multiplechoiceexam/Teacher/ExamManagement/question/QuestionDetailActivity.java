@@ -22,6 +22,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
 
 import com.example.multiplechoiceexam.Api.ApiService;
 import com.example.multiplechoiceexam.Api.RetrofitClient;
@@ -97,9 +98,20 @@ public class QuestionDetailActivity extends AppCompatActivity {
                     String htmlTransfer = questionResponse.getContent();
                     Document doc = Jsoup.parse(htmlTransfer, "", Parser.xmlParser());
 
-                    Element firstParagraph = doc.select("p").first();
-                    if (firstParagraph != null) {
-                        textViewTopicText.setText(firstParagraph.text());
+                    //Element firstParagraph = doc.select("p").first();
+                    List<String> paragraphTexts = new ArrayList<>();
+                    Elements paragraphElements = doc.select("p");
+                    for (Element paragraphElement : paragraphElements) {
+                        String paragraphText = paragraphElement.text();
+                        paragraphTexts.add(paragraphText);
+                    }
+
+                    if (!paragraphTexts.isEmpty()) {
+                        StringBuilder combinedText = new StringBuilder();
+                        for (String paragraphText : paragraphTexts) {
+                            combinedText.append(paragraphText).append("\n");
+                        }
+                        textViewTopicText.setText(combinedText.toString());
                     } else {
                         textViewTopicText.setText(doc.text());
                     }

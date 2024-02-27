@@ -120,7 +120,7 @@ public class TeacherSearchActivity extends AppCompatActivity {
         menuImportTeacherTv = findViewById(R.id.textview_listTeacher_menu);
         AccountSharedPreferences accountSharedPreferences = new AccountSharedPreferences(this);
         List<String> userRoles = accountSharedPreferences.getRoles();
-        if (userRoles.contains("STUDENT")) {
+        if (userRoles.contains("ROLE_STUDENT")) {
             menuImportTeacherTv.setVisibility(View.GONE);
         }
         menuImportTeacherTv.setOnClickListener(showMenu -> showOptionsDialog());
@@ -174,16 +174,7 @@ public class TeacherSearchActivity extends AppCompatActivity {
     }
 
     private void downloadExcelFile() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
-                    PERMISSION_REQUEST_CODE);
-        } else {
             performDownload();
-        }
     }
 
     private void performDownload() {
@@ -258,20 +249,20 @@ public class TeacherSearchActivity extends AppCompatActivity {
     }
 
     private void pickExcelFile() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Nếu quyền chưa được cấp, yêu cầu người dùng cấp quyền
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    REQUEST_READ_EXTERNAL_STORAGE);
-        } else {
-            // Nếu quyền đã được cấp, tiến hành chọn tệp tin Excel
-            performPickExcelFile();
-        }
+        performPickExcelFile();
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            // Nếu quyền chưa được cấp, yêu cầu người dùng cấp quyền
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+//                    REQUEST_READ_EXTERNAL_STORAGE);
+//        } else {
+//            // Nếu quyền đã được cấp, tiến hành chọn tệp tin Excel
+//            performPickExcelFile();
+//        }
     }
 
     private void performPickExcelFile() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         try {
@@ -302,10 +293,6 @@ public class TeacherSearchActivity extends AppCompatActivity {
     }
 
     private void importTeacherFromExcel() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
-        } else {
             File excelFile = new File(excelFilePath);
             String fileName = excelFile.getName().replaceAll("[^a-zA-Z0-9.-]", "_");
             if (!excelFile.exists()) {
@@ -336,7 +323,6 @@ public class TeacherSearchActivity extends AppCompatActivity {
                     Toast.makeText(TeacherSearchActivity.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
                 }
             });
-        }
     }
 
 

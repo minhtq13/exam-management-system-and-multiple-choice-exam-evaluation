@@ -52,10 +52,11 @@ public class ScoringPreviewAdapter extends RecyclerView.Adapter<ScoringPreviewAd
         holder.scoringCode.setText(scoringPreviewItemDTO.getStudentCode());
         holder.scoringClassCode.setText(scoringPreviewItemDTO.getExamClassCode());
         holder.scoringTestCode.setText(scoringPreviewItemDTO.getTestSetCode());
-        holder.scoringNumMark.setText(String.valueOf(scoringPreviewItemDTO.getNumMarkedAnswers()));
+        holder.scoringNumMark.setText(String.valueOf(scoringPreviewItemDTO.getNumTestSetQuestions()));
         holder.scoringNumCorrect.setText(String.valueOf(scoringPreviewItemDTO.getNumCorrectAnswers()));
-        holder.scoringTotalScore.setText(String.valueOf(scoringPreviewItemDTO.getTotalScore()));
+        holder.scoringTotalScore.setText(String.format("%.2f",scoringPreviewItemDTO.getTotalScore()));
         holder.scoringNumberWrong.setText(String.valueOf(scoringPreviewItemDTO.getNumWrongAnswers()));
+        holder.totalQuestionStudent.setText(String.valueOf("/" + scoringPreviewItemDTO.getNumTestSetQuestions()));
         holder.scoringPreviewAnswerAdapter.setData(scoringPreviewItemDTO.getDetails());
         String imageUrl = scoringPreviewItemDTO.getHandledScoredImg();
         String imageUrlOrigin =scoringPreviewItemDTO.getOriginalImg();
@@ -88,7 +89,7 @@ public class ScoringPreviewAdapter extends RecyclerView.Adapter<ScoringPreviewAd
     public class ScoringPreviewViewHolder extends RecyclerView.ViewHolder {
 
         TextView scoringCode, scoringClassCode,scoringTestCode, scoringNumberWrong,
-                scoringNumMark,scoringNumCorrect,scoringTotalScore,imageOrigin;
+                scoringNumMark,scoringNumCorrect,scoringTotalScore,imageOrigin, totalQuestionStudent;
         ImageView imageScoring;
         RecyclerView recyclerView;
         ScoringPreviewAnswerAdapter scoringPreviewAnswerAdapter;
@@ -104,7 +105,9 @@ public class ScoringPreviewAdapter extends RecyclerView.Adapter<ScoringPreviewAd
             scoringTotalScore =itemView.findViewById(R.id.scoring_total_point);
             imageOrigin = itemView.findViewById(R.id.image_origin);
             imageScoring = itemView.findViewById(R.id.image_scoring);
+            totalQuestionStudent = itemView.findViewById(R.id.total_student_ques_test);
             recyclerView = itemView.findViewById(R.id.recyclerView);
+
 
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(layoutManager);

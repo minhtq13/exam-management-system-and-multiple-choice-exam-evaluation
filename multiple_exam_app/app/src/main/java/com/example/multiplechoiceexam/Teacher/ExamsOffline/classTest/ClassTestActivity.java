@@ -53,7 +53,7 @@ public class ClassTestActivity extends AppCompatActivity implements UpdateInterf
         testItems = new ArrayList<>();
         AccountSharedPreferences accountSharedPreferences = new AccountSharedPreferences(this);
         List<String> userRoles = accountSharedPreferences.getRoles();
-        if (userRoles.contains("STUDENT")) {
+        if (userRoles.contains("ROLE_STUDENT")) {
             floatingTest.setVisibility(View.GONE);
         }
         apiService = RetrofitClient.getApiService(getApplicationContext());

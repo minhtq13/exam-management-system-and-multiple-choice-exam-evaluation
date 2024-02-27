@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -20,6 +21,8 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -58,6 +61,7 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -89,7 +93,7 @@ public class PreviewScoringActivity extends AppCompatActivity {
     private Button btnCheck, btnSaveScoring;
     private ApiService apiService;
     private String examClassCode;
-    private ProgressDialog progressDialog, progressDialog1;
+    private ProgressDialog progressDialog, progressDialog1,progressDialogSaveDB;
     private Long semesterId, subjectId;
     private RecyclerView imgRecyclerview;
     private TextView imgCount;
@@ -142,7 +146,10 @@ public class PreviewScoringActivity extends AppCompatActivity {
         SmartCropper.buildImageDetector(this);
         progressDialog = new ProgressDialog(PreviewScoringActivity.this);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Đang chấm...");
+        progressDialog.setMessage("Đang chấm vui lòng đợi một chút...");
+        progressDialogSaveDB = new ProgressDialog(PreviewScoringActivity.this);
+        progressDialogSaveDB.setCancelable(false);
+        progressDialogSaveDB.setMessage("Đang lưu kết quả...");
 
         editTextClassCode.setOnClickListener(view -> {
             getListExamClass();
@@ -284,7 +291,7 @@ public class PreviewScoringActivity extends AppCompatActivity {
             if (croppedFile != null && croppedFile.exists()) {
                 Bitmap croppedBitmap = BitmapFactory.decodeFile(croppedFile.getAbsolutePath());
 
-                int rotationDegrees = 90;
+                int rotationDegrees = 0;
                 Matrix matrix = new Matrix();
                 matrix.postRotate(rotationDegrees);
                 Bitmap rotatedBitmap = Bitmap.createBitmap(croppedBitmap, 0, 0, croppedBitmap.getWidth(), croppedBitmap.getHeight(), matrix, true);
@@ -429,13 +436,16 @@ public class PreviewScoringActivity extends AppCompatActivity {
     }
 
     private void saveScoringDB() {
+        progressDialogSaveDB.show();
         apiService.saveScoringResult(scoringPreviewResDTO.getTmpFileCode(), "SAVE").enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NotNull Call<Void> call,@NotNull Response<Void> response) {
                 if (response.isSuccessful()) {
+                    progressDialogSaveDB.dismiss();
                     finish();
                     Toast.makeText(getApplicationContext(), "Lưu kết quả thành công", Toast.LENGTH_SHORT).show();
                 } else {
+                    progressDialogSaveDB.dismiss();
                     finish();
                     Toast.makeText(getApplicationContext(), "Lưu kết quả thành công 1", Toast.LENGTH_SHORT).show();
                 }
@@ -443,6 +453,7 @@ public class PreviewScoringActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NotNull Call<Void> call,@NotNull Throwable t) {
+                progressDialogSaveDB.dismiss();
                 finish();
                 Toast.makeText(getApplicationContext(), "Lưu kết quả thành công 2", Toast.LENGTH_SHORT).show();
             }
@@ -475,7 +486,7 @@ public class PreviewScoringActivity extends AppCompatActivity {
             }
         }
         if (partList.isEmpty()) {
-            progressDialog.dismiss();
+            progressDialog1.dismiss();
             return;
         }
         // get api service
@@ -537,7 +548,28 @@ public class PreviewScoringActivity extends AppCompatActivity {
                         Toast.makeText(PreviewScoringActivity.this, " response body is null", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(PreviewScoringActivity.this, "error", Toast.LENGTH_SHORT).show();
+                    if (response.errorBody() != null) {
+                        try {
+                            String errorBodyString = response.errorBody().string();
+                            JSONObject errorJson = new JSONObject(errorBodyString);
+
+                            String errorCode = errorJson.optString("code", "");
+                            String errorMessage = errorJson.optString("values", "");
+
+                            if ("error.student.exam.class.not_found".equals(errorCode)) {
+                                showErrorMessage("Mã số sinh viên "+ errorMessage +" không có trong lớp thi!" );
+                            } else if ("error.test.set.not.found".equals(errorCode)) {
+                                showErrorMessage("Không có mã đề thi "+errorMessage+" trong cơ sở dữ liệu!");
+                            } else {
+                                showErrorMessage("Lỗi khác: " + errorMessage);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            showErrorMessage("Xảy ra lỗi khi xử lý thông báo lỗi");
+                        }
+                    } else {
+                        showErrorMessage("Error");
+                    }
                 }
             }
 
@@ -549,6 +581,24 @@ public class PreviewScoringActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void showErrorMessage(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message)
+                .setTitle("Lỗi")
+                .setCancelable(false)
+                .setPositiveButton("Đóng", (dialog, id) -> dialog.dismiss());
+
+        final AlertDialog alert = builder.create();
+        alert.show();
+        imgRecyclerview.setVisibility(View.VISIBLE);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            if (alert.isShowing()) {
+                alert.dismiss();
+            }
+        }, 5000);
+        progressDialog.dismiss();
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -600,6 +650,7 @@ public class PreviewScoringActivity extends AppCompatActivity {
                             editTextClassCode.setText(iCommonIdCode.getCode());
                             examClassCode = iCommonIdCode.getCode();
                             imageAdapter.setExamClassCode(examClassCode);
+                            imageAdapter.clearImages();
                             searchScoringNoScoring(examClassCode);
                             dialog.dismiss();
                         });
@@ -751,16 +802,16 @@ public class PreviewScoringActivity extends AppCompatActivity {
     private void showShowcase() {
         switch (showcaseIndex) {
             case 0:
-                buildShowcase(binding.pickImageFromDevice, "Bước 1", "Chụp ảnh bài thi từ camera hoặc chọn từ thư viên");
+                buildShowcase(binding.txtSemesterTestSearch, "Bước 1", "Chọn học kì tương ứng với bài thi");
                 break;
             case 1:
-                buildShowcase(binding.txtSemesterTestSearch, "Bước 2", "Chọn học kì tương ứng với bài thi");
+                buildShowcase(binding.txtSubjectTestSearch, "Bước 2", "Chọn học phần bài thi");
                 break;
             case 2:
-                buildShowcase(binding.txtSubjectTestSearch, "Bước 3", "Chọn học phần bài thi");
+                buildShowcase(binding.editTextScoring, "Bước 3", "Chọn mã lớp thi của bài thi");
                 break;
             case 3:
-                buildShowcase(binding.editTextScoring, "Bước 4", "Chọn mã lớp thi của bài thi");
+                buildShowcase(binding.pickImageFromDevice, "Bước 4", "Chụp ảnh bài thi từ camera hoặc chọn từ thư viên");
                 break;
             case 4:
                 buildShowcase(binding.btnScoring, "Bước 5", "Sau khi chọn đủ thông tin bấm vào nút này để bắt đầu chấm bài");

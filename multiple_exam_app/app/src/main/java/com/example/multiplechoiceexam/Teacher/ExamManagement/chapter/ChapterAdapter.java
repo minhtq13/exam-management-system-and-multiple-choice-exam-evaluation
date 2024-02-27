@@ -92,13 +92,12 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
         List<String> userRoles = accountSharedPreferences.getRoles();
 
         // If user has the TEACHER role, show update and delete buttons
-        if (userRoles.contains("STUDENT")) {
+        if (userRoles.contains("ROLE_STUDENT")) {
             holder.chapterUpdate.setVisibility(View.GONE);
             holder.chapterDelete.setVisibility(View.GONE);
-
-            holder.chapterUpdate.setOnClickListener(view -> updatePopupWindow(chapterResponse, view));
-            holder.chapterDelete.setOnClickListener(view -> showDeleteConfirmationDialog(chapterResponse, position));
         }
+        holder.chapterUpdate.setOnClickListener(view -> updatePopupWindow(chapterResponse, view));
+        holder.chapterDelete.setOnClickListener(view -> showDeleteConfirmationDialog(chapterResponse, position));
     }
 
     @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
@@ -141,10 +140,14 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
         Button buttonSave = popupView.findViewById(R.id.buttonSave);
 
         String oldTitle = chapterResponse.getName();
-        Long oldOrder = chapterResponse.getId();
+        int dotIndex = oldTitle.indexOf('.');
+        String resultPre = oldTitle.substring(0, dotIndex);
+        String resultLast = oldTitle.substring(dotIndex + 1).trim();
+        //Long oldOrder = chapterResponse.getId();
 
-        editTextTitle.setText(oldTitle);
-        editTextOrder.setText(String.valueOf(oldOrder));
+        editTextTitle.setText(resultLast);
+        editTextOrder.setText(resultPre);
+        editTextDescription.setText(oldTitle);
 
         buttonSave.setOnClickListener(v -> {
             String newTitle = editTextTitle.getText().toString();

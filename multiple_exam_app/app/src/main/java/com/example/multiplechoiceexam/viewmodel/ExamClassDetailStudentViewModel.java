@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.multiplechoiceexam.Api.ApiService;
 import com.example.multiplechoiceexam.Api.RetrofitClient;
+import com.example.multiplechoiceexam.dto.studentTest.ExamClassResultStatisticsDTO;
 import com.example.multiplechoiceexam.dto.studentTest.StudentTestSetResultDTO;
 
 import org.jetbrains.annotations.NotNull;
@@ -27,18 +28,20 @@ public class ExamClassDetailStudentViewModel extends ViewModel {
     }
 
     public MutableLiveData<List<StudentTestSetResultDTO>> getStudentTestSetResult(String examClassCode) {
-        apiService.getStudentTestSetResult(examClassCode).enqueue(new Callback<List<StudentTestSetResultDTO>>() {
+        apiService.getStudentTestSetResult(examClassCode).enqueue(new Callback<ExamClassResultStatisticsDTO>() {
             @Override
-            public void onResponse(@NotNull Call<List<StudentTestSetResultDTO>> call, @NotNull Response<List<StudentTestSetResultDTO>> response) {
+            public void onResponse(@NotNull Call<ExamClassResultStatisticsDTO> call, @NotNull Response<ExamClassResultStatisticsDTO> response) {
                 if (response.isSuccessful()) {
-                    studentTestSetResultData.setValue(response.body());
+                    ExamClassResultStatisticsDTO examClassResultStatisticsDTO = response.body();
+                    assert examClassResultStatisticsDTO != null;
+                    studentTestSetResultData.setValue(examClassResultStatisticsDTO.getResults());
                 } else {
                     studentTestSetResultData.setValue(null);
                 }
             }
 
             @Override
-            public void onFailure(@NotNull Call<List<StudentTestSetResultDTO>> call,@NotNull Throwable t) {
+            public void onFailure(@NotNull Call<ExamClassResultStatisticsDTO> call,@NotNull Throwable t) {
                 studentTestSetResultData.setValue(null);
             }
         });

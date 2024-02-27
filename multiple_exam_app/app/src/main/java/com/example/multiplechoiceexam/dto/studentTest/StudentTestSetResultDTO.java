@@ -17,7 +17,7 @@ public class StudentTestSetResultDTO {
 
     String examClassCode;
 
-
+    Integer numTestSetQuestions;
     Integer numMarkedAnswers;
 
     Integer numCorrectAnswers = 0;
@@ -25,6 +25,14 @@ public class StudentTestSetResultDTO {
     Double totalPoints = 0.0;
 
     String handledSheetImg;
+
+    public Integer getNumTestSetQuestions() {
+        return numTestSetQuestions;
+    }
+
+    public void setNumTestSetQuestions(Integer numTestSetQuestions) {
+        this.numTestSetQuestions = numTestSetQuestions;
+    }
 
     public Long getId() {
         return id;

@@ -107,7 +107,7 @@ public class QuestionExamOfflineActivity extends AppCompatActivity implements Qu
 
     private void updateQuestionInfo() {
         int currentQuestionNumber = currentQuestionIndex + 1;
-        String infoText = "Question " + currentQuestionNumber + " / " + totalQuestions;
+        String infoText = "Câu " + currentQuestionNumber + " / " + totalQuestions;
         questionInfoTextView.setText(infoText);
     }
 

@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/all_margin_24"
-        android:text="Multiple Choice Exams"
+        android:text="HUSTAssistantWise"
         android:textColor="@color/white"
         android:textSize="@dimen/all_text_size_24"
         android:textStyle="bold" />

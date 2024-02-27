@@ -50,7 +50,7 @@ public class ExamClassActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressbar_examClass_loading);
         AccountSharedPreferences accountSharedPreferences = new AccountSharedPreferences(this);
         List<String> userRoles = accountSharedPreferences.getRoles();
-        if (userRoles.contains("STUDENT")) {
+        if (userRoles.contains("ROLE_STUDENT")) {
             buttonAdd.setVisibility(View.GONE);
 
         }

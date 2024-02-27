@@ -65,7 +65,7 @@ public class ChapterActivity extends AppCompatActivity implements UpdateInterfac
         getAllChapter(subjectId);
         AccountSharedPreferences accountSharedPreferences = new AccountSharedPreferences(this);
         List<String> userRoles = accountSharedPreferences.getRoles();
-        if (userRoles.contains("STUDENT")) {
+        if (userRoles.contains("ROLE_STUDENT")) {
             fabChapter.setVisibility(View.GONE);
         } else {
             fabChapter.setVisibility(View.VISIBLE);

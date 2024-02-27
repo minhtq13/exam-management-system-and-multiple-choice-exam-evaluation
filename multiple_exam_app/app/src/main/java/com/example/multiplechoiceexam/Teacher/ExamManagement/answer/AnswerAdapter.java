@@ -28,6 +28,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,15 +107,31 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.ViewHolder
             String htmlTransfer = answer.getContent();
             Document doc = Jsoup.parse(htmlTransfer, "", Parser.xmlParser());
 
-            Element paragraphElement = doc.select("p").first();
-            String textContent;
+            List<String> paragraphTexts = new ArrayList<>();
 
-            if (paragraphElement != null) {
-                textContent = paragraphElement.text();
-            } else {
-                textContent = doc.text();
+            Elements paragraphElements = doc.select("p");
+            for (Element paragraphElement : paragraphElements) {
+                String paragraphText = paragraphElement.text();
+                paragraphTexts.add(paragraphText);
             }
-            answerContent.setText(textContent);
+            if (!paragraphTexts.isEmpty()) {
+                StringBuilder combinedText = new StringBuilder();
+                for (String paragraphText : paragraphTexts) {
+                    combinedText.append(paragraphText).append("\n");
+                }
+                answerContent.setText(combinedText.toString());
+            } else {
+                answerContent.setText(doc.text());
+            }
+//            Element paragraphElement = doc.select("p").first();
+//            String textContent;
+
+//            if (paragraphElement != null) {
+//                textContent = paragraphElement.text();
+//            } else {
+//                textContent = doc.text();
+//            }
+//            answerContent.setText(textContent);
 
             // Tìm và trích xuất chuỗi Base64 từ thẻ img
             Element img = doc.select("img").first();

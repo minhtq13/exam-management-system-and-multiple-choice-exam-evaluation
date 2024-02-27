@@ -44,6 +44,7 @@ public class QuestionActivity extends AppCompatActivity implements UpdateInterfa
 
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final int PICK_EXCEL_REQUEST_QUESTION = 2;
+    private static final int REQUEST_ADD_QUESTION = 3;
     private QuestionAdapter questionAdapter;
     private RecyclerView recyclerView;
 
@@ -70,7 +71,7 @@ public class QuestionActivity extends AppCompatActivity implements UpdateInterfa
         floatingActionButton = findViewById(R.id.fab_add_question_add);
         AccountSharedPreferences accountSharedPreferences = new AccountSharedPreferences(this);
         List<String> userRoles = accountSharedPreferences.getRoles();
-        if (userRoles.contains("STUDENT")) {
+        if (userRoles.contains("ROLE_STUDENT")) {
             floatingActionButton.setVisibility(View.GONE);
             importQuestion.setVisibility(View.GONE);
             subjectExamTest.setVisibility(View.VISIBLE);
@@ -91,13 +92,12 @@ public class QuestionActivity extends AppCompatActivity implements UpdateInterfa
         } else {
             getAllQuestionSubjectChapter();
         }
+
         floatingActionButton.setOnClickListener(view -> {
             Intent intent = new Intent(QuestionActivity.this, QuestionAddItemActivity.class);
             intent.putExtra("chapterNo", chapterId);
-            startActivity(intent);
+            startActivityForResult(intent, REQUEST_ADD_QUESTION);
         });
-
-
     }
 
     private void createExamForSubject() {
@@ -113,10 +113,6 @@ public class QuestionActivity extends AppCompatActivity implements UpdateInterfa
 
     private void importQuestionFromExcel() {
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
-        } else {
             File excelFile = new File(excelFilePath);
             String fileName = excelFile.getName().replaceAll("[^a-zA-Z0-9.-]", "_");
             if (!excelFile.exists()) {
@@ -152,7 +148,6 @@ public class QuestionActivity extends AppCompatActivity implements UpdateInterfa
                     Toast.makeText(QuestionActivity.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
                 }
             });
-        }
     }
 
     private void getAllQuestionSubjectChapter() {
@@ -202,7 +197,6 @@ public class QuestionActivity extends AppCompatActivity implements UpdateInterfa
 
     private void pickExcelFile() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         try {
@@ -226,24 +220,24 @@ public class QuestionActivity extends AppCompatActivity implements UpdateInterfa
                 importQuestionFromExcel();
             } else {
                 // Handle the case when filePath is null
-                Toast.makeText(this, "Failed to get file path", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Lỗi đường dẫn", Toast.LENGTH_SHORT).show();
             }
-        } else {
-            // Handle the case when data or data.getData() is null
-            Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
+        }
+        if (requestCode == REQUEST_ADD_QUESTION && resultCode == RESULT_OK) {
+            onUpdateComplete();
         }
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (chapterId == -1) {
-            getAllQuestionSubject();
-        } else {
-            getAllQuestionSubjectChapter();
-        }
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        if (chapterId == -1) {
+//            getAllQuestionSubject();
+//        } else {
+//            getAllQuestionSubjectChapter();
+//        }
+//    }
 
     @Override
     public void onUpdateComplete() {

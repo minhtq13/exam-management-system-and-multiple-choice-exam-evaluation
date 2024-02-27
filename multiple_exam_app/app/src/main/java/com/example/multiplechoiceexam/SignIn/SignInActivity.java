@@ -120,7 +120,7 @@ public class SignInActivity extends AppCompatActivity {
                     String roleResult = profileUserDTO.getRole();
                     String role = "Giảng viên";
 
-                    if ("STUDENT".equals(roleResult)) {
+                    if ("ROLE_STUDENT".equals(roleResult)) {
                         role = "Sinh viên";
                     }
                     saveUserInfo(username, role);

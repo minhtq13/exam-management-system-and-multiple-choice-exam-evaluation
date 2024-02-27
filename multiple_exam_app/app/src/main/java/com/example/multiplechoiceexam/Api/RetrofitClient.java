@@ -1,9 +1,10 @@
 package com.example.multiplechoiceexam.Api;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.multiplechoiceexam.SharedPreferences.AccountSharedPreferences;
 import com.example.multiplechoiceexam.Utils.BaseUrlUtils;
 import com.example.multiplechoiceexam.dto.auth.RefreshTokenResDTO;
 
@@ -25,8 +26,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
     private static ApiService apiService;
-
+    private static AccountSharedPreferences accountSharedPreferences;
     public static ApiService getApiService(Context context) {
+        accountSharedPreferences = new AccountSharedPreferences(context);
         if (apiService == null) {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BaseUrlUtils.BaseUrl.BASE_URL)
@@ -45,18 +47,23 @@ public class RetrofitClient {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request originalRequest = chain.request();
-                String authToken = getAuthTokenFromSharedPreferences(context);
-
+                String authToken = accountSharedPreferences.getAccessToken();
+               // String authToken = getAuthTokenFromSharedPreferences(context);
+                if (accountSharedPreferences == null) {
+                    accountSharedPreferences = new AccountSharedPreferences(context);
+                }
                 if (authToken != null && isTokenExpired(authToken)) {
                     refreshToken(context);
-                    authToken = getAuthTokenFromSharedPreferences(context);
+                    authToken = accountSharedPreferences.getAccessToken();
+                    //authToken = getAuthTokenFromSharedPreferences(context);
                 }
 
-                Request newRequest = originalRequest.newBuilder()
-                        .header("Authorization", "Bearer " + authToken)
-                        .build();
 
-                return chain.proceed(newRequest);
+                    Request newRequest = originalRequest.newBuilder()
+                            .header("Authorization", "Bearer " + authToken)
+                            .build();
+
+                    return chain.proceed(newRequest);
             }
         });
         httpClient.connectTimeout(500, TimeUnit.SECONDS);
@@ -64,19 +71,6 @@ public class RetrofitClient {
         httpClient.writeTimeout(500, TimeUnit.SECONDS);
         return httpClient.build();
     }
-
-    private static String getAuthTokenFromSharedPreferences(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("account_prefs", Context.MODE_PRIVATE);
-        return sharedPreferences.getString("access_token", null);
-    }
-
-    private static void saveAuthTokenToSharedPreferences(String authToken, Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("account_prefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("access_token", authToken);
-        editor.apply();
-    }
-
 
     private static boolean isTokenExpired(String authToken) {
         if (authToken != null) {
@@ -100,30 +94,42 @@ public class RetrofitClient {
 
     private static void refreshToken(final Context context) {
         ApiService apiService = RetrofitClient.getApiService(context);
-        Call<RefreshTokenResDTO> call = apiService.refreshToken(getRefreshTokenFromSharedPreferences(context));
+        Call<RefreshTokenResDTO> call = apiService.refreshToken(accountSharedPreferences.getRefreshToken());
         call.enqueue(new Callback<RefreshTokenResDTO>() {
             @Override
             public void onResponse(@NotNull Call<RefreshTokenResDTO> call, retrofit2.Response<RefreshTokenResDTO> response) {
                 if (response.isSuccessful()) {
-                    String newAuthToken = response.headers().get("Authorization");
-                    saveAuthTokenToSharedPreferences(newAuthToken, context);
+                    RefreshTokenResDTO newAuthToken = response.body();
+                    assert newAuthToken != null;
+                    accountSharedPreferences.setAccessToken(newAuthToken.getAccessToken());
+                    accountSharedPreferences.setRefreshToken(newAuthToken.getRefreshToken());
+                    //saveAuthTokenToSharedPreferences(newAuthToken.getAccessToken(), context);
                 } else {
-                    // Handle error if the refresh token API call is not successful
                     Log.e("Refresh Token", "Failed to refresh token");
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<RefreshTokenResDTO> call, @NotNull Throwable t) {
-                // Handle failure in making the refresh token API call
                 Log.e("Refresh Token", "Network error while refreshing token", t);
             }
         });
     }
 
-    private static String getRefreshTokenFromSharedPreferences(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("account_prefs", Context.MODE_PRIVATE);
-        return sharedPreferences.getString("refresh_token", null);
-    }
+//    private static String getAuthTokenFromSharedPreferences(Context context) {
+//        SharedPreferences sharedPreferences = context.getSharedPreferences("account_prefs", Context.MODE_PRIVATE);
+//        return sharedPreferences.getString("access_token", null);
+//    }
+//
+//    private static void saveAuthTokenToSharedPreferences(String authToken, Context context) {
+//        SharedPreferences sharedPreferences = context.getSharedPreferences("account_prefs", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString("access_token", authToken);
+//        editor.apply();
+//    }
+//    private static String getRefreshTokenFromSharedPreferences(Context context) {
+//        SharedPreferences sharedPreferences = context.getSharedPreferences("account_prefs", Context.MODE_PRIVATE);
+//        return sharedPreferences.getString("refresh_token", null);
+//    }
 }
 

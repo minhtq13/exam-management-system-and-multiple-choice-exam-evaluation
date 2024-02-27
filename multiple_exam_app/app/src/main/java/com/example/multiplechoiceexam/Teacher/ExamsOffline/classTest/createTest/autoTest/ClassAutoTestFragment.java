@@ -25,6 +25,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -147,30 +148,65 @@ public class ClassAutoTestFragment extends Fragment {
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
 
 
-        txtTimeEnd.setOnClickListener(view14 ->{
+//        txtTimeEnd.setOnClickListener(view14 ->{
+//            DatePickerDialog datePickerDialog1 = new DatePickerDialog(getContext(), (datePicker, year1, month1, day1) -> {
+//                int formattedMonth = month1 + 1;
+//                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (timePicker, hourOfDay, minute) -> {
+//                    String formattedTime = String.format("%02d:%02d", hourOfDay, minute);
+//                    String date = String.format("%02d/%02d/%d %s", day1, formattedMonth, year1, formattedTime);
+//
+//                    txtTimeEnd.setText(date);
+//                }, 0, 0, true);
+//                timePickerDialog.show();
+//            }, year, month, day);
+//            datePickerDialog1.show();
+//        });
+        txtTimeEnd.setOnClickListener(view14 -> {
             DatePickerDialog datePickerDialog1 = new DatePickerDialog(getContext(), (datePicker, year1, month1, day1) -> {
-                int formattedMonth = month1 + 1;
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (timePicker, hourOfDay, minute) -> {
-                    String formattedTime = String.format("%02d:%02d", hourOfDay, minute);
-                    String date = String.format("%02d/%02d/%d %s", day1, formattedMonth, year1, formattedTime);
-
-                    txtTimeEnd.setText(date);
-                }, 0, 0, true);
-                timePickerDialog.show();
+                if (year1 > year || (year1 == year && month1 > month) || (year1 == year && month1 == month && day1 >= day)) {
+                    int formattedMonth = month1 + 1;
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (timePicker, hourOfDay, minute) -> {
+                        String formattedTime = String.format("%02d:%02d", hourOfDay, minute);
+                        String date = String.format("%02d/%02d/%d %s", day1, formattedMonth, year1, formattedTime);
+                        txtTimeEnd.setText(date);
+                    }, 0, 0, true);
+                    timePickerDialog.show();
+                } else {
+                    txtTimeEnd.setText("");
+                    Toast.makeText(getContext(), "Không thể chọn ngày trong quá khứ", Toast.LENGTH_SHORT).show();
+                }
             }, year, month, day);
             datePickerDialog1.show();
         });
 
+//        txtTimeEndStart.setOnClickListener(view15 -> {
+//            DatePickerDialog datePickerDialog1 = new DatePickerDialog(getContext(), (datePicker, year12, month12, day12) -> {
+//                int formattedMonth = month12 + 1;
+//                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (timePicker, hourOfDay, minute) -> {
+//                    String formattedTime = String.format("%02d:%02d", hourOfDay, minute);
+//                    String date = String.format("%02d/%02d/%d %s", day12, formattedMonth, year12, formattedTime);
+//
+//                    txtTimeEndStart.setText(date);
+//                }, 0, 0, true);
+//                timePickerDialog.show();
+//            }, year, month, day);
+//            datePickerDialog1.show();
+//        });
         txtTimeEndStart.setOnClickListener(view15 -> {
             DatePickerDialog datePickerDialog1 = new DatePickerDialog(getContext(), (datePicker, year12, month12, day12) -> {
-                int formattedMonth = month12 + 1;
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (timePicker, hourOfDay, minute) -> {
-                    String formattedTime = String.format("%02d:%02d", hourOfDay, minute);
-                    String date = String.format("%02d/%02d/%d %s", day12, formattedMonth, year12, formattedTime);
+                if (year12 > year || (year12 == year && month12 > month) || (year12 == year && month12 == month && day12 >= day)) {
+                    int formattedMonth = month12 + 1;
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (timePicker, hourOfDay, minute) -> {
+                        String formattedTime = String.format("%02d:%02d", hourOfDay, minute);
+                        String date = String.format("%02d/%02d/%d %s", day12, formattedMonth, year12, formattedTime);
 
-                    txtTimeEndStart.setText(date);
-                }, 0, 0, true);
-                timePickerDialog.show();
+                        txtTimeEndStart.setText(date);
+                    }, 0, 0, true);
+                    timePickerDialog.show();
+                } else {
+                    txtTimeEndStart.setText("");
+                    Toast.makeText(getContext(), "Không thể chọn ngày trong quá khứ", Toast.LENGTH_SHORT).show();
+                }
             }, year, month, day);
             datePickerDialog1.show();
         });
@@ -262,18 +298,19 @@ public class ClassAutoTestFragment extends Fragment {
         builder.setView(dialogView);
 
         RecyclerView recyclerViewSubjects = dialogView.findViewById(R.id.recyclerViewSubjects);
-        Button btnClose = dialogView.findViewById(R.id.btnClose);
+        ImageButton btnClose = dialogView.findViewById(R.id.btnClose);
 
         recyclerViewSubjects.setLayoutManager(new LinearLayoutManager(getContext()));
         SubjectComboBoxAdapter subjectAdapter = new SubjectComboBoxAdapter(getContext(), subjects);
         recyclerViewSubjects.setAdapter(subjectAdapter);
+        AlertDialog dialog = builder.create();
         subjectAdapter.setOnItemClickListener(subjectItem -> {
             txtSubject.setText(subjectItem.getTitle());
             subjectId = subjectItem.getId();
             loadChapters(subjectId);
             relativeLayout.setVisibility(View.VISIBLE);
+            dialog.dismiss();
         });
-        AlertDialog dialog = builder.create();
         dialog.show();
 
         btnClose.setOnClickListener(view -> dialog.dismiss());
@@ -309,8 +346,9 @@ public class ClassAutoTestFragment extends Fragment {
                         adapter.setOnItemClickListener(semesterLists -> {
                             txtSemester.setText(semesterLists.getName());
                             semesterId = semesterLists.getId();
+                            dialog.dismiss();
                         });
-                        Button buttonCloseDialog = dialog.findViewById(R.id.buttonCloseDialog);
+                        ImageButton buttonCloseDialog = dialog.findViewById(R.id.buttonCloseDialog);
                         buttonCloseDialog.setOnClickListener(v -> dialog.dismiss());
 
                         dialog.show();

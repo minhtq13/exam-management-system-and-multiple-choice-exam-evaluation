@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_background_splash"
+    android:background="@drawable/multipletest450"
     tools:context=".SignIn.SplashActivity">
     <ImageView
         android:layout_width="100dp"
@@ -20,7 +20,7 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="314dp"
         android:gravity="center"
-        android:text="Multiple choice Exam"
+        android:text="HUSTAssistantWise"
         android:textColor="@color/black"
         android:textSize="28sp"
         android:textStyle="bold" />
@@ -31,6 +31,6 @@
         android:layout_below="@id/title_name"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="50dp"
         android:indeterminateTint="@color/my_primary" />
 </RelativeLayout>

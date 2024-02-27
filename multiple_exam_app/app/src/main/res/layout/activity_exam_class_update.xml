@@ -190,9 +190,11 @@
 
     <Button
         android:id="@+id/btn_class_exam_save_update"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/button_background_green"
         android:enabled="true"
@@ -200,8 +202,9 @@
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout5"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.842" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

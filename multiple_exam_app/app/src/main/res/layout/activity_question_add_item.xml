@@ -5,21 +5,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
     android:id="@+id/androidLin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Teacher.ExamManagement.question.QuestionAddItemActivity">
 
-    <ImageView
-        android:id="@+id/image_view_question"
-        android:layout_width="250dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="5dp" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image_view_question"
+            android:layout_width="280dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginBottom="5dp" />
+
+        <ImageView
+            android:id="@+id/removeImageButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="top|right"
+            android:layout_marginRight="70dp"
+            android:src="@drawable/icon_delete"
+            android:visibility="gone" />
+
+    </FrameLayout>
 
     <ImageView
         android:id="@+id/chooseImageBtn"

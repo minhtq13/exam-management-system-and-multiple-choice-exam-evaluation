@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/purple_500"
         app:tabTextColor="@color/white"
+        android:visibility="gone"
         app:tabIndicatorColor="@color/white"
         android:id="@+id/tab_layout">
 

@@ -47,8 +47,10 @@ public class StudentTestSetResultAdapter extends RecyclerView.Adapter<StudentTes
         holder.testSetCodeTextView.setText(result.getTestSetCode());
         holder.codeStudentTextView.setText(result.getStudentCode());
         holder.numCorrectAnswersTextView.setText(String.valueOf(result.getNumCorrectAnswers()));
-        holder.totalPointsTextView.setText(String.valueOf(result.getTotalPoints()));
-        holder.numMarkedAnswersTextView.setText(String.valueOf(result.getNumMarkedAnswers()));
+        holder.totalPointsTextView.setText(String.format("%.2f", result.getTotalPoints()));
+        holder.numMarkedAnswersTextView.setText(String.valueOf(result.getNumTestSetQuestions()));
+        holder.totalQuestion.setText(String.valueOf(result.getNumTestSetQuestions()));
+        holder.totalQuestionStudent.setText(String.valueOf("/" +result.getNumTestSetQuestions()));
 
 //        // Load image using Glide
 //        Glide.with(holder.itemView.getContext())
@@ -58,6 +60,7 @@ public class StudentTestSetResultAdapter extends RecyclerView.Adapter<StudentTes
             Integer imageUrl = R.drawable.image_handle;
             holder.handledSheetImageView.setOnClickListener(view -> showImageDialog(imageUrl, holder.handledSheetImageView.getContext()));
         }else {
+            Picasso.get().load(result.getHandledSheetImg()).into(holder.handledSheetImageView);
             String imageUrl1 = result.getHandledSheetImg();
             holder.handledSheetImageView.setOnClickListener(view -> showImageDialog1(imageUrl1, holder.handledSheetImageView.getContext()));
         }
@@ -102,7 +105,7 @@ public class StudentTestSetResultAdapter extends RecyclerView.Adapter<StudentTes
         TextView studentNameTextView;
         TextView examClassCodeTextView;
         TextView testSetCodeTextView;
-        TextView numCorrectAnswersTextView;
+        TextView numCorrectAnswersTextView, totalQuestion, totalQuestionStudent;
         TextView totalPointsTextView;
         TextView numMarkedAnswersTextView,codeStudentTextView;
         ImageView handledSheetImageView;
@@ -117,6 +120,8 @@ public class StudentTestSetResultAdapter extends RecyclerView.Adapter<StudentTes
             numMarkedAnswersTextView = itemView.findViewById(R.id.scoring_mark_answer_db);
             codeStudentTextView = itemView.findViewById(R.id.scoring_mssv_db);
             handledSheetImageView = itemView.findViewById(R.id.image_scoring);
+            totalQuestion = itemView.findViewById(R.id.scoring_handle_scoring_db);
+            totalQuestionStudent = itemView.findViewById(R.id.total_ques_student);
         }
     }
 }
